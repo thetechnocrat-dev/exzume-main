@@ -24483,18 +24483,40 @@
 
 	var React = __webpack_require__(1);
 	
+	// components
+	var InsightItem = __webpack_require__(219);
+	
 	var InsightIndex = React.createClass({
-	  displayName: "InsightIndex",
+	  displayName: 'InsightIndex',
 	
 	
 	  render: function () {
 	    return React.createElement(
-	      "div",
+	      'div',
 	      null,
 	      React.createElement(
-	        "h1",
-	        { className: "ui header" },
-	        "Your Insights"
+	        'h1',
+	        { className: 'ui header' },
+	        'Your Insights'
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'ui relaxed divided centered list' },
+	        React.createElement(InsightItem, { time: '22 minutes ago', message: 'Your data shows that running is highly correlated with increased happiness' }),
+	        React.createElement(InsightItem, { time: '12 hours ago', message: 'Your stress is higher than normal. In the past socializing with close friends/family has decreased your stress, while getting less sleep has increased your stress' }),
+	        React.createElement(InsightItem, { time: '1 day ago', message: 'Good job! You have exercised three days in the last week and our data shows that for many users similiar to yourself that reguluar exercise increses producivity and decreases stress' }),
+	        React.createElement(InsightItem, { time: '3 days ago', message: 'Looking for a book to read? Our data shows that many users similiar to you have had an improvement in satisfaction after reading The Alchemist by Paulo Coelho' }),
+	        React.createElement(InsightItem, { time: '3 days ago', message: 'You have answered your survey 21 days in row! Keep up the good work!' }),
+	        React.createElement(InsightItem, { time: '4 days ago', message: 'Your data shows that consuming caffeine has a slight negative effect on your productivity' })
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'ui centered grid' },
+	        React.createElement(
+	          'div',
+	          { className: 'centered row' },
+	          React.createElement('i', { className: 'large angle down icon' })
+	        )
 	      )
 	    );
 	  }
@@ -24551,6 +24573,42 @@
 	});
 	
 	module.exports = DataStreamItem;
+
+/***/ },
+/* 219 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var InsightItem = React.createClass({
+	  displayName: "InsightItem",
+	
+	
+	  render: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "item" },
+	      React.createElement("i", { className: "heart" }),
+	      React.createElement(
+	        "div",
+	        { className: "content" },
+	        React.createElement(
+	          "div",
+	          { className: "header" },
+	          this.props.message
+	        ),
+	        React.createElement(
+	          "div",
+	          { className: "description" },
+	          this.props.time
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = InsightItem;
 
 /***/ }
 /******/ ]);
