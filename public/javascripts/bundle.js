@@ -24348,6 +24348,11 @@
 	        'div',
 	        { className: 'ui container' },
 	        React.createElement(
+	          'div',
+	          { className: 'ui button' },
+	          'Fill out daily survey'
+	        ),
+	        React.createElement(
 	          'h1',
 	          { className: 'ui left aligned header' },
 	          'Your Data Streams'

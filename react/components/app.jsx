@@ -17,6 +17,7 @@ var App = React.createClass({
         <NavbarHolder />
         <NavbarExtender />
         <div className="ui container">
+          <div className="ui button">Fill out daily survey</div>
           <h1 className="ui left aligned header">Your Data Streams</h1>
           <DataStreamIndex />
           <h1 className="ui header">Your Insights</h1>
