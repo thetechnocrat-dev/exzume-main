@@ -4,7 +4,7 @@ var NavbarHolder = React.createClass({
 
   render: function () {
     var style = {
-      zIndex: '-1',
+      zIndex: '-2',
       boxShadow: 'none',
       border: 'none',
     };

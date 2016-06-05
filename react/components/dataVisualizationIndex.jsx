@@ -1,11 +1,19 @@
 var React = require('react');
 
+// components
+var DataVisualizationItem = require('./dataVisualizationItem');
+
 var DataVisualizationIndex = React.createClass({
 
   render: function () {
     return (
-      <div>
-        <h1 className="ui header">Your Data Visualizations</h1>
+      <div className="ui centered grid">
+        <div className="doubling two column row">
+            <DataVisualizationItem image="http://nvd3.org/examples/img/horizontalbar.png" />
+            <DataVisualizationItem image="http://nvd3.org/examples/img/line.png" />
+            <DataVisualizationItem image="http://nvd3.org/examples/img/scatter.png" />
+            <DataVisualizationItem image="http://nvd3.org/examples/img/stackedbar.png" />
+        </div>
       </div>
     );
   },

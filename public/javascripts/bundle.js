@@ -24328,6 +24328,7 @@
 	// Components
 	var Navbar = __webpack_require__(209);
 	var NavbarHolder = __webpack_require__(212);
+	var NavbarExtender = __webpack_require__(297);
 	var DataStreamIndex = __webpack_require__(215);
 	var InsightIndex = __webpack_require__(216);
 	var DataVisualizationIndex = __webpack_require__(217);
@@ -24342,11 +24343,27 @@
 	      null,
 	      React.createElement(Navbar, null),
 	      React.createElement(NavbarHolder, null),
+	      React.createElement(NavbarExtender, null),
 	      React.createElement(
 	        'div',
 	        { className: 'ui container' },
+	        React.createElement(
+	          'h1',
+	          { className: 'ui left aligned header' },
+	          'Your Data Streams'
+	        ),
 	        React.createElement(DataStreamIndex, null),
+	        React.createElement(
+	          'h1',
+	          { className: 'ui header' },
+	          'Your Insights'
+	        ),
 	        React.createElement(InsightIndex, null),
+	        React.createElement(
+	          'h1',
+	          { className: 'ui header' },
+	          'Your Data Visualizations'
+	        ),
 	        React.createElement(DataVisualizationIndex, null),
 	        this.props.children
 	      )
@@ -24363,25 +24380,105 @@
 	var React = __webpack_require__(1);
 	
 	var Navbar = React.createClass({
-	  displayName: "Navbar",
+	  displayName: 'Navbar',
 	
 	
 	  render: function () {
+	    // Technical Debt Warning: this code is not at all DRY and the z-index is kinda hacky
+	    var largeMonitorStyle = { width: '1127px', margin: '0 auto', left: '0', right: '0', zIndex: '4' };
+	    var smallMonitorStyle = { width: '933', margin: '0 auto', left: '0', right: '0', zIndex: '3' };
+	    var tabletStyle = { width: '723', margin: '0 auto', left: '0', right: '0', zIndex: '2' };
+	    var mobileStyle = { width: '100%', margin: '0 auto', left: '0', right: '0', zIndex: '1' };
+	
 	    return React.createElement(
-	      "div",
-	      { className: "ui top fixed inverted menu" },
+	      'div',
+	      { className: 'ui grid container' },
 	      React.createElement(
-	        "div",
-	        { className: "item" },
-	        "Exzume"
+	        'div',
+	        { className: 'large screen only row' },
+	        React.createElement(
+	          'div',
+	          { className: 'ui top fixed inverted menu', style: largeMonitorStyle },
+	          React.createElement(
+	            'div',
+	            { className: 'item' },
+	            'Exzume'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'right menu' },
+	            React.createElement(
+	              'div',
+	              { className: 'item' },
+	              'User42'
+	            )
+	          )
+	        )
 	      ),
 	      React.createElement(
-	        "div",
-	        { className: "right menu" },
+	        'div',
+	        { className: 'small screen only row' },
 	        React.createElement(
-	          "div",
-	          { className: "item" },
-	          "User42"
+	          'div',
+	          { className: 'ui top fixed inverted menu', style: smallMonitorStyle },
+	          React.createElement(
+	            'div',
+	            { className: 'item' },
+	            'Exzume'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'right menu' },
+	            React.createElement(
+	              'div',
+	              { className: 'item' },
+	              'User42'
+	            )
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'table only row' },
+	        React.createElement(
+	          'div',
+	          { className: 'ui top fixed inverted menu', style: tabletStyle },
+	          React.createElement(
+	            'div',
+	            { className: 'item' },
+	            'Exzume'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'right menu' },
+	            React.createElement(
+	              'div',
+	              { className: 'item' },
+	              'User42'
+	            )
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'mobile only row' },
+	        React.createElement(
+	          'div',
+	          { className: 'ui top fixed inverted menu', style: tabletStyle },
+	          React.createElement(
+	            'div',
+	            { className: 'item' },
+	            'Exzume'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'right menu' },
+	            React.createElement(
+	              'div',
+	              { className: 'item' },
+	              'User42'
+	            )
+	          )
 	        )
 	      )
 	    );
@@ -24422,7 +24519,7 @@
 	
 	  render: function () {
 	    var style = {
-	      zIndex: '-1',
+	      zIndex: '-2',
 	      boxShadow: 'none',
 	      border: 'none'
 	    };
@@ -24452,23 +24549,26 @@
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      { className: 'ui grid' },
-	      React.createElement(
-	        'h1',
-	        { className: 'ui header' },
-	        'Your Data Streams'
-	      ),
+	      { className: 'ui center aligned grid' },
 	      React.createElement(
 	        'div',
 	        { className: 'doubling eight column row' },
+	        React.createElement(
+	          'div',
+	          { className: 'column' },
+	          React.createElement(
+	            'button',
+	            { className: 'ui icon button' },
+	            React.createElement('i', { className: 'large plus icon' })
+	          )
+	        ),
 	        React.createElement(DataStreamItem, { icon: 'browser' }),
 	        React.createElement(DataStreamItem, { icon: 'facebook' }),
 	        React.createElement(DataStreamItem, { icon: 'spotify' }),
 	        React.createElement(DataStreamItem, { icon: 'reddit' }),
 	        React.createElement(DataStreamItem, { icon: 'twitter' }),
 	        React.createElement(DataStreamItem, { icon: 'pied piper' }),
-	        React.createElement(DataStreamItem, { icon: 'github' }),
-	        React.createElement(DataStreamItem, { icon: 'plus' })
+	        React.createElement(DataStreamItem, { icon: 'github' })
 	      )
 	    );
 	  }
@@ -24495,19 +24595,15 @@
 	      'div',
 	      null,
 	      React.createElement(
-	        'h1',
-	        { className: 'ui header' },
-	        'Your Insights'
-	      ),
-	      React.createElement(
 	        'div',
 	        { className: 'ui relaxed divided centered list' },
 	        React.createElement(InsightItem, { time: '22 minutes ago', message: 'Your data shows that running is highly correlated with increased happiness' }),
 	        React.createElement(InsightItem, { time: '12 hours ago', message: 'Your stress is higher than normal. In the past socializing with close friends/family has decreased your stress, while getting less sleep has increased your stress' }),
 	        React.createElement(InsightItem, { time: '1 day ago', message: 'Good job! You have exercised three days in the last week and our data shows that for many users similiar to yourself that reguluar exercise increses producivity and decreases stress' }),
-	        React.createElement(InsightItem, { time: '3 days ago', message: 'Looking for a book to read? Our data shows that many users similiar to you have had an improvement in satisfaction after reading The Alchemist by Paulo Coelho' }),
+	        React.createElement(InsightItem, { time: '2 days ago', message: 'Looking for a book to read? Our data shows that many users similiar to you have had an improvement in satisfaction after reading The Alchemist by Paulo Coelho' }),
 	        React.createElement(InsightItem, { time: '3 days ago', message: 'You have answered your survey 21 days in row! Keep up the good work!' }),
-	        React.createElement(InsightItem, { time: '4 days ago', message: 'Your data shows that consuming caffeine has a slight negative effect on your productivity' })
+	        React.createElement(InsightItem, { time: '4 days ago', message: 'Your data shows that consuming caffeine has a slight negative effect on your productivity' }),
+	        React.createElement(InsightItem, { time: '4 days ago', message: 'Many users have reported they enjoyed using the app MoodPanda to collect information about their mood' })
 	      ),
 	      React.createElement(
 	        'div',
@@ -24531,18 +24627,24 @@
 
 	var React = __webpack_require__(1);
 	
+	// components
+	var DataVisualizationItem = __webpack_require__(296);
+	
 	var DataVisualizationIndex = React.createClass({
-	  displayName: "DataVisualizationIndex",
+	  displayName: 'DataVisualizationIndex',
 	
 	
 	  render: function () {
 	    return React.createElement(
-	      "div",
-	      null,
+	      'div',
+	      { className: 'ui centered grid' },
 	      React.createElement(
-	        "h1",
-	        { className: "ui header" },
-	        "Your Data Visualizations"
+	        'div',
+	        { className: 'doubling two column row' },
+	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/horizontalbar.png' }),
+	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/line.png' }),
+	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/scatter.png' }),
+	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/stackedbar.png' })
 	      )
 	    );
 	  }
@@ -24588,7 +24690,7 @@
 	    return React.createElement(
 	      "div",
 	      { className: "item" },
-	      React.createElement("i", { className: "heart" }),
+	      React.createElement("i", { className: "empty heart icon" }),
 	      React.createElement(
 	        "div",
 	        { className: "content" },
@@ -24609,6 +24711,130 @@
 	});
 	
 	module.exports = InsightItem;
+
+/***/ },
+/* 220 */,
+/* 221 */,
+/* 222 */,
+/* 223 */,
+/* 224 */,
+/* 225 */,
+/* 226 */,
+/* 227 */,
+/* 228 */,
+/* 229 */,
+/* 230 */,
+/* 231 */,
+/* 232 */,
+/* 233 */,
+/* 234 */,
+/* 235 */,
+/* 236 */,
+/* 237 */,
+/* 238 */,
+/* 239 */,
+/* 240 */,
+/* 241 */,
+/* 242 */,
+/* 243 */,
+/* 244 */,
+/* 245 */,
+/* 246 */,
+/* 247 */,
+/* 248 */,
+/* 249 */,
+/* 250 */,
+/* 251 */,
+/* 252 */,
+/* 253 */,
+/* 254 */,
+/* 255 */,
+/* 256 */,
+/* 257 */,
+/* 258 */,
+/* 259 */,
+/* 260 */,
+/* 261 */,
+/* 262 */,
+/* 263 */,
+/* 264 */,
+/* 265 */,
+/* 266 */,
+/* 267 */,
+/* 268 */,
+/* 269 */,
+/* 270 */,
+/* 271 */,
+/* 272 */,
+/* 273 */,
+/* 274 */,
+/* 275 */,
+/* 276 */,
+/* 277 */,
+/* 278 */,
+/* 279 */,
+/* 280 */,
+/* 281 */,
+/* 282 */,
+/* 283 */,
+/* 284 */,
+/* 285 */,
+/* 286 */,
+/* 287 */,
+/* 288 */,
+/* 289 */,
+/* 290 */,
+/* 291 */,
+/* 292 */,
+/* 293 */,
+/* 294 */,
+/* 295 */,
+/* 296 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var DataVisualizationItem = React.createClass({
+	  displayName: "DataVisualizationItem",
+	
+	
+	  render: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "column" },
+	      React.createElement(
+	        "div",
+	        { className: "ui large image" },
+	        React.createElement("img", { src: this.props.image })
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = DataVisualizationItem;
+
+/***/ },
+/* 297 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var NavBarExtender = React.createClass({
+	  displayName: 'NavBarExtender',
+	
+	
+	  render: function () {
+	    var style = {
+	      zIndex: '0'
+	    };
+	
+	    return React.createElement('div', { className: 'ui top inversed inverted fixed menu', style: style });
+	  }
+	
+	});
+	
+	module.exports = NavBarExtender;
 
 /***/ }
 /******/ ]);
