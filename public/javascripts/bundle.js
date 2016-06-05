@@ -24328,7 +24328,9 @@
 	// Components
 	var Navbar = __webpack_require__(209);
 	var NavbarHolder = __webpack_require__(212);
-	
+	var DataStreamIndex = __webpack_require__(215);
+	var InsightIndex = __webpack_require__(216);
+	var DataVisualizationIndex = __webpack_require__(217);
 	var App = React.createClass({
 	  displayName: 'App',
 	
@@ -24343,6 +24345,9 @@
 	      React.createElement(
 	        'div',
 	        { className: 'ui container' },
+	        React.createElement(DataStreamIndex, null),
+	        React.createElement(InsightIndex, null),
+	        React.createElement(DataVisualizationIndex, null),
 	        this.props.children
 	      )
 	    );
@@ -24397,15 +24402,7 @@
 	
 	
 	  render: function () {
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'p',
-	        null,
-	        'I am in the index react component'
-	      )
-	    );
+	    return React.createElement('div', null);
 	  }
 	
 	});
@@ -24436,6 +24433,124 @@
 	});
 	
 	module.exports = NavbarHolder;
+
+/***/ },
+/* 213 */,
+/* 214 */,
+/* 215 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	// components
+	var DataStreamItem = __webpack_require__(218);
+	
+	var DataStreamIndex = React.createClass({
+	  displayName: 'DataStreamIndex',
+	
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'ui grid' },
+	      React.createElement(
+	        'h1',
+	        { className: 'ui header' },
+	        'Your Data Streams'
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'doubling eight column row' },
+	        React.createElement(DataStreamItem, { icon: 'browser' }),
+	        React.createElement(DataStreamItem, { icon: 'facebook' }),
+	        React.createElement(DataStreamItem, { icon: 'spotify' }),
+	        React.createElement(DataStreamItem, { icon: 'reddit' }),
+	        React.createElement(DataStreamItem, { icon: 'twitter' }),
+	        React.createElement(DataStreamItem, { icon: 'pied piper' }),
+	        React.createElement(DataStreamItem, { icon: 'github' }),
+	        React.createElement(DataStreamItem, { icon: 'plus' })
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = DataStreamIndex;
+
+/***/ },
+/* 216 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var InsightIndex = React.createClass({
+	  displayName: "InsightIndex",
+	
+	
+	  render: function () {
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement(
+	        "h1",
+	        { className: "ui header" },
+	        "Your Insights"
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = InsightIndex;
+
+/***/ },
+/* 217 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var DataVisualizationIndex = React.createClass({
+	  displayName: "DataVisualizationIndex",
+	
+	
+	  render: function () {
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement(
+	        "h1",
+	        { className: "ui header" },
+	        "Your Data Visualizations"
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = DataVisualizationIndex;
+
+/***/ },
+/* 218 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var DataStreamItem = React.createClass({
+	  displayName: 'DataStreamItem',
+	
+	
+	  render: function () {
+	    var iconClassName = 'huge ' + this.props.icon + ' icon';
+	    return React.createElement(
+	      'div',
+	      { className: 'column' },
+	      React.createElement('i', { className: iconClassName })
+	    );
+	  }
+	
+	});
+	
+	module.exports = DataStreamItem;
 
 /***/ }
 /******/ ]);
