@@ -2,6 +2,7 @@ var React = require('react');
 
 // Components
 var Navbar = require('./navbar');
+var NavbarHolder = require('./navbarHolder');
 
 var App = React.createClass({
 
@@ -10,7 +11,10 @@ var App = React.createClass({
     return (
       <div>
         <Navbar />
-        {this.props.children}
+        <NavbarHolder />
+        <div className="ui container">
+          {this.props.children}
+        </div>
       </div>
     );
   },

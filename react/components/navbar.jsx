@@ -4,10 +4,13 @@ var Navbar = React.createClass({
 
   render: function () {
     return (
-      <div className="ui three item menu">
-        <a className="active item">Editorials</a>
-        <a className="item">Reviews</a>
-        <a className="item">Upcoming Events</a>
+      <div className="ui top fixed inverted menu">
+        <div className="item">Exzume</div>
+
+        <div className="right menu">
+          <div className="item">User42</div>
+        </div>
+
       </div>
     );
   },

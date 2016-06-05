@@ -24327,6 +24327,7 @@
 	
 	// Components
 	var Navbar = __webpack_require__(209);
+	var NavbarHolder = __webpack_require__(212);
 	
 	var App = React.createClass({
 	  displayName: 'App',
@@ -24338,7 +24339,12 @@
 	      'div',
 	      null,
 	      React.createElement(Navbar, null),
-	      this.props.children
+	      React.createElement(NavbarHolder, null),
+	      React.createElement(
+	        'div',
+	        { className: 'ui container' },
+	        this.props.children
+	      )
 	    );
 	  }
 	});
@@ -24358,21 +24364,20 @@
 	  render: function () {
 	    return React.createElement(
 	      "div",
-	      { className: "ui three item menu" },
+	      { className: "ui top fixed inverted menu" },
 	      React.createElement(
-	        "a",
-	        { className: "active item" },
-	        "Editorials"
+	        "div",
+	        { className: "item" },
+	        "Exzume"
 	      ),
 	      React.createElement(
-	        "a",
-	        { className: "item" },
-	        "Reviews"
-	      ),
-	      React.createElement(
-	        "a",
-	        { className: "item" },
-	        "Upcoming Events"
+	        "div",
+	        { className: "right menu" },
+	        React.createElement(
+	          "div",
+	          { className: "item" },
+	          "User42"
+	        )
 	      )
 	    );
 	  }
@@ -24395,13 +24400,42 @@
 	    return React.createElement(
 	      'div',
 	      null,
-	      'I am in the index react component'
+	      React.createElement(
+	        'p',
+	        null,
+	        'I am in the index react component'
+	      )
 	    );
 	  }
 	
 	});
 	
 	module.exports = Index;
+
+/***/ },
+/* 211 */,
+/* 212 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var NavbarHolder = React.createClass({
+	  displayName: 'NavbarHolder',
+	
+	
+	  render: function () {
+	    var style = {
+	      zIndex: '-1',
+	      boxShadow: 'none',
+	      border: 'none'
+	    };
+	
+	    return React.createElement('div', { className: 'ui top white menu', style: style });
+	  }
+	
+	});
+	
+	module.exports = NavbarHolder;
 
 /***/ }
 /******/ ]);

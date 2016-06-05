@@ -5,7 +5,7 @@ var Index = React.createClass({
   render: function () {
     return (
       <div>
-        I am in the index react component
+        <p>I am in the index react component</p>
       </div>
     );
   },
