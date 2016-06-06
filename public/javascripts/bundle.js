@@ -24390,10 +24390,10 @@
 	
 	  render: function () {
 	    // Technical Debt Warning: this code is not at all DRY and the z-index is kinda hacky
-	    var largeMonitorStyle = { width: '1127px', margin: '0 auto', left: '0', right: '0', zIndex: '4' };
-	    var smallMonitorStyle = { width: '933', margin: '0 auto', left: '0', right: '0', zIndex: '3' };
-	    var tabletStyle = { width: '723', margin: '0 auto', left: '0', right: '0', zIndex: '2' };
-	    var mobileStyle = { width: '100%', margin: '0 auto', left: '0', right: '0', zIndex: '1' };
+	    var largeMonitorStyle = { width: '1127px', margin: '0 auto', left: '0', right: '0', zIndex: '' };
+	    var smallMonitorStyle = { width: '933px', margin: '0 auto', left: '0', right: '0', zIndex: '9' };
+	    var tabletStyle = { width: '723px', margin: '0 auto', left: '0', right: '0', zIndex: '7' };
+	    var mobileStyle = { width: '100%', margin: '0 auto', left: '0', right: '0', zIndex: '5' };
 	
 	    return React.createElement(
 	      'div',
@@ -24444,7 +24444,7 @@
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'table only row' },
+	        { className: 'tablet only row' },
 	        React.createElement(
 	          'div',
 	          { className: 'ui top fixed inverted menu', style: tabletStyle },
@@ -24469,7 +24469,7 @@
 	        { className: 'mobile only row' },
 	        React.createElement(
 	          'div',
-	          { className: 'ui top fixed inverted menu', style: tabletStyle },
+	          { className: 'ui top fixed inverted menu', style: mobileStyle },
 	          React.createElement(
 	            'div',
 	            { className: 'item' },
