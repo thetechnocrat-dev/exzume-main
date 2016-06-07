@@ -53,12 +53,20 @@
 	
 	// Components
 	var App = __webpack_require__(208);
-	var Index = __webpack_require__(210);
+	var Dashboard = __webpack_require__(217);
+	var Splash = __webpack_require__(218);
+	var About = __webpack_require__(219);
+	var Survey = __webpack_require__(220);
 	
+	// once user auth is added just nest all the user paths with wildcard
+	// doing the above will also prevent you from having to include navbar on every view
 	var routes = React.createElement(
 	  Route,
 	  { component: App, path: '/' },
-	  React.createElement(IndexRoute, { component: Index })
+	  React.createElement(IndexRoute, { component: Splash }),
+	  React.createElement(Route, { component: Dashboard, path: '/dashboard' }),
+	  React.createElement(Route, { component: About, path: '/about' }),
+	  React.createElement(Route, { component: Survey, path: '/survey' })
 	);
 	
 	document.addEventListener('DOMContentLoaded', function () {
@@ -24325,55 +24333,18 @@
 
 	var React = __webpack_require__(1);
 	
-	// Components
-	var Navbar = __webpack_require__(209);
-	var NavbarHolder = __webpack_require__(212);
-	var NavbarExtender = __webpack_require__(297);
-	var DataStreamIndex = __webpack_require__(215);
-	var InsightIndex = __webpack_require__(216);
-	var DataVisualizationIndex = __webpack_require__(217);
 	var App = React.createClass({
 	  displayName: 'App',
 	
 	
 	  render: function () {
-	
 	    return React.createElement(
 	      'div',
 	      null,
-	      React.createElement(Navbar, null),
-	      React.createElement(NavbarHolder, null),
-	      React.createElement(NavbarExtender, null),
-	      React.createElement(
-	        'div',
-	        { className: 'ui container' },
-	        React.createElement(
-	          'div',
-	          { className: 'ui button' },
-	          'Fill out daily survey'
-	        ),
-	        React.createElement(
-	          'h1',
-	          { className: 'ui left aligned header' },
-	          'Your Data Streams'
-	        ),
-	        React.createElement(DataStreamIndex, null),
-	        React.createElement(
-	          'h1',
-	          { className: 'ui header' },
-	          'Your Insights'
-	        ),
-	        React.createElement(InsightIndex, null),
-	        React.createElement(
-	          'h1',
-	          { className: 'ui header' },
-	          'Your Data Visualizations'
-	        ),
-	        React.createElement(DataVisualizationIndex, null),
-	        this.props.children
-	      )
+	      this.props.children
 	    );
 	  }
+	
 	});
 	
 	module.exports = App;
@@ -24383,105 +24354,53 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var History = __webpack_require__(159).History;
 	
 	var Navbar = React.createClass({
 	  displayName: 'Navbar',
 	
+	  mixins: [History],
+	
+	  clickLogo: function () {
+	    this.history.push('/');
+	  },
+	
+	  clickSignout: function () {
+	    // later this should actually sign the user out
+	    this.history.push('/');
+	  },
 	
 	  render: function () {
-	    // Technical Debt Warning: this code is not at all DRY and the z-index is kinda hacky
-	    var largeMonitorStyle = { width: '1127px', margin: '0 auto', left: '0', right: '0', zIndex: '' };
-	    var smallMonitorStyle = { width: '933px', margin: '0 auto', left: '0', right: '0', zIndex: '9' };
-	    var tabletStyle = { width: '723px', margin: '0 auto', left: '0', right: '0', zIndex: '7' };
-	    var mobileStyle = { width: '100%', margin: '0 auto', left: '0', right: '0', zIndex: '5' };
+	    var menuItemStyle = { cursor: 'pointer' };
 	
 	    return React.createElement(
 	      'div',
-	      { className: 'ui grid container' },
+	      { className: 'ui inverted menu' },
 	      React.createElement(
 	        'div',
-	        { className: 'large screen only row' },
-	        React.createElement(
-	          'div',
-	          { className: 'ui top fixed inverted menu', style: largeMonitorStyle },
-	          React.createElement(
-	            'div',
-	            { className: 'item' },
-	            'Exzume'
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'right menu' },
-	            React.createElement(
-	              'div',
-	              { className: 'item' },
-	              'User42'
-	            )
-	          )
-	        )
+	        { className: 'item', style: menuItemStyle, onClick: this.clickLogo },
+	        'Exzume'
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'small screen only row' },
+	        { className: 'right menu', style: menuItemStyle },
 	        React.createElement(
 	          'div',
-	          { className: 'ui top fixed inverted menu', style: smallMonitorStyle },
+	          { className: 'ui simple dropdown item' },
+	          'User42',
+	          React.createElement('i', { className: 'dropdown icon' }),
 	          React.createElement(
 	            'div',
-	            { className: 'item' },
-	            'Exzume'
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'right menu' },
+	            { className: 'menu' },
 	            React.createElement(
 	              'div',
 	              { className: 'item' },
-	              'User42'
-	            )
-	          )
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'tablet only row' },
-	        React.createElement(
-	          'div',
-	          { className: 'ui top fixed inverted menu', style: tabletStyle },
-	          React.createElement(
-	            'div',
-	            { className: 'item' },
-	            'Exzume'
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'right menu' },
+	              'Settings'
+	            ),
 	            React.createElement(
 	              'div',
-	              { className: 'item' },
-	              'User42'
-	            )
-	          )
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'mobile only row' },
-	        React.createElement(
-	          'div',
-	          { className: 'ui top fixed inverted menu', style: mobileStyle },
-	          React.createElement(
-	            'div',
-	            { className: 'item' },
-	            'Exzume'
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'right menu' },
-	            React.createElement(
-	              'div',
-	              { className: 'item' },
-	              'User42'
+	              { className: 'item', onClick: this.clickSignout },
+	              'Signout'
 	            )
 	          )
 	        )
@@ -24499,53 +24418,8 @@
 
 	var React = __webpack_require__(1);
 	
-	var Index = React.createClass({
-	  displayName: 'Index',
-	
-	
-	  render: function () {
-	    return React.createElement('div', null);
-	  }
-	
-	});
-	
-	module.exports = Index;
-
-/***/ },
-/* 211 */,
-/* 212 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	var NavbarHolder = React.createClass({
-	  displayName: 'NavbarHolder',
-	
-	
-	  render: function () {
-	    var style = {
-	      zIndex: '-2',
-	      boxShadow: 'none',
-	      border: 'none'
-	    };
-	
-	    return React.createElement('div', { className: 'ui top white menu', style: style });
-	  }
-	
-	});
-	
-	module.exports = NavbarHolder;
-
-/***/ },
-/* 213 */,
-/* 214 */,
-/* 215 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
 	// components
-	var DataStreamItem = __webpack_require__(218);
+	var DataStreamItem = __webpack_require__(211);
 	
 	var DataStreamIndex = React.createClass({
 	  displayName: 'DataStreamIndex',
@@ -24583,13 +24457,36 @@
 	module.exports = DataStreamIndex;
 
 /***/ },
-/* 216 */
+/* 211 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var DataStreamItem = React.createClass({
+	  displayName: 'DataStreamItem',
+	
+	
+	  render: function () {
+	    var iconClassName = 'huge ' + this.props.icon + ' icon';
+	    return React.createElement(
+	      'div',
+	      { className: 'column' },
+	      React.createElement('i', { className: iconClassName })
+	    );
+	  }
+	
+	});
+	
+	module.exports = DataStreamItem;
+
+/***/ },
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	
 	// components
-	var InsightItem = __webpack_require__(219);
+	var InsightItem = __webpack_require__(213);
 	
 	var InsightIndex = React.createClass({
 	  displayName: 'InsightIndex',
@@ -24627,62 +24524,7 @@
 	module.exports = InsightIndex;
 
 /***/ },
-/* 217 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	// components
-	var DataVisualizationItem = __webpack_require__(296);
-	
-	var DataVisualizationIndex = React.createClass({
-	  displayName: 'DataVisualizationIndex',
-	
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'ui centered grid' },
-	      React.createElement(
-	        'div',
-	        { className: 'doubling two column row' },
-	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/horizontalbar.png' }),
-	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/line.png' }),
-	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/scatter.png' }),
-	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/stackedbar.png' })
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = DataVisualizationIndex;
-
-/***/ },
-/* 218 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	var DataStreamItem = React.createClass({
-	  displayName: 'DataStreamItem',
-	
-	
-	  render: function () {
-	    var iconClassName = 'huge ' + this.props.icon + ' icon';
-	    return React.createElement(
-	      'div',
-	      { className: 'column' },
-	      React.createElement('i', { className: iconClassName })
-	    );
-	  }
-	
-	});
-	
-	module.exports = DataStreamItem;
-
-/***/ },
-/* 219 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -24718,83 +24560,39 @@
 	module.exports = InsightItem;
 
 /***/ },
-/* 220 */,
-/* 221 */,
-/* 222 */,
-/* 223 */,
-/* 224 */,
-/* 225 */,
-/* 226 */,
-/* 227 */,
-/* 228 */,
-/* 229 */,
-/* 230 */,
-/* 231 */,
-/* 232 */,
-/* 233 */,
-/* 234 */,
-/* 235 */,
-/* 236 */,
-/* 237 */,
-/* 238 */,
-/* 239 */,
-/* 240 */,
-/* 241 */,
-/* 242 */,
-/* 243 */,
-/* 244 */,
-/* 245 */,
-/* 246 */,
-/* 247 */,
-/* 248 */,
-/* 249 */,
-/* 250 */,
-/* 251 */,
-/* 252 */,
-/* 253 */,
-/* 254 */,
-/* 255 */,
-/* 256 */,
-/* 257 */,
-/* 258 */,
-/* 259 */,
-/* 260 */,
-/* 261 */,
-/* 262 */,
-/* 263 */,
-/* 264 */,
-/* 265 */,
-/* 266 */,
-/* 267 */,
-/* 268 */,
-/* 269 */,
-/* 270 */,
-/* 271 */,
-/* 272 */,
-/* 273 */,
-/* 274 */,
-/* 275 */,
-/* 276 */,
-/* 277 */,
-/* 278 */,
-/* 279 */,
-/* 280 */,
-/* 281 */,
-/* 282 */,
-/* 283 */,
-/* 284 */,
-/* 285 */,
-/* 286 */,
-/* 287 */,
-/* 288 */,
-/* 289 */,
-/* 290 */,
-/* 291 */,
-/* 292 */,
-/* 293 */,
-/* 294 */,
-/* 295 */,
-/* 296 */
+/* 214 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	// components
+	var DataVisualizationItem = __webpack_require__(215);
+	
+	var DataVisualizationIndex = React.createClass({
+	  displayName: 'DataVisualizationIndex',
+	
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'ui centered grid' },
+	      React.createElement(
+	        'div',
+	        { className: 'doubling two column row' },
+	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/horizontalbar.png' }),
+	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/line.png' }),
+	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/scatter.png' }),
+	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/stackedbar.png' })
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = DataVisualizationIndex;
+
+/***/ },
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -24820,26 +24618,334 @@
 	module.exports = DataVisualizationItem;
 
 /***/ },
-/* 297 */
+/* 216 */,
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var History = __webpack_require__(159).History;
 	
-	var NavBarExtender = React.createClass({
-	  displayName: 'NavBarExtender',
+	// Components
+	var Navbar = __webpack_require__(209);
+	var DataStreamIndex = __webpack_require__(210);
+	var InsightIndex = __webpack_require__(212);
+	var DataVisualizationIndex = __webpack_require__(214);
 	
+	var Dashboard = React.createClass({
+	  displayName: 'Dashboard',
+	
+	  mixins: [History],
+	
+	  clickSurvey: function () {
+	    this.history.push('/survey');
+	  },
 	
 	  render: function () {
-	    var style = {
-	      zIndex: '0'
-	    };
 	
-	    return React.createElement('div', { className: 'ui top inversed inverted fixed menu', style: style });
+	    return React.createElement(
+	      'div',
+	      { className: 'ui container' },
+	      React.createElement(Navbar, null),
+	      React.createElement(
+	        'div',
+	        { className: 'ui button', onClick: this.clickSurvey },
+	        'Fill out daily survey'
+	      ),
+	      React.createElement(
+	        'h1',
+	        { className: 'ui left aligned header' },
+	        'Your Data Streams'
+	      ),
+	      React.createElement(DataStreamIndex, null),
+	      React.createElement(
+	        'h1',
+	        { className: 'ui header' },
+	        'Your Insights'
+	      ),
+	      React.createElement(InsightIndex, null),
+	      React.createElement(
+	        'h1',
+	        { className: 'ui header' },
+	        'Your Data Visualizations'
+	      ),
+	      React.createElement(DataVisualizationIndex, null),
+	      this.props.children
+	    );
+	  }
+	});
+	
+	module.exports = Dashboard;
+
+/***/ },
+/* 218 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(159).History;
+	
+	var App = React.createClass({
+	  displayName: 'App',
+	
+	  mixins: [History],
+	
+	  clickAbout: function () {
+	    this.history.push('/about');
+	  },
+	
+	  clickSampleAccount: function (event) {
+	    this.history.push('/dashboard');
+	  },
+	
+	  render: function () {
+	    var centerContainerStyle = { marginTop: '20%' };
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'ui one column center aligned grid container', style: centerContainerStyle },
+	      React.createElement(
+	        'div',
+	        { className: 'row' },
+	        React.createElement(
+	          'h1',
+	          { className: 'ui header' },
+	          'exzume'
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'row' },
+	        React.createElement(
+	          'div',
+	          { className: 'ui button', onClick: this.clickAbout },
+	          'about'
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'ui button', onClick: this.clickSampleAccount },
+	          'sample account'
+	        )
+	      )
+	    );
 	  }
 	
 	});
 	
-	module.exports = NavBarExtender;
+	module.exports = App;
+
+/***/ },
+/* 219 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(159).History;
+	
+	// Components
+	var Navbar = __webpack_require__(209);
+	
+	var About = React.createClass({
+	  displayName: 'About',
+	
+	  mixins: [History],
+	
+	  clickBack: function () {
+	    this.history.push('/');
+	  },
+	
+	  render: function () {
+	    var centerContainerStyle = { marginTop: '5%' };
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'ui one column center aligned grid container', style: centerContainerStyle },
+	      React.createElement(
+	        'div',
+	        { className: 'ui message' },
+	        React.createElement(
+	          'div',
+	          { className: 'header' },
+	          'One Sentence Summary'
+	        ),
+	        React.createElement(
+	          'p',
+	          null,
+	          'Exzume is a place for users to collect data about their lives and find insight from it.'
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'ui message' },
+	        React.createElement(
+	          'div',
+	          { className: 'header' },
+	          'What We are Building'
+	        ),
+	        React.createElement(
+	          'p',
+	          null,
+	          'Exzume is a web app that combines a user’s data from apps they already use with daily surveys in order to provide personal recommendations and useful visualizations. It is much more useful than the multitude of data-tracking apps (Toggl, AppleHealth, SleepCycle) and wearable fitness trackers (Fitbit, Jawbone, Garmin) because the daily survey results allow for correlation with important subjective metrics such as productivity, happiness, and satisfaction.'
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'ui message' },
+	        React.createElement(
+	          'div',
+	          { className: 'header' },
+	          'Why Now'
+	        ),
+	        React.createElement(
+	          'p',
+	          null,
+	          'Recent advances in machine learning (especially unsupervised learning) are making it possible to find meaningful features of large multidimensional datasets (which is what combining daily surveys with the multiple passive data collection apps requires) at scale. The results of such advances in data collection and machine learning are increasingly present in our lives, from our Google search results, to our Facebook feeds, to our Netflix recommendations. However, there is a large space for using this technology to help individuals use their own data to proactively improve their decisions. In addition to the large number of data-tracking apps and wearable devices, the growing QuantifiedSelf movement shows that people are taking an interest in their own data.'
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'ui message' },
+	        React.createElement(
+	          'div',
+	          { className: 'header' },
+	          'Why People Would Want This'
+	        ),
+	        React.createElement(
+	          'p',
+	          null,
+	          'Worldwide sales of wearable electronic devices are expected to generate $28.7 billion in revenue this year, and Americans consistently spend an average of over $10 billion on self-improvement books per year. Exzume aims to provide the benefits of both in one package.'
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'ui button', onClick: this.clickBack },
+	        'Back'
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = About;
+
+/***/ },
+/* 220 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	// components
+	var Navbar = __webpack_require__(209);
+	var TextQuestion = __webpack_require__(221);
+	var MultipleChoice = __webpack_require__(222);
+	
+	var Survey = React.createClass({
+	  displayName: 'Survey',
+	
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'ui container' },
+	      React.createElement(Navbar, null),
+	      React.createElement(
+	        'form',
+	        { className: 'ui form' },
+	        React.createElement(
+	          'h2',
+	          { className: 'ui header' },
+	          'Food'
+	        ),
+	        React.createElement(TextQuestion, {
+	          label: 'What did you eat for breakfast?',
+	          name: 'breakfast',
+	          placeholder: 'breakfast'
+	        }),
+	        React.createElement(TextQuestion, {
+	          label: 'What did you eat for lunch?',
+	          name: 'lunch',
+	          placeholder: 'lunch'
+	        }),
+	        React.createElement(TextQuestion, {
+	          label: 'What did you eat for dinner?',
+	          name: 'dinner',
+	          placeholder: 'dinner'
+	        }),
+	        React.createElement(TextQuestion, {
+	          label: 'What did you eat for snacks?',
+	          name: 'snacks',
+	          placeholder: 'snacks'
+	        }),
+	        React.createElement(
+	          'h2',
+	          { className: 'ui header' },
+	          'Exercise'
+	        ),
+	        React.createElement(TextQuestion, {
+	          label: 'How many minutes did you exercise?',
+	          name: 'exercise-minutes',
+	          placeholder: 'minutes'
+	        }),
+	        React.createElement(MultipleChoice, { checkBoxes: [1, 2, 3, 4] })
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = Survey;
+
+/***/ },
+/* 221 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var TextQuestion = React.createClass({
+	  displayName: "TextQuestion",
+	
+	
+	  render: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "required field" },
+	      React.createElement(
+	        "label",
+	        null,
+	        this.props.label
+	      ),
+	      React.createElement("input", { type: "text", name: this.props.name, placeholder: this.props.placeholder })
+	    );
+	  }
+	
+	});
+	
+	module.exports = TextQuestion;
+
+/***/ },
+/* 222 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var MultipleChoice = React.createClass({
+	  displayName: 'MultipleChoice',
+	
+	  makeChoices: function () {
+	    for (var checkBox of this.props.checkBoxes) {
+	      console.log(checkBox);
+	    }
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      'checkboxes',
+	      this.makeChoices()
+	    );
+	  }
+	
+	});
+	
+	module.exports = MultipleChoice;
 
 /***/ }
 /******/ ]);
