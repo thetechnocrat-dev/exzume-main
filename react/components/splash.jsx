@@ -13,7 +13,7 @@ var App = React.createClass({
   },
 
   render: function () {
-    var centerContainerStyle = { marginTop: '20%' };
+    var centerContainerStyle = { margin: '20%' };
 
     return (
       <div className="ui one column center aligned grid container" style={centerContainerStyle}>

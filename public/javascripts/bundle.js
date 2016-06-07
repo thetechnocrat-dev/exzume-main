@@ -24697,7 +24697,7 @@
 	  },
 	
 	  render: function () {
-	    var centerContainerStyle = { marginTop: '20%' };
+	    var centerContainerStyle = { margin: '20%' };
 	
 	    return React.createElement(
 	      'div',
@@ -24883,7 +24883,15 @@
 	          name: 'exercise-minutes',
 	          placeholder: 'minutes'
 	        }),
-	        React.createElement(MultipleChoice, { checkBoxes: [1, 2, 3, 4] })
+	        React.createElement(MultipleChoice, {
+	          label: 'How hard was your exercise',
+	          checkBoxes: ['easy', 'medium', 'hard']
+	        }),
+	        React.createElement(
+	          'h2',
+	          { className: 'ui header' },
+	          'Etc'
+	        )
 	      )
 	    );
 	  }
@@ -24926,19 +24934,39 @@
 	var React = __webpack_require__(1);
 	
 	var MultipleChoice = React.createClass({
-	  displayName: 'MultipleChoice',
+	  displayName: "MultipleChoice",
 	
 	  makeChoices: function () {
+	    var checkBoxes = [];
 	    for (var checkBox of this.props.checkBoxes) {
-	      console.log(checkBox);
+	      checkBoxes.push(React.createElement(
+	        "div",
+	        { className: "field" },
+	        React.createElement(
+	          "div",
+	          { className: "ui radio checkbox" },
+	          React.createElement("input", { type: "radio", name: checkBox, key: checkBox }),
+	          React.createElement(
+	            "label",
+	            null,
+	            checkBox
+	          )
+	        )
+	      ));
 	    }
+	
+	    return checkBoxes;
 	  },
 	
 	  render: function () {
 	    return React.createElement(
-	      'div',
-	      null,
-	      'checkboxes',
+	      "div",
+	      { className: "required grouped fields" },
+	      React.createElement(
+	        "label",
+	        null,
+	        this.props.label
+	      ),
 	      this.makeChoices()
 	    );
 	  }

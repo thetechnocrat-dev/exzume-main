@@ -38,14 +38,19 @@ var Survey = React.createClass({
             placeholder="snacks"
           />
 
-        <h2 className="ui header">Exercise</h2>
-        <TextQuestion
-          label="How many minutes did you exercise?"
-          name="exercise-minutes"
-          placeholder="minutes"
-        />
+          <h2 className="ui header">Exercise</h2>
+          <TextQuestion
+            label="How many minutes did you exercise?"
+            name="exercise-minutes"
+            placeholder="minutes"
+          />
 
-      <MultipleChoice checkBoxes={[1, 2, 3, 4]}/>
+          <MultipleChoice
+            label="How hard was your exercise"
+            checkBoxes={ ['easy', 'medium', 'hard'] }
+          />
+
+        <h2 className="ui header">Etc</h2>
 
         </form>
       </div>
