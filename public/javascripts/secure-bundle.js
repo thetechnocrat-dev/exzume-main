@@ -24691,8 +24691,16 @@
 	    this.history.push('/about');
 	  },
 	
-	  clickSampleAccount: function (event) {
+	  clickSampleAccount: function () {
 	    this.history.push('/dashboard');
+	  },
+	
+	  clickSignin: function () {
+	    this.history.push('/signin');
+	  },
+	
+	  clickSignup: function () {
+	    this.history.push('/signup');
 	  },
 	
 	  render: function () {
@@ -24722,6 +24730,16 @@
 	          'div',
 	          { className: 'ui button', onClick: this.clickSampleAccount },
 	          'sample account'
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'ui button', onClick: this.clickSignin },
+	          'sign in'
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'ui button', onClick: this.clickSignup },
+	          'sign up'
 	        )
 	      )
 	    );

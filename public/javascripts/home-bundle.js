@@ -57,6 +57,8 @@
 	var Splash = __webpack_require__(217);
 	var About = __webpack_require__(218);
 	var Survey = __webpack_require__(219);
+	var Signin = __webpack_require__(223);
+	var Signup = __webpack_require__(224);
 	
 	// once user auth is added just nest all the user paths with wildcard
 	// doing the above will also prevent you from having to include navbar on every view
@@ -66,7 +68,9 @@
 	  React.createElement(IndexRoute, { component: Splash }),
 	  React.createElement(Route, { component: Dashboard, path: '/dashboard' }),
 	  React.createElement(Route, { component: About, path: '/about' }),
-	  React.createElement(Route, { component: Survey, path: '/survey' })
+	  React.createElement(Route, { component: Survey, path: '/survey' }),
+	  React.createElement(Route, { component: Signin, path: '/signin' }),
+	  React.createElement(Route, { component: Signup, path: '/signup' })
 	);
 	
 	document.addEventListener('DOMContentLoaded', function () {
@@ -24691,8 +24695,16 @@
 	    this.history.push('/about');
 	  },
 	
-	  clickSampleAccount: function (event) {
+	  clickSampleAccount: function () {
 	    this.history.push('/dashboard');
+	  },
+	
+	  clickSignin: function () {
+	    this.history.push('/signin');
+	  },
+	
+	  clickSignup: function () {
+	    this.history.push('/signup');
 	  },
 	
 	  render: function () {
@@ -24722,6 +24734,16 @@
 	          'div',
 	          { className: 'ui button', onClick: this.clickSampleAccount },
 	          'sample account'
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'ui button', onClick: this.clickSignin },
+	          'sign in'
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'ui button', onClick: this.clickSignup },
+	          'sign up'
 	        )
 	      )
 	    );
@@ -24973,6 +24995,107 @@
 	});
 	
 	module.exports = MultipleChoice;
+
+/***/ },
+/* 222 */,
+/* 223 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	// components
+	var TextQuestion = __webpack_require__(220);
+	
+	var Signin = React.createClass({
+	  displayName: 'Signin',
+	
+	
+	  render: function () {
+	    var containerStyle = { margin: '10%' };
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'ui container', style: containerStyle },
+	      React.createElement(
+	        'form',
+	        { className: 'ui form' },
+	        React.createElement(
+	          'h2',
+	          { className: 'ui header' },
+	          'Sign In'
+	        ),
+	        React.createElement(TextQuestion, {
+	          label: 'username',
+	          name: 'username',
+	          placeholder: 'username'
+	        }),
+	        React.createElement(TextQuestion, {
+	          label: 'password',
+	          name: 'password',
+	          placeholder: 'password'
+	        })
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = Signin;
+
+/***/ },
+/* 224 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	// components
+	var TextQuestion = __webpack_require__(220);
+	
+	var Signup = React.createClass({
+	  displayName: 'Signup',
+	
+	
+	  render: function () {
+	    var containerStyle = { margin: '10%' };
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'ui container', style: containerStyle },
+	      React.createElement(
+	        'form',
+	        { className: 'ui form' },
+	        React.createElement(
+	          'h2',
+	          { className: 'ui header' },
+	          'Sign Up'
+	        ),
+	        React.createElement(TextQuestion, {
+	          label: 'username',
+	          name: 'username',
+	          placeholder: 'username'
+	        }),
+	        React.createElement(TextQuestion, {
+	          label: 'email',
+	          name: 'email',
+	          placeholder: 'name@email.com'
+	        }),
+	        React.createElement(TextQuestion, {
+	          label: 'password',
+	          name: 'password',
+	          placeholder: 'password'
+	        }),
+	        React.createElement(TextQuestion, {
+	          label: 'confirm password',
+	          name: 'confirm password',
+	          placeholder: 'password'
+	        })
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = Signup;
 
 /***/ }
 /******/ ]);

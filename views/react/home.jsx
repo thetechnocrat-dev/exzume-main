@@ -11,6 +11,8 @@ var Dashboard = require('./components/dashboard');
 var Splash = require('./components/splash');
 var About = require('./components/about');
 var Survey = require('./components/survey');
+var Signin = require('./components/signin');
+var Signup = require('./components/signup');
 
 // once user auth is added just nest all the user paths with wildcard
 // doing the above will also prevent you from having to include navbar on every view
@@ -20,6 +22,8 @@ var routes = (
     <Route component={Dashboard} path='/dashboard' ></Route>
     <Route component={About} path='/about' ></Route>
     <Route component={Survey} path='/survey'></Route>
+    <Route component={Signin} path='/signin'></Route>
+    <Route component={Signup} path='/signup'></Route>
   </Route>
 );
 
