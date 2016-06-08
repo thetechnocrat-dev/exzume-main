@@ -2,10 +2,13 @@ var path = require('path');
 
 module.exports = {
   context: __dirname,
-  entry: './react/entry.jsx',
+  entry: {
+    home: './views/react/home.jsx',
+    secure: './views/react/secure.jsx',
+  },
   output: {
     path: path.join(__dirname, 'public', 'javascripts'),
-    filename: 'bundle.js',
+    filename: '[name]-bundle.js',
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],

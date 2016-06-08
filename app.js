@@ -58,7 +58,7 @@ initPassport(passport);
 
 // routes
 var nonSecure = express.Router();
-require('./routes/non-secure')(nonSecure, passport);
+require('./routes/home')(nonSecure, passport);
 app.use('/', nonSecure);
 
 var secure = express.Router();
