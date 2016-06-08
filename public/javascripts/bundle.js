@@ -53,10 +53,10 @@
 	
 	// Components
 	var App = __webpack_require__(208);
-	var Dashboard = __webpack_require__(217);
-	var Splash = __webpack_require__(218);
-	var About = __webpack_require__(219);
-	var Survey = __webpack_require__(220);
+	var Dashboard = __webpack_require__(209);
+	var Splash = __webpack_require__(217);
+	var About = __webpack_require__(218);
+	var Survey = __webpack_require__(219);
 	
 	// once user auth is added just nest all the user paths with wildcard
 	// doing the above will also prevent you from having to include navbar on every view
@@ -24356,6 +24356,64 @@
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
 	
+	// Components
+	var Navbar = __webpack_require__(210);
+	var DataStreamIndex = __webpack_require__(211);
+	var InsightIndex = __webpack_require__(213);
+	var DataVisualizationIndex = __webpack_require__(215);
+	
+	var Dashboard = React.createClass({
+	  displayName: 'Dashboard',
+	
+	  mixins: [History],
+	
+	  clickSurvey: function () {
+	    this.history.push('/survey');
+	  },
+	
+	  render: function () {
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'ui container' },
+	      React.createElement(Navbar, null),
+	      React.createElement(
+	        'div',
+	        { className: 'ui button', onClick: this.clickSurvey },
+	        'Fill out daily survey'
+	      ),
+	      React.createElement(
+	        'h1',
+	        { className: 'ui left aligned header' },
+	        'Your Data Streams'
+	      ),
+	      React.createElement(DataStreamIndex, null),
+	      React.createElement(
+	        'h1',
+	        { className: 'ui header' },
+	        'Your Insights'
+	      ),
+	      React.createElement(InsightIndex, null),
+	      React.createElement(
+	        'h1',
+	        { className: 'ui header' },
+	        'Your Data Visualizations'
+	      ),
+	      React.createElement(DataVisualizationIndex, null),
+	      this.props.children
+	    );
+	  }
+	});
+	
+	module.exports = Dashboard;
+
+/***/ },
+/* 210 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(159).History;
+	
 	var Navbar = React.createClass({
 	  displayName: 'Navbar',
 	
@@ -24413,13 +24471,13 @@
 	module.exports = Navbar;
 
 /***/ },
-/* 210 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	
 	// components
-	var DataStreamItem = __webpack_require__(211);
+	var DataStreamItem = __webpack_require__(212);
 	
 	var DataStreamIndex = React.createClass({
 	  displayName: 'DataStreamIndex',
@@ -24457,7 +24515,7 @@
 	module.exports = DataStreamIndex;
 
 /***/ },
-/* 211 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -24480,13 +24538,13 @@
 	module.exports = DataStreamItem;
 
 /***/ },
-/* 212 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	
 	// components
-	var InsightItem = __webpack_require__(213);
+	var InsightItem = __webpack_require__(214);
 	
 	var InsightIndex = React.createClass({
 	  displayName: 'InsightIndex',
@@ -24524,7 +24582,7 @@
 	module.exports = InsightIndex;
 
 /***/ },
-/* 213 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -24560,13 +24618,13 @@
 	module.exports = InsightItem;
 
 /***/ },
-/* 214 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	
 	// components
-	var DataVisualizationItem = __webpack_require__(215);
+	var DataVisualizationItem = __webpack_require__(216);
 	
 	var DataVisualizationIndex = React.createClass({
 	  displayName: 'DataVisualizationIndex',
@@ -24592,7 +24650,7 @@
 	module.exports = DataVisualizationIndex;
 
 /***/ },
-/* 215 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -24618,66 +24676,7 @@
 	module.exports = DataVisualizationItem;
 
 /***/ },
-/* 216 */,
 /* 217 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var History = __webpack_require__(159).History;
-	
-	// Components
-	var Navbar = __webpack_require__(209);
-	var DataStreamIndex = __webpack_require__(210);
-	var InsightIndex = __webpack_require__(212);
-	var DataVisualizationIndex = __webpack_require__(214);
-	
-	var Dashboard = React.createClass({
-	  displayName: 'Dashboard',
-	
-	  mixins: [History],
-	
-	  clickSurvey: function () {
-	    this.history.push('/survey');
-	  },
-	
-	  render: function () {
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'ui container' },
-	      React.createElement(Navbar, null),
-	      React.createElement(
-	        'div',
-	        { className: 'ui button', onClick: this.clickSurvey },
-	        'Fill out daily survey'
-	      ),
-	      React.createElement(
-	        'h1',
-	        { className: 'ui left aligned header' },
-	        'Your Data Streams'
-	      ),
-	      React.createElement(DataStreamIndex, null),
-	      React.createElement(
-	        'h1',
-	        { className: 'ui header' },
-	        'Your Insights'
-	      ),
-	      React.createElement(InsightIndex, null),
-	      React.createElement(
-	        'h1',
-	        { className: 'ui header' },
-	        'Your Data Visualizations'
-	      ),
-	      React.createElement(DataVisualizationIndex, null),
-	      this.props.children
-	    );
-	  }
-	});
-	
-	module.exports = Dashboard;
-
-/***/ },
-/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -24733,14 +24732,14 @@
 	module.exports = App;
 
 /***/ },
-/* 219 */
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
 	
 	// Components
-	var Navbar = __webpack_require__(209);
+	var Navbar = __webpack_require__(210);
 	
 	var About = React.createClass({
 	  displayName: 'About',
@@ -24826,15 +24825,15 @@
 	module.exports = About;
 
 /***/ },
-/* 220 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	
 	// components
-	var Navbar = __webpack_require__(209);
-	var TextQuestion = __webpack_require__(221);
-	var MultipleChoice = __webpack_require__(222);
+	var Navbar = __webpack_require__(210);
+	var TextQuestion = __webpack_require__(220);
+	var MultipleChoice = __webpack_require__(221);
 	
 	var Survey = React.createClass({
 	  displayName: 'Survey',
@@ -24901,7 +24900,7 @@
 	module.exports = Survey;
 
 /***/ },
-/* 221 */
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -24928,7 +24927,7 @@
 	module.exports = TextQuestion;
 
 /***/ },
-/* 222 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);

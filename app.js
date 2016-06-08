@@ -21,9 +21,6 @@ if (process.env.NODE_ENV === 'development') {
 // setup database
 var db = require('./config/mongoose')();
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -55,13 +52,25 @@ app.use(passport.session());
 var flash = require('connect-flash'); // must be placed after session!
 app.use(flash());
 
-// Initialize Passport
+// initialize Passport
 var initPassport = require('./config/passport/init');
 initPassport(passport);
 
 // routes
-app.use('/', routes);
-app.use('/users', users);
+var nonSecure = express.Router();
+require('./routes/non-secure')(nonSecure, passport);
+app.use('/', nonSecure);
+
+var secure = express.Router();
+require('./routes/secure')(secure, passport);
+app.use('/secure', secure);
+
+// catch 404 and forward to error handler
+app.use(function (req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
 
 // development error handler - will print stacktraces
 if (app.get('env') === 'dev') {

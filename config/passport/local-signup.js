@@ -32,7 +32,7 @@ module.exports = function (passport) {
               }
 
               console.log('user registration successful');
-              return done(null, newUSer);
+              return done(null, newUser);
             });
           }
         });
