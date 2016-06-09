@@ -21,13 +21,14 @@ var SignUp = React.createClass({
     if (this.state.password != this.state.confirmPassword) {
       this.setState({ errors: 'passwords do not match' });
     } else {
-      var signupParams = { user: this.state };
+      var signupParams = { username: 'aaaba', password: 'password', email: 'hi@gmail.com', };
       AuthActions.signUp(signupParams, this.errorCallback);
     }
   },
 
   errorCallback: function (errors) {
-    this.setState({ errors: JSON.parse(errors) });
+    console.log(errors);
+    // this.setState({ errors: JSON.parse(errors) });
   },
 
   render: function () {

@@ -9,11 +9,13 @@ module.exports = function (passport) {
       process.nextTick(function () {
         User.findOne({ 'local.username': username }, function (err, user) {
           if (err) {
+            console.log('error in sign up: ' + err);
             return done(err);
           }
 
           // already exists
           if (user) {
+            console.log('user already exists with username: ' + username);
             return done(null, false, req.flash('signupMessage', 'Username is already take'));
           }
 

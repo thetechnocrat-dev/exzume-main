@@ -11,6 +11,7 @@ module.exports = {
   },
 
   signUp: function (params, errorCallback) {
+    console.log(params);
     ApiUtil.signUp(params, this.receiveUser, errorCallback);
   },
 };

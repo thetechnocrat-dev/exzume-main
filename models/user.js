@@ -5,11 +5,11 @@ var bcrypt = require('bcrypt');
 
 var UserSchema = new Schema({
   local: {
-    username: { type: String, unique: true },
+    username: String,
     password: String,
     email: String,
   },
-});
+}, { autoIndex: false });
 
 UserSchema.methods.generateHash = function (password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(9));

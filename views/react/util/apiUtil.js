@@ -2,7 +2,7 @@ module.exports = {
   signUp: function (params, actionCallback, errorCallback) {
     $.ajax({
       type: 'POST',
-      url: 'api/auth/signup',
+      url: 'register',
       data: params,
       dataType: 'json',
       success:
