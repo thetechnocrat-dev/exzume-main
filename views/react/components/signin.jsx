@@ -3,7 +3,7 @@ var React = require('react');
 // components
 var TextQuestion = require('./form/textQuestion');
 
-var Signin = React.createClass({
+var SignIn = React.createClass({
 
   render: function () {
     var containerStyle = { margin: '10%' };
@@ -30,4 +30,4 @@ var Signin = React.createClass({
 
 });
 
-module.exports = Signin;
+module.exports = SignIn;

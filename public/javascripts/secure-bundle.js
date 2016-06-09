@@ -24695,11 +24695,11 @@
 	    this.history.push('/dashboard');
 	  },
 	
-	  clickSignin: function () {
+	  clickSignIn: function () {
 	    this.history.push('/signin');
 	  },
 	
-	  clickSignup: function () {
+	  clickSignUp: function () {
 	    this.history.push('/signup');
 	  },
 	
@@ -24733,12 +24733,12 @@
 	        ),
 	        React.createElement(
 	          'div',
-	          { className: 'ui button', onClick: this.clickSignin },
+	          { className: 'ui button', onClick: this.clickSignIn },
 	          'sign in'
 	        ),
 	        React.createElement(
 	          'div',
-	          { className: 'ui button', onClick: this.clickSignup },
+	          { className: 'ui button', onClick: this.clickSignUp },
 	          'sign up'
 	        )
 	      )

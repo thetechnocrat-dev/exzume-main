@@ -12,11 +12,11 @@ var App = React.createClass({
     this.history.push('/dashboard');
   },
 
-  clickSignin: function () {
+  clickSignIn: function () {
     this.history.push('/signin');
   },
 
-  clickSignup: function () {
+  clickSignUp: function () {
     this.history.push('/signup');
   },
 
@@ -31,8 +31,8 @@ var App = React.createClass({
         <div className="row">
           <div className="ui button" onClick={this.clickAbout}>about</div>
           <div className="ui button" onClick={this.clickSampleAccount}>sample account</div>
-          <div className="ui button" onClick={this.clickSignin}>sign in</div>
-          <div className="ui button" onClick={this.clickSignup}>sign up</div>
+          <div className="ui button" onClick={this.clickSignIn}>sign in</div>
+          <div className="ui button" onClick={this.clickSignUp}>sign up</div>
         </div>
       </div>
     );
