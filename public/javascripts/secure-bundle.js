@@ -24923,6 +24923,7 @@
 
 	var React = __webpack_require__(1);
 	
+	// not working look into react custom link state mixins
 	var TextQuestion = React.createClass({
 	  displayName: "TextQuestion",
 	

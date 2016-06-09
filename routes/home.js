@@ -21,7 +21,7 @@ module.exports = function (router, passport, db) {
 
   router.post('/register', passport.authenticate('local-signup', {
     successRedirect: '/',
-    failureRedirect: '/',
+    failureRedirect: '/secure',
     failureFlash: true,
   }));
 

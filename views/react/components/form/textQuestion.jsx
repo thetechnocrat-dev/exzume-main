@@ -1,5 +1,6 @@
 var React = require('react');
 
+// not working look into react custom link state mixins
 var TextQuestion = React.createClass({
 
   render: function () {

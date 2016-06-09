@@ -1,5 +1,6 @@
 module.exports = {
   signUp: function (params, actionCallback, errorCallback) {
+    console.log('api', params);
     $.ajax({
       type: 'POST',
       url: 'register',
