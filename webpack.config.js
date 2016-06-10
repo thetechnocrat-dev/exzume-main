@@ -3,7 +3,7 @@ var path = require('path');
 module.exports = {
   context: __dirname,
   entry: {
-    home: './views/react/home.jsx',
+    main: './views/react/main.jsx',
     secure: './views/react/secure.jsx',
   },
   output: {

@@ -1,7 +1,7 @@
 var React = require('react');
 
 // components
-var DataStreamItem = require('./DataStreamItem');
+var DataStreamItem = require('./dataStreamItem');
 
 var DataStreamIndex = React.createClass({
 

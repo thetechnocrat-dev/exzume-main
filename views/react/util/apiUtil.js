@@ -19,4 +19,37 @@ module.exports = {
         },
     });
   },
+
+  signOut: function () {
+    $.ajax({
+      type: 'GET',
+      url: 'signout',
+      success:
+        function () {
+          console.log('ajax sign out success');
+        },
+
+      error:
+        function () {
+          console.log('ajax sign out error');
+        },
+    });
+  },
+
+  fetchSession: function (successCallback) {
+    $.ajax({
+      type: 'GET',
+      url: '/api/session',
+      success:
+        function (respData) {
+          successCallback(respData);
+          console.log('ajax session success', respData);
+        },
+
+      error:
+        function (respError) {
+          console.log('ajax session error', respError);
+        },
+    });
+  },
 };

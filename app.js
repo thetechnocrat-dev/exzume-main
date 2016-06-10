@@ -57,9 +57,9 @@ var initPassport = require('./config/passport/init');
 initPassport(passport);
 
 // routes
-var nonSecure = express.Router();
-require('./routes/home')(nonSecure, passport);
-app.use('/', nonSecure);
+var main = express.Router();
+require('./routes/main')(main, passport);
+app.use('/', main);
 
 var secure = express.Router();
 require('./routes/secure')(secure, passport);

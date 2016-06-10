@@ -1,6 +1,6 @@
 module.exports = function (router, passport, db) {
   router.get('/', function (req, res) {
-    res.render('home', { title: 'Exzume' });
+    res.render('main', { title: 'Exzume' });
   });
 
   router.get('/signin', function (req, res) {
@@ -20,10 +20,14 @@ module.exports = function (router, passport, db) {
   });
 
   router.post('/register', passport.authenticate('local-signup', {
-    successRedirect: '/',
-    failureRedirect: '/secure',
+    successRedirect: '/secure',
+    failureRedirect: '/',
     failureFlash: true,
   }));
+
+  router.get('/api/session', function (req, res) {
+    res.json({ username: req.user.local.username });
+  });
 
   router.get('/signout', function (req, res) {
     req.signout();

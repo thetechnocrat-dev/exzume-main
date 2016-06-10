@@ -2,9 +2,6 @@ var React = require('react');
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var AuthActions = require('../actions/authActions');
 
-// components
-var TextQuestion = require('./form/textQuestion');
-
 var SignUp = React.createClass({
   mixins: [LinkedStateMixin],
 
