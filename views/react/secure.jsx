@@ -18,12 +18,8 @@ var Signup = require('./components/signup');
 // doing the above will also prevent you from having to include navbar on every view
 var routes = (
   <Route component={App} path='/'>
-    <IndexRoute component={Splash} ></IndexRoute>
-    <Route component={Dashboard} path='/dashboard' ></Route>
-    <Route component={About} path='/about' ></Route>
+    <IndexRoute component={Dashboard} ></IndexRoute>
     <Route component={Survey} path='/survey'></Route>
-    <Route component={Signin} path='/signin'></Route>
-    <Route component={Signup} path='/signup'></Route>
   </Route>
 );
 

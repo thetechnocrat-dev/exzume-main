@@ -23,6 +23,10 @@ AuthStore.__onDispatch = function (payload) {
       this.resetAuthStore(payload.user);
       this.__emitChange();
       break;
+    case AuthConstants.SESSION_DESTROYED:
+      this.resetAuthStore({});
+      this.__emitChange();
+      break;
   }
 };
 

@@ -30,7 +30,7 @@ module.exports = function (router, passport, db) {
   });
 
   router.get('/signout', function (req, res) {
-    req.signout();
+    req.logout();
     res.redirect('/');
   });
 };

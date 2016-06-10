@@ -66,9 +66,7 @@
 	  Route,
 	  { component: App, path: '/' },
 	  React.createElement(IndexRoute, { component: Splash }),
-	  React.createElement(Route, { component: Dashboard, path: '/dashboard' }),
 	  React.createElement(Route, { component: About, path: '/about' }),
-	  React.createElement(Route, { component: Survey, path: '/survey' }),
 	  React.createElement(Route, { component: Signin, path: '/signin' }),
 	  React.createElement(Route, { component: Signup, path: '/signup' })
 	);
@@ -24519,12 +24517,17 @@
 	  },
 	
 	  signUp: function (params, errorCallback) {
-	    console.log(params);
 	    ApiUtil.signUp(params, this.receiveUser, errorCallback);
 	  },
 	
+	  destroySession: function () {
+	    Dispatcher.dispatch({
+	      actionType: AuthConstants.SESSION_DESTROYED
+	    });
+	  },
+	
 	  signOut: function () {
-	    ApiUtil.signOut();
+	    ApiUtil.signOut(this.destroySession);
 	  }
 	
 	};
@@ -24850,7 +24853,8 @@
 /***/ function(module, exports) {
 
 	module.exports = {
-	  SESSION_RECEIVED: 'SESSION_RECEIVED'
+	  SESSION_RECEIVED: 'SESSION_RECEIVED',
+	  SESSION_DESTROYED: 'SESSION_DESTROYED'
 	};
 
 /***/ },
@@ -24877,11 +24881,12 @@
 	    });
 	  },
 	
-	  signOut: function () {
+	  signOut: function (successCallback) {
 	    $.ajax({
 	      type: 'GET',
-	      url: 'signout',
+	      url: '/signout',
 	      success: function () {
+	        successCallback();
 	        console.log('ajax sign out success');
 	      },
 	
@@ -25162,11 +25167,6 @@
 	          'div',
 	          { className: 'ui button', onClick: this.clickAbout },
 	          'about'
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'ui button', onClick: this.clickSampleAccount },
-	          'sample account'
 	        ),
 	        React.createElement(
 	          'div',
@@ -25857,6 +25857,10 @@
 	  switch (payload.actionType) {
 	    case AuthConstants.SESSION_RECEIVED:
 	      this.resetAuthStore(payload.user);
+	      this.__emitChange();
+	      break;
+	    case AuthConstants.SESSION_DESTROYED:
+	      this.resetAuthStore({});
 	      this.__emitChange();
 	      break;
 	  }

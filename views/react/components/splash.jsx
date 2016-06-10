@@ -30,7 +30,6 @@ var App = React.createClass({
         </div>
         <div className="row">
           <div className="ui button" onClick={this.clickAbout}>about</div>
-          <div className="ui button" onClick={this.clickSampleAccount}>sample account</div>
           <div className="ui button" onClick={this.clickSignIn}>sign in</div>
           <div className="ui button" onClick={this.clickSignUp}>sign up</div>
         </div>

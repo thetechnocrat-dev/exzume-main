@@ -15,12 +15,17 @@ module.exports = {
   },
 
   signUp: function (params, errorCallback) {
-    console.log(params);
     ApiUtil.signUp(params, this.receiveUser, errorCallback);
   },
 
+  destroySession: function () {
+    Dispatcher.dispatch({
+      actionType: AuthConstants.SESSION_DESTROYED,
+    });
+  },
+
   signOut: function () {
-    ApiUtil.signOut();
+    ApiUtil.signOut(this.destroySession);
   },
 
 };

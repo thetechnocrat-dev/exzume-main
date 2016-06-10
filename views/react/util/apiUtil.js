@@ -20,12 +20,13 @@ module.exports = {
     });
   },
 
-  signOut: function () {
+  signOut: function (successCallback) {
     $.ajax({
       type: 'GET',
-      url: 'signout',
+      url: '/signout',
       success:
         function () {
+          successCallback();
           console.log('ajax sign out success');
         },
 

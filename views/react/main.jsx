@@ -19,9 +19,7 @@ var Signup = require('./components/signup');
 var routes = (
   <Route component={App} path='/'>
     <IndexRoute component={Splash} ></IndexRoute>
-    <Route component={Dashboard} path='/dashboard' ></Route>
     <Route component={About} path='/about' ></Route>
-    <Route component={Survey} path='/survey'></Route>
     <Route component={Signin} path='/signin'></Route>
     <Route component={Signup} path='/signup'></Route>
   </Route>
