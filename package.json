@@ -33,6 +33,7 @@
     "react-router": "1.0.2",
     "semantic-ui": "^2.1.8",
     "serve-favicon": "~2.3.0",
+    "webfontloader": "^1.6.24",
     "webpack": "^1.12.4"
   }
 }
