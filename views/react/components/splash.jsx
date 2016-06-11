@@ -1,6 +1,6 @@
 var React = require('react');
 var History = require('react-router').History;
-var AuthStore = require('../stores/authstore');
+var AuthStore = require('../stores/authStore');
 var AuthActions = require('../actions/authActions');
 
 var App = React.createClass({
@@ -56,6 +56,7 @@ var App = React.createClass({
 
   render: function () {
     var centerContainerStyle = { margin: '20%' };
+    var button = { padding: '5%', }
 
     return (
       <div className="ui one column center aligned grid container" style={centerContainerStyle}>

@@ -31628,7 +31628,7 @@
 
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
-	var AuthStore = __webpack_require__(253);
+	var AuthStore = __webpack_require__(218);
 	var AuthActions = __webpack_require__(211);
 	
 	var App = React.createClass({
@@ -31710,6 +31710,7 @@
 	
 	  render: function () {
 	    var centerContainerStyle = { margin: '20%' };
+	    var button = { padding: '5%' };
 	
 	    return React.createElement(
 	      'div',
@@ -32208,38 +32209,7 @@
 
 /***/ },
 /* 252 */,
-/* 253 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Dispatcher = __webpack_require__(212);
-	var Store = __webpack_require__(219).Store;
-	var AuthConstants = __webpack_require__(216);
-	
-	var AuthStore = new Store(Dispatcher);
-	var _currentUser = {};
-	
-	AuthStore.resetAuthStore = function (user) {
-	  _currentUser = user;
-	}, AuthStore.isSignedIn = function () {
-	  return !(typeof _currentUser.username === 'undefined');
-	}, AuthStore.currentUser = function () {
-	  return _currentUser;
-	}, AuthStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case AuthConstants.SESSION_RECEIVED:
-	      this.resetAuthStore(payload.user);
-	      this.__emitChange();
-	      break;
-	    case AuthConstants.SESSION_DESTROYED:
-	      this.resetAuthStore({});
-	      this.__emitChange();
-	      break;
-	  }
-	};
-	
-	module.exports = AuthStore;
-
-/***/ },
+/* 253 */,
 /* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
