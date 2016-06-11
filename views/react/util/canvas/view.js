@@ -11,7 +11,7 @@ module.exports = function () {
     this.largeFontSize = (this.width / 20).toString() + 'px';
     this.smallFontSize = (parseInt(this.largeFontSize) / 3).toString() + 'px';
     this.starRadius = 0.003 * width;
-    this.quote = 'Hover your cursor over white dots to find constellations and wisdom';
+    this.quote = '';
     canvas.width = width;
     canvas.height = height;
     var ctx = canvas.getContext('2d');
@@ -68,15 +68,11 @@ module.exports = function () {
       }
     }
 
-    // draw name
-    this.ctx.font = this.largeFontSize + ' Arial';
+    // draw text
     this.ctx.fillStyle = '#008080';
     this.ctx.textAlign = 'center';
-    this.ctx.fillText('Josh McMenemy', this.width / 2, this.height / 2);
-
-    // draw text under name
-    var maxWidth = this.ctx.measureText('Josh McMenemy').width * 0.8;
-    this.ctx.font = this.smallFontSize + ' Arial';
+    this.ctx.font = this.smallFontSize + ' Lato';
+    var maxWidth = this.ctx.measureText('exzume').width * 5;
     this.wrapText(this.quote, maxWidth);
 
   };
@@ -99,7 +95,7 @@ module.exports = function () {
     var line = '';
     var lineHeight = parseInt(this.smallFontSize) * 1.2;
     var xPos = this.width / 2;
-    var yPos = this.height / 2 + lineHeight;
+    var yPos = 0 + lineHeight;
 
     for (var n = 0; n < words.length; n++) {
       var testLine = line + words[n] + ' ';
