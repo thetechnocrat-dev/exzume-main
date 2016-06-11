@@ -24385,7 +24385,7 @@
 	      React.createElement(Navbar, null),
 	      React.createElement(
 	        'div',
-	        { className: 'ui button', onClick: this.clickSurvey },
+	        { className: 'ui blue button', onClick: this.clickSurvey },
 	        'Fill out daily survey'
 	      ),
 	      React.createElement(
@@ -24486,7 +24486,7 @@
 	
 	    return React.createElement(
 	      'div',
-	      { className: 'ui inverted menu' },
+	      { className: 'ui teal inverted menu' },
 	      React.createElement(
 	        'div',
 	        { className: 'item', style: menuItemStyle, onClick: this.clickLogo },
@@ -31670,24 +31670,37 @@
 	  },
 	
 	  makeButtons: function () {
+	    var marginStyle = { marginLeft: '5%' };
 	    if (AuthStore.isSignedIn()) {
 	      return React.createElement(
 	        'div',
 	        { className: 'row' },
 	        React.createElement(
 	          'div',
-	          { className: 'ui teal button', onClick: this.clickAbout },
-	          'about'
+	          null,
+	          React.createElement(
+	            'div',
+	            { className: 'ui teal button', onClick: this.clickAbout },
+	            'about'
+	          )
 	        ),
 	        React.createElement(
 	          'div',
-	          { className: 'ui teal button', onClick: this.clickSignOut },
-	          'sign out'
+	          { style: marginStyle },
+	          React.createElement(
+	            'div',
+	            { className: 'ui teal button', onClick: this.clickSignOut },
+	            'sign out'
+	          )
 	        ),
 	        React.createElement(
 	          'div',
-	          { className: 'ui teal button', onClick: this.clickDashboard },
-	          'dashboard'
+	          { style: marginStyle },
+	          React.createElement(
+	            'div',
+	            { className: 'ui teal button', onClick: this.clickDashboard },
+	            'dashboard'
+	          )
 	        )
 	      );
 	    } else {
@@ -31705,7 +31718,7 @@
 	        ),
 	        React.createElement(
 	          'div',
-	          { style: { marginLeft: '20px' } },
+	          { style: marginStyle },
 	          React.createElement(
 	            'div',
 	            { className: 'ui teal button', onClick: this.clickSignIn },
@@ -31714,7 +31727,7 @@
 	        ),
 	        React.createElement(
 	          'div',
-	          { style: { marginLeft: '20px' } },
+	          { style: marginStyle },
 	          React.createElement(
 	            'div',
 	            { className: 'ui teal button', onClick: this.clickSignUp },

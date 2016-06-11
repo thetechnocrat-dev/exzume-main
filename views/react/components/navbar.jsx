@@ -54,7 +54,7 @@ var Navbar = React.createClass({
     var menuItemStyle = { cursor: 'pointer' };
 
     return (
-      <div className="ui inverted menu">
+      <div className="ui teal inverted menu">
         <div className="item" style={menuItemStyle} onClick={this.clickLogo}>Exzume</div>
         <div className="right menu" style={menuItemStyle}>
           {this.makeUserDropDown()}

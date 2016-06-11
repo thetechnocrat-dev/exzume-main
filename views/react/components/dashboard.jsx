@@ -19,7 +19,7 @@ var Dashboard = React.createClass({
     return (
       <div className="ui container">
         <Navbar />
-        <div className="ui button" onClick={this.clickSurvey}>Fill out daily survey</div>
+        <div className="ui blue button" onClick={this.clickSurvey}>Fill out daily survey</div>
         <h1 className="ui left aligned header">Your Data Streams</h1>
         <DataStreamIndex />
         <h1 className="ui header">Your Insights</h1>

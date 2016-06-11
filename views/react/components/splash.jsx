@@ -38,12 +38,19 @@ var App = React.createClass({
   },
 
   makeButtons: function () {
+    var marginStyle = { marginLeft: '5%' };
     if (AuthStore.isSignedIn()) {
       return (
         <div className="row">
-          <div className="ui teal button" onClick={this.clickAbout}>about</div>
-          <div className="ui teal button" onClick={this.clickSignOut}>sign out</div>
-          <div className="ui teal button" onClick={this.clickDashboard}>dashboard</div>
+          <div>
+            <div className="ui teal button" onClick={this.clickAbout}>about</div>
+          </div>
+          <div style={marginStyle}>
+            <div className="ui teal button" onClick={this.clickSignOut}>sign out</div>
+          </div>
+          <div style={marginStyle}>
+            <div className="ui teal button" onClick={this.clickDashboard}>dashboard</div>
+          </div>
         </div>
       );
     } else {
@@ -52,10 +59,10 @@ var App = React.createClass({
           <div>
             <div className="ui teal button" onClick={this.clickAbout}>about</div>
           </div>
-          <div style={{marginLeft: '20px'}}>
+          <div style={marginStyle}>
             <div className="ui teal button" onClick={this.clickSignIn}>sign in</div>
           </div>
-          <div style={{marginLeft: '20px'}}>
+          <div style={marginStyle}>
             <div className="ui teal button" onClick={this.clickSignUp}>sign up</div>
           </div>
         </div>
