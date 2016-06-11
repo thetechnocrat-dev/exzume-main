@@ -1,14 +1,14 @@
 module.exports = {
-  signUp: function (params, actionCallback, errorCallback) {
-    console.log('api', params);
+  signup: function (params, actionCallback, successCallback, errorCallback) {
     $.ajax({
       type: 'POST',
-      url: 'register',
+      url: '/api/signup',
       data: params,
       dataType: 'json',
       success:
         function (respData) {
           actionCallback(respData);
+          successCallback();
           console.log('ajax sign up success', respData);
         },
 
@@ -20,12 +20,34 @@ module.exports = {
     });
   },
 
-  signOut: function (successCallback) {
+  signIn: function (params, actionCallback, successCallback, errorCallback) {
+    $.ajax({
+      type: 'POST',
+      url: '/api/signin',
+      data: params,
+      dataType: 'json',
+      success:
+        function (respData) {
+          actionCallback(respData);
+          successCallback();
+          console.log('ajax sign in success', respData);
+        },
+
+      error:
+        function (respError) {
+          errorCallback(respError.responseText);
+          console.log('ajax sign up error', respError);
+        },
+    });
+  },
+
+  signout: function (actionCallback, successCallback) {
     $.ajax({
       type: 'GET',
-      url: '/signout',
+      url: '/api/signout',
       success:
         function () {
+          actionCallback();
           successCallback();
           console.log('ajax sign out success');
         },

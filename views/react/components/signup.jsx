@@ -1,9 +1,10 @@
 var React = require('react');
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var AuthActions = require('../actions/authActions');
+var History = require('react-router').History;
 
-var SignUp = React.createClass({
-  mixins: [LinkedStateMixin],
+var Signup = React.createClass({
+  mixins: [LinkedStateMixin, History],
 
   getInitialState: function () {
     return { errors: '', };
@@ -16,13 +17,17 @@ var SignUp = React.createClass({
     if (this.state.password != this.state.confirmPassword) {
       this.setState({ errors: 'passwords do not match' });
     } else {
-      var signupParams = {
+      var signUpParams = {
         username: this.state.username,
         password: this.state.password,
         email: this.state.email,
       };
-      AuthActions.signUp(signupParams, this.errorCallback);
+      AuthActions.signUp(signUpParams, this.successCallback, this.errorCallback);
     }
+  },
+
+  successCallback: function () {
+    this.history.push('/dashboard');
   },
 
   errorCallback: function (errors) {
@@ -88,4 +93,4 @@ var SignUp = React.createClass({
 
 });
 
-module.exports = SignUp;
+module.exports = Signup;

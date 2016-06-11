@@ -14,8 +14,12 @@ module.exports = {
     ApiUtil.fetchSession(this.receiveSession);
   },
 
-  signUp: function (params, errorCallback) {
-    ApiUtil.signUp(params, this.receiveUser, errorCallback);
+  signUp: function (params, successCallback, errorCallback) {
+    ApiUtil.signup(params, this.receiveSession, successCallback, errorCallback);
+  },
+
+  signIn: function (params, successCallback, errorCallback) {
+    ApiUtil.signIn(params, this.receiveSession, successCallback, errorCallback);
   },
 
   destroySession: function () {
@@ -24,8 +28,8 @@ module.exports = {
     });
   },
 
-  signOut: function () {
-    ApiUtil.signOut(this.destroySession);
+  signOut: function (successCallback) {
+    ApiUtil.signout(this.destroySession, successCallback);
   },
 
 };

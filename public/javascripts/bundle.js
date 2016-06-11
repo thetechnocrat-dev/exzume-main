@@ -54,19 +54,23 @@
 	// Components
 	var App = __webpack_require__(208);
 	var Dashboard = __webpack_require__(209);
-	var Splash = __webpack_require__(224);
-	var About = __webpack_require__(225);
-	var Survey = __webpack_require__(226);
-	var Signin = __webpack_require__(229);
-	var Signup = __webpack_require__(230);
+	var Splash = __webpack_require__(242);
+	var About = __webpack_require__(243);
+	var Survey = __webpack_require__(244);
+	var SignIn = __webpack_require__(254);
+	var SignUp = __webpack_require__(255);
 	
 	// once user auth is added just nest all the user paths with wildcard
 	// doing the above will also prevent you from having to include navbar on every view
 	var routes = React.createElement(
 	  Route,
 	  { component: App, path: '/' },
-	  React.createElement(IndexRoute, { component: Dashboard }),
-	  React.createElement(Route, { component: Survey, path: '/survey' })
+	  React.createElement(IndexRoute, { component: Splash }),
+	  React.createElement(Route, { component: Dashboard, path: '/dashboard' }),
+	  React.createElement(Route, { component: Survey, path: '/survey' }),
+	  React.createElement(Route, { component: About, path: '/about' }),
+	  React.createElement(Route, { component: SignIn, path: '/signin' }),
+	  React.createElement(Route, { component: SignUp, path: '/signup' })
 	);
 	
 	document.addEventListener('DOMContentLoaded', function () {
@@ -24358,9 +24362,9 @@
 	
 	// Components
 	var Navbar = __webpack_require__(210);
-	var DataStreamIndex = __webpack_require__(218);
-	var InsightIndex = __webpack_require__(220);
-	var DataVisualizationIndex = __webpack_require__(222);
+	var DataStreamIndex = __webpack_require__(236);
+	var InsightIndex = __webpack_require__(238);
+	var DataVisualizationIndex = __webpack_require__(240);
 	
 	var Dashboard = React.createClass({
 	  displayName: 'Dashboard',
@@ -24414,7 +24418,7 @@
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
 	var AuthActions = __webpack_require__(211);
-	var AuthStore = __webpack_require__(235);
+	var AuthStore = __webpack_require__(218);
 	
 	var Navbar = React.createClass({
 	  displayName: 'Navbar',
@@ -24443,7 +24447,11 @@
 	  },
 	
 	  clickSignout: function () {
-	    AuthActions.signOut();
+	    AuthActions.signOut(this.successCallback);
+	  },
+	
+	  successCallback: function () {
+	    this.history.push('/');
 	  },
 	
 	  makeUserDropDown: function () {
@@ -24514,8 +24522,12 @@
 	    ApiUtil.fetchSession(this.receiveSession);
 	  },
 	
-	  signUp: function (params, errorCallback) {
-	    ApiUtil.signUp(params, this.receiveUser, errorCallback);
+	  signUp: function (params, successCallback, errorCallback) {
+	    ApiUtil.signup(params, this.receiveSession, successCallback, errorCallback);
+	  },
+	
+	  signIn: function (params, successCallback, errorCallback) {
+	    ApiUtil.signIn(params, this.receiveSession, successCallback, errorCallback);
 	  },
 	
 	  destroySession: function () {
@@ -24524,8 +24536,8 @@
 	    });
 	  },
 	
-	  signOut: function () {
-	    ApiUtil.signOut(this.destroySession);
+	  signOut: function (successCallback) {
+	    ApiUtil.signout(this.destroySession, successCallback);
 	  }
 	
 	};
@@ -24860,15 +24872,15 @@
 /***/ function(module, exports) {
 
 	module.exports = {
-	  signUp: function (params, actionCallback, errorCallback) {
-	    console.log('api', params);
+	  signup: function (params, actionCallback, successCallback, errorCallback) {
 	    $.ajax({
 	      type: 'POST',
-	      url: 'register',
+	      url: '/api/signup',
 	      data: params,
 	      dataType: 'json',
 	      success: function (respData) {
 	        actionCallback(respData);
+	        successCallback();
 	        console.log('ajax sign up success', respData);
 	      },
 	
@@ -24879,11 +24891,31 @@
 	    });
 	  },
 	
-	  signOut: function (successCallback) {
+	  signIn: function (params, actionCallback, successCallback, errorCallback) {
+	    $.ajax({
+	      type: 'POST',
+	      url: '/api/signin',
+	      data: params,
+	      dataType: 'json',
+	      success: function (respData) {
+	        actionCallback(respData);
+	        successCallback();
+	        console.log('ajax sign in success', respData);
+	      },
+	
+	      error: function (respError) {
+	        errorCallback(respError.responseText);
+	        console.log('ajax sign up error', respError);
+	      }
+	    });
+	  },
+	
+	  signout: function (actionCallback, successCallback) {
 	    $.ajax({
 	      type: 'GET',
-	      url: '/signout',
+	      url: '/api/signout',
 	      success: function () {
+	        actionCallback();
 	        successCallback();
 	        console.log('ajax sign out success');
 	      },
@@ -24914,932 +24946,8 @@
 /* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	
-	// components
-	var DataStreamItem = __webpack_require__(219);
-	
-	var DataStreamIndex = React.createClass({
-	  displayName: 'DataStreamIndex',
-	
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'ui center aligned grid' },
-	      React.createElement(
-	        'div',
-	        { className: 'doubling eight column row' },
-	        React.createElement(
-	          'div',
-	          { className: 'column' },
-	          React.createElement(
-	            'button',
-	            { className: 'ui icon button' },
-	            React.createElement('i', { className: 'large plus icon' })
-	          )
-	        ),
-	        React.createElement(DataStreamItem, { icon: 'browser' }),
-	        React.createElement(DataStreamItem, { icon: 'facebook' }),
-	        React.createElement(DataStreamItem, { icon: 'spotify' }),
-	        React.createElement(DataStreamItem, { icon: 'reddit' }),
-	        React.createElement(DataStreamItem, { icon: 'twitter' }),
-	        React.createElement(DataStreamItem, { icon: 'pied piper' }),
-	        React.createElement(DataStreamItem, { icon: 'github' })
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = DataStreamIndex;
-
-/***/ },
-/* 219 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	var DataStreamItem = React.createClass({
-	  displayName: 'DataStreamItem',
-	
-	
-	  render: function () {
-	    var iconClassName = 'huge ' + this.props.icon + ' icon';
-	    return React.createElement(
-	      'div',
-	      { className: 'column' },
-	      React.createElement('i', { className: iconClassName })
-	    );
-	  }
-	
-	});
-	
-	module.exports = DataStreamItem;
-
-/***/ },
-/* 220 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	// components
-	var InsightItem = __webpack_require__(221);
-	
-	var InsightIndex = React.createClass({
-	  displayName: 'InsightIndex',
-	
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'div',
-	        { className: 'ui relaxed divided centered list' },
-	        React.createElement(InsightItem, { time: '22 minutes ago', message: 'Your data shows that days you run are highly correlated with increased happiness' }),
-	        React.createElement(InsightItem, { time: '12 hours ago', message: 'Your stress is higher than normal. In the past socializing with close friends/family has decreased your stress, while getting less sleep has increased your stress' }),
-	        React.createElement(InsightItem, { time: '1 day ago', message: 'Good job! You have meditated/prayed three days in the last week and our data shows that for many users similiar to yourself that reguluar meditation/praying increases satisfaction and decreases stress' }),
-	        React.createElement(InsightItem, { time: '2 days ago', message: 'Looking for a book to read? Our data shows that many users similiar to you have had an improvement in satisfaction after reading The Alchemist by Paulo Coelho' }),
-	        React.createElement(InsightItem, { time: '3 days ago', message: 'You have answered your survey 21 days in row! Keep up the good work!' }),
-	        React.createElement(InsightItem, { time: '4 days ago', message: 'Your data shows that consuming caffeine has a slight negative effect on your productivity' }),
-	        React.createElement(InsightItem, { time: '4 days ago', message: 'Many users have reported they enjoyed using the app MoodPanda to collect information about their mood' })
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'ui centered grid' },
-	        React.createElement(
-	          'div',
-	          { className: 'centered row' },
-	          React.createElement('i', { className: 'large angle down icon' })
-	        )
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = InsightIndex;
-
-/***/ },
-/* 221 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	var InsightItem = React.createClass({
-	  displayName: "InsightItem",
-	
-	
-	  render: function () {
-	    return React.createElement(
-	      "div",
-	      { className: "item" },
-	      React.createElement("i", { className: "empty heart icon" }),
-	      React.createElement(
-	        "div",
-	        { className: "content" },
-	        React.createElement(
-	          "div",
-	          { className: "header" },
-	          this.props.message
-	        ),
-	        React.createElement(
-	          "div",
-	          { className: "description" },
-	          this.props.time
-	        )
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = InsightItem;
-
-/***/ },
-/* 222 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	// components
-	var DataVisualizationItem = __webpack_require__(223);
-	
-	var DataVisualizationIndex = React.createClass({
-	  displayName: 'DataVisualizationIndex',
-	
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'ui centered grid' },
-	      React.createElement(
-	        'div',
-	        { className: 'doubling two column row' },
-	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/horizontalbar.png' }),
-	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/line.png' }),
-	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/scatter.png' }),
-	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/stackedbar.png' })
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = DataVisualizationIndex;
-
-/***/ },
-/* 223 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	var DataVisualizationItem = React.createClass({
-	  displayName: "DataVisualizationItem",
-	
-	
-	  render: function () {
-	    return React.createElement(
-	      "div",
-	      { className: "column" },
-	      React.createElement(
-	        "div",
-	        { className: "ui large image" },
-	        React.createElement("img", { src: this.props.image })
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = DataVisualizationItem;
-
-/***/ },
-/* 224 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var History = __webpack_require__(159).History;
-	
-	var App = React.createClass({
-	  displayName: 'App',
-	
-	  mixins: [History],
-	
-	  clickAbout: function () {
-	    this.history.push('/about');
-	  },
-	
-	  clickSampleAccount: function () {
-	    this.history.push('/dashboard');
-	  },
-	
-	  clickSignIn: function () {
-	    this.history.push('/signin');
-	  },
-	
-	  clickSignUp: function () {
-	    this.history.push('/signup');
-	  },
-	
-	  render: function () {
-	    var centerContainerStyle = { margin: '20%' };
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'ui one column center aligned grid container', style: centerContainerStyle },
-	      React.createElement(
-	        'div',
-	        { className: 'row' },
-	        React.createElement(
-	          'h1',
-	          { className: 'ui header' },
-	          'exzume'
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'row' },
-	        React.createElement(
-	          'div',
-	          { className: 'ui button', onClick: this.clickAbout },
-	          'about'
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'ui button', onClick: this.clickSignIn },
-	          'sign in'
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'ui button', onClick: this.clickSignUp },
-	          'sign up'
-	        )
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = App;
-
-/***/ },
-/* 225 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var History = __webpack_require__(159).History;
-	
-	// Components
-	var Navbar = __webpack_require__(210);
-	
-	var About = React.createClass({
-	  displayName: 'About',
-	
-	  mixins: [History],
-	
-	  clickBack: function () {
-	    this.history.push('/');
-	  },
-	
-	  render: function () {
-	    var centerContainerStyle = { marginTop: '5%' };
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'ui one column center aligned grid container', style: centerContainerStyle },
-	      React.createElement(
-	        'div',
-	        { className: 'ui message' },
-	        React.createElement(
-	          'div',
-	          { className: 'header' },
-	          'One Sentence Summary'
-	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          'Exzume is a place for users to collect data about their lives and find insight from it.'
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'ui message' },
-	        React.createElement(
-	          'div',
-	          { className: 'header' },
-	          'What We are Building'
-	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          'Exzume is a web app that combines a user’s data from apps they already use with daily surveys in order to provide personal recommendations and useful visualizations. It is much more useful than the multitude of data-tracking apps (Toggl, AppleHealth, SleepCycle) and wearable fitness trackers (Fitbit, Jawbone, Garmin) because the daily survey results allow for correlation with important subjective metrics such as productivity, happiness, and satisfaction.'
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'ui message' },
-	        React.createElement(
-	          'div',
-	          { className: 'header' },
-	          'Why Now'
-	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          'Recent advances in machine learning (especially unsupervised learning) are making it possible to find meaningful features of large multidimensional datasets (which is what combining daily surveys with the multiple passive data collection apps requires) at scale. The results of such advances in data collection and machine learning are increasingly present in our lives, from our Google search results, to our Facebook feeds, to our Netflix recommendations. However, there is a large space for using this technology to help individuals use their own data to proactively improve their decisions. In addition to the large number of data-tracking apps and wearable devices, the growing QuantifiedSelf movement shows that people are taking an interest in their own data.'
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'ui message' },
-	        React.createElement(
-	          'div',
-	          { className: 'header' },
-	          'Why People Would Want This'
-	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          'Worldwide sales of wearable electronic devices are expected to generate $28.7 billion in revenue this year, and Americans consistently spend an average of over $10 billion on self-improvement books per year. Exzume aims to provide the benefits of both in one package.'
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'ui button', onClick: this.clickBack },
-	        'Back'
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = About;
-
-/***/ },
-/* 226 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	// components
-	var Navbar = __webpack_require__(210);
-	var TextQuestion = __webpack_require__(227);
-	var MultipleChoice = __webpack_require__(228);
-	
-	var Survey = React.createClass({
-	  displayName: 'Survey',
-	
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'ui container' },
-	      React.createElement(Navbar, null),
-	      React.createElement(
-	        'form',
-	        { className: 'ui form' },
-	        React.createElement(
-	          'h2',
-	          { className: 'ui header' },
-	          'Food'
-	        ),
-	        React.createElement(TextQuestion, {
-	          label: 'What did you eat for breakfast?',
-	          name: 'breakfast',
-	          placeholder: 'breakfast'
-	        }),
-	        React.createElement(TextQuestion, {
-	          label: 'What did you eat for lunch?',
-	          name: 'lunch',
-	          placeholder: 'lunch'
-	        }),
-	        React.createElement(TextQuestion, {
-	          label: 'What did you eat for dinner?',
-	          name: 'dinner',
-	          placeholder: 'dinner'
-	        }),
-	        React.createElement(TextQuestion, {
-	          label: 'What did you eat for snacks?',
-	          name: 'snacks',
-	          placeholder: 'snacks'
-	        }),
-	        React.createElement(
-	          'h2',
-	          { className: 'ui header' },
-	          'Exercise'
-	        ),
-	        React.createElement(TextQuestion, {
-	          label: 'How many minutes did you exercise?',
-	          name: 'exercise-minutes',
-	          placeholder: 'minutes'
-	        }),
-	        React.createElement(MultipleChoice, {
-	          label: 'How hard was your exercise',
-	          checkBoxes: ['easy', 'medium', 'hard']
-	        }),
-	        React.createElement(
-	          'h2',
-	          { className: 'ui header' },
-	          'Etc'
-	        )
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = Survey;
-
-/***/ },
-/* 227 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	// not working look into react custom link state mixins
-	var TextQuestion = React.createClass({
-	  displayName: "TextQuestion",
-	
-	
-	  render: function () {
-	    return React.createElement(
-	      "div",
-	      { className: "required field" },
-	      React.createElement(
-	        "label",
-	        null,
-	        this.props.label
-	      ),
-	      React.createElement("input", { type: "text", name: this.props.name, placeholder: this.props.placeholder })
-	    );
-	  }
-	
-	});
-	
-	module.exports = TextQuestion;
-
-/***/ },
-/* 228 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	var MultipleChoice = React.createClass({
-	  displayName: "MultipleChoice",
-	
-	  makeChoices: function () {
-	    var checkBoxes = [];
-	    for (var checkBox of this.props.checkBoxes) {
-	      checkBoxes.push(React.createElement(
-	        "div",
-	        { className: "field" },
-	        React.createElement(
-	          "div",
-	          { className: "ui radio checkbox" },
-	          React.createElement("input", { type: "radio", name: checkBox, key: checkBox }),
-	          React.createElement(
-	            "label",
-	            null,
-	            checkBox
-	          )
-	        )
-	      ));
-	    }
-	
-	    return checkBoxes;
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      "div",
-	      { className: "required grouped fields" },
-	      React.createElement(
-	        "label",
-	        null,
-	        this.props.label
-	      ),
-	      this.makeChoices()
-	    );
-	  }
-	
-	});
-	
-	module.exports = MultipleChoice;
-
-/***/ },
-/* 229 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	// components
-	var TextQuestion = __webpack_require__(227);
-	
-	var SignIn = React.createClass({
-	  displayName: 'SignIn',
-	
-	
-	  render: function () {
-	    var containerStyle = { margin: '10%' };
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'ui container', style: containerStyle },
-	      React.createElement(
-	        'form',
-	        { className: 'ui form' },
-	        React.createElement(
-	          'h2',
-	          { className: 'ui header' },
-	          'Sign In'
-	        ),
-	        React.createElement(TextQuestion, {
-	          label: 'username',
-	          name: 'username',
-	          placeholder: 'username'
-	        }),
-	        React.createElement(TextQuestion, {
-	          label: 'password',
-	          name: 'password',
-	          placeholder: 'password'
-	        })
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = SignIn;
-
-/***/ },
-/* 230 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var LinkedStateMixin = __webpack_require__(231);
-	var AuthActions = __webpack_require__(211);
-	
-	var SignUp = React.createClass({
-	  displayName: 'SignUp',
-	
-	  mixins: [LinkedStateMixin],
-	
-	  getInitialState: function () {
-	    return { errors: '' };
-	  },
-	
-	  handleSubmit: function (event) {
-	    event.preventDefault();
-	    this.setState({ errors: '' });
-	
-	    if (this.state.password != this.state.confirmPassword) {
-	      this.setState({ errors: 'passwords do not match' });
-	    } else {
-	      var signupParams = {
-	        username: this.state.username,
-	        password: this.state.password,
-	        email: this.state.email
-	      };
-	      AuthActions.signUp(signupParams, this.errorCallback);
-	    }
-	  },
-	
-	  errorCallback: function (errors) {
-	    console.log(errors);
-	
-	    // this.setState({ errors: JSON.parse(errors) });
-	  },
-	
-	  render: function () {
-	    var containerStyle = { margin: '10%' };
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'ui container', style: containerStyle },
-	      React.createElement(
-	        'form',
-	        { className: 'ui form' },
-	        React.createElement(
-	          'h2',
-	          { className: 'ui header' },
-	          'Sign Up'
-	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          this.state.errors
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'required field' },
-	          React.createElement(
-	            'label',
-	            null,
-	            'username'
-	          ),
-	          React.createElement('input', {
-	            type: 'text',
-	            name: 'username',
-	            placeholder: '',
-	            valueLink: this.linkState('username')
-	          })
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'required field' },
-	          React.createElement(
-	            'label',
-	            null,
-	            'email'
-	          ),
-	          React.createElement('input', {
-	            type: 'text',
-	            name: 'email',
-	            placeholder: '',
-	            valueLink: this.linkState('email')
-	          })
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'required field' },
-	          React.createElement(
-	            'label',
-	            null,
-	            'password'
-	          ),
-	          React.createElement('input', {
-	            type: 'text',
-	            name: 'password',
-	            placeholder: '',
-	            valueLink: this.linkState('password')
-	          })
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'required field' },
-	          React.createElement(
-	            'label',
-	            null,
-	            'confirm password'
-	          ),
-	          React.createElement('input', {
-	            type: 'text',
-	            name: 'confirm password',
-	            placeholder: '',
-	            valueLink: this.linkState('confirmPassword')
-	          })
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'ui button', type: 'submit', onClick: this.handleSubmit },
-	          'Submit'
-	        )
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = SignUp;
-
-/***/ },
-/* 231 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(232);
-
-/***/ },
-/* 232 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule LinkedStateMixin
-	 * @typechecks static-only
-	 */
-	
-	'use strict';
-	
-	var ReactLink = __webpack_require__(233);
-	var ReactStateSetters = __webpack_require__(234);
-	
-	/**
-	 * A simple mixin around ReactLink.forState().
-	 */
-	var LinkedStateMixin = {
-	  /**
-	   * Create a ReactLink that's linked to part of this component's state. The
-	   * ReactLink will have the current value of this.state[key] and will call
-	   * setState() when a change is requested.
-	   *
-	   * @param {string} key state key to update. Note: you may want to use keyOf()
-	   * if you're using Google Closure Compiler advanced mode.
-	   * @return {ReactLink} ReactLink instance linking to the state.
-	   */
-	  linkState: function (key) {
-	    return new ReactLink(this.state[key], ReactStateSetters.createStateKeySetter(this, key));
-	  }
-	};
-	
-	module.exports = LinkedStateMixin;
-
-/***/ },
-/* 233 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule ReactLink
-	 * @typechecks static-only
-	 */
-	
-	'use strict';
-	
-	/**
-	 * ReactLink encapsulates a common pattern in which a component wants to modify
-	 * a prop received from its parent. ReactLink allows the parent to pass down a
-	 * value coupled with a callback that, when invoked, expresses an intent to
-	 * modify that value. For example:
-	 *
-	 * React.createClass({
-	 *   getInitialState: function() {
-	 *     return {value: ''};
-	 *   },
-	 *   render: function() {
-	 *     var valueLink = new ReactLink(this.state.value, this._handleValueChange);
-	 *     return <input valueLink={valueLink} />;
-	 *   },
-	 *   _handleValueChange: function(newValue) {
-	 *     this.setState({value: newValue});
-	 *   }
-	 * });
-	 *
-	 * We have provided some sugary mixins to make the creation and
-	 * consumption of ReactLink easier; see LinkedValueUtils and LinkedStateMixin.
-	 */
-	
-	var React = __webpack_require__(2);
-	
-	/**
-	 * @param {*} value current value of the link
-	 * @param {function} requestChange callback to request a change
-	 */
-	function ReactLink(value, requestChange) {
-	  this.value = value;
-	  this.requestChange = requestChange;
-	}
-	
-	/**
-	 * Creates a PropType that enforces the ReactLink API and optionally checks the
-	 * type of the value being passed inside the link. Example:
-	 *
-	 * MyComponent.propTypes = {
-	 *   tabIndexLink: ReactLink.PropTypes.link(React.PropTypes.number)
-	 * }
-	 */
-	function createLinkTypeChecker(linkType) {
-	  var shapes = {
-	    value: typeof linkType === 'undefined' ? React.PropTypes.any.isRequired : linkType.isRequired,
-	    requestChange: React.PropTypes.func.isRequired
-	  };
-	  return React.PropTypes.shape(shapes);
-	}
-	
-	ReactLink.PropTypes = {
-	  link: createLinkTypeChecker
-	};
-	
-	module.exports = ReactLink;
-
-/***/ },
-/* 234 */
-/***/ function(module, exports) {
-
-	/**
-	 * Copyright 2013-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule ReactStateSetters
-	 */
-	
-	'use strict';
-	
-	var ReactStateSetters = {
-	  /**
-	   * Returns a function that calls the provided function, and uses the result
-	   * of that to set the component's state.
-	   *
-	   * @param {ReactCompositeComponent} component
-	   * @param {function} funcReturningState Returned callback uses this to
-	   *                                      determine how to update state.
-	   * @return {function} callback that when invoked uses funcReturningState to
-	   *                    determined the object literal to setState.
-	   */
-	  createStateSetter: function (component, funcReturningState) {
-	    return function (a, b, c, d, e, f) {
-	      var partialState = funcReturningState.call(component, a, b, c, d, e, f);
-	      if (partialState) {
-	        component.setState(partialState);
-	      }
-	    };
-	  },
-	
-	  /**
-	   * Returns a single-argument callback that can be used to update a single
-	   * key in the component's state.
-	   *
-	   * Note: this is memoized function, which makes it inexpensive to call.
-	   *
-	   * @param {ReactCompositeComponent} component
-	   * @param {string} key The key in the state that you should update.
-	   * @return {function} callback of 1 argument which calls setState() with
-	   *                    the provided keyName and callback argument.
-	   */
-	  createStateKeySetter: function (component, key) {
-	    // Memoize the setters.
-	    var cache = component.__keySetters || (component.__keySetters = {});
-	    return cache[key] || (cache[key] = createStateKeySetter(component, key));
-	  }
-	};
-	
-	function createStateKeySetter(component, key) {
-	  // Partial state is allocated outside of the function closure so it can be
-	  // reused with every call, avoiding memory allocation when this function
-	  // is called.
-	  var partialState = {};
-	  return function stateKeySetter(value) {
-	    partialState[key] = value;
-	    component.setState(partialState);
-	  };
-	}
-	
-	ReactStateSetters.Mixin = {
-	  /**
-	   * Returns a function that calls the provided function, and uses the result
-	   * of that to set the component's state.
-	   *
-	   * For example, these statements are equivalent:
-	   *
-	   *   this.setState({x: 1});
-	   *   this.createStateSetter(function(xValue) {
-	   *     return {x: xValue};
-	   *   })(1);
-	   *
-	   * @param {function} funcReturningState Returned callback uses this to
-	   *                                      determine how to update state.
-	   * @return {function} callback that when invoked uses funcReturningState to
-	   *                    determined the object literal to setState.
-	   */
-	  createStateSetter: function (funcReturningState) {
-	    return ReactStateSetters.createStateSetter(this, funcReturningState);
-	  },
-	
-	  /**
-	   * Returns a single-argument callback that can be used to update a single
-	   * key in the component's state.
-	   *
-	   * For example, these statements are equivalent:
-	   *
-	   *   this.setState({x: 1});
-	   *   this.createStateKeySetter('x')(1);
-	   *
-	   * Note: this is memoized function, which makes it inexpensive to call.
-	   *
-	   * @param {string} key The key in the state that you should update.
-	   * @return {function} callback of 1 argument which calls setState() with
-	   *                    the provided keyName and callback argument.
-	   */
-	  createStateKeySetter: function (key) {
-	    return ReactStateSetters.createStateKeySetter(this, key);
-	  }
-	};
-	
-	module.exports = ReactStateSetters;
-
-/***/ },
-/* 235 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var Dispatcher = __webpack_require__(212);
-	var Store = __webpack_require__(236).Store;
+	var Store = __webpack_require__(219).Store;
 	var AuthConstants = __webpack_require__(216);
 	
 	var AuthStore = new Store(Dispatcher);
@@ -25867,7 +24975,7 @@
 	module.exports = AuthStore;
 
 /***/ },
-/* 236 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25879,15 +24987,15 @@
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 */
 	
-	module.exports.Container = __webpack_require__(237);
-	module.exports.MapStore = __webpack_require__(240);
-	module.exports.Mixin = __webpack_require__(252);
-	module.exports.ReduceStore = __webpack_require__(241);
-	module.exports.Store = __webpack_require__(242);
+	module.exports.Container = __webpack_require__(220);
+	module.exports.MapStore = __webpack_require__(223);
+	module.exports.Mixin = __webpack_require__(235);
+	module.exports.ReduceStore = __webpack_require__(224);
+	module.exports.Store = __webpack_require__(225);
 
 
 /***/ },
-/* 237 */
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -25909,10 +25017,10 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var FluxStoreGroup = __webpack_require__(238);
+	var FluxStoreGroup = __webpack_require__(221);
 	
 	var invariant = __webpack_require__(215);
-	var shallowEqual = __webpack_require__(239);
+	var shallowEqual = __webpack_require__(222);
 	
 	var DEFAULT_OPTIONS = {
 	  pure: true,
@@ -26070,7 +25178,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 238 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26151,7 +25259,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 239 */
+/* 222 */
 /***/ function(module, exports) {
 
 	/**
@@ -26206,7 +25314,7 @@
 	module.exports = shallowEqual;
 
 /***/ },
-/* 240 */
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26227,8 +25335,8 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var FluxReduceStore = __webpack_require__(241);
-	var Immutable = __webpack_require__(251);
+	var FluxReduceStore = __webpack_require__(224);
+	var Immutable = __webpack_require__(234);
 	
 	var invariant = __webpack_require__(215);
 	
@@ -26356,7 +25464,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 241 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26377,9 +25485,9 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var FluxStore = __webpack_require__(242);
+	var FluxStore = __webpack_require__(225);
 	
-	var abstractMethod = __webpack_require__(250);
+	var abstractMethod = __webpack_require__(233);
 	var invariant = __webpack_require__(215);
 	
 	var FluxReduceStore = (function (_FluxStore) {
@@ -26463,7 +25571,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 242 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26482,7 +25590,7 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _require = __webpack_require__(243);
+	var _require = __webpack_require__(226);
 	
 	var EventEmitter = _require.EventEmitter;
 	
@@ -26646,7 +25754,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 243 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -26659,14 +25767,14 @@
 	 */
 	
 	var fbemitter = {
-	  EventEmitter: __webpack_require__(244)
+	  EventEmitter: __webpack_require__(227)
 	};
 	
 	module.exports = fbemitter;
 
 
 /***/ },
-/* 244 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26685,11 +25793,11 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var EmitterSubscription = __webpack_require__(245);
-	var EventSubscriptionVendor = __webpack_require__(247);
+	var EmitterSubscription = __webpack_require__(228);
+	var EventSubscriptionVendor = __webpack_require__(230);
 	
-	var emptyFunction = __webpack_require__(249);
-	var invariant = __webpack_require__(248);
+	var emptyFunction = __webpack_require__(232);
+	var invariant = __webpack_require__(231);
 	
 	/**
 	 * @class BaseEventEmitter
@@ -26863,7 +25971,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 245 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -26884,7 +25992,7 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var EventSubscription = __webpack_require__(246);
+	var EventSubscription = __webpack_require__(229);
 	
 	/**
 	 * EmitterSubscription represents a subscription with listener and context data.
@@ -26916,7 +26024,7 @@
 	module.exports = EmitterSubscription;
 
 /***/ },
-/* 246 */
+/* 229 */
 /***/ function(module, exports) {
 
 	/**
@@ -26970,7 +26078,7 @@
 	module.exports = EventSubscription;
 
 /***/ },
-/* 247 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -26989,7 +26097,7 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var invariant = __webpack_require__(248);
+	var invariant = __webpack_require__(231);
 	
 	/**
 	 * EventSubscriptionVendor stores a set of EventSubscriptions that are
@@ -27079,7 +26187,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 248 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -27134,7 +26242,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 249 */
+/* 232 */
 /***/ function(module, exports) {
 
 	/**
@@ -27176,7 +26284,7 @@
 	module.exports = emptyFunction;
 
 /***/ },
-/* 250 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -27203,7 +26311,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 251 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32187,7 +31295,7 @@
 	}));
 
 /***/ },
-/* 252 */
+/* 235 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -32204,7 +31312,7 @@
 	
 	'use strict';
 	
-	var FluxStoreGroup = __webpack_require__(238);
+	var FluxStoreGroup = __webpack_require__(221);
 	
 	var invariant = __webpack_require__(215);
 	
@@ -32309,6 +31417,1068 @@
 	module.exports = FluxMixinLegacy;
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
+/***/ },
+/* 236 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	// components
+	var DataStreamItem = __webpack_require__(237);
+	
+	var DataStreamIndex = React.createClass({
+	  displayName: 'DataStreamIndex',
+	
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'ui center aligned grid' },
+	      React.createElement(
+	        'div',
+	        { className: 'doubling eight column row' },
+	        React.createElement(
+	          'div',
+	          { className: 'column' },
+	          React.createElement(
+	            'button',
+	            { className: 'ui icon button' },
+	            React.createElement('i', { className: 'large plus icon' })
+	          )
+	        ),
+	        React.createElement(DataStreamItem, { icon: 'browser' }),
+	        React.createElement(DataStreamItem, { icon: 'facebook' }),
+	        React.createElement(DataStreamItem, { icon: 'spotify' }),
+	        React.createElement(DataStreamItem, { icon: 'reddit' }),
+	        React.createElement(DataStreamItem, { icon: 'twitter' }),
+	        React.createElement(DataStreamItem, { icon: 'pied piper' }),
+	        React.createElement(DataStreamItem, { icon: 'github' })
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = DataStreamIndex;
+
+/***/ },
+/* 237 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var DataStreamItem = React.createClass({
+	  displayName: 'DataStreamItem',
+	
+	
+	  render: function () {
+	    var iconClassName = 'huge ' + this.props.icon + ' icon';
+	    return React.createElement(
+	      'div',
+	      { className: 'column' },
+	      React.createElement('i', { className: iconClassName })
+	    );
+	  }
+	
+	});
+	
+	module.exports = DataStreamItem;
+
+/***/ },
+/* 238 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	// components
+	var InsightItem = __webpack_require__(239);
+	
+	var InsightIndex = React.createClass({
+	  displayName: 'InsightIndex',
+	
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'div',
+	        { className: 'ui relaxed divided centered list' },
+	        React.createElement(InsightItem, { time: '22 minutes ago', message: 'Your data shows that days you run are highly correlated with increased happiness' }),
+	        React.createElement(InsightItem, { time: '12 hours ago', message: 'Your stress is higher than normal. In the past socializing with close friends/family has decreased your stress, while getting less sleep has increased your stress' }),
+	        React.createElement(InsightItem, { time: '1 day ago', message: 'Good job! You have meditated/prayed three days in the last week and our data shows that for many users similiar to yourself that reguluar meditation/praying increases satisfaction and decreases stress' }),
+	        React.createElement(InsightItem, { time: '2 days ago', message: 'Looking for a book to read? Our data shows that many users similiar to you have had an improvement in satisfaction after reading The Alchemist by Paulo Coelho' }),
+	        React.createElement(InsightItem, { time: '3 days ago', message: 'You have answered your survey 21 days in row! Keep up the good work!' }),
+	        React.createElement(InsightItem, { time: '4 days ago', message: 'Your data shows that consuming caffeine has a slight negative effect on your productivity' }),
+	        React.createElement(InsightItem, { time: '4 days ago', message: 'Many users have reported they enjoyed using the app MoodPanda to collect information about their mood' })
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'ui centered grid' },
+	        React.createElement(
+	          'div',
+	          { className: 'centered row' },
+	          React.createElement('i', { className: 'large angle down icon' })
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = InsightIndex;
+
+/***/ },
+/* 239 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var InsightItem = React.createClass({
+	  displayName: "InsightItem",
+	
+	
+	  render: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "item" },
+	      React.createElement("i", { className: "empty heart icon" }),
+	      React.createElement(
+	        "div",
+	        { className: "content" },
+	        React.createElement(
+	          "div",
+	          { className: "header" },
+	          this.props.message
+	        ),
+	        React.createElement(
+	          "div",
+	          { className: "description" },
+	          this.props.time
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = InsightItem;
+
+/***/ },
+/* 240 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	// components
+	var DataVisualizationItem = __webpack_require__(241);
+	
+	var DataVisualizationIndex = React.createClass({
+	  displayName: 'DataVisualizationIndex',
+	
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'ui centered grid' },
+	      React.createElement(
+	        'div',
+	        { className: 'doubling two column row' },
+	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/horizontalbar.png' }),
+	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/line.png' }),
+	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/scatter.png' }),
+	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/stackedbar.png' })
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = DataVisualizationIndex;
+
+/***/ },
+/* 241 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var DataVisualizationItem = React.createClass({
+	  displayName: "DataVisualizationItem",
+	
+	
+	  render: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "column" },
+	      React.createElement(
+	        "div",
+	        { className: "ui large image" },
+	        React.createElement("img", { src: this.props.image })
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = DataVisualizationItem;
+
+/***/ },
+/* 242 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(159).History;
+	var AuthStore = __webpack_require__(253);
+	var AuthActions = __webpack_require__(211);
+	
+	var App = React.createClass({
+	  displayName: 'App',
+	
+	  mixins: [History],
+	
+	  clickAbout: function () {
+	    this.history.push('/about');
+	  },
+	
+	  clickSampleAccount: function () {
+	    this.history.push('/dashboard');
+	  },
+	
+	  clickSignIn: function () {
+	    this.history.push('/signin');
+	  },
+	
+	  clickSignUp: function () {
+	    this.history.push('/signup');
+	  },
+	
+	  clickDashboard: function () {
+	    this.history.push('/dashboard');
+	  },
+	
+	  clickSignOut: function () {
+	    AuthActions.signOut(this.successCallback);
+	  },
+	
+	  successCallback: function () {
+	    this.history.push('/');
+	  },
+	
+	  makeButtons: function () {
+	    if (AuthStore.isSignedIn()) {
+	      return React.createElement(
+	        'div',
+	        { className: 'row' },
+	        React.createElement(
+	          'div',
+	          { className: 'ui button', onClick: this.clickAbout },
+	          'about'
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'ui button', onClick: this.clickSignOut },
+	          'sign out'
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'ui button', onClick: this.clickDashboard },
+	          'dashboard'
+	        )
+	      );
+	    } else {
+	      return React.createElement(
+	        'div',
+	        { className: 'row' },
+	        React.createElement(
+	          'div',
+	          { className: 'ui button', onClick: this.clickAbout },
+	          'about'
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'ui button', onClick: this.clickSignIn },
+	          'sign in'
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'ui button', onClick: this.clickSignUp },
+	          'sign up'
+	        )
+	      );
+	    }
+	  },
+	
+	  render: function () {
+	    var centerContainerStyle = { margin: '20%' };
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'ui one column center aligned grid container', style: centerContainerStyle },
+	      React.createElement(
+	        'div',
+	        { className: 'row' },
+	        React.createElement(
+	          'h1',
+	          { className: 'ui header' },
+	          'exzume'
+	        )
+	      ),
+	      this.makeButtons()
+	    );
+	  }
+	
+	});
+	
+	module.exports = App;
+
+/***/ },
+/* 243 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(159).History;
+	
+	// Components
+	var Navbar = __webpack_require__(210);
+	
+	var About = React.createClass({
+	  displayName: 'About',
+	
+	  mixins: [History],
+	
+	  clickBack: function () {
+	    this.history.push('/');
+	  },
+	
+	  render: function () {
+	    var centerContainerStyle = { marginTop: '5%' };
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'ui one column center aligned grid container', style: centerContainerStyle },
+	      React.createElement(
+	        'div',
+	        { className: 'ui message' },
+	        React.createElement(
+	          'div',
+	          { className: 'header' },
+	          'One Sentence Summary'
+	        ),
+	        React.createElement(
+	          'p',
+	          null,
+	          'Exzume is a place for users to collect data about their lives and find insight from it.'
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'ui message' },
+	        React.createElement(
+	          'div',
+	          { className: 'header' },
+	          'What We are Building'
+	        ),
+	        React.createElement(
+	          'p',
+	          null,
+	          'Exzume is a web app that combines a user’s data from apps they already use with daily surveys in order to provide personal recommendations and useful visualizations. It is much more useful than the multitude of data-tracking apps (Toggl, AppleHealth, SleepCycle) and wearable fitness trackers (Fitbit, Jawbone, Garmin) because the daily survey results allow for correlation with important subjective metrics such as productivity, happiness, and satisfaction.'
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'ui message' },
+	        React.createElement(
+	          'div',
+	          { className: 'header' },
+	          'Why Now'
+	        ),
+	        React.createElement(
+	          'p',
+	          null,
+	          'Recent advances in machine learning (especially unsupervised learning) are making it possible to find meaningful features of large multidimensional datasets (which is what combining daily surveys with the multiple passive data collection apps requires) at scale. The results of such advances in data collection and machine learning are increasingly present in our lives, from our Google search results, to our Facebook feeds, to our Netflix recommendations. However, there is a large space for using this technology to help individuals use their own data to proactively improve their decisions. In addition to the large number of data-tracking apps and wearable devices, the growing QuantifiedSelf movement shows that people are taking an interest in their own data.'
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'ui message' },
+	        React.createElement(
+	          'div',
+	          { className: 'header' },
+	          'Why People Would Want This'
+	        ),
+	        React.createElement(
+	          'p',
+	          null,
+	          'Worldwide sales of wearable electronic devices are expected to generate $28.7 billion in revenue this year, and Americans consistently spend an average of over $10 billion on self-improvement books per year. Exzume aims to provide the benefits of both in one package.'
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'ui button', onClick: this.clickBack },
+	        'Back'
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = About;
+
+/***/ },
+/* 244 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	// components
+	var Navbar = __webpack_require__(210);
+	var TextQuestion = __webpack_require__(245);
+	var MultipleChoice = __webpack_require__(246);
+	
+	var Survey = React.createClass({
+	  displayName: 'Survey',
+	
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'ui container' },
+	      React.createElement(Navbar, null),
+	      React.createElement(
+	        'form',
+	        { className: 'ui form' },
+	        React.createElement(
+	          'h2',
+	          { className: 'ui header' },
+	          'Food'
+	        ),
+	        React.createElement(TextQuestion, {
+	          label: 'What did you eat for breakfast?',
+	          name: 'breakfast',
+	          placeholder: 'breakfast'
+	        }),
+	        React.createElement(TextQuestion, {
+	          label: 'What did you eat for lunch?',
+	          name: 'lunch',
+	          placeholder: 'lunch'
+	        }),
+	        React.createElement(TextQuestion, {
+	          label: 'What did you eat for dinner?',
+	          name: 'dinner',
+	          placeholder: 'dinner'
+	        }),
+	        React.createElement(TextQuestion, {
+	          label: 'What did you eat for snacks?',
+	          name: 'snacks',
+	          placeholder: 'snacks'
+	        }),
+	        React.createElement(
+	          'h2',
+	          { className: 'ui header' },
+	          'Exercise'
+	        ),
+	        React.createElement(TextQuestion, {
+	          label: 'How many minutes did you exercise?',
+	          name: 'exercise-minutes',
+	          placeholder: 'minutes'
+	        }),
+	        React.createElement(MultipleChoice, {
+	          label: 'How hard was your exercise',
+	          checkBoxes: ['easy', 'medium', 'hard']
+	        }),
+	        React.createElement(
+	          'h2',
+	          { className: 'ui header' },
+	          'Etc'
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = Survey;
+
+/***/ },
+/* 245 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	// not working look into react custom link state mixins
+	var TextQuestion = React.createClass({
+	  displayName: "TextQuestion",
+	
+	
+	  render: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "required field" },
+	      React.createElement(
+	        "label",
+	        null,
+	        this.props.label
+	      ),
+	      React.createElement("input", { type: "text", name: this.props.name, placeholder: this.props.placeholder })
+	    );
+	  }
+	
+	});
+	
+	module.exports = TextQuestion;
+
+/***/ },
+/* 246 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var MultipleChoice = React.createClass({
+	  displayName: "MultipleChoice",
+	
+	  makeChoices: function () {
+	    var checkBoxes = [];
+	    for (var checkBox of this.props.checkBoxes) {
+	      checkBoxes.push(React.createElement(
+	        "div",
+	        { className: "field" },
+	        React.createElement(
+	          "div",
+	          { className: "ui radio checkbox" },
+	          React.createElement("input", { type: "radio", name: checkBox, key: checkBox }),
+	          React.createElement(
+	            "label",
+	            null,
+	            checkBox
+	          )
+	        )
+	      ));
+	    }
+	
+	    return checkBoxes;
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "required grouped fields" },
+	      React.createElement(
+	        "label",
+	        null,
+	        this.props.label
+	      ),
+	      this.makeChoices()
+	    );
+	  }
+	
+	});
+	
+	module.exports = MultipleChoice;
+
+/***/ },
+/* 247 */,
+/* 248 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(249);
+
+/***/ },
+/* 249 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule LinkedStateMixin
+	 * @typechecks static-only
+	 */
+	
+	'use strict';
+	
+	var ReactLink = __webpack_require__(250);
+	var ReactStateSetters = __webpack_require__(251);
+	
+	/**
+	 * A simple mixin around ReactLink.forState().
+	 */
+	var LinkedStateMixin = {
+	  /**
+	   * Create a ReactLink that's linked to part of this component's state. The
+	   * ReactLink will have the current value of this.state[key] and will call
+	   * setState() when a change is requested.
+	   *
+	   * @param {string} key state key to update. Note: you may want to use keyOf()
+	   * if you're using Google Closure Compiler advanced mode.
+	   * @return {ReactLink} ReactLink instance linking to the state.
+	   */
+	  linkState: function (key) {
+	    return new ReactLink(this.state[key], ReactStateSetters.createStateKeySetter(this, key));
+	  }
+	};
+	
+	module.exports = LinkedStateMixin;
+
+/***/ },
+/* 250 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule ReactLink
+	 * @typechecks static-only
+	 */
+	
+	'use strict';
+	
+	/**
+	 * ReactLink encapsulates a common pattern in which a component wants to modify
+	 * a prop received from its parent. ReactLink allows the parent to pass down a
+	 * value coupled with a callback that, when invoked, expresses an intent to
+	 * modify that value. For example:
+	 *
+	 * React.createClass({
+	 *   getInitialState: function() {
+	 *     return {value: ''};
+	 *   },
+	 *   render: function() {
+	 *     var valueLink = new ReactLink(this.state.value, this._handleValueChange);
+	 *     return <input valueLink={valueLink} />;
+	 *   },
+	 *   _handleValueChange: function(newValue) {
+	 *     this.setState({value: newValue});
+	 *   }
+	 * });
+	 *
+	 * We have provided some sugary mixins to make the creation and
+	 * consumption of ReactLink easier; see LinkedValueUtils and LinkedStateMixin.
+	 */
+	
+	var React = __webpack_require__(2);
+	
+	/**
+	 * @param {*} value current value of the link
+	 * @param {function} requestChange callback to request a change
+	 */
+	function ReactLink(value, requestChange) {
+	  this.value = value;
+	  this.requestChange = requestChange;
+	}
+	
+	/**
+	 * Creates a PropType that enforces the ReactLink API and optionally checks the
+	 * type of the value being passed inside the link. Example:
+	 *
+	 * MyComponent.propTypes = {
+	 *   tabIndexLink: ReactLink.PropTypes.link(React.PropTypes.number)
+	 * }
+	 */
+	function createLinkTypeChecker(linkType) {
+	  var shapes = {
+	    value: typeof linkType === 'undefined' ? React.PropTypes.any.isRequired : linkType.isRequired,
+	    requestChange: React.PropTypes.func.isRequired
+	  };
+	  return React.PropTypes.shape(shapes);
+	}
+	
+	ReactLink.PropTypes = {
+	  link: createLinkTypeChecker
+	};
+	
+	module.exports = ReactLink;
+
+/***/ },
+/* 251 */
+/***/ function(module, exports) {
+
+	/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule ReactStateSetters
+	 */
+	
+	'use strict';
+	
+	var ReactStateSetters = {
+	  /**
+	   * Returns a function that calls the provided function, and uses the result
+	   * of that to set the component's state.
+	   *
+	   * @param {ReactCompositeComponent} component
+	   * @param {function} funcReturningState Returned callback uses this to
+	   *                                      determine how to update state.
+	   * @return {function} callback that when invoked uses funcReturningState to
+	   *                    determined the object literal to setState.
+	   */
+	  createStateSetter: function (component, funcReturningState) {
+	    return function (a, b, c, d, e, f) {
+	      var partialState = funcReturningState.call(component, a, b, c, d, e, f);
+	      if (partialState) {
+	        component.setState(partialState);
+	      }
+	    };
+	  },
+	
+	  /**
+	   * Returns a single-argument callback that can be used to update a single
+	   * key in the component's state.
+	   *
+	   * Note: this is memoized function, which makes it inexpensive to call.
+	   *
+	   * @param {ReactCompositeComponent} component
+	   * @param {string} key The key in the state that you should update.
+	   * @return {function} callback of 1 argument which calls setState() with
+	   *                    the provided keyName and callback argument.
+	   */
+	  createStateKeySetter: function (component, key) {
+	    // Memoize the setters.
+	    var cache = component.__keySetters || (component.__keySetters = {});
+	    return cache[key] || (cache[key] = createStateKeySetter(component, key));
+	  }
+	};
+	
+	function createStateKeySetter(component, key) {
+	  // Partial state is allocated outside of the function closure so it can be
+	  // reused with every call, avoiding memory allocation when this function
+	  // is called.
+	  var partialState = {};
+	  return function stateKeySetter(value) {
+	    partialState[key] = value;
+	    component.setState(partialState);
+	  };
+	}
+	
+	ReactStateSetters.Mixin = {
+	  /**
+	   * Returns a function that calls the provided function, and uses the result
+	   * of that to set the component's state.
+	   *
+	   * For example, these statements are equivalent:
+	   *
+	   *   this.setState({x: 1});
+	   *   this.createStateSetter(function(xValue) {
+	   *     return {x: xValue};
+	   *   })(1);
+	   *
+	   * @param {function} funcReturningState Returned callback uses this to
+	   *                                      determine how to update state.
+	   * @return {function} callback that when invoked uses funcReturningState to
+	   *                    determined the object literal to setState.
+	   */
+	  createStateSetter: function (funcReturningState) {
+	    return ReactStateSetters.createStateSetter(this, funcReturningState);
+	  },
+	
+	  /**
+	   * Returns a single-argument callback that can be used to update a single
+	   * key in the component's state.
+	   *
+	   * For example, these statements are equivalent:
+	   *
+	   *   this.setState({x: 1});
+	   *   this.createStateKeySetter('x')(1);
+	   *
+	   * Note: this is memoized function, which makes it inexpensive to call.
+	   *
+	   * @param {string} key The key in the state that you should update.
+	   * @return {function} callback of 1 argument which calls setState() with
+	   *                    the provided keyName and callback argument.
+	   */
+	  createStateKeySetter: function (key) {
+	    return ReactStateSetters.createStateKeySetter(this, key);
+	  }
+	};
+	
+	module.exports = ReactStateSetters;
+
+/***/ },
+/* 252 */,
+/* 253 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Dispatcher = __webpack_require__(212);
+	var Store = __webpack_require__(219).Store;
+	var AuthConstants = __webpack_require__(216);
+	
+	var AuthStore = new Store(Dispatcher);
+	var _currentUser = {};
+	
+	AuthStore.resetAuthStore = function (user) {
+	  _currentUser = user;
+	}, AuthStore.isSignedIn = function () {
+	  return !(typeof _currentUser.username === 'undefined');
+	}, AuthStore.currentUser = function () {
+	  return _currentUser;
+	}, AuthStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case AuthConstants.SESSION_RECEIVED:
+	      this.resetAuthStore(payload.user);
+	      this.__emitChange();
+	      break;
+	    case AuthConstants.SESSION_DESTROYED:
+	      this.resetAuthStore({});
+	      this.__emitChange();
+	      break;
+	  }
+	};
+	
+	module.exports = AuthStore;
+
+/***/ },
+/* 254 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var AuthActions = __webpack_require__(211);
+	var LinkedStateMixin = __webpack_require__(248);
+	var History = __webpack_require__(159).History;
+	
+	// components
+	
+	var SignIn = React.createClass({
+	  displayName: 'SignIn',
+	
+	  mixins: [LinkedStateMixin, History],
+	
+	  getInitialState: function () {
+	    return { errors: '' };
+	  },
+	
+	  handleSubmit: function (event) {
+	    event.preventDefault();
+	    this.setState({ errors: '' });
+	
+	    var signInParams = {
+	      username: this.state.username,
+	      password: this.state.password
+	    };
+	
+	    AuthActions.signIn(signInParams, this.successCallback, this.errorCallback);
+	  },
+	
+	  errorCallback: function (errors) {
+	    console.log(errors);
+	
+	    // this.setState({ errors: JSON.parse(errors) });
+	  },
+	
+	  successCallback: function () {
+	    this.history.push('/dashboard');
+	  },
+	
+	  render: function () {
+	    var containerStyle = { margin: '10%' };
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'ui container', style: containerStyle },
+	      React.createElement(
+	        'form',
+	        { className: 'ui form' },
+	        React.createElement(
+	          'h2',
+	          { className: 'ui header' },
+	          'Sign In'
+	        ),
+	        React.createElement(
+	          'p',
+	          null,
+	          this.state.errors
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'required field' },
+	          React.createElement(
+	            'label',
+	            null,
+	            'username'
+	          ),
+	          React.createElement('input', {
+	            type: 'text',
+	            name: 'username',
+	            placeholder: '',
+	            valueLink: this.linkState('username')
+	          })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'required field' },
+	          React.createElement(
+	            'label',
+	            null,
+	            'password'
+	          ),
+	          React.createElement('input', {
+	            type: 'text',
+	            name: 'password',
+	            placeholder: '',
+	            valueLink: this.linkState('password')
+	          })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'ui button', type: 'submit', onClick: this.handleSubmit },
+	          'Submit'
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = SignIn;
+
+/***/ },
+/* 255 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var LinkedStateMixin = __webpack_require__(248);
+	var AuthActions = __webpack_require__(211);
+	var History = __webpack_require__(159).History;
+	
+	var Signup = React.createClass({
+	  displayName: 'Signup',
+	
+	  mixins: [LinkedStateMixin, History],
+	
+	  getInitialState: function () {
+	    return { errors: '' };
+	  },
+	
+	  handleSubmit: function (event) {
+	    event.preventDefault();
+	    this.setState({ errors: '' });
+	
+	    if (this.state.password != this.state.confirmPassword) {
+	      this.setState({ errors: 'passwords do not match' });
+	    } else {
+	      var signUpParams = {
+	        username: this.state.username,
+	        password: this.state.password,
+	        email: this.state.email
+	      };
+	      AuthActions.signUp(signUpParams, this.successCallback, this.errorCallback);
+	    }
+	  },
+	
+	  successCallback: function () {
+	    this.history.push('/dashboard');
+	  },
+	
+	  errorCallback: function (errors) {
+	    console.log(errors);
+	
+	    // this.setState({ errors: JSON.parse(errors) });
+	  },
+	
+	  render: function () {
+	    var containerStyle = { margin: '10%' };
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'ui container', style: containerStyle },
+	      React.createElement(
+	        'form',
+	        { className: 'ui form' },
+	        React.createElement(
+	          'h2',
+	          { className: 'ui header' },
+	          'Sign Up'
+	        ),
+	        React.createElement(
+	          'p',
+	          null,
+	          this.state.errors
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'required field' },
+	          React.createElement(
+	            'label',
+	            null,
+	            'username'
+	          ),
+	          React.createElement('input', {
+	            type: 'text',
+	            name: 'username',
+	            placeholder: '',
+	            valueLink: this.linkState('username')
+	          })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'required field' },
+	          React.createElement(
+	            'label',
+	            null,
+	            'email'
+	          ),
+	          React.createElement('input', {
+	            type: 'text',
+	            name: 'email',
+	            placeholder: '',
+	            valueLink: this.linkState('email')
+	          })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'required field' },
+	          React.createElement(
+	            'label',
+	            null,
+	            'password'
+	          ),
+	          React.createElement('input', {
+	            type: 'text',
+	            name: 'password',
+	            placeholder: '',
+	            valueLink: this.linkState('password')
+	          })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'required field' },
+	          React.createElement(
+	            'label',
+	            null,
+	            'confirm password'
+	          ),
+	          React.createElement('input', {
+	            type: 'text',
+	            name: 'confirm password',
+	            placeholder: '',
+	            valueLink: this.linkState('confirmPassword')
+	          })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'ui button', type: 'submit', onClick: this.handleSubmit },
+	          'Submit'
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = Signup;
+
 /***/ }
 /******/ ]);
-//# sourceMappingURL=secure-bundle.js.map
+//# sourceMappingURL=bundle.js.map

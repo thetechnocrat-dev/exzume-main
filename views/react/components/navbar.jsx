@@ -28,7 +28,11 @@ var Navbar = React.createClass({
   },
 
   clickSignout: function () {
-    AuthActions.signOut();
+    AuthActions.signOut(this.successCallback);
+  },
+
+  successCallback: function () {
+    this.history.push('/');
   },
 
   makeUserDropDown: function () {

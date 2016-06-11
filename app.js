@@ -57,13 +57,9 @@ var initPassport = require('./config/passport/init');
 initPassport(passport);
 
 // routes
-var main = express.Router();
-require('./routes/main')(main, passport);
-app.use('/', main);
-
-var secure = express.Router();
-require('./routes/secure')(secure, passport);
-app.use('/secure', secure);
+var routes = express.Router();
+require('./routes/routes')(routes, passport);
+app.use('/', routes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

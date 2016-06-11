@@ -1,7 +1,7 @@
 var passport = require('passport');
 var mongoose = require('mongoose');
 var localSignup = require('./local-signup');
-var localSignin = require('./local-signin');
+var localSignin = require('./local-login');
 
 module.exports = function () {
   var User = mongoose.model('User');
