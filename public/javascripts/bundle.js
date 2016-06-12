@@ -24551,8 +24551,12 @@
 	    ApiUtil.signOut(this.destroySession, successCallback);
 	  },
 	
-	  update: function (params, successCallback, errorCallback) {
-	    ApiUtil.userUpdate(params, successCallback, errorCallback);
+	  addFormUrl: function (params, successCallback, errorCallback) {
+	    ApiUtil.addFormUrl(params, successCallback, errorCallback);
+	  },
+	
+	  addInsight: function (params, successCallback, errorCallback) {
+	    ApiUtil.addInsight(params, successCallback, errorCallback);
 	  }
 	};
 
@@ -24955,18 +24959,36 @@
 	    });
 	  },
 	
-	  userUpdate: function (params, successCallback, errorCallback) {
+	  addFormUrl: function (params, successCallback, errorCallback) {
 	    $.ajax({
 	      type: 'PUT',
-	      url: '/api/' + params.username,
+	      url: '/admin/api/addform',
 	      data: params,
 	      success: function (respData) {
 	        successCallback(respData);
-	        console.log('ajax user update success', respData);
+	        console.log('ajax add user form URL success', respData);
 	      },
 	
 	      error: function (respError) {
-	        console.log('ajax user update error', respError);
+	        errorCallback();
+	        console.log('ajax add user form URL error', respError);
+	      }
+	    });
+	  },
+	
+	  addInsight: function (params, successCallback, errorCallback) {
+	    $.ajax({
+	      type: 'PUT',
+	      url: '/admin/api/addinsight',
+	      data: params,
+	      success: function (respData) {
+	        successCallback(respData);
+	        console.log('ajax add user insight success', respData);
+	      },
+	
+	      error: function (respError) {
+	        errorCallback();
+	        console.log('ajax add user insight error', respError);
 	      }
 	    });
 	  }
@@ -33014,28 +33036,52 @@
 	  mixins: [LinkedStateMixin],
 	
 	  getInitialState: function () {
-	    return { errors: '', messages: '' };
+	    return { formUrlErrors: '', formUrlMessages: '', insightErrors: '', insightMessages: '' };
 	  },
 	
-	  handleSubmit: function (event) {
+	  handleAddFormUrlSubmit: function (event) {
 	    event.preventDefault();
-	    this.setState({ errors: '', messages: '' }); // clear messages from last submit
+	    this.setState({ formUrlErrors: '', formUrlMessages: '' }); // clear messages from last submit
 	
-	    var putParams = {
+	    var params = {
 	      username: this.state.username,
 	      link: this.state.link
 	    };
 	
-	    AuthActions.update(putParams, this.successCallback, this.errorCallback);
+	    AuthActions.addFormUrl(params, this.successFormUrlCallback, this.errorFormUrlCallback);
 	  },
 	
-	  successCallback: function (respData) {
-	    console.log('user update success', respData);
-	    this.setState({ messages: respData.message });
+	  successFormUrlCallback: function (respData) {
+	    console.log('user add form URL success', respData);
+	    this.setState({ formUrlMessages: respData.message });
 	  },
 	
-	  errorCallback: function () {
-	    console.log('user update error');
+	  errorFormUrlCallback: function () {
+	    console.log('user add form URL error');
+	    this.setState({ formUrlErrors: 'something went wrong =(' });
+	  },
+	
+	  handleAddInsightSubmit: function (event) {
+	    console.log('submit hit');
+	    event.preventDefault();
+	    this.setState({ insightErrors: '', insightMessages: '' });
+	
+	    var params = {
+	      username: this.state.username,
+	      message: this.state.insightMessage
+	    };
+	
+	    AuthActions.addInsight(params, this.successInsightCallback, this.errorInsightCallback);
+	  },
+	
+	  successInsightCallback: function (respData) {
+	    console.log('user add insight success');
+	    this.setState({ insightMessages: respData.message });
+	  },
+	
+	  errorInsightCallback: function () {
+	    console.log('user add form URL error');
+	    this.setState({ insightErrors: 'something went wrong =(' });
 	  },
 	
 	  render: function () {
@@ -33050,17 +33096,17 @@
 	        React.createElement(
 	          'h2',
 	          { className: 'ui header' },
-	          'Add Google Form to Account'
+	          'Add Google Form to User Account'
 	        ),
 	        React.createElement(
 	          'p',
 	          null,
-	          this.state.errors
+	          this.state.formUrlErrors
 	        ),
 	        React.createElement(
 	          'p',
 	          null,
-	          this.state.messages
+	          this.state.formUrlMessages
 	        ),
 	        React.createElement(
 	          'div',
@@ -33094,7 +33140,76 @@
 	        ),
 	        React.createElement(
 	          'div',
-	          { className: 'ui button', type: 'submit', onClick: this.handleSubmit },
+	          { className: 'ui teal button', type: 'submit', onClick: this.handleAddFormUrlSubmit },
+	          'Submit'
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'ui horizontal divider' },
+	        'or'
+	      ),
+	      React.createElement(
+	        'form',
+	        { className: 'ui form' },
+	        React.createElement(
+	          'h2',
+	          { className: 'ui header' },
+	          'Add Google Insight to User Account'
+	        ),
+	        React.createElement(
+	          'p',
+	          null,
+	          this.state.insightErrors
+	        ),
+	        React.createElement(
+	          'p',
+	          null,
+	          this.state.insightMessages
+	        ),
+	        React.createElement(
+	          'p',
+	          null,
+	          this.state.errors
+	        ),
+	        React.createElement(
+	          'p',
+	          null,
+	          this.state.messages
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'required field' },
+	          React.createElement(
+	            'label',
+	            null,
+	            'user'
+	          ),
+	          React.createElement('input', {
+	            type: 'text',
+	            name: 'username',
+	            placeholder: '',
+	            valueLink: this.linkState('username')
+	          })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'required field' },
+	          React.createElement(
+	            'label',
+	            null,
+	            'insight message'
+	          ),
+	          React.createElement('input', {
+	            type: 'text',
+	            name: 'insightMessage',
+	            placeholder: '',
+	            valueLink: this.linkState('insightMessage')
+	          })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'ui teal button', type: 'submit', onClick: this.handleAddInsightSubmit },
 	          'Submit'
 	        )
 	      )

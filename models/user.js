@@ -12,7 +12,7 @@ var UserSchema = new Schema({
   formURL:  { type: String, default: 'none' },
   insights: [{
       message: String,
-      date: Date,
+      date: { type: Date, default: Date.now },
       liked: Boolean,
     },
   ],

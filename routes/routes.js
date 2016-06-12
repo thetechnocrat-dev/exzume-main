@@ -29,10 +29,8 @@ module.exports = function (router, passport) {
     res.json({ user: req.user });
   });
 
-  router.put('/api/:username', function (req, res) {
-    console.log('api put request');
+  router.put('/admin/api/addform', function (req, res) {
     User.findOne({ 'local.username': req.body.username }, function (err, user) {
-      console.log('find one', user);
       if (err) { res.send(err); }
 
       user.formURL = req.body.link;
@@ -40,7 +38,24 @@ module.exports = function (router, passport) {
       user.save(function (err) {
         if (err) { res.send(err); }
 
-        res.json({ message: 'user updated' });
+        res.json({ message: 'user updated with new formURL' });
+      });
+    });
+  });
+
+  router.put('/admin/api/addinsight', function (req, res) {
+    User.findOne({ 'local.username': req.body.username }, function (err, user) {
+      if (err) { res.send(err); }
+
+      user.insights.push({
+        message: req.body.message,
+        liked: false,
+      });
+
+      user.save(function (err) {
+        if (err) { res.send(err); }
+
+        res.json({ message: 'user updated with new insight' });
       });
     });
   });

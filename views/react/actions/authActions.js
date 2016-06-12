@@ -32,7 +32,11 @@ module.exports = {
     ApiUtil.signOut(this.destroySession, successCallback);
   },
 
-  update: function (params, successCallback, errorCallback) {
-    ApiUtil.userUpdate(params, successCallback, errorCallback);
+  addFormUrl: function (params, successCallback, errorCallback) {
+    ApiUtil.addFormUrl(params, successCallback, errorCallback);
+  },
+
+  addInsight: function (params, successCallback, errorCallback) {
+    ApiUtil.addInsight(params, successCallback, errorCallback);
   },
 };

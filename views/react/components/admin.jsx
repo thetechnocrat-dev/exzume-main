@@ -6,28 +6,52 @@ var Admin = React.createClass({
   mixins: [LinkedStateMixin],
 
   getInitialState: function () {
-    return ({ errors: '', messages: '' });
+    return ({ formUrlErrors: '', formUrlMessages: '', insightErrors: '', insightMessages: '' });
   },
 
-  handleSubmit: function (event) {
+  handleAddFormUrlSubmit: function (event) {
     event.preventDefault();
-    this.setState({ errors: '', messages: '' }); // clear messages from last submit
+    this.setState({ formUrlErrors: '', formUrlMessages: '' }); // clear messages from last submit
 
-    var putParams = {
+    var params = {
       username: this.state.username,
       link: this.state.link,
     };
 
-    AuthActions.update(putParams, this.successCallback, this.errorCallback);
+    AuthActions.addFormUrl(params, this.successFormUrlCallback, this.errorFormUrlCallback);
   },
 
-  successCallback: function (respData) {
-    console.log('user update success', respData);
-    this.setState({ messages: respData.message });
+  successFormUrlCallback: function (respData) {
+    console.log('user add form URL success', respData);
+    this.setState({ formUrlMessages: respData.message });
   },
 
-  errorCallback: function () {
-    console.log('user update error');
+  errorFormUrlCallback: function () {
+    console.log('user add form URL error');
+    this.setState({ formUrlErrors: 'something went wrong =(' });
+  },
+
+  handleAddInsightSubmit: function (event) {
+    console.log('submit hit');
+    event.preventDefault();
+    this.setState({ insightErrors: '', insightMessages: '' });
+
+    var params = {
+      username: this.state.username,
+      message: this.state.insightMessage,
+    };
+
+    AuthActions.addInsight(params, this.successInsightCallback, this.errorInsightCallback);
+  },
+
+  successInsightCallback: function (respData) {
+    console.log('user add insight success');
+    this.setState({ insightMessages: respData.message });
+  },
+
+  errorInsightCallback: function () {
+    console.log('user add form URL error');
+    this.setState({ insightErrors: 'something went wrong =(' });
   },
 
   render: function () {
@@ -36,9 +60,9 @@ var Admin = React.createClass({
     return (
       <div className="ui container" style={containerStyle}>
         <form className="ui form">
-          <h2 className="ui header">Add Google Form to Account</h2>
-          <p>{this.state.errors}</p>
-          <p>{this.state.messages}</p>
+          <h2 className="ui header">Add Google Form to User Account</h2>
+          <p>{this.state.formUrlErrors}</p>
+          <p>{this.state.formUrlMessages}</p>
 
           <div className="required field">
             <label>user</label>
@@ -60,7 +84,39 @@ var Admin = React.createClass({
             ></input>
           </div>
 
-        <div className="ui button" type="submit" onClick={this.handleSubmit}>Submit</div>
+        <div className="ui teal button" type="submit" onClick={this.handleAddFormUrlSubmit}>Submit</div>
+        </form>
+
+        <div className="ui horizontal divider">or</div>
+
+        <form className="ui form">
+          <h2 className="ui header">Add Google Insight to User Account</h2>
+            <p>{this.state.insightErrors}</p>
+            <p>{this.state.insightMessages}</p>
+          <p>{this.state.errors}</p>
+          <p>{this.state.messages}</p>
+
+          <div className="required field">
+            <label>user</label>
+            <input
+              type="text"
+              name="username"
+              placeholder=""
+              valueLink={this.linkState('username')}
+            ></input>
+          </div>
+
+          <div className="required field">
+            <label>insight message</label>
+            <input
+              type="text"
+              name="insightMessage"
+              placeholder=""
+              valueLink={this.linkState('insightMessage')}
+            ></input>
+          </div>
+
+        <div className="ui teal button" type="submit" onClick={this.handleAddInsightSubmit}>Submit</div>
         </form>
       </div>
     );

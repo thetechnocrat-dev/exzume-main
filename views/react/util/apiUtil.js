@@ -76,20 +76,40 @@ module.exports = {
     });
   },
 
-  userUpdate: function (params, successCallback, errorCallback) {
+  addFormUrl: function (params, successCallback, errorCallback) {
     $.ajax({
       type: 'PUT',
-      url: '/api/' + params.username,
+      url: '/admin/api/addform',
       data: params,
       success:
         function (respData) {
           successCallback(respData);
-          console.log('ajax user update success', respData);
+          console.log('ajax add user form URL success', respData);
         },
 
       error:
         function (respError) {
-          console.log('ajax user update error', respError);
+          errorCallback();
+          console.log('ajax add user form URL error', respError);
+        },
+    });
+  },
+
+  addInsight: function (params, successCallback, errorCallback) {
+    $.ajax({
+      type: 'PUT',
+      url: '/admin/api/addinsight',
+      data: params,
+      success:
+        function (respData) {
+          successCallback(respData);
+          console.log('ajax add user insight success', respData);
+        },
+
+      error:
+        function (respError) {
+          errorCallback();
+          console.log('ajax add user insight error', respError);
         },
     });
   },
