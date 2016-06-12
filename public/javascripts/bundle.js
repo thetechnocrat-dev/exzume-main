@@ -24376,6 +24376,46 @@
 	
 	  mixins: [History],
 	
+	  getInitialState: function () {
+	    return { shouldShowWatson: false, clickCount: 0 };
+	  },
+	
+	  clickRedButton: function () {
+	    this.setState({ shouldShowWatson: !this.state.shouldShowWatson, clickCount: this.state.clickCount + 1 });
+	  },
+	
+	  justForAlan: function () {
+	    if (this.state.clickCount > 1) {
+	      return '';
+	    } else if (this.state.shouldShowWatson) {
+	      return React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'div',
+	          { className: 'ui circular green button', onClick: this.clickRedButton },
+	          'Do Click'
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'ui large image' },
+	          React.createElement('img', { src: 'http://www.imgjunk.com/wp-content/uploads/2015/05/Emma-Watson-Looking-Glamorous.jpg' }),
+	          React.createElement(
+	            'h1',
+	            { className: 'ui header' },
+	            'told you the UI would get you hard ;)'
+	          )
+	        )
+	      );
+	    } else {
+	      return React.createElement(
+	        'div',
+	        { className: 'ui circular red button', onClick: this.clickRedButton },
+	        'Do Not Click'
+	      );
+	    }
+	  },
+	
 	  clickSurvey: function () {
 	    var url = AuthStore.currentUser().formURL;
 	    var win = window.open(url, '_blank');
@@ -24393,6 +24433,7 @@
 	        { className: 'ui blue button', onClick: this.clickSurvey },
 	        'Fill out daily survey'
 	      ),
+	      this.justForAlan(),
 	      React.createElement(
 	        'h1',
 	        { className: 'ui left aligned header' },
