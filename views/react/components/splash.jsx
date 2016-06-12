@@ -4,7 +4,6 @@ var AuthStore = require('../stores/authStore');
 var AuthActions = require('../actions/authActions');
 
 // components
-var CanvasBackground = require('./canvasBackground');
 
 var App = React.createClass({
   mixins: [History],
@@ -81,7 +80,6 @@ var App = React.createClass({
           </div>
           {this.makeButtons()}
         </div>
-        <CanvasBackground />
       </div>
     );
   },

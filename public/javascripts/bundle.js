@@ -31775,7 +31775,6 @@
 	var AuthActions = __webpack_require__(211);
 	
 	// components
-	var CanvasBackground = __webpack_require__(243);
 	
 	var App = React.createClass({
 	  displayName: 'App',
@@ -31898,8 +31897,7 @@
 	          )
 	        ),
 	        this.makeButtons()
-	      ),
-	      React.createElement(CanvasBackground, null)
+	      )
 	    );
 	  }
 	
