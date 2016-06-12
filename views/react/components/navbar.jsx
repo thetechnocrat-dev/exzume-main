@@ -20,7 +20,11 @@ var Navbar = React.createClass({
 
   componentDidMount: function () {
     this.authToken = AuthStore.addListener(this._onChange);
-    AuthActions.retrieveSession();
+    if (!AuthStore.isSignedIn()) {
+      AuthActions.retrieveSession();
+    } else {
+      this.setState({ currentUser: AuthStore.currentUser().local.username });
+    }
   },
 
   componentWillUnmount: function () {
@@ -29,6 +33,10 @@ var Navbar = React.createClass({
 
   clickLogo: function () {
     this.history.push('/');
+  },
+
+  clickProfile: function () {
+    this.history.push('/profile');
   },
 
   clickSignout: function () {
@@ -46,7 +54,7 @@ var Navbar = React.createClass({
           {this.state.currentUser}
           <i className="dropdown icon"></i>
           <div className="menu">
-            <div className="item">Settings</div>
+            <div className="item" onClick={this.clickProfile}>Profile</div>
             <div className="item" onClick={this.clickSignout}>Signout</div>
           </div>
         </div>

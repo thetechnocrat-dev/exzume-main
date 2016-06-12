@@ -3,14 +3,14 @@ var Store = require('flux/utils').Store;
 var AuthConstants = require('../constants/authConstants');
 
 var AuthStore = new Store(Dispatcher);
-var _currentUser = {};
+var _currentUser = { user: '' };
 
 AuthStore.resetAuthStore = function (user) {
   _currentUser = user;
 },
 
 AuthStore.isSignedIn = function () {
-  return !(typeof _currentUser.user === 'undefined');
+  return !(typeof _currentUser.user.local === 'undefined');
 },
 
 AuthStore.currentUser = function () {
@@ -18,7 +18,6 @@ AuthStore.currentUser = function () {
 },
 
 AuthStore.getInsights = function (startIndex, size) {
-  console.log(_currentUser);
   var insights = _currentUser.user.insights;
   if (startIndex >= insights.length) {
     return [];
@@ -36,7 +35,7 @@ AuthStore.__onDispatch = function (payload) {
       this.__emitChange();
       break;
     case AuthConstants.SESSION_DESTROYED:
-      this.resetAuthStore({});
+      this.resetAuthStore({ user: '' });
       this.__emitChange();
       break;
   }

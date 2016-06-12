@@ -85,7 +85,7 @@ var Signup = React.createClass({
             ></input>
           </div>
 
-        <div className="ui button" type="submit" onClick={this.handleSubmit}>Submit</div>
+        <div className="ui teal button" type="submit" onClick={this.handleSubmit}>Submit</div>
         </form>
       </div>
     );

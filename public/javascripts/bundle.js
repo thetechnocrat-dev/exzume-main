@@ -61,6 +61,8 @@
 	var SignUp = __webpack_require__(256);
 	var CanvasBackground = __webpack_require__(243);
 	var Admin = __webpack_require__(257);
+	var Profile = __webpack_require__(258);
+	var DataStreamDetail = __webpack_require__(259);
 	
 	// once user auth is added just nest all the user paths with wildcard
 	// doing the above will also prevent you from having to include navbar on every view
@@ -74,7 +76,9 @@
 	  React.createElement(Route, { component: Survey, path: '/survey' }),
 	  React.createElement(Route, { component: About, path: '/about' }),
 	  React.createElement(Route, { component: SignIn, path: '/signin' }),
-	  React.createElement(Route, { component: SignUp, path: '/signup' })
+	  React.createElement(Route, { component: SignUp, path: '/signup' }),
+	  React.createElement(Route, { component: Profile, path: '/profile' }),
+	  React.createElement(Route, { component: DataStreamDetail, path: 'formdetail' })
 	);
 	
 	document.addEventListener('DOMContentLoaded', function () {
@@ -24487,7 +24491,11 @@
 	
 	  componentDidMount: function () {
 	    this.authToken = AuthStore.addListener(this._onChange);
-	    AuthActions.retrieveSession();
+	    if (!AuthStore.isSignedIn()) {
+	      AuthActions.retrieveSession();
+	    } else {
+	      this.setState({ currentUser: AuthStore.currentUser().local.username });
+	    }
 	  },
 	
 	  componentWillUnmount: function () {
@@ -24496,6 +24504,10 @@
 	
 	  clickLogo: function () {
 	    this.history.push('/');
+	  },
+	
+	  clickProfile: function () {
+	    this.history.push('/profile');
 	  },
 	
 	  clickSignout: function () {
@@ -24518,8 +24530,8 @@
 	          { className: 'menu' },
 	          React.createElement(
 	            'div',
-	            { className: 'item' },
-	            'Settings'
+	            { className: 'item', onClick: this.clickProfile },
+	            'Profile'
 	          ),
 	          React.createElement(
 	            'div',
@@ -25042,16 +25054,15 @@
 	var AuthConstants = __webpack_require__(216);
 	
 	var AuthStore = new Store(Dispatcher);
-	var _currentUser = {};
+	var _currentUser = { user: '' };
 	
 	AuthStore.resetAuthStore = function (user) {
 	  _currentUser = user;
 	}, AuthStore.isSignedIn = function () {
-	  return !(typeof _currentUser.user === 'undefined');
+	  return !(typeof _currentUser.user.local === 'undefined');
 	}, AuthStore.currentUser = function () {
 	  return _currentUser.user;
 	}, AuthStore.getInsights = function (startIndex, size) {
-	  console.log(_currentUser);
 	  var insights = _currentUser.user.insights;
 	  if (startIndex >= insights.length) {
 	    return [];
@@ -25067,7 +25078,7 @@
 	      this.__emitChange();
 	      break;
 	    case AuthConstants.SESSION_DESTROYED:
-	      this.resetAuthStore({});
+	      this.resetAuthStore({ user: '' });
 	      this.__emitChange();
 	      break;
 	  }
@@ -32499,7 +32510,7 @@
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'ui button', onClick: this.clickBack },
+	        { className: 'ui teal button', onClick: this.clickBack },
 	        'Back'
 	      )
 	    );
@@ -32753,7 +32764,7 @@
 	        ),
 	        React.createElement(
 	          'div',
-	          { className: 'ui button', type: 'submit', onClick: this.handleSubmit },
+	          { className: 'ui teal button', type: 'submit', onClick: this.handleSubmit },
 	          'Submit'
 	        )
 	      )
@@ -33119,7 +33130,7 @@
 	        ),
 	        React.createElement(
 	          'div',
-	          { className: 'ui button', type: 'submit', onClick: this.handleSubmit },
+	          { className: 'ui teal button', type: 'submit', onClick: this.handleSubmit },
 	          'Submit'
 	        )
 	      )
@@ -33327,6 +33338,187 @@
 	});
 	
 	module.exports = Admin;
+
+/***/ },
+/* 258 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var AuthStore = __webpack_require__(218);
+	var Navbar = __webpack_require__(210);
+	var History = __webpack_require__(159).History;
+	
+	var Profile = React.createClass({
+	  displayName: 'Profile',
+	
+	  mixins: [History],
+	
+	  getInitialState: function () {
+	    return { user: AuthStore.currentUser() };
+	  },
+	
+	  clickBack: function () {
+	    this.history.push('/dashboard');
+	  },
+	
+	  render: function () {
+	    var centerContainerStyle = { margin: '20%' };
+	    return React.createElement(
+	      'div',
+	      { className: 'ui container', style: centerContainerStyle },
+	      React.createElement(
+	        'div',
+	        { className: 'ui one column left aligned relaxed grid container' },
+	        React.createElement(
+	          'div',
+	          { className: 'row' },
+	          React.createElement(
+	            'div',
+	            { className: 'ui message' },
+	            React.createElement(
+	              'div',
+	              { className: 'header' },
+	              'Profile'
+	            ),
+	            React.createElement(
+	              'p',
+	              null,
+	              React.createElement(
+	                'b',
+	                null,
+	                'username: '
+	              ),
+	              this.state.user.local.username
+	            ),
+	            React.createElement(
+	              'p',
+	              null,
+	              React.createElement(
+	                'b',
+	                null,
+	                'email: '
+	              ),
+	              this.state.user.local.email
+	            ),
+	            React.createElement(
+	              'p',
+	              null,
+	              React.createElement(
+	                'b',
+	                null,
+	                'google form url: '
+	              ),
+	              this.state.user.formURL
+	            ),
+	            React.createElement(
+	              'p',
+	              null,
+	              React.createElement(
+	                'b',
+	                null,
+	                '# of insights: '
+	              ),
+	              this.state.user.insights.length
+	            )
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'row' },
+	          React.createElement(
+	            'div',
+	            { className: 'ui teal button', onClick: this.clickBack },
+	            'Back'
+	          )
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = Profile;
+
+/***/ },
+/* 259 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var AuthStore = __webpack_require__(218);
+	var PropTypes = React.PropTypes;
+	var History = __webpack_require__(159).History;
+	
+	var DataStreamDetail = React.createClass({
+	  displayName: 'DataStreamDetail',
+	
+	  mixins: [History],
+	
+	  getInitialState: function () {
+	    return { user: AuthStore.currentUser() };
+	  },
+	
+	  clickBack: function () {
+	    this.history.push('/dashboard');
+	  },
+	
+	  render: function () {
+	    var centerContainerStyle = { margin: '20%' };
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'ui container', style: centerContainerStyle },
+	      React.createElement(
+	        'div',
+	        { className: 'ui one column left aligned relaxed grid container' },
+	        React.createElement(
+	          'div',
+	          { className: 'row' },
+	          React.createElement(
+	            'div',
+	            { className: 'ui message' },
+	            React.createElement(
+	              'div',
+	              { className: 'header' },
+	              'Google Form Details'
+	            ),
+	            React.createElement(
+	              'p',
+	              null,
+	              React.createElement(
+	                'b',
+	                null,
+	                'description: '
+	              ),
+	              ' daily survey designed to get efficent data to find insights'
+	            ),
+	            React.createElement(
+	              'p',
+	              null,
+	              React.createElement(
+	                'b',
+	                null,
+	                'google form url: '
+	              ),
+	              this.state.user.formURL
+	            )
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'row' },
+	          React.createElement(
+	            'div',
+	            { className: 'ui teal button', onClick: this.clickBack },
+	            'Back'
+	          )
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = DataStreamDetail;
 
 /***/ }
 /******/ ]);
