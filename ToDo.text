@@ -12,3 +12,7 @@
 * decide terminology for auth, session, and user on front end
 * decide on a balance of commenting
 * do some javascript in the insightIndex makeInsights to show elaspedTime instead of Date
+
+
+
+* line 29-31 - signup.jsx -- fix history
