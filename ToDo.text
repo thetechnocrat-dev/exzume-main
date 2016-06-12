@@ -1,3 +1,7 @@
+Put anoter asterick if you are working on task
+ex/
+** fix this
+
 * make some routes (such as updating an user) require authentication
 * add data validation to User model
 * remove redundant Bcrypt in user auth
