@@ -24369,6 +24369,7 @@
 	var DataStreamIndex = __webpack_require__(236);
 	var InsightIndex = __webpack_require__(238);
 	var DataVisualizationIndex = __webpack_require__(240);
+	var AuthStore = __webpack_require__(218);
 	
 	var Dashboard = React.createClass({
 	  displayName: 'Dashboard',
@@ -24376,7 +24377,9 @@
 	  mixins: [History],
 	
 	  clickSurvey: function () {
-	    this.history.push('/survey');
+	    var url = AuthStore.currentUser().formURL;
+	    var win = window.open(url, '_blank');
+	    win.focus();
 	  },
 	
 	  render: function () {
@@ -24434,7 +24437,11 @@
 	  },
 	
 	  _onChange: function () {
-	    this.setState({ currentUser: AuthStore.currentUser().username });
+	    if (AuthStore.isSignedIn()) {
+	      this.setState({ currentUser: AuthStore.currentUser().local.username });
+	    } else {
+	      this.setState({ currentUser: '' });
+	    }
 	  },
 	
 	  componentDidMount: function () {
@@ -24541,7 +24548,7 @@
 	  },
 	
 	  signOut: function (successCallback) {
-	    ApiUtil.signout(this.destroySession, successCallback);
+	    ApiUtil.signOut(this.destroySession, successCallback);
 	  },
 	
 	  update: function (params, successCallback, errorCallback) {
@@ -24917,7 +24924,7 @@
 	    });
 	  },
 	
-	  signout: function (actionCallback, successCallback) {
+	  signOut: function (actionCallback, successCallback) {
 	    $.ajax({
 	      type: 'GET',
 	      url: '/api/signout',
@@ -24979,9 +24986,9 @@
 	AuthStore.resetAuthStore = function (user) {
 	  _currentUser = user;
 	}, AuthStore.isSignedIn = function () {
-	  return !(typeof _currentUser.username === 'undefined');
+	  return !(typeof _currentUser.user === 'undefined');
 	}, AuthStore.currentUser = function () {
-	  return _currentUser;
+	  return _currentUser.user;
 	}, AuthStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case AuthConstants.SESSION_RECEIVED:
@@ -31456,7 +31463,7 @@
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      { className: 'ui center aligned grid' },
+	      { className: 'ui left aligned grid' },
 	      React.createElement(
 	        'div',
 	        { className: 'doubling eight column row' },
@@ -31465,17 +31472,11 @@
 	          { className: 'column' },
 	          React.createElement(
 	            'button',
-	            { className: 'ui icon button' },
+	            { className: 'ui disabled teal icon button' },
 	            React.createElement('i', { className: 'large plus icon' })
 	          )
 	        ),
-	        React.createElement(DataStreamItem, { icon: 'browser' }),
-	        React.createElement(DataStreamItem, { icon: 'facebook' }),
-	        React.createElement(DataStreamItem, { icon: 'spotify' }),
-	        React.createElement(DataStreamItem, { icon: 'reddit' }),
-	        React.createElement(DataStreamItem, { icon: 'twitter' }),
-	        React.createElement(DataStreamItem, { icon: 'pied piper' }),
-	        React.createElement(DataStreamItem, { icon: 'github' })
+	        React.createElement(DataStreamItem, { icon: 'blue google', label: 'Google Form' })
 	      )
 	    );
 	  }
@@ -31495,11 +31496,16 @@
 	
 	
 	  render: function () {
-	    var iconClassName = 'huge ' + this.props.icon + ' icon';
+	    var iconClassName = 'large ' + this.props.icon + ' icon';
 	    return React.createElement(
 	      'div',
 	      { className: 'column' },
-	      React.createElement('i', { className: iconClassName })
+	      React.createElement(
+	        'button',
+	        { className: 'ui labeled basic icon button' },
+	        React.createElement('i', { className: iconClassName }),
+	        this.props.label
+	      )
 	    );
 	  }
 	

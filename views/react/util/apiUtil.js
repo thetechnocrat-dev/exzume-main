@@ -41,7 +41,7 @@ module.exports = {
     });
   },
 
-  signout: function (actionCallback, successCallback) {
+  signOut: function (actionCallback, successCallback) {
     $.ajax({
       type: 'GET',
       url: '/api/signout',

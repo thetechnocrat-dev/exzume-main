@@ -11,7 +11,11 @@ var Navbar = React.createClass({
   },
 
   _onChange: function () {
-    this.setState({ currentUser: AuthStore.currentUser().username });
+    if (AuthStore.isSignedIn()) {
+      this.setState({ currentUser: AuthStore.currentUser().local.username });
+    } else {
+      this.setState({ currentUser: '' });
+    }
   },
 
   componentDidMount: function () {

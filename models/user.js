@@ -10,6 +10,12 @@ var UserSchema = new Schema({
     email: String,
   },
   formURL:  { type: String, default: 'none' },
+  insights: [{
+      message: String,
+      date: Date,
+      liked: Boolean,
+    },
+  ],
 }, { autoIndex: false });
 
 UserSchema.methods.generateHash = function (password) {

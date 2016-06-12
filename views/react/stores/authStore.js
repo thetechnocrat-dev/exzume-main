@@ -10,11 +10,11 @@ AuthStore.resetAuthStore = function (user) {
 },
 
 AuthStore.isSignedIn = function () {
-  return !(typeof _currentUser.username === 'undefined');
+  return !(typeof _currentUser.user === 'undefined');
 },
 
 AuthStore.currentUser = function () {
-  return _currentUser;
+  return _currentUser.user;
 },
 
 AuthStore.__onDispatch = function (payload) {

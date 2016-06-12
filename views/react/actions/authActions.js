@@ -29,7 +29,7 @@ module.exports = {
   },
 
   signOut: function (successCallback) {
-    ApiUtil.signout(this.destroySession, successCallback);
+    ApiUtil.signOut(this.destroySession, successCallback);
   },
 
   update: function (params, successCallback, errorCallback) {

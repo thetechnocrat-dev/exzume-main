@@ -26,7 +26,7 @@ module.exports = function (router, passport) {
   });
 
   router.get('/api/session', function (req, res) {
-    res.json({ username: req.user.local.username });
+    res.json({ user: req.user });
   });
 
   router.put('/api/:username', function (req, res) {

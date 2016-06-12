@@ -6,12 +6,15 @@ var Navbar = require('./navbar');
 var DataStreamIndex = require('./dataStreamIndex');
 var InsightIndex = require('./insightIndex');
 var DataVisualizationIndex = require('./dataVisualizationIndex');
+var AuthStore = require('../stores/authStore');
 
 var Dashboard = React.createClass({
   mixins: [History],
 
   clickSurvey: function () {
-    this.history.push('/survey');
+    var url = AuthStore.currentUser().formURL;
+    var win = window.open(url, '_blank');
+    win.focus();
   },
 
   render: function () {
