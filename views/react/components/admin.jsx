@@ -1,12 +1,17 @@
 var React = require('react');
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var AuthActions = require('../actions/authActions');
+var History = require('react-router').History;
 
 var Admin = React.createClass({
-  mixins: [LinkedStateMixin],
+  mixins: [LinkedStateMixin, History],
 
   getInitialState: function () {
     return ({ formUrlErrors: '', formUrlMessages: '', insightErrors: '', insightMessages: '' });
+  },
+
+  clickHome: function () {
+    this.history.push('/');
   },
 
   handleAddFormUrlSubmit: function (event) {
@@ -118,6 +123,10 @@ var Admin = React.createClass({
 
         <div className="ui teal button" type="submit" onClick={this.handleAddInsightSubmit}>Submit</div>
         </form>
+
+        <div className="ui horizontal divider">or</div>
+
+        <div className="ui teal button" onClick={this.clickHome}>Go Home</div>
       </div>
     );
   },

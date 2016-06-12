@@ -33148,14 +33148,19 @@
 	var React = __webpack_require__(1);
 	var LinkedStateMixin = __webpack_require__(252);
 	var AuthActions = __webpack_require__(211);
+	var History = __webpack_require__(159).History;
 	
 	var Admin = React.createClass({
 	  displayName: 'Admin',
 	
-	  mixins: [LinkedStateMixin],
+	  mixins: [LinkedStateMixin, History],
 	
 	  getInitialState: function () {
 	    return { formUrlErrors: '', formUrlMessages: '', insightErrors: '', insightMessages: '' };
+	  },
+	
+	  clickHome: function () {
+	    this.history.push('/');
 	  },
 	
 	  handleAddFormUrlSubmit: function (event) {
@@ -33331,6 +33336,16 @@
 	          { className: 'ui teal button', type: 'submit', onClick: this.handleAddInsightSubmit },
 	          'Submit'
 	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'ui horizontal divider' },
+	        'or'
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'ui teal button', onClick: this.clickHome },
+	        'Go Home'
 	      )
 	    );
 	  }
