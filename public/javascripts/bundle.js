@@ -31637,25 +31637,41 @@
 	var React = __webpack_require__(1);
 	
 	var InsightItem = React.createClass({
-	  displayName: "InsightItem",
+	  displayName: 'InsightItem',
 	
+	  getInitialState: function () {
+	    return { isLiked: false };
+	  },
+	
+	  clickIcon: function () {
+	    this.setState({ isLiked: !this.state.isLiked });
+	  },
+	
+	  makeIcon: function () {
+	    var style = { cursor: 'pointer' };
+	    if (this.state.isLiked) {
+	      return React.createElement('i', { className: 'blue star icon', onClick: this.clickIcon, style: style });
+	    } else {
+	      return React.createElement('i', { className: 'empty star icon', onClick: this.clickIcon, style: style });
+	    }
+	  },
 	
 	  render: function () {
 	    return React.createElement(
-	      "div",
-	      { className: "item" },
-	      React.createElement("i", { className: "empty heart icon" }),
+	      'div',
+	      { className: 'item' },
+	      this.makeIcon(),
 	      React.createElement(
-	        "div",
-	        { className: "content" },
+	        'div',
+	        { className: 'content' },
 	        React.createElement(
-	          "div",
-	          { className: "header" },
+	          'div',
+	          { className: 'header' },
 	          this.props.message
 	        ),
 	        React.createElement(
-	          "div",
-	          { className: "description" },
+	          'div',
+	          { className: 'description' },
 	          this.props.time
 	        )
 	      )
