@@ -24408,7 +24408,7 @@
 	      React.createElement(
 	        'h1',
 	        { className: 'ui header' },
-	        'Your Data Visualizations'
+	        'Your Data Visualizations (coming soon)'
 	      ),
 	      React.createElement(DataVisualizationIndex, null),
 	      this.props.children
@@ -24534,11 +24534,11 @@
 	  },
 	
 	  signUp: function (params, successCallback, errorCallback) {
-	    ApiUtil.signup(params, this.receiveSession, successCallback, errorCallback);
+	    ApiUtil.signUp(params, successCallback, errorCallback);
 	  },
 	
 	  signIn: function (params, successCallback, errorCallback) {
-	    ApiUtil.signIn(params, this.receiveSession, successCallback, errorCallback);
+	    ApiUtil.signIn(params, successCallback, errorCallback);
 	  },
 	
 	  destroySession: function () {
@@ -24890,14 +24890,13 @@
 /***/ function(module, exports) {
 
 	module.exports = {
-	  signup: function (params, actionCallback, successCallback, errorCallback) {
+	  signUp: function (params, successCallback, errorCallback) {
 	    $.ajax({
 	      type: 'POST',
 	      url: '/api/signup',
 	      data: params,
 	      dataType: 'json',
 	      success: function (respData) {
-	        actionCallback(respData);
 	        successCallback();
 	        console.log('ajax sign up success', respData);
 	      },
@@ -24909,14 +24908,13 @@
 	    });
 	  },
 	
-	  signIn: function (params, actionCallback, successCallback, errorCallback) {
+	  signIn: function (params, successCallback, errorCallback) {
 	    $.ajax({
 	      type: 'POST',
 	      url: '/api/signin',
 	      data: params,
 	      dataType: 'json',
 	      success: function (respData) {
-	        actionCallback(respData);
 	        successCallback();
 	        console.log('ajax sign in success', respData);
 	      },
@@ -25011,6 +25009,16 @@
 	  return !(typeof _currentUser.user === 'undefined');
 	}, AuthStore.currentUser = function () {
 	  return _currentUser.user;
+	}, AuthStore.getInsights = function (startIndex, size) {
+	  console.log(_currentUser);
+	  var insights = _currentUser.user.insights;
+	  if (startIndex >= insights.length) {
+	    return [];
+	  } else if (startIndex + size >= insights.length) {
+	    return insights.slice(startIndex);
+	  } else {
+	    return insights.slice(startIndex, startIndex + size);
+	  };
 	}, AuthStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case AuthConstants.SESSION_RECEIVED:
@@ -31540,6 +31548,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var AuthStore = __webpack_require__(218);
 	
 	// components
 	var InsightItem = __webpack_require__(239);
@@ -31547,6 +31556,62 @@
 	var InsightIndex = React.createClass({
 	  displayName: 'InsightIndex',
 	
+	  getInitialState: function () {
+	    return { areMoreInsights: true, insights: [], startIndex: 0 };
+	  },
+	
+	  _onChange: function () {
+	    // if session is active get initial insights
+	    if (AuthStore.isSignedIn()) {
+	      this.clickMoreInsights();
+	    };
+	  },
+	
+	  componentDidMount: function () {
+	    this.authToken = AuthStore.addListener(this._onChange);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.authToken.remove();
+	  },
+	
+	  clickMoreInsights: function () {
+	    var CHUNK_SIZE = 10;
+	    var moreInsights = AuthStore.getInsights(this.state.startIndex, CHUNK_SIZE);
+	    this.setState({ startIndex: this.state.startIndex + CHUNK_SIZE });
+	
+	    // makes it so user can not request more insights after all insights are already displayed
+	    if (moreInsights.length < CHUNK_SIZE) {
+	      this.setState({ areMoreInsights: false });
+	    }
+	
+	    this.setState({ insights: this.state.insights.concat(moreInsights) });
+	  },
+	
+	  makeInsights: function () {
+	    return this.state.insights.map(function (insight, idx) {
+	      return React.createElement(InsightItem, { key: idx, time: insight.date, message: insight.message });
+	    });
+	  },
+	
+	  makeDownIcon: function () {
+	    if (this.state.areMoreInsights) {
+	      var downArrowStyle = { cursor: 'pointer' };
+	      return React.createElement(
+	        'div',
+	        { className: 'ui centered grid' },
+	        React.createElement(
+	          'div',
+	          { className: 'centered row' },
+	          React.createElement('i', {
+	            className: 'large grey angle down icon',
+	            style: downArrowStyle,
+	            onClick: this.clickMoreInsights
+	          })
+	        )
+	      );
+	    }
+	  },
 	
 	  render: function () {
 	    return React.createElement(
@@ -31555,23 +31620,9 @@
 	      React.createElement(
 	        'div',
 	        { className: 'ui relaxed divided centered list' },
-	        React.createElement(InsightItem, { time: '22 minutes ago', message: 'Your data shows that days you run are highly correlated with increased happiness' }),
-	        React.createElement(InsightItem, { time: '12 hours ago', message: 'Your stress is higher than normal. In the past socializing with close friends/family has decreased your stress, while getting less sleep has increased your stress' }),
-	        React.createElement(InsightItem, { time: '1 day ago', message: 'Good job! You have meditated/prayed three days in the last week and our data shows that for many users similiar to yourself that reguluar meditation/praying increases satisfaction and decreases stress' }),
-	        React.createElement(InsightItem, { time: '2 days ago', message: 'Looking for a book to read? Our data shows that many users similiar to you have had an improvement in satisfaction after reading The Alchemist by Paulo Coelho' }),
-	        React.createElement(InsightItem, { time: '3 days ago', message: 'You have answered your survey 21 days in row! Keep up the good work!' }),
-	        React.createElement(InsightItem, { time: '4 days ago', message: 'Your data shows that consuming caffeine has a slight negative effect on your productivity' }),
-	        React.createElement(InsightItem, { time: '4 days ago', message: 'Many users have reported they enjoyed using the app MoodPanda to collect information about their mood' })
+	        this.makeInsights()
 	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'ui centered grid' },
-	        React.createElement(
-	          'div',
-	          { className: 'centered row' },
-	          React.createElement('i', { className: 'large angle down icon' })
-	        )
-	      )
+	      this.makeDownIcon()
 	    );
 	  }
 	

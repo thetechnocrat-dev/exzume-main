@@ -27,7 +27,7 @@ var Dashboard = React.createClass({
         <DataStreamIndex />
         <h1 className="ui header">Your Insights</h1>
         <InsightIndex />
-        <h1 className="ui header">Your Data Visualizations</h1>
+        <h1 className="ui header">Your Data Visualizations (coming soon)</h1>
         <DataVisualizationIndex />
         {this.props.children}
       </div>

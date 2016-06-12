@@ -29,6 +29,14 @@ module.exports = function (router, passport) {
     res.json({ user: req.user });
   });
 
+  // router.get('/api/session/insights', function (req, res) {
+  //   if (typeof req.users.insights === 'undefined') {
+  //     res.send({ error: 'no user in session' });
+  //   }
+  //
+  //   res.json({ user: req.user.insights });
+  // });
+
   router.put('/admin/api/addform', function (req, res) {
     User.findOne({ 'local.username': req.body.username }, function (err, user) {
       if (err) { res.send(err); }

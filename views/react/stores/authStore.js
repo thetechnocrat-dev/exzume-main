@@ -17,6 +17,18 @@ AuthStore.currentUser = function () {
   return _currentUser.user;
 },
 
+AuthStore.getInsights = function (startIndex, size) {
+  console.log(_currentUser);
+  var insights = _currentUser.user.insights;
+  if (startIndex >= insights.length) {
+    return [];
+  } else if (startIndex + size >= insights.length) {
+    return insights.slice(startIndex);
+  } else {
+    return insights.slice(startIndex, startIndex + size);
+  };
+},
+
 AuthStore.__onDispatch = function (payload) {
   switch (payload.actionType) {
     case AuthConstants.SESSION_RECEIVED:

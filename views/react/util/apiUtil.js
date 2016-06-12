@@ -1,5 +1,5 @@
 module.exports = {
-  signup: function (params, actionCallback, successCallback, errorCallback) {
+  signUp: function (params, successCallback, errorCallback) {
     $.ajax({
       type: 'POST',
       url: '/api/signup',
@@ -7,7 +7,6 @@ module.exports = {
       dataType: 'json',
       success:
         function (respData) {
-          actionCallback(respData);
           successCallback();
           console.log('ajax sign up success', respData);
         },
@@ -20,7 +19,7 @@ module.exports = {
     });
   },
 
-  signIn: function (params, actionCallback, successCallback, errorCallback) {
+  signIn: function (params, successCallback, errorCallback) {
     $.ajax({
       type: 'POST',
       url: '/api/signin',
@@ -28,7 +27,6 @@ module.exports = {
       dataType: 'json',
       success:
         function (respData) {
-          actionCallback(respData);
           successCallback();
           console.log('ajax sign in success', respData);
         },

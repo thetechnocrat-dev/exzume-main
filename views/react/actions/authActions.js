@@ -15,11 +15,11 @@ module.exports = {
   },
 
   signUp: function (params, successCallback, errorCallback) {
-    ApiUtil.signup(params, this.receiveSession, successCallback, errorCallback);
+    ApiUtil.signUp(params, successCallback, errorCallback);
   },
 
   signIn: function (params, successCallback, errorCallback) {
-    ApiUtil.signIn(params, this.receiveSession, successCallback, errorCallback);
+    ApiUtil.signIn(params, successCallback, errorCallback);
   },
 
   destroySession: function () {
