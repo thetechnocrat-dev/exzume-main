@@ -31907,21 +31907,25 @@
 	  },
 	
 	  render: function () {
-	    var centerContainerStyle = { margin: '20%' };
+	    var centerContainerStyle = { marginTop: '20%' };
 	
 	    return React.createElement(
 	      'div',
-	      { className: 'ui one column center aligned relaxed grid container', style: centerContainerStyle },
+	      null,
 	      React.createElement(
 	        'div',
-	        { className: 'row' },
+	        { className: 'ui one column center aligned relaxed grid container', style: centerContainerStyle },
 	        React.createElement(
-	          'h1',
-	          { className: 'ui blue huge header' },
-	          'exzume'
-	        )
+	          'div',
+	          { className: 'row' },
+	          React.createElement(
+	            'h1',
+	            { className: 'ui blue huge header' },
+	            'exzume'
+	          )
+	        ),
+	        this.makeButtons()
 	      ),
-	      this.makeButtons(),
 	      React.createElement(CanvasBackground, null)
 	    );
 	  }
@@ -32091,7 +32095,7 @@
 	    var line = '';
 	    var lineHeight = parseInt(this.smallFontSize) * 1.2;
 	    var xPos = this.width / 2;
-	    var yPos = 0 + lineHeight;
+	    var yPos = lineHeight;
 	
 	    for (var n = 0; n < words.length; n++) {
 	      var testLine = line + words[n] + ' ';

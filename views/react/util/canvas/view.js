@@ -95,7 +95,7 @@ module.exports = function () {
     var line = '';
     var lineHeight = parseInt(this.smallFontSize) * 1.2;
     var xPos = this.width / 2;
-    var yPos = 0 + lineHeight;
+    var yPos = lineHeight;
 
     for (var n = 0; n < words.length; n++) {
       var testLine = line + words[n] + ' ';

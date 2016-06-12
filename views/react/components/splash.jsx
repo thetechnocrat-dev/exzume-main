@@ -71,14 +71,16 @@ var App = React.createClass({
   },
 
   render: function () {
-    var centerContainerStyle = { margin: '20%' };
+    var centerContainerStyle = { marginTop: '20%', };
 
     return (
-      <div className="ui one column center aligned relaxed grid container" style={centerContainerStyle}>
-        <div className="row">
-          <h1 className="ui blue huge header">exzume</h1>
+      <div>
+        <div className="ui one column center aligned relaxed grid container" style={centerContainerStyle}>
+          <div className="row">
+            <h1 className="ui blue huge header">exzume</h1>
+          </div>
+          {this.makeButtons()}
         </div>
-        {this.makeButtons()}
         <CanvasBackground />
       </div>
     );
