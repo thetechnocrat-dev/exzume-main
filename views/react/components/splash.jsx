@@ -71,7 +71,7 @@ var App = React.createClass({
   },
 
   render: function () {
-    var centerContainerStyle = { marginTop: '20%', };
+    var centerContainerStyle = { marginTop: '20%', marginBottom: '2%', };
 
     return (
       <div>
