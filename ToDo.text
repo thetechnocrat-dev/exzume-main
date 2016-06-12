@@ -1,0 +1,2 @@
+* make some routes (such as updating an user) require authentication
+* add data validation to User model

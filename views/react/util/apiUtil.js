@@ -75,4 +75,22 @@ module.exports = {
         },
     });
   },
+
+  userUpdate: function (params, successCallback, errorCallback) {
+    $.ajax({
+      type: 'PUT',
+      url: '/api/' + params.username,
+      data: params,
+      success:
+        function (respData) {
+          successCallback(respData);
+          console.log('ajax user update success', respData);
+        },
+
+      error:
+        function (respError) {
+          console.log('ajax user update error', respError);
+        },
+    });
+  },
 };

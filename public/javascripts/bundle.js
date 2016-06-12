@@ -55,11 +55,12 @@
 	var App = __webpack_require__(208);
 	var Dashboard = __webpack_require__(209);
 	var Splash = __webpack_require__(242);
-	var About = __webpack_require__(248);
-	var Survey = __webpack_require__(249);
-	var SignIn = __webpack_require__(252);
-	var SignUp = __webpack_require__(257);
+	var About = __webpack_require__(247);
+	var Survey = __webpack_require__(248);
+	var SignIn = __webpack_require__(251);
+	var SignUp = __webpack_require__(256);
 	var CanvasBackground = __webpack_require__(243);
+	var Admin = __webpack_require__(257);
 	
 	// once user auth is added just nest all the user paths with wildcard
 	// doing the above will also prevent you from having to include navbar on every view
@@ -67,7 +68,8 @@
 	  Route,
 	  { component: App, path: '/' },
 	  React.createElement(IndexRoute, { component: Splash }),
-	  React.createElement(Route, { component: CanvasBackground, path: 'canvas' }),
+	  React.createElement(Route, { component: Admin, path: '/admin' }),
+	  React.createElement(Route, { component: CanvasBackground, path: '/canvas' }),
 	  React.createElement(Route, { component: Dashboard, path: '/dashboard' }),
 	  React.createElement(Route, { component: Survey, path: '/survey' }),
 	  React.createElement(Route, { component: About, path: '/about' }),
@@ -24540,8 +24542,11 @@
 	
 	  signOut: function (successCallback) {
 	    ApiUtil.signout(this.destroySession, successCallback);
-	  }
+	  },
 	
+	  update: function (params, successCallback, errorCallback) {
+	    ApiUtil.userUpdate(params, successCallback, errorCallback);
+	  }
 	};
 
 /***/ },
@@ -24939,6 +24944,22 @@
 	
 	      error: function (respError) {
 	        console.log('ajax session error', respError);
+	      }
+	    });
+	  },
+	
+	  userUpdate: function (params, successCallback, errorCallback) {
+	    $.ajax({
+	      type: 'PUT',
+	      url: '/api/' + params.username,
+	      data: params,
+	      success: function (respData) {
+	        successCallback(respData);
+	        console.log('ajax user update success', respData);
+	      },
+	
+	      error: function (respError) {
+	        console.log('ajax user update error', respError);
 	      }
 	    });
 	  }
@@ -32260,8 +32281,7 @@
 	};
 
 /***/ },
-/* 247 */,
-/* 248 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -32354,15 +32374,15 @@
 	module.exports = About;
 
 /***/ },
-/* 249 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	
 	// components
 	var Navbar = __webpack_require__(210);
-	var TextQuestion = __webpack_require__(250);
-	var MultipleChoice = __webpack_require__(251);
+	var TextQuestion = __webpack_require__(249);
+	var MultipleChoice = __webpack_require__(250);
 	
 	var Survey = React.createClass({
 	  displayName: 'Survey',
@@ -32429,7 +32449,7 @@
 	module.exports = Survey;
 
 /***/ },
-/* 250 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -32457,7 +32477,7 @@
 	module.exports = TextQuestion;
 
 /***/ },
-/* 251 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -32505,12 +32525,12 @@
 	module.exports = MultipleChoice;
 
 /***/ },
-/* 252 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var AuthActions = __webpack_require__(211);
-	var LinkedStateMixin = __webpack_require__(253);
+	var LinkedStateMixin = __webpack_require__(252);
 	var History = __webpack_require__(159).History;
 	
 	// components
@@ -32609,13 +32629,13 @@
 	module.exports = SignIn;
 
 /***/ },
-/* 253 */
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(254);
+	module.exports = __webpack_require__(253);
 
 /***/ },
-/* 254 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32632,8 +32652,8 @@
 	
 	'use strict';
 	
-	var ReactLink = __webpack_require__(255);
-	var ReactStateSetters = __webpack_require__(256);
+	var ReactLink = __webpack_require__(254);
+	var ReactStateSetters = __webpack_require__(255);
 	
 	/**
 	 * A simple mixin around ReactLink.forState().
@@ -32656,7 +32676,7 @@
 	module.exports = LinkedStateMixin;
 
 /***/ },
-/* 255 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32730,7 +32750,7 @@
 	module.exports = ReactLink;
 
 /***/ },
-/* 256 */
+/* 255 */
 /***/ function(module, exports) {
 
 	/**
@@ -32839,11 +32859,11 @@
 	module.exports = ReactStateSetters;
 
 /***/ },
-/* 257 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var LinkedStateMixin = __webpack_require__(253);
+	var LinkedStateMixin = __webpack_require__(252);
 	var AuthActions = __webpack_require__(211);
 	var History = __webpack_require__(159).History;
 	
@@ -32973,6 +32993,111 @@
 	});
 	
 	module.exports = Signup;
+
+/***/ },
+/* 257 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var LinkedStateMixin = __webpack_require__(252);
+	var AuthActions = __webpack_require__(211);
+	
+	var Admin = React.createClass({
+	  displayName: 'Admin',
+	
+	  mixins: [LinkedStateMixin],
+	
+	  getInitialState: function () {
+	    return { errors: '', messages: '' };
+	  },
+	
+	  handleSubmit: function (event) {
+	    event.preventDefault();
+	    this.setState({ errors: '', messages: '' }); // clear messages from last submit
+	
+	    var putParams = {
+	      username: this.state.username,
+	      link: this.state.link
+	    };
+	
+	    AuthActions.update(putParams, this.successCallback, this.errorCallback);
+	  },
+	
+	  successCallback: function (respData) {
+	    console.log('user update success', respData);
+	    this.setState({ messages: respData.message });
+	  },
+	
+	  errorCallback: function () {
+	    console.log('user update error');
+	  },
+	
+	  render: function () {
+	    var containerStyle = { margin: '10%' };
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'ui container', style: containerStyle },
+	      React.createElement(
+	        'form',
+	        { className: 'ui form' },
+	        React.createElement(
+	          'h2',
+	          { className: 'ui header' },
+	          'Add Google Form to Account'
+	        ),
+	        React.createElement(
+	          'p',
+	          null,
+	          this.state.errors
+	        ),
+	        React.createElement(
+	          'p',
+	          null,
+	          this.state.messages
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'required field' },
+	          React.createElement(
+	            'label',
+	            null,
+	            'user'
+	          ),
+	          React.createElement('input', {
+	            type: 'text',
+	            name: 'username',
+	            placeholder: '',
+	            valueLink: this.linkState('username')
+	          })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'required field' },
+	          React.createElement(
+	            'label',
+	            null,
+	            'google form link'
+	          ),
+	          React.createElement('input', {
+	            type: 'text',
+	            name: 'link',
+	            placeholder: '',
+	            valueLink: this.linkState('link')
+	          })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'ui button', type: 'submit', onClick: this.handleSubmit },
+	          'Submit'
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = Admin;
 
 /***/ }
 /******/ ]);

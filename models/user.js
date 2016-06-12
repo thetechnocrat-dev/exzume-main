@@ -9,6 +9,7 @@ var UserSchema = new Schema({
     password: String,
     email: String,
   },
+  formURL:  { type: String, default: 'none' },
 }, { autoIndex: false });
 
 UserSchema.methods.generateHash = function (password) {

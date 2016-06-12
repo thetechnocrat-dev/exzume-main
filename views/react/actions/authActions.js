@@ -32,4 +32,7 @@ module.exports = {
     ApiUtil.signout(this.destroySession, successCallback);
   },
 
+  update: function (params, successCallback, errorCallback) {
+    ApiUtil.userUpdate(params, successCallback, errorCallback);
+  },
 };
