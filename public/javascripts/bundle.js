@@ -31572,10 +31572,16 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var History = __webpack_require__(159).History;
 	
 	var DataStreamItem = React.createClass({
 	  displayName: 'DataStreamItem',
 	
+	  mixins: [History],
+	
+	  clickIconButton: function () {
+	    this.history.push('/formdetail');
+	  },
 	
 	  render: function () {
 	    var iconClassName = 'large ' + this.props.icon + ' icon';
@@ -31584,7 +31590,7 @@
 	      { className: 'column' },
 	      React.createElement(
 	        'button',
-	        { className: 'ui labeled basic icon button' },
+	        { className: 'ui labeled basic icon button', onClick: this.clickIconButton },
 	        React.createElement('i', { className: iconClassName }),
 	        this.props.label
 	      )
