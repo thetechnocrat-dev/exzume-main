@@ -30,10 +30,17 @@ var Signup = React.createClass({
     this.history.push('/dashboard');
   },
 
-  errorCallback: function (errors) {
-    console.log(errors);
+  errorCallback: function (errorMessage) {
+    console.log(errorMessage);
+    this.setState({ errors: errorMessage });
+  },
 
-    // this.setState({ errors: JSON.parse(errors) });
+  makeErrors: function () {
+    if (this.state.errors !== '') {
+      return (
+        <div className="ui red message">{this.state.errors}</div>
+      );
+    }
   },
 
   render: function () {
@@ -43,7 +50,7 @@ var Signup = React.createClass({
       <div className="ui container" style={containerStyle}>
         <form className="ui form">
           <h2 className="ui header">Sign Up</h2>
-          <p>{this.state.errors}</p>
+          {this.makeErrors()}
 
           <div className="required field">
             <label>username</label>

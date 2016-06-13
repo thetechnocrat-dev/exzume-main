@@ -31741,8 +31741,6 @@
 	  errorCallback: function (errorMessage) {
 	    console.log(errorMessage);
 	    this.setState({ errors: errorMessage });
-	
-	    // this.setState({ errors: JSON.parse(errors) });
 	  },
 	
 	  successCallback: function () {
@@ -32085,10 +32083,19 @@
 	    this.history.push('/dashboard');
 	  },
 	
-	  errorCallback: function (errors) {
-	    console.log(errors);
+	  errorCallback: function (errorMessage) {
+	    console.log(errorMessage);
+	    this.setState({ errors: errorMessage });
+	  },
 	
-	    // this.setState({ errors: JSON.parse(errors) });
+	  makeErrors: function () {
+	    if (this.state.errors !== '') {
+	      return React.createElement(
+	        'div',
+	        { className: 'ui red message' },
+	        this.state.errors
+	      );
+	    }
 	  },
 	
 	  render: function () {
@@ -32105,11 +32112,7 @@
 	          { className: 'ui header' },
 	          'Sign Up'
 	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          this.state.errors
-	        ),
+	        this.makeErrors(),
 	        React.createElement(
 	          'div',
 	          { className: 'required field' },

@@ -27,8 +27,6 @@ var SignIn = React.createClass({
   errorCallback: function (errorMessage) {
     console.log(errorMessage);
     this.setState({ errors: errorMessage });
-
-    // this.setState({ errors: JSON.parse(errors) });
   },
 
   successCallback: function () {

@@ -7,36 +7,34 @@ module.exports = function (passport) {
   },
     function (req, username, password, done) {
       process.nextTick(function () {
-        User.findOne({ 'local.username': username }, function (err, user) {
+        User.findOne({ 'local.username': username }, function (err, user, message) {
           if (err) {
-            console.log('error in sign up: ' + err);
+            console.log('local-signup error in sign up: ' + err);
             return done(err);
           }
 
           // already exists
           if (user) {
             console.log('user already exists with username: ' + username);
-            return done(null, false, req.flash('signupMessage', 'Username is already take'));
+            return done(null, false, { errorMessage: 'username already exists' });
           }
 
           // not already signed in
-          if (!req.user) {
-            var newUser = new User();
+          var newUser = new User();
 
-            newUser.local.username = username;
-            newUser.local.password = newUser.generateHash(password);
-            newUser.local.email = req.body.email;
+          newUser.local.username = username;
+          newUser.local.password = newUser.generateHash(password);
+          newUser.local.email = req.body.email;
 
-            newUser.save(function (err) {
-              if (err) {
-                console.log('error in saving user: ' + err);
-                throw err;
-              }
+          newUser.save(function (err) {
+            if (err) {
+              console.log('error in saving user: ' + err);
+              throw err; // should we do something better here?
+            }
 
-              console.log('user registration successful');
-              return done(null, newUser);
-            });
-          }
+            console.log('local-signup - user registration successful');
+            return done(null, newUser);
+          });
         });
       });
     })
