@@ -16,10 +16,13 @@ module.exports = function (router, passport) {
   router.post('/api/signin', function (req, res) {
     passport.authenticate('local-login'), function (err, user, info) {
       if (err) {
+        console.log('route 500 err', err);
         resp.status(500).json({ message: 'internal error - try refreshing the page' });
       } else if (user) {
+        console.log('route good');
         res.json({ message: 'sign in success' });
       } else {
+        console.log('402 err', info);
         res.status(402).json(info);
       };
     };

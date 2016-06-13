@@ -8,17 +8,21 @@ module.exports = function (passport) {
   function (req, username, password, done) {
     User.findOne({ 'local.username': username }, function (err, user, message) {
       if (err) {
+        console.log('local login err', err);
         return done(err);
       }
 
       if (!user) {
+        console.log('local login !user');
         return done(null, false, { signinMessage: 'username does not exist' });
       }
 
       if (!user.validPassword(password)) {
+        console.log('local login not valid PW');
         return done(null, false, { signinMessage: 'invalid password' });
       }
 
+      console.log('local login success');
       return done(null, user);
     });
   }
