@@ -24981,16 +24981,16 @@
 	var AuthConstants = __webpack_require__(216);
 	
 	var AuthStore = new Store(Dispatcher);
-	var _currentUser = { user: '' };
+	var _currentUser = {};
 	
 	AuthStore.resetAuthStore = function (user) {
 	  _currentUser = user;
 	}, AuthStore.isSignedIn = function () {
-	  return !(typeof _currentUser.user.local === 'undefined');
+	  return !(typeof _currentUser.local === 'undefined');
 	}, AuthStore.currentUser = function () {
-	  return _currentUser.user;
+	  return _currentUser;
 	}, AuthStore.getInsights = function (startIndex, size) {
-	  var insights = _currentUser.user.insights;
+	  var insights = _currentUser.insights;
 	  if (startIndex >= insights.length) {
 	    return [];
 	  } else if (startIndex + size >= insights.length) {
@@ -25005,7 +25005,7 @@
 	      this.__emitChange();
 	      break;
 	    case AuthConstants.SESSION_DESTROYED:
-	      this.resetAuthStore({ user: '' });
+	      this.resetAuthStore({});
 	      this.__emitChange();
 	      break;
 	  }

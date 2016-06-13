@@ -13,6 +13,18 @@ module.exports = function (router, passport) {
     }
   );
 
+  router.post('/api/signin', function (req, res) {
+    passport.authenticate('local-login'), function (err, user, info) {
+      if (err) {
+        resp.status(500).json({ message: 'internal error - try refreshing the page' });
+      } else if (user) {
+        res.json({ message: 'sign in success' });
+      } else {
+        res.status(402).json(info);
+      };
+    };
+  }),
+
   router.post('/api/signup',
     passport.authenticate('local-signup'),
     function (req, res) {
@@ -26,7 +38,7 @@ module.exports = function (router, passport) {
   });
 
   router.get('/api/session', function (req, res) {
-    res.json({ user: req.user });
+    res.json(req.user);
   });
 
   // router.get('/api/session/insights', function (req, res) {
