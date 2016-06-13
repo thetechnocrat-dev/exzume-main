@@ -6,13 +6,6 @@ module.exports = function (router, passport) {
     res.render('main', { title: 'Exzume' });
   });
 
-  // router.post('/api/signin',
-  //   passport.authenticate('local-login'),
-  //   function (req, res) {
-  //     res.json({ message: 'sign in success' });
-  //   }
-  // );
-
   router.post('/api/signin', function (req, res) {
     passport.authenticate('local-login', function (err, user, info) {
       if (err) {
