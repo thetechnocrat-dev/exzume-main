@@ -54,15 +54,14 @@
 	// Components
 	var App = __webpack_require__(208);
 	var Dashboard = __webpack_require__(209);
-	var Splash = __webpack_require__(242);
-	var About = __webpack_require__(247);
-	var Survey = __webpack_require__(248);
-	var SignIn = __webpack_require__(251);
-	var SignUp = __webpack_require__(256);
-	var CanvasBackground = __webpack_require__(243);
-	var Admin = __webpack_require__(257);
-	var Profile = __webpack_require__(258);
-	var DataStreamDetail = __webpack_require__(259);
+	var Splash = __webpack_require__(236);
+	var About = __webpack_require__(237);
+	var SignIn = __webpack_require__(238);
+	var SignUp = __webpack_require__(243);
+	var Admin = __webpack_require__(244);
+	var Profile = __webpack_require__(245);
+	var DataStreamDetail = __webpack_require__(246);
+	var DashboardLanding = __webpack_require__(247);
 	
 	// once user auth is added just nest all the user paths with wildcard
 	// doing the above will also prevent you from having to include navbar on every view
@@ -71,14 +70,16 @@
 	  { component: App, path: '/' },
 	  React.createElement(IndexRoute, { component: Splash }),
 	  React.createElement(Route, { component: Admin, path: '/admin' }),
-	  React.createElement(Route, { component: CanvasBackground, path: '/canvas' }),
-	  React.createElement(Route, { component: Dashboard, path: '/dashboard' }),
-	  React.createElement(Route, { component: Survey, path: '/survey' }),
 	  React.createElement(Route, { component: About, path: '/about' }),
 	  React.createElement(Route, { component: SignIn, path: '/signin' }),
 	  React.createElement(Route, { component: SignUp, path: '/signup' }),
-	  React.createElement(Route, { component: Profile, path: '/profile' }),
-	  React.createElement(Route, { component: DataStreamDetail, path: 'formdetail' })
+	  React.createElement(
+	    Route,
+	    { component: Dashboard, path: '/dashboard' },
+	    React.createElement(IndexRoute, { component: DashboardLanding }),
+	    React.createElement(Route, { component: Profile, path: '/profile' }),
+	    React.createElement(Route, { component: DataStreamDetail, path: 'formdetail' })
+	  )
 	);
 	
 	document.addEventListener('DOMContentLoaded', function () {
@@ -24366,33 +24367,13 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var History = __webpack_require__(159).History;
 	
 	// Components
 	var Navbar = __webpack_require__(210);
-	var DataStreamIndex = __webpack_require__(236);
-	var InsightIndex = __webpack_require__(238);
-	var DataVisualizationIndex = __webpack_require__(240);
-	var AuthStore = __webpack_require__(218);
 	
 	var Dashboard = React.createClass({
 	  displayName: 'Dashboard',
 	
-	  mixins: [History],
-	
-	  getInitialState: function () {
-	    return { shouldShowWatson: false, clickCount: 0 };
-	  },
-	
-	  clickRedButton: function () {
-	    this.setState({ shouldShowWatson: !this.state.shouldShowWatson, clickCount: this.state.clickCount + 1 });
-	  },
-	
-	  clickSurvey: function () {
-	    var url = AuthStore.currentUser().formURL;
-	    var win = window.open(url, '_blank');
-	    win.focus();
-	  },
 	
 	  render: function () {
 	
@@ -24400,29 +24381,6 @@
 	      'div',
 	      { className: 'ui container' },
 	      React.createElement(Navbar, null),
-	      React.createElement(
-	        'div',
-	        { className: 'ui blue button', onClick: this.clickSurvey },
-	        'Fill out daily survey'
-	      ),
-	      React.createElement(
-	        'h1',
-	        { className: 'ui left aligned header' },
-	        'Your Data Streams'
-	      ),
-	      React.createElement(DataStreamIndex, null),
-	      React.createElement(
-	        'h1',
-	        { className: 'ui header' },
-	        'Your Insights'
-	      ),
-	      React.createElement(InsightIndex, null),
-	      React.createElement(
-	        'h1',
-	        { className: 'ui header' },
-	        'Your Data Visualizations (coming soon)'
-	      ),
-	      React.createElement(DataVisualizationIndex, null),
 	      this.props.children
 	    );
 	  }
@@ -24458,6 +24416,8 @@
 	
 	  componentDidMount: function () {
 	    this.authToken = AuthStore.addListener(this._onChange);
+	
+	    // check for active session if there is not already an active session
 	    if (!AuthStore.isSignedIn()) {
 	      AuthActions.retrieveSession();
 	    } else {
@@ -31501,275 +31461,6 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	
-	// components
-	var DataStreamItem = __webpack_require__(237);
-	
-	var DataStreamIndex = React.createClass({
-	  displayName: 'DataStreamIndex',
-	
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'ui left aligned grid' },
-	      React.createElement(
-	        'div',
-	        { className: 'doubling eight column row' },
-	        React.createElement(
-	          'div',
-	          { className: 'column' },
-	          React.createElement(
-	            'button',
-	            { className: 'ui disabled teal icon button' },
-	            React.createElement('i', { className: 'large plus icon' })
-	          )
-	        ),
-	        React.createElement(DataStreamItem, { icon: 'blue google', label: 'Google Form' })
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = DataStreamIndex;
-
-/***/ },
-/* 237 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var History = __webpack_require__(159).History;
-	
-	var DataStreamItem = React.createClass({
-	  displayName: 'DataStreamItem',
-	
-	  mixins: [History],
-	
-	  clickIconButton: function () {
-	    this.history.push('/formdetail');
-	  },
-	
-	  render: function () {
-	    var iconClassName = 'large ' + this.props.icon + ' icon';
-	    return React.createElement(
-	      'div',
-	      { className: 'column' },
-	      React.createElement(
-	        'button',
-	        { className: 'ui labeled basic icon button', onClick: this.clickIconButton },
-	        React.createElement('i', { className: iconClassName }),
-	        this.props.label
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = DataStreamItem;
-
-/***/ },
-/* 238 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var AuthStore = __webpack_require__(218);
-	
-	// components
-	var InsightItem = __webpack_require__(239);
-	
-	var InsightIndex = React.createClass({
-	  displayName: 'InsightIndex',
-	
-	  getInitialState: function () {
-	    return { areMoreInsights: true, insights: [], startIndex: 0 };
-	  },
-	
-	  _onChange: function () {
-	    // if session is active get initial insights
-	    if (AuthStore.isSignedIn()) {
-	      this.clickMoreInsights();
-	    };
-	  },
-	
-	  componentDidMount: function () {
-	    this.authToken = AuthStore.addListener(this._onChange);
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.authToken.remove();
-	  },
-	
-	  clickMoreInsights: function () {
-	    var CHUNK_SIZE = 10;
-	    var moreInsights = AuthStore.getInsights(this.state.startIndex, CHUNK_SIZE);
-	    this.setState({ startIndex: this.state.startIndex + CHUNK_SIZE });
-	
-	    // makes it so user can not request more insights after all insights are already displayed
-	    if (moreInsights.length < CHUNK_SIZE) {
-	      this.setState({ areMoreInsights: false });
-	    }
-	
-	    this.setState({ insights: this.state.insights.concat(moreInsights) });
-	  },
-	
-	  makeInsights: function () {
-	    return this.state.insights.map(function (insight, idx) {
-	      return React.createElement(InsightItem, { key: idx, time: insight.date, message: insight.message });
-	    });
-	  },
-	
-	  makeDownIcon: function () {
-	    if (this.state.areMoreInsights) {
-	      var downArrowStyle = { cursor: 'pointer' };
-	      return React.createElement(
-	        'div',
-	        { className: 'ui centered grid' },
-	        React.createElement(
-	          'div',
-	          { className: 'centered row' },
-	          React.createElement('i', {
-	            className: 'large grey angle down icon',
-	            style: downArrowStyle,
-	            onClick: this.clickMoreInsights
-	          })
-	        )
-	      );
-	    }
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'div',
-	        { className: 'ui relaxed divided centered list' },
-	        this.makeInsights()
-	      ),
-	      this.makeDownIcon()
-	    );
-	  }
-	
-	});
-	
-	module.exports = InsightIndex;
-
-/***/ },
-/* 239 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	var InsightItem = React.createClass({
-	  displayName: 'InsightItem',
-	
-	  getInitialState: function () {
-	    return { isLiked: false };
-	  },
-	
-	  clickIcon: function () {
-	    this.setState({ isLiked: !this.state.isLiked });
-	  },
-	
-	  makeIcon: function () {
-	    var style = { cursor: 'pointer' };
-	    if (this.state.isLiked) {
-	      return React.createElement('i', { className: 'blue star icon', onClick: this.clickIcon, style: style });
-	    } else {
-	      return React.createElement('i', { className: 'empty star icon', onClick: this.clickIcon, style: style });
-	    }
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'item' },
-	      this.makeIcon(),
-	      React.createElement(
-	        'div',
-	        { className: 'content' },
-	        React.createElement(
-	          'div',
-	          { className: 'header' },
-	          this.props.message
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'description' },
-	          this.props.time
-	        )
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = InsightItem;
-
-/***/ },
-/* 240 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	// components
-	var DataVisualizationItem = __webpack_require__(241);
-	
-	var DataVisualizationIndex = React.createClass({
-	  displayName: 'DataVisualizationIndex',
-	
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'ui centered grid' },
-	      React.createElement(
-	        'div',
-	        { className: 'doubling two column row' },
-	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/horizontalbar.png' }),
-	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/line.png' }),
-	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/scatter.png' }),
-	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/stackedbar.png' })
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = DataVisualizationIndex;
-
-/***/ },
-/* 241 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	var DataVisualizationItem = React.createClass({
-	  displayName: "DataVisualizationItem",
-	
-	
-	  render: function () {
-	    return React.createElement(
-	      "div",
-	      { className: "column" },
-	      React.createElement(
-	        "div",
-	        { className: "ui large image" },
-	        React.createElement("img", { src: this.props.image })
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = DataVisualizationItem;
-
-/***/ },
-/* 242 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
 	var AuthStore = __webpack_require__(218);
 	var AuthActions = __webpack_require__(211);
@@ -31780,6 +31471,23 @@
 	  displayName: 'App',
 	
 	  mixins: [History],
+	
+	  _onChange: function () {
+	    this.forceUpdate();
+	  },
+	
+	  componentDidMount: function () {
+	    this.authToken = AuthStore.addListener(this._onChange);
+	
+	    // check for active session if there is not already an active session
+	    if (!AuthStore.isSignedIn()) {
+	      AuthActions.retrieveSession();
+	    };
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.authToken.remove();
+	  },
 	
 	  clickAbout: function () {
 	    this.history.push('/about');
@@ -31906,504 +31614,7 @@
 	module.exports = App;
 
 /***/ },
-/* 243 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var CanvasView = __webpack_require__(244);
-	var Constellation = __webpack_require__(245);
-	var Star = __webpack_require__(246);
-	
-	var CanvasBackground = React.createClass({
-	  displayName: 'CanvasBackground',
-	
-	
-	  getInitialState: function () {
-	    return {
-	      windowWidth: window.innerWidth, windowHeight: window.innerHeight,
-	      universe: null
-	    };
-	  },
-	
-	  handleResize: function (event) {
-	    this.setState({ windowWidth: window.innerWidth, windowHeight: window.innerHeight });
-	    this.newCanvas();
-	  },
-	
-	  componentDidMount: function () {
-	    this.startCanvas();
-	    window.addEventListener('resize', this.handleResize);
-	  },
-	
-	  componentWillUnmount: function () {
-	    window.removeEventListener('resize', this.handleResize);
-	  },
-	
-	  startCanvas: function () {
-	    var canvas = document.getElementById('constellation-canvas');
-	    Constellation();
-	    Star();
-	    CanvasView();
-	    var view = new Universe.View(canvas, this.state.windowWidth, this.state.windowHeight);
-	    view.start(); // initialize new canvas
-	    this.setState({
-	      universe: view
-	    });
-	  },
-	
-	  newCanvas: function () {
-	    var canvas = document.getElementById('constellation-canvas');
-	    this.state.universe.end(); // removes listner from previous universe
-	    var view = new Universe.View(canvas, this.state.windowWidth, this.state.windowHeight);
-	    view.start(); // initialize new canvas
-	    this.setState({
-	      universe: view
-	    });
-	  },
-	
-	  render: function () {
-	    return React.createElement('canvas', { id: 'constellation-canvas' });
-	  }
-	
-	});
-	
-	module.exports = CanvasBackground;
-
-/***/ },
-/* 244 */
-/***/ function(module, exports) {
-
-	module.exports = function () {
-	
-	  if (typeof window.Universe === 'undefined') {
-	    window.Universe = {};
-	  }
-	
-	  var View = Universe.View = function (canvas, width, height) {
-	    this.canvas = canvas;
-	    this.width = width;
-	    this.height = height;
-	    this.largeFontSize = (this.width / 20).toString() + 'px';
-	    this.smallFontSize = (parseInt(this.largeFontSize) / 3).toString() + 'px';
-	    this.starRadius = 0.003 * width;
-	    this.quote = '';
-	    canvas.width = width;
-	    canvas.height = height;
-	    var ctx = canvas.getContext('2d');
-	    this.ctx = ctx;
-	    this.constellations = this.addConstellations();
-	    this.addConstellationListener();
-	  };
-	
-	  View.prototype.addConstellationListener = function (e) {
-	    this.callBack = function (e) {
-	      var mousePos = this.getMousePos(this.canvas, e);
-	
-	      // loops through every star, could add a break once a star is found
-	      for (var i = 0; i < _this.constellations.length; i++) {
-	        var constellation = _this.constellations[i];
-	        for (var j = 0; j < constellation.stars.length; j++) {
-	          var star = constellation.stars[j];
-	          if (_this.isMouseOnStar(mousePos, star.pos)) {
-	            _this.animate(i);
-	
-	            // break out of loops
-	            j = constellation.stars.length;
-	            i = _this.constellations.length;
-	          }
-	        }
-	      }
-	    };
-	
-	    var _this = this;
-	    this.canvas.addEventListener('mousemove', this.callBack.bind(_this));
-	  };
-	
-	  View.prototype.start = function () {
-	    // written as bind incase I want to use animate recusively later
-	    requestAnimationFrame(this.animate.bind(this));
-	  };
-	
-	  View.prototype.end = function () {
-	    this.constellations = []; // removes ghost constellations kinda hacky
-	    this.canvas.removeEventListener('mousemove', this.callBack);
-	  };
-	
-	  View.prototype.animate = function (selectedConstellation) {
-	    this.ctx.clearRect(0, 0, this.width, this.height);
-	
-	    // draw constellations
-	    for (var i = 0; i < this.constellations.length; i++) {
-	      this.constellations[i].draw(this.ctx);
-	
-	      if (i == selectedConstellation) {
-	        this.constellations[i].connect(this.ctx);
-	        this.quote = this.constellations[i].quote;
-	      }
-	    }
-	
-	    // draw text
-	    this.ctx.fillStyle = '#008080';
-	    this.ctx.textAlign = 'center';
-	    this.ctx.font = this.smallFontSize + ' Lato';
-	    var maxWidth = this.ctx.measureText('exzume').width * 5;
-	    this.wrapText(this.quote, maxWidth);
-	  };
-	
-	  View.prototype.getMousePos = function (canvas, e) {
-	    var rect = canvas.getBoundingClientRect();
-	    return [e.clientX - rect.left, e.clientY - rect.top];
-	  };
-	
-	  View.prototype.isMouseOnStar = function (mousePos, starPos) {
-	    var distance = Math.sqrt(Math.pow(mousePos[0] - starPos[0], 2) + Math.pow(mousePos[1] - starPos[1], 2));
-	
-	    return distance <= 2 * this.starRadius;
-	  };
-	
-	  View.prototype.wrapText = function (text, maxWidth) {
-	    var words = text.split(' ');
-	    var line = '';
-	    var lineHeight = parseInt(this.smallFontSize) * 1.2;
-	    var xPos = this.width / 2;
-	    var yPos = lineHeight;
-	
-	    for (var n = 0; n < words.length; n++) {
-	      var testLine = line + words[n] + ' ';
-	      var metrics = this.ctx.measureText(testLine);
-	      var testWidth = metrics.width;
-	      if (testWidth > maxWidth && n > 0) {
-	        this.ctx.fillText(line, xPos, yPos);
-	        line = words[n] + ' ';
-	        yPos += lineHeight;
-	      } else {
-	        line = testLine;
-	      }
-	    }
-	
-	    this.ctx.fillText(line, xPos, yPos);
-	  };
-	
-	  View.prototype.addConstellations = function () {
-	    var unit = this.starRadius * 2; // unit equal to 3 star diameters
-	    var constellations = [];
-	
-	    var bookQuote = '"Employ your time in improving yourself by other\'s writings so that you shall come easily by what others have labored hard for." - Socrates';
-	    var anchorX = this.width * 10 / 100;
-	    var anchorY = this.height * 15 / 100;
-	    var bookStars = [new Universe.Star({
-	      constellationRef: 0,
-	      pos: [anchorX, anchorY],
-	      connections: [1, 2],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 0,
-	      pos: [anchorX + 6 * unit, anchorY + 12 * unit],
-	      connections: [],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 0,
-	      pos: [anchorX + 12 * unit, anchorY - 3 * unit],
-	      connections: [3],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 0,
-	      pos: [anchorX + 18 * unit, anchorY + 9 * unit],
-	      connections: [1, 3],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 0,
-	      pos: [anchorX + 21 * unit, anchorY - 9 * unit],
-	      connections: [2],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 0,
-	      pos: [anchorX + 27 * unit, anchorY + 3 * unit],
-	      connections: [3, 4],
-	      radius: this.starRadius
-	    })];
-	    var bookConstellation = new Universe.Constellation(bookStars, bookQuote);
-	    constellations.push(bookConstellation);
-	
-	    var scale = 1.5; // used to resive with one number
-	    var anchorX = this.width * 30 / 100;
-	    var anchorY = this.height * 35 / 100;
-	    var dragonQuote = '"Fairy tales are more than true: not because they tell us that dragons exist, but because they tell us that dragons can be beaten." - Neil Gaiman';
-	    var dragonStars = [new Universe.Star({
-	      constellationRef: 1,
-	      pos: [anchorX, anchorY],
-	      connections: [1, 2, 3],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 1,
-	      pos: [anchorX + 2 * unit * scale, anchorY - 4 * unit * scale],
-	      connections: [4],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 1,
-	      pos: [anchorX + 12 * unit * scale, anchorY + 3 * unit * scale],
-	      connections: [],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 1,
-	      pos: [anchorX + 10 * unit * scale, anchorY - 1 * unit * scale],
-	      connections: [],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 1,
-	      pos: [anchorX + 12 * unit * scale, anchorY - 5 * unit * scale],
-	      connections: [5],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 1,
-	      pos: [anchorX + 19 * unit * scale, anchorY - 5.5 * unit * scale],
-	      connections: [6],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 1,
-	      pos: [anchorX + 27 * unit * scale, anchorY - 5.8 * unit * scale],
-	      connections: [7],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 1,
-	      pos: [anchorX + 19 * unit * scale, anchorY - 3 * unit * scale],
-	      connections: [8],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 1,
-	      pos: [anchorX + 26 * unit * scale, anchorY - 1.5 * unit * scale],
-	      connections: [9],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 1,
-	      pos: [anchorX + 29 * unit * scale, anchorY + 1.5 * unit * scale],
-	      connections: [10],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 1,
-	      pos: [anchorX + 21 * unit * scale, anchorY + 1 * unit * scale],
-	      connections: [],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 1,
-	      pos: [anchorX + 13 * unit * scale, anchorY - 3.5 * unit * scale],
-	      connections: [12],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 1,
-	      pos: [anchorX + 13 * unit * scale, anchorY - 2 * unit * scale],
-	      connections: [13],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 1,
-	      pos: [anchorX + 15 * unit * scale, anchorY - 3 * unit * scale],
-	      connections: [11],
-	      radius: this.starRadius
-	    })];
-	    var dragonConstellation = new Universe.Constellation(dragonStars, dragonQuote);
-	    constellations.push(dragonConstellation);
-	
-	    var scale = 1; // used to resive with one number
-	    var anchorX = this.width * 50 / 100;
-	    var anchorY = this.height * 15 / 100;
-	    var choiceQuote = '"You will become as small as your controlling desire, or as great as your dominant aspiration" - James Allen';
-	    var choiceStars = [new Universe.Star({
-	      constellationRef: 2,
-	      pos: [anchorX, anchorY],
-	      connections: [1],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 2,
-	      pos: [anchorX + 15 * unit * scale, anchorY - 3 * unit * scale],
-	      connections: [2],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 2,
-	      pos: [anchorX + 25 * unit * scale, anchorY - 10 * unit * scale],
-	      connections: [3, 4],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 2,
-	      pos: [anchorX + 23 * unit * scale, anchorY - 11 * unit * scale],
-	      connections: [],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 2,
-	      pos: [anchorX + 24 * unit * scale, anchorY - 7 * unit * scale],
-	      connections: [],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 2,
-	      pos: [anchorX + 2 * unit * scale, anchorY + 2 * unit * scale],
-	      connections: [6],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 2,
-	      pos: [anchorX + 16 * unit * scale, anchorY + 3.5 * unit * scale],
-	      connections: [7],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 2,
-	      pos: [anchorX + 26 * unit * scale, anchorY + 10.5 * unit * scale],
-	      connections: [8, 9],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 2,
-	      pos: [anchorX + 23 * unit * scale, anchorY + 10 * unit * scale],
-	      connections: [],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 2,
-	      pos: [anchorX + 25 * unit * scale, anchorY + 8 * unit * scale],
-	      connections: [],
-	      radius: this.starRadius
-	    })];
-	    var choiceConstellation = new Universe.Constellation(choiceStars, choiceQuote);
-	    constellations.push(choiceConstellation);
-	
-	    var anchorX = this.width * 85 / 100;
-	    var anchorY = this.height * 10 / 100;
-	    var impossibleQuote = '"The person who says it cannot be done should not interrupt the person doing it." - Chinese Proverb';
-	    var impossibleStars = [new Universe.Star({
-	      constellationRef: 3,
-	      pos: [anchorX, anchorY],
-	      connections: [1, 2],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 3,
-	      pos: [anchorX - 6 * unit, anchorY + 8 * unit],
-	      connections: [],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 3,
-	      pos: [anchorX + 6 * unit, anchorY + 8 * unit],
-	      connections: [],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 3,
-	      pos: [anchorX + 1 * unit, anchorY + 6 * unit],
-	      connections: [1, 2],
-	      radius: this.starRadius
-	    })];
-	    var impossibleConstellation = new Universe.Constellation(impossibleStars, impossibleQuote);
-	    constellations.push(impossibleConstellation);
-	
-	    var anchorX = this.width * 80 / 100;
-	    var anchorY = this.height * 35 / 100;
-	    var kickQuote = '"I fear not the man who has practiced 10,000 kicks once, but I fear the man who has practiced one kick 10,000 times." - Bruce Lee';
-	    var kickStars = [new Universe.Star({
-	      constellationRef: 4,
-	      pos: [anchorX, anchorY],
-	      connections: [1, 6],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 4,
-	      pos: [anchorX - 4 * unit, anchorY + 5 * unit],
-	      connections: [2, 3],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 4,
-	      pos: [anchorX - 4.5 * unit, anchorY + 9 * unit],
-	      connections: [],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 4,
-	      pos: [anchorX + 1 * unit, anchorY + 12 * unit],
-	      connections: [4, 5, 6],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 4,
-	      pos: [anchorX + 1 * unit, anchorY + 21 * unit],
-	      connections: [],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 4,
-	      pos: [anchorX + 8 * unit, anchorY + 6 * unit],
-	      connections: [],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 4,
-	      pos: [anchorX + 3 * unit, anchorY + 6 * unit],
-	      connections: [7],
-	      radius: this.starRadius
-	    }), new Universe.Star({
-	      constellationRef: 4,
-	      pos: [anchorX + 6 * unit, anchorY + 3 * unit],
-	      connections: [],
-	      radius: this.starRadius
-	    })];
-	    var kickConstellation = new Universe.Constellation(kickStars, kickQuote);
-	    constellations.push(kickConstellation);
-	
-	    return constellations;
-	  };
-	};
-
-/***/ },
-/* 245 */
-/***/ function(module, exports) {
-
-	module.exports = function () {
-	
-	  if (typeof window.Universe === 'undefined') {
-	    window.Universe = {};
-	  }
-	
-	  var Constellation = Universe.Constellation = function (stars, quote) {
-	    this.quote = quote;
-	    this.stars = stars;
-	  };
-	
-	  Constellation.prototype.draw = function (ctx) {
-	    for (var i = 0; i < this.stars.length; i++) {
-	      this.stars[i].draw(ctx);
-	    }
-	  };
-	
-	  Constellation.prototype.connect = function (ctx) {
-	    for (var i = 0; i < this.stars.length; i++) {
-	      var star = this.stars[i];
-	      for (var j = 0; j < star.connections.length; j++) {
-	        var otherStar = this.stars[star.connections[j]];
-	        ctx.beginPath();
-	        ctx.moveTo(star.pos[0], star.pos[1]);
-	        ctx.lineTo(otherStar.pos[0], otherStar.pos[1]);
-	        ctx.strokeStyle = '#008080';
-	        ctx.stroke();
-	      }
-	    }
-	  };
-	};
-
-/***/ },
-/* 246 */
-/***/ function(module, exports) {
-
-	module.exports = function () {
-	
-	  if (typeof window.Universe === 'undefined') {
-	    window.Universe = {};
-	  }
-	
-	  var COLOR = '#008080';
-	
-	  var Star = Universe.Star = function (info) {
-	    this.constellationRef = info.constellationRef;
-	    this.pos = info.pos;
-	    this.connections = info.connections;
-	    this.radius = info.radius;
-	  };
-	
-	  Star.prototype.draw = function (ctx) {
-	    ctx.beginPath();
-	    ctx.arc(this.pos[0], this.pos[1], this.radius, 0, 2 * Math.PI, false);
-	    ctx.fillStyle = COLOR;
-	    ctx.fill();
-	  };
-	};
-
-/***/ },
-/* 247 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -32496,163 +31707,12 @@
 	module.exports = About;
 
 /***/ },
-/* 248 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	// components
-	var Navbar = __webpack_require__(210);
-	var TextQuestion = __webpack_require__(249);
-	var MultipleChoice = __webpack_require__(250);
-	
-	var Survey = React.createClass({
-	  displayName: 'Survey',
-	
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'ui container' },
-	      React.createElement(Navbar, null),
-	      React.createElement(
-	        'form',
-	        { className: 'ui form' },
-	        React.createElement(
-	          'h2',
-	          { className: 'ui header' },
-	          'Food'
-	        ),
-	        React.createElement(TextQuestion, {
-	          label: 'What did you eat for breakfast?',
-	          name: 'breakfast',
-	          placeholder: 'breakfast'
-	        }),
-	        React.createElement(TextQuestion, {
-	          label: 'What did you eat for lunch?',
-	          name: 'lunch',
-	          placeholder: 'lunch'
-	        }),
-	        React.createElement(TextQuestion, {
-	          label: 'What did you eat for dinner?',
-	          name: 'dinner',
-	          placeholder: 'dinner'
-	        }),
-	        React.createElement(TextQuestion, {
-	          label: 'What did you eat for snacks?',
-	          name: 'snacks',
-	          placeholder: 'snacks'
-	        }),
-	        React.createElement(
-	          'h2',
-	          { className: 'ui header' },
-	          'Exercise'
-	        ),
-	        React.createElement(TextQuestion, {
-	          label: 'How many minutes did you exercise?',
-	          name: 'exercise-minutes',
-	          placeholder: 'minutes'
-	        }),
-	        React.createElement(MultipleChoice, {
-	          label: 'How hard was your exercise',
-	          checkBoxes: ['easy', 'medium', 'hard']
-	        }),
-	        React.createElement(
-	          'h2',
-	          { className: 'ui header' },
-	          'Etc'
-	        )
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = Survey;
-
-/***/ },
-/* 249 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	// not working look into react custom link state mixins
-	var TextQuestion = React.createClass({
-	  displayName: "TextQuestion",
-	
-	
-	  render: function () {
-	    return React.createElement(
-	      "div",
-	      { className: "required field" },
-	      React.createElement(
-	        "label",
-	        null,
-	        this.props.label
-	      ),
-	      React.createElement("input", { type: "text", name: this.props.name, placeholder: this.props.placeholder })
-	    );
-	  }
-	
-	});
-	
-	module.exports = TextQuestion;
-
-/***/ },
-/* 250 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	var MultipleChoice = React.createClass({
-	  displayName: "MultipleChoice",
-	
-	  makeChoices: function () {
-	    var checkBoxes = [];
-	    for (var checkBox of this.props.checkBoxes) {
-	      checkBoxes.push(React.createElement(
-	        "div",
-	        { className: "field" },
-	        React.createElement(
-	          "div",
-	          { className: "ui radio checkbox" },
-	          React.createElement("input", { type: "radio", name: checkBox, key: checkBox }),
-	          React.createElement(
-	            "label",
-	            null,
-	            checkBox
-	          )
-	        )
-	      ));
-	    }
-	
-	    return checkBoxes;
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      "div",
-	      { className: "required grouped fields" },
-	      React.createElement(
-	        "label",
-	        null,
-	        this.props.label
-	      ),
-	      this.makeChoices()
-	    );
-	  }
-	
-	});
-	
-	module.exports = MultipleChoice;
-
-/***/ },
-/* 251 */
+/* 238 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var AuthActions = __webpack_require__(211);
-	var LinkedStateMixin = __webpack_require__(252);
+	var LinkedStateMixin = __webpack_require__(239);
 	var History = __webpack_require__(159).History;
 	
 	// components
@@ -32751,13 +31811,13 @@
 	module.exports = SignIn;
 
 /***/ },
-/* 252 */
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(253);
+	module.exports = __webpack_require__(240);
 
 /***/ },
-/* 253 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32774,8 +31834,8 @@
 	
 	'use strict';
 	
-	var ReactLink = __webpack_require__(254);
-	var ReactStateSetters = __webpack_require__(255);
+	var ReactLink = __webpack_require__(241);
+	var ReactStateSetters = __webpack_require__(242);
 	
 	/**
 	 * A simple mixin around ReactLink.forState().
@@ -32798,7 +31858,7 @@
 	module.exports = LinkedStateMixin;
 
 /***/ },
-/* 254 */
+/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32872,7 +31932,7 @@
 	module.exports = ReactLink;
 
 /***/ },
-/* 255 */
+/* 242 */
 /***/ function(module, exports) {
 
 	/**
@@ -32981,11 +32041,11 @@
 	module.exports = ReactStateSetters;
 
 /***/ },
-/* 256 */
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var LinkedStateMixin = __webpack_require__(252);
+	var LinkedStateMixin = __webpack_require__(239);
 	var AuthActions = __webpack_require__(211);
 	var History = __webpack_require__(159).History;
 	
@@ -33117,11 +32177,11 @@
 	module.exports = Signup;
 
 /***/ },
-/* 257 */
+/* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var LinkedStateMixin = __webpack_require__(252);
+	var LinkedStateMixin = __webpack_require__(239);
 	var AuthActions = __webpack_require__(211);
 	var History = __webpack_require__(159).History;
 	
@@ -33330,7 +32390,7 @@
 	module.exports = Admin;
 
 /***/ },
-/* 258 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -33352,10 +32412,9 @@
 	  },
 	
 	  render: function () {
-	    var centerContainerStyle = { margin: '20%' };
 	    return React.createElement(
 	      'div',
-	      { className: 'ui container', style: centerContainerStyle },
+	      { className: 'ui container' },
 	      React.createElement(
 	        'div',
 	        { className: 'ui one column left aligned relaxed grid container' },
@@ -33430,7 +32489,7 @@
 	module.exports = Profile;
 
 /***/ },
-/* 259 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -33452,11 +32511,10 @@
 	  },
 	
 	  render: function () {
-	    var centerContainerStyle = { margin: '20%' };
 	
 	    return React.createElement(
 	      'div',
-	      { className: 'ui container', style: centerContainerStyle },
+	      { className: 'ui container' },
 	      React.createElement(
 	        'div',
 	        { className: 'ui one column left aligned relaxed grid container' },
@@ -33509,6 +32567,331 @@
 	});
 	
 	module.exports = DataStreamDetail;
+
+/***/ },
+/* 247 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(159).History;
+	var DataStreamIndex = __webpack_require__(248);
+	var InsightIndex = __webpack_require__(250);
+	var DataVisualizationIndex = __webpack_require__(252);
+	var AuthStore = __webpack_require__(218);
+	
+	var DashboardLanding = React.createClass({
+	  displayName: 'DashboardLanding',
+	
+	  mixins: [History],
+	
+	  clickSurvey: function () {
+	    var url = AuthStore.currentUser().formURL;
+	    var win = window.open(url, '_blank');
+	    win.focus();
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'div',
+	        { className: 'ui blue button', onClick: this.clickSurvey },
+	        'Fill out daily survey'
+	      ),
+	      React.createElement(
+	        'h1',
+	        { className: 'ui left aligned header' },
+	        'Your Data Streams'
+	      ),
+	      React.createElement(DataStreamIndex, null),
+	      React.createElement(
+	        'h1',
+	        { className: 'ui header' },
+	        'Your Insights'
+	      ),
+	      React.createElement(InsightIndex, null),
+	      React.createElement(
+	        'h1',
+	        { className: 'ui header' },
+	        'Your Data Visualizations (coming soon)'
+	      ),
+	      React.createElement(DataVisualizationIndex, null)
+	    );
+	  }
+	
+	});
+	
+	module.exports = DashboardLanding;
+
+/***/ },
+/* 248 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	// components
+	var DataStreamItem = __webpack_require__(249);
+	
+	var DataStreamIndex = React.createClass({
+	  displayName: 'DataStreamIndex',
+	
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'ui left aligned grid' },
+	      React.createElement(
+	        'div',
+	        { className: 'doubling eight column row' },
+	        React.createElement(
+	          'div',
+	          { className: 'column' },
+	          React.createElement(
+	            'button',
+	            { className: 'ui disabled teal icon button' },
+	            React.createElement('i', { className: 'large plus icon' })
+	          )
+	        ),
+	        React.createElement(DataStreamItem, { icon: 'blue google', label: 'Google Form' })
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = DataStreamIndex;
+
+/***/ },
+/* 249 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(159).History;
+	
+	var DataStreamItem = React.createClass({
+	  displayName: 'DataStreamItem',
+	
+	  mixins: [History],
+	
+	  clickIconButton: function () {
+	    this.history.push('/dashboard/formdetail');
+	  },
+	
+	  render: function () {
+	    var iconClassName = 'large ' + this.props.icon + ' icon';
+	    return React.createElement(
+	      'div',
+	      { className: 'column' },
+	      React.createElement(
+	        'button',
+	        { className: 'ui labeled basic icon button', onClick: this.clickIconButton },
+	        React.createElement('i', { className: iconClassName }),
+	        this.props.label
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = DataStreamItem;
+
+/***/ },
+/* 250 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var AuthStore = __webpack_require__(218);
+	
+	// components
+	var InsightItem = __webpack_require__(251);
+	
+	var InsightIndex = React.createClass({
+	  displayName: 'InsightIndex',
+	
+	  getInitialState: function () {
+	    return { areMoreInsights: true, insights: [], startIndex: 0 };
+	  },
+	
+	  _onChange: function () {
+	    // if session is active get initial insights
+	    if (AuthStore.isSignedIn()) {
+	      this.clickMoreInsights();
+	    };
+	  },
+	
+	  componentDidMount: function () {
+	    this.authToken = AuthStore.addListener(this._onChange);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.authToken.remove();
+	  },
+	
+	  clickMoreInsights: function () {
+	    var CHUNK_SIZE = 10;
+	    var moreInsights = AuthStore.getInsights(this.state.startIndex, CHUNK_SIZE);
+	    this.setState({ startIndex: this.state.startIndex + CHUNK_SIZE });
+	
+	    // makes it so user can not request more insights after all insights are already displayed
+	    if (moreInsights.length < CHUNK_SIZE) {
+	      this.setState({ areMoreInsights: false });
+	    }
+	
+	    this.setState({ insights: this.state.insights.concat(moreInsights) });
+	  },
+	
+	  makeInsights: function () {
+	    return this.state.insights.map(function (insight, idx) {
+	      return React.createElement(InsightItem, { key: idx, time: insight.date, message: insight.message });
+	    });
+	  },
+	
+	  makeDownIcon: function () {
+	    if (this.state.areMoreInsights) {
+	      var downArrowStyle = { cursor: 'pointer' };
+	      return React.createElement(
+	        'div',
+	        { className: 'ui centered grid' },
+	        React.createElement(
+	          'div',
+	          { className: 'centered row' },
+	          React.createElement('i', {
+	            className: 'large grey angle down icon',
+	            style: downArrowStyle,
+	            onClick: this.clickMoreInsights
+	          })
+	        )
+	      );
+	    }
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'div',
+	        { className: 'ui relaxed divided centered list' },
+	        this.makeInsights()
+	      ),
+	      this.makeDownIcon()
+	    );
+	  }
+	
+	});
+	
+	module.exports = InsightIndex;
+
+/***/ },
+/* 251 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var InsightItem = React.createClass({
+	  displayName: 'InsightItem',
+	
+	  getInitialState: function () {
+	    return { isLiked: false };
+	  },
+	
+	  clickIcon: function () {
+	    this.setState({ isLiked: !this.state.isLiked });
+	  },
+	
+	  makeIcon: function () {
+	    var style = { cursor: 'pointer' };
+	    if (this.state.isLiked) {
+	      return React.createElement('i', { className: 'blue star icon', onClick: this.clickIcon, style: style });
+	    } else {
+	      return React.createElement('i', { className: 'empty star icon', onClick: this.clickIcon, style: style });
+	    }
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'item' },
+	      this.makeIcon(),
+	      React.createElement(
+	        'div',
+	        { className: 'content' },
+	        React.createElement(
+	          'div',
+	          { className: 'header' },
+	          this.props.message
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'description' },
+	          this.props.time
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = InsightItem;
+
+/***/ },
+/* 252 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	// components
+	var DataVisualizationItem = __webpack_require__(253);
+	
+	var DataVisualizationIndex = React.createClass({
+	  displayName: 'DataVisualizationIndex',
+	
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'ui centered grid' },
+	      React.createElement(
+	        'div',
+	        { className: 'doubling two column row' },
+	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/horizontalbar.png' }),
+	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/line.png' }),
+	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/scatter.png' }),
+	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/stackedbar.png' })
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = DataVisualizationIndex;
+
+/***/ },
+/* 253 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var DataVisualizationItem = React.createClass({
+	  displayName: "DataVisualizationItem",
+	
+	
+	  render: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "column" },
+	      React.createElement(
+	        "div",
+	        { className: "ui large image" },
+	        React.createElement("img", { src: this.props.image })
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = DataVisualizationItem;
 
 /***/ }
 /******/ ]);

@@ -5,7 +5,7 @@ var DataStreamItem = React.createClass({
   mixins: [History],
 
   clickIconButton: function () {
-    this.history.push('/formdetail');
+    this.history.push('/dashboard/formdetail');
   },
 
   render: function () {

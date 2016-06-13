@@ -20,6 +20,8 @@ var Navbar = React.createClass({
 
   componentDidMount: function () {
     this.authToken = AuthStore.addListener(this._onChange);
+
+    // check for active session if there is not already an active session
     if (!AuthStore.isSignedIn()) {
       AuthActions.retrieveSession();
     } else {

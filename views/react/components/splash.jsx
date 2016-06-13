@@ -8,6 +8,23 @@ var AuthActions = require('../actions/authActions');
 var App = React.createClass({
   mixins: [History],
 
+  _onChange: function () {
+    this.forceUpdate();
+  },
+
+  componentDidMount: function () {
+    this.authToken = AuthStore.addListener(this._onChange);
+
+    // check for active session if there is not already an active session
+    if (!AuthStore.isSignedIn()) {
+      AuthActions.retrieveSession();
+    };
+  },
+
+  componentWillUnmount: function () {
+    this.authToken.remove();
+  },
+
   clickAbout: function () {
     this.history.push('/about');
   },

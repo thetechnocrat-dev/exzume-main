@@ -15,10 +15,9 @@ var DataStreamDetail = React.createClass({
   },
 
   render: function () {
-    var centerContainerStyle = { margin: '20%' };
 
     return (
-      <div className="ui container" style={centerContainerStyle}>
+      <div className="ui container" >
         <div className="ui one column left aligned relaxed grid container">
           <div className="row">
             <div className="ui message">

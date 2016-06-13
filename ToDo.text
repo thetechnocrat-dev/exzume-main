@@ -1,18 +1,4 @@
 Put anoter asterick if you are working on task
 ex/
-** fix this
 
-* make some routes (such as updating an user) require authentication
-* add data validation to User model
-* remove redundant Bcrypt in user auth
-* make API follow RESTFUL standards better
-* make api/session send back a lighter version of user without insights
-* decide on database structure
-* have error messages make it back to front end for user sign up and sign in
-* organize router
-  * decide what API should be open and what should be user specific and what should be admin specific
-* organize react components
-* organize apiUtil
-* decide terminology for auth, session, and user on front end
-* decide on a balance of commenting
-* do some javascript in the insightIndex makeInsights to show elaspedTime instead of Date
+Moved to asana
