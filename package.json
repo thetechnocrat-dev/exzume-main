@@ -25,7 +25,6 @@
     "mongoose": "^4.4.20",
     "morgan": "~1.6.1",
     "passport": "^0.3.2",
-    "passport-local-mongoose": "^4.0.0",
     "react": "^0.14.8",
     "react-addons-linked-state-mixin": "^0.14.4-alpha.2",
     "react-d3-basic": "^1.6.11",

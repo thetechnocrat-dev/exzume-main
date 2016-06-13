@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var passportLocalMongoose = require('passport-local-mongoose');
 var bcrypt = require('bcrypt');
 
 var UserSchema = new Schema({
@@ -29,7 +28,5 @@ UserSchema.methods.validPassword = function (password) {
 // forces Mongoose to include getters which allow for the conversion of raw data
 // as it travels from mongodb to server
 UserSchema.set('toJSON', { getters: true, virtuals: true });
-
-UserSchema.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model('User', UserSchema);
