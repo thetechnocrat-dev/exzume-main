@@ -3,22 +3,22 @@ var User = require('../../models/user');
 
 module.exports = function (passport) {
   passport.use('local-login', new LocalStrategy(
-  function (username, password, done) {
-    User.findOne({ 'local.username': username }, function (err, user, message) {
-      if (err) {
-        return done(err);
-      }
+    function (username, password, done) {
+      User.findOne({ 'local.username': username }, function (err, user, message) {
+        if (err) {
+          return done(err);
+        }
 
-      if (!user) {
-        return done(null, false, { signinMessage: 'username does not exist' });
-      }
+        if (!user) {
+          return done(null, false, { signinMessage: 'username does not exist' });
+        }
 
-      if (!user.validPassword(password)) {
-        return done(null, false, { signinMessage: 'invalid password' });
-      }
+        if (!user.validPassword(password)) {
+          return done(null, false, { signinMessage: 'invalid password' });
+        }
 
-      return done(null, user);
-    });
-  }
-));
+        return done(null, user);
+      });
+    }
+  ));
 };

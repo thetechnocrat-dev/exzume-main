@@ -48,10 +48,6 @@ app.use(expressSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// add flash middleware - must occur after session middleware
-// var flash = require('connect-flash'); // must be placed after session!
-// app.use(flash());
-
 // initialize Passport
 var initPassport = require('./config/passport/init');
 initPassport(passport);
