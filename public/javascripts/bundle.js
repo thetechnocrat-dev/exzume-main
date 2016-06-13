@@ -24900,8 +24900,8 @@
 	      },
 	
 	      error: function (respData) {
-	        errorCallback(respError.responseText);
-	        console.log('ajax sign up error', respData);
+	        errorCallback(respData.responseText);
+	        console.log('ajax sign in error', respData);
 	      }
 	    });
 	  },
@@ -31738,14 +31738,25 @@
 	    AuthActions.signIn(signInParams, this.successCallback, this.errorCallback);
 	  },
 	
-	  errorCallback: function (errors) {
-	    console.log(errors);
+	  errorCallback: function (errorMessage) {
+	    console.log(errorMessage);
+	    this.setState({ errors: errorMessage });
 	
 	    // this.setState({ errors: JSON.parse(errors) });
 	  },
 	
 	  successCallback: function () {
 	    this.history.push('/dashboard');
+	  },
+	
+	  makeErrors: function () {
+	    if (this.state.errors !== '') {
+	      return React.createElement(
+	        'div',
+	        { className: 'ui red message' },
+	        this.state.errors
+	      );
+	    }
 	  },
 	
 	  render: function () {
@@ -31762,11 +31773,7 @@
 	          { className: 'ui header' },
 	          'Sign In'
 	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          this.state.errors
-	        ),
+	        this.makeErrors(),
 	        React.createElement(
 	          'div',
 	          { className: 'required field' },

@@ -24,14 +24,23 @@ var SignIn = React.createClass({
     AuthActions.signIn(signInParams, this.successCallback, this.errorCallback);
   },
 
-  errorCallback: function (errors) {
-    console.log(errors);
+  errorCallback: function (errorMessage) {
+    console.log(errorMessage);
+    this.setState({ errors: errorMessage });
 
     // this.setState({ errors: JSON.parse(errors) });
   },
 
   successCallback: function () {
     this.history.push('/dashboard');
+  },
+
+  makeErrors: function () {
+    if (this.state.errors !== '') {
+      return (
+        <div className="ui red message">{this.state.errors}</div>
+      );
+    }
   },
 
   render: function () {
@@ -41,8 +50,7 @@ var SignIn = React.createClass({
       <div className="ui container" style={containerStyle}>
         <form className="ui form">
           <h2 className="ui header">Sign In</h2>
-          <p>{this.state.errors}</p>
-
+          {this.makeErrors()}
           <div className="required field">
             <label>username</label>
             <input

@@ -6,26 +6,33 @@ module.exports = function (router, passport) {
     res.render('main', { title: 'Exzume' });
   });
 
-  router.post('/api/signin',
-    passport.authenticate('local-login'),
-    function (req, res) {
-      res.json({ message: 'sign in success' });
-    }
-  );
+  // router.post('/api/signin',
+  //   passport.authenticate('local-login'),
+  //   function (req, res) {
+  //     res.json({ message: 'sign in success' });
+  //   }
+  // );
 
   router.post('/api/signin', function (req, res) {
-    passport.authenticate('local-login'), function (err, user, info) {
+    passport.authenticate('local-login', function (err, user, info) {
       if (err) {
         console.log('route 500 err', err);
-        resp.status(500).json({ message: 'internal error - try refreshing the page' });
+        res.status(500).json({ message: 'internal error - try refreshing the page' });
       } else if (user) {
-        console.log('route good');
+        req.login(user, function (err) {
+          if (err) {
+            console.log('route - session login error');
+            return next(err);
+          }
+        });
+
+        console.log('route - sign up success');
         res.json({ message: 'sign in success' });
       } else {
         console.log('402 err', info);
-        res.status(402).json(info);
+        res.status(402).send(info.signinMessage);
       };
-    };
+    })(req, res);
   }),
 
   router.post('/api/signup',

@@ -33,8 +33,8 @@ module.exports = {
 
       error:
         function (respData) {
-          errorCallback(respError.responseText);
-          console.log('ajax sign up error', respData);
+          errorCallback(respData.responseText);
+          console.log('ajax sign in error', respData);
         },
     });
   },

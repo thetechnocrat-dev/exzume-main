@@ -2,10 +2,8 @@ var LocalStrategy = require('passport-local').Strategy;
 var User = require('../../models/user');
 
 module.exports = function (passport) {
-  passport.use('local-login', new LocalStrategy({
-    passReqToCallback: true,
-  },
-  function (req, username, password, done) {
+  passport.use('local-login', new LocalStrategy(
+  function (username, password, done) {
     User.findOne({ 'local.username': username }, function (err, user, message) {
       if (err) {
         console.log('local login err', err);
