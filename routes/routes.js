@@ -9,7 +9,7 @@ module.exports = function (router, passport) {
   router.post('/api/signin', function (req, res) {
     passport.authenticate('local-login', function (err, user, info) {
       if (err) {
-        res.status(500).json({ message: 'internal error - try refreshing the page' });
+        res.status(500).json({ message: 'internal server error - try refreshing the page' });
       } else if (user) {
         req.login(user, function (err) {
           if (err) {
@@ -19,7 +19,7 @@ module.exports = function (router, passport) {
 
         res.json({ message: 'sign in success' });
       } else {
-        res.status(402).send(info.signinMessage);
+        res.status(401).send(info.signinMessage);
       };
     })(req, res);
   }),
@@ -28,7 +28,7 @@ module.exports = function (router, passport) {
     passport.authenticate('local-signup', function (err, user, info) {
       if (err) {
         console.log('route - sign up error');
-        res.status(500).json({ message: 'internal error - try refreshing the page' });
+        res.status(500).json({ message: 'internal server error - try refreshing the page' });
       } else if (user) {
         req.login(user, function (err) {
           if (err) {
@@ -38,7 +38,7 @@ module.exports = function (router, passport) {
 
         res.json({ message: 'sign up success' });
       } else {
-        res.status(402).send(info.errorMessage);
+        res.status(401).send(info.errorMessage);
       }
     })(req, res);
   });
