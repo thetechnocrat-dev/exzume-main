@@ -42,7 +42,6 @@ var About = React.createClass({
             Recent advances in machine learning (especially unsupervised learning) are making it possible to find meaningful features of large multidimensional datasets (which is what combining daily surveys with the multiple passive data collection apps requires) at scale. The results of such advances in data collection and machine learning are increasingly present in our lives, from our Google search results, to our Facebook feeds, to our Netflix recommendations. However, there is a large space for using this technology to help individuals use their own data to proactively improve their decisions. In addition to the large number of data-tracking apps and wearable devices, the growing QuantifiedSelf movement shows that people are taking an interest in their own data.
           </p>
         </div>
-
         <div className="ui teal button" onClick={this.clickBack}>Back</div>
       </div>
     );

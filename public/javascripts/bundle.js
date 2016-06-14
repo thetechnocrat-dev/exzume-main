@@ -57,7 +57,7 @@
 	var Splash = __webpack_require__(236);
 	var About = __webpack_require__(237);
 	var SignIn = __webpack_require__(238);
-	var SignUp = __webpack_require__(243);
+	var SignUp = __webpack_require__(239);
 	var Admin = __webpack_require__(244);
 	var Profile = __webpack_require__(245);
 	var DataStreamDetail = __webpack_require__(246);
@@ -31695,10 +31695,8 @@
 
 	var React = __webpack_require__(1);
 	var AuthActions = __webpack_require__(211);
-	var LinkedStateMixin = __webpack_require__(239);
+	var LinkedStateMixin = __webpack_require__(240);
 	var History = __webpack_require__(159).History;
-	
-	// components
 	
 	var SignIn = React.createClass({
 	  displayName: 'SignIn',
@@ -31746,8 +31744,17 @@
 	    }
 	  },
 	
+	  clickHomeLink: function () {
+	    this.history.push('/');
+	  },
+	
+	  clickSignUpLink: function () {
+	    this.history.push('/signup');
+	  },
+	
 	  render: function () {
 	    var containerStyle = { margin: '10%' };
+	    var linkStyle = { cursor: 'pointer', color: '#008080' };
 	
 	    return React.createElement(
 	      'div',
@@ -31792,6 +31799,23 @@
 	          })
 	        ),
 	        React.createElement(
+	          'p',
+	          null,
+	          'Don\'t have an account? Then use the ',
+	          React.createElement(
+	            'a',
+	            { style: linkStyle, onClick: this.clickSignUpLink },
+	            'Sign Up'
+	          ),
+	          ' form or go back to the ',
+	          React.createElement(
+	            'a',
+	            { style: linkStyle, onClick: this.clickHomeLink },
+	            'Home Page'
+	          ),
+	          '.'
+	        ),
+	        React.createElement(
 	          'div',
 	          { className: 'ui teal button', type: 'submit', onClick: this.handleSubmit },
 	          'Submit'
@@ -31808,10 +31832,183 @@
 /* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(240);
+	var React = __webpack_require__(1);
+	var LinkedStateMixin = __webpack_require__(240);
+	var AuthActions = __webpack_require__(211);
+	var History = __webpack_require__(159).History;
+	
+	var Signup = React.createClass({
+	  displayName: 'Signup',
+	
+	  mixins: [LinkedStateMixin, History],
+	
+	  getInitialState: function () {
+	    return { errors: '', username: '', password: '', email: '', confirmPassword: '' };
+	  },
+	
+	  handleSubmit: function (event) {
+	    event.preventDefault();
+	    this.setState({ errors: '' });
+	    console.log('here');
+	    if (this.state.password != this.state.confirmPassword) {
+	      this.setState({ errors: 'passwords do not match' });
+	    } else if (this.state.username === '') {
+	      this.setState({ errors: 'username is required' });
+	    } else if (this.state.password === '') {
+	      this.setState({ errors: 'password is required' });
+	    } else if (this.state.email === '') {
+	      this.setState({ errors: 'email is required' });
+	    } else {
+	      var signUpParams = {
+	        username: this.state.username,
+	        password: this.state.password,
+	        email: this.state.email
+	      };
+	      AuthActions.signUp(signUpParams, this.successCallback, this.errorCallback);
+	    }
+	  },
+	
+	  successCallback: function () {
+	    this.history.push('/dashboard');
+	  },
+	
+	  errorCallback: function (errorMessage) {
+	    console.log(errorMessage);
+	    this.setState({ errors: errorMessage });
+	  },
+	
+	  makeErrors: function () {
+	    if (this.state.errors !== '') {
+	      return React.createElement(
+	        'div',
+	        { className: 'ui red message' },
+	        this.state.errors
+	      );
+	    }
+	  },
+	
+	  clickHomeLink: function () {
+	    this.history.push('/');
+	  },
+	
+	  clickSignInLink: function () {
+	    this.history.push('/signin');
+	  },
+	
+	  render: function () {
+	    var containerStyle = { margin: '10%' };
+	    var linkStyle = { cursor: 'pointer', color: '#008080' };
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'ui container', style: containerStyle },
+	      React.createElement(
+	        'form',
+	        { className: 'ui form' },
+	        React.createElement(
+	          'h2',
+	          { className: 'ui header' },
+	          'Sign Up'
+	        ),
+	        this.makeErrors(),
+	        React.createElement(
+	          'div',
+	          { className: 'required field' },
+	          React.createElement(
+	            'label',
+	            null,
+	            'username'
+	          ),
+	          React.createElement('input', {
+	            type: 'text',
+	            name: 'username',
+	            placeholder: '',
+	            valueLink: this.linkState('username')
+	          })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'required field' },
+	          React.createElement(
+	            'label',
+	            null,
+	            'email'
+	          ),
+	          React.createElement('input', {
+	            type: 'text',
+	            name: 'email',
+	            placeholder: '',
+	            valueLink: this.linkState('email')
+	          })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'required field' },
+	          React.createElement(
+	            'label',
+	            null,
+	            'password'
+	          ),
+	          React.createElement('input', {
+	            type: 'text',
+	            name: 'password',
+	            placeholder: '',
+	            valueLink: this.linkState('password')
+	          })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'required field' },
+	          React.createElement(
+	            'label',
+	            null,
+	            'confirm password'
+	          ),
+	          React.createElement('input', {
+	            type: 'text',
+	            name: 'confirm password',
+	            placeholder: '',
+	            valueLink: this.linkState('confirmPassword')
+	          })
+	        ),
+	        React.createElement(
+	          'p',
+	          null,
+	          'Already have an account? Then use the ',
+	          React.createElement(
+	            'a',
+	            { style: linkStyle, onClick: this.clickSignInLink },
+	            'Sign In'
+	          ),
+	          ' form or go back to the ',
+	          React.createElement(
+	            'a',
+	            { style: linkStyle, onClick: this.clickHomeLink },
+	            'Home Page'
+	          ),
+	          '.'
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'ui teal button', type: 'submit', onClick: this.handleSubmit },
+	          'Submit'
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = Signup;
 
 /***/ },
 /* 240 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(241);
+
+/***/ },
+/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -31828,8 +32025,8 @@
 	
 	'use strict';
 	
-	var ReactLink = __webpack_require__(241);
-	var ReactStateSetters = __webpack_require__(242);
+	var ReactLink = __webpack_require__(242);
+	var ReactStateSetters = __webpack_require__(243);
 	
 	/**
 	 * A simple mixin around ReactLink.forState().
@@ -31852,7 +32049,7 @@
 	module.exports = LinkedStateMixin;
 
 /***/ },
-/* 241 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -31926,7 +32123,7 @@
 	module.exports = ReactLink;
 
 /***/ },
-/* 242 */
+/* 243 */
 /***/ function(module, exports) {
 
 	/**
@@ -32035,158 +32232,11 @@
 	module.exports = ReactStateSetters;
 
 /***/ },
-/* 243 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var LinkedStateMixin = __webpack_require__(239);
-	var AuthActions = __webpack_require__(211);
-	var History = __webpack_require__(159).History;
-	
-	var Signup = React.createClass({
-	  displayName: 'Signup',
-	
-	  mixins: [LinkedStateMixin, History],
-	
-	  getInitialState: function () {
-	    return { errors: '', username: '', password: '', email: '', confirmPassword: '' };
-	  },
-	
-	  handleSubmit: function (event) {
-	    event.preventDefault();
-	    this.setState({ errors: '' });
-	    console.log('here');
-	    if (this.state.password != this.state.confirmPassword) {
-	      this.setState({ errors: 'passwords do not match' });
-	    } else if (this.state.username === '') {
-	      this.setState({ errors: 'username is required' });
-	    } else if (this.state.password === '') {
-	      this.setState({ errors: 'password is required' });
-	    } else if (this.state.email === '') {
-	      this.setState({ errors: 'email is required' });
-	    } else {
-	      var signUpParams = {
-	        username: this.state.username,
-	        password: this.state.password,
-	        email: this.state.email
-	      };
-	      AuthActions.signUp(signUpParams, this.successCallback, this.errorCallback);
-	    }
-	  },
-	
-	  successCallback: function () {
-	    this.history.push('/dashboard');
-	  },
-	
-	  errorCallback: function (errorMessage) {
-	    console.log(errorMessage);
-	    this.setState({ errors: errorMessage });
-	  },
-	
-	  makeErrors: function () {
-	    if (this.state.errors !== '') {
-	      return React.createElement(
-	        'div',
-	        { className: 'ui red message' },
-	        this.state.errors
-	      );
-	    }
-	  },
-	
-	  render: function () {
-	    var containerStyle = { margin: '10%' };
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'ui container', style: containerStyle },
-	      React.createElement(
-	        'form',
-	        { className: 'ui form' },
-	        React.createElement(
-	          'h2',
-	          { className: 'ui header' },
-	          'Sign Up'
-	        ),
-	        this.makeErrors(),
-	        React.createElement(
-	          'div',
-	          { className: 'required field' },
-	          React.createElement(
-	            'label',
-	            null,
-	            'username'
-	          ),
-	          React.createElement('input', {
-	            type: 'text',
-	            name: 'username',
-	            placeholder: '',
-	            valueLink: this.linkState('username')
-	          })
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'required field' },
-	          React.createElement(
-	            'label',
-	            null,
-	            'email'
-	          ),
-	          React.createElement('input', {
-	            type: 'text',
-	            name: 'email',
-	            placeholder: '',
-	            valueLink: this.linkState('email')
-	          })
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'required field' },
-	          React.createElement(
-	            'label',
-	            null,
-	            'password'
-	          ),
-	          React.createElement('input', {
-	            type: 'text',
-	            name: 'password',
-	            placeholder: '',
-	            valueLink: this.linkState('password')
-	          })
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'required field' },
-	          React.createElement(
-	            'label',
-	            null,
-	            'confirm password'
-	          ),
-	          React.createElement('input', {
-	            type: 'text',
-	            name: 'confirm password',
-	            placeholder: '',
-	            valueLink: this.linkState('confirmPassword')
-	          })
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'ui teal button', type: 'submit', onClick: this.handleSubmit },
-	          'Submit'
-	        )
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = Signup;
-
-/***/ },
 /* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var LinkedStateMixin = __webpack_require__(239);
+	var LinkedStateMixin = __webpack_require__(240);
 	var AuthActions = __webpack_require__(211);
 	var History = __webpack_require__(159).History;
 	
