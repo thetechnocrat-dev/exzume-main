@@ -31704,11 +31704,12 @@
 	  mixins: [LinkedStateMixin, History],
 	
 	  getInitialState: function () {
-	    return { errors: '', username: '', password: '' };
+	    return { errors: '', username: '', password: '', loading: false };
 	  },
 	
 	  handleSubmit: function (event) {
 	    event.preventDefault();
+	
 	    this.setState({ errors: '' });
 	
 	    if (this.state.username === '') {
@@ -31721,12 +31722,14 @@
 	        password: this.state.password
 	      };
 	
+	      // will remain in loading state until AJAX callback changes state
+	      this.setState({ loading: true });
 	      AuthActions.signIn(signInParams, this.successCallback, this.errorCallback);
 	    }
 	  },
 	
 	  errorCallback: function (errorMessage) {
-	    console.log(errorMessage);
+	    this.setState({ loading: false });
 	    this.setState({ errors: errorMessage });
 	  },
 	
@@ -31740,6 +31743,24 @@
 	        'div',
 	        { className: 'ui red message' },
 	        this.state.errors
+	      );
+	    }
+	  },
+	
+	  makeSubmitButton: function () {
+	    if (this.state.loading) {
+	      return React.createElement(
+	        'div',
+	        {
+	          className: 'ui teal disabled loading button',
+	          type: 'submit' },
+	        'Submit'
+	      );
+	    } else {
+	      return React.createElement(
+	        'div',
+	        { className: 'ui teal button', type: 'submit', onClick: this.handleSubmit },
+	        'Submit'
 	      );
 	    }
 	  },
@@ -31815,11 +31836,7 @@
 	          ),
 	          '.'
 	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'ui teal button', type: 'submit', onClick: this.handleSubmit },
-	          'Submit'
-	        )
+	        this.makeSubmitButton()
 	      )
 	    );
 	  }
@@ -31843,13 +31860,13 @@
 	  mixins: [LinkedStateMixin, History],
 	
 	  getInitialState: function () {
-	    return { errors: '', username: '', password: '', email: '', confirmPassword: '' };
+	    return { errors: '', username: '', password: '', email: '', confirmPassword: '', loading: false };
 	  },
 	
 	  handleSubmit: function (event) {
 	    event.preventDefault();
 	    this.setState({ errors: '' });
-	    console.log('here');
+	
 	    if (this.state.password != this.state.confirmPassword) {
 	      this.setState({ errors: 'passwords do not match' });
 	    } else if (this.state.username === '') {
@@ -31864,6 +31881,9 @@
 	        password: this.state.password,
 	        email: this.state.email
 	      };
+	
+	      // will remain in loading state until AJAX callback changes state
+	      this.setState({ loading: true });
 	      AuthActions.signUp(signUpParams, this.successCallback, this.errorCallback);
 	    }
 	  },
@@ -31873,7 +31893,7 @@
 	  },
 	
 	  errorCallback: function (errorMessage) {
-	    console.log(errorMessage);
+	    this.setState({ loading: false });
 	    this.setState({ errors: errorMessage });
 	  },
 	
@@ -31883,6 +31903,24 @@
 	        'div',
 	        { className: 'ui red message' },
 	        this.state.errors
+	      );
+	    }
+	  },
+	
+	  makeSubmitButton: function () {
+	    if (this.state.loading) {
+	      return React.createElement(
+	        'div',
+	        {
+	          className: 'ui teal disabled loading button',
+	          type: 'submit' },
+	        'Submit'
+	      );
+	    } else {
+	      return React.createElement(
+	        'div',
+	        { className: 'ui teal button', type: 'submit', onClick: this.handleSubmit },
+	        'Submit'
 	      );
 	    }
 	  },
@@ -31988,11 +32026,7 @@
 	          ),
 	          '.'
 	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'ui teal button', type: 'submit', onClick: this.handleSubmit },
-	          'Submit'
-	        )
+	        this.makeSubmitButton()
 	      )
 	    );
 	  }
