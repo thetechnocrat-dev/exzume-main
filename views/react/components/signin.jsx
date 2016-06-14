@@ -9,19 +9,25 @@ var SignIn = React.createClass({
   mixins: [LinkedStateMixin, History],
 
   getInitialState: function () {
-    return { errors: '', };
+    return { errors: '', username: '', password: '' };
   },
 
   handleSubmit: function (event) {
     event.preventDefault();
     this.setState({ errors: '' });
 
-    var signInParams = {
-      username: this.state.username,
-      password: this.state.password,
-    };
+    if (this.state.username === '') {
+      this.setState({ errors: 'username required' });
+    } else if (this.state.password === '') {
+      this.setState({ errors: 'password required' });
+    } else {
+      var signInParams = {
+        username: this.state.username,
+        password: this.state.password,
+      };
 
-    AuthActions.signIn(signInParams, this.successCallback, this.errorCallback);
+      AuthActions.signIn(signInParams, this.successCallback, this.errorCallback);
+    }
   },
 
   errorCallback: function (errorMessage) {

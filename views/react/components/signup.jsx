@@ -7,15 +7,21 @@ var Signup = React.createClass({
   mixins: [LinkedStateMixin, History],
 
   getInitialState: function () {
-    return { errors: '', };
+    return { errors: '', username: '', password: '', email: '', confirmPassword: '' };
   },
 
   handleSubmit: function (event) {
     event.preventDefault();
     this.setState({ errors: '' });
-
+    console.log('here');
     if (this.state.password != this.state.confirmPassword) {
       this.setState({ errors: 'passwords do not match' });
+    } else if (this.state.username === '') {
+      this.setState({ errors: 'username is required' });
+    } else if (this.state.password === '') {
+      this.setState({ errors: 'password is required' });
+    } else if (this.state.email === '') {
+      this.setState({ errors: 'email is required' });
     } else {
       var signUpParams = {
         username: this.state.username,

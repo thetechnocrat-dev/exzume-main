@@ -31720,19 +31720,25 @@
 	  mixins: [LinkedStateMixin, History],
 	
 	  getInitialState: function () {
-	    return { errors: '' };
+	    return { errors: '', username: '', password: '' };
 	  },
 	
 	  handleSubmit: function (event) {
 	    event.preventDefault();
 	    this.setState({ errors: '' });
 	
-	    var signInParams = {
-	      username: this.state.username,
-	      password: this.state.password
-	    };
+	    if (this.state.username === '') {
+	      this.setState({ errors: 'username required' });
+	    } else if (this.state.password === '') {
+	      this.setState({ errors: 'password required' });
+	    } else {
+	      var signInParams = {
+	        username: this.state.username,
+	        password: this.state.password
+	      };
 	
-	    AuthActions.signIn(signInParams, this.successCallback, this.errorCallback);
+	      AuthActions.signIn(signInParams, this.successCallback, this.errorCallback);
+	    }
 	  },
 	
 	  errorCallback: function (errorMessage) {
@@ -32057,15 +32063,21 @@
 	  mixins: [LinkedStateMixin, History],
 	
 	  getInitialState: function () {
-	    return { errors: '' };
+	    return { errors: '', username: '', password: '', email: '', confirmPassword: '' };
 	  },
 	
 	  handleSubmit: function (event) {
 	    event.preventDefault();
 	    this.setState({ errors: '' });
-	
+	    console.log('here');
 	    if (this.state.password != this.state.confirmPassword) {
 	      this.setState({ errors: 'passwords do not match' });
+	    } else if (this.state.username === '') {
+	      this.setState({ errors: 'username is required' });
+	    } else if (this.state.password === '') {
+	      this.setState({ errors: 'password is required' });
+	    } else if (this.state.email === '') {
+	      this.setState({ errors: 'email is required' });
 	    } else {
 	      var signUpParams = {
 	        username: this.state.username,
