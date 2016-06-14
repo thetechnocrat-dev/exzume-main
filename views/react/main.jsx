@@ -17,8 +17,6 @@ var Profile = require('./components/profile');
 var DataStreamDetail = require('./components/dataStreamDetail');
 var DashboardLanding = require('./components/dashboardLanding');
 
-// once user auth is added just nest all the user paths with wildcard
-// doing the above will also prevent you from having to include navbar on every view
 var routes = (
   <Route component={App} path='/'>
     <IndexRoute component={Splash} ></IndexRoute>
