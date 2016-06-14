@@ -31679,20 +31679,6 @@
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'ui message' },
-	        React.createElement(
-	          'div',
-	          { className: 'header' },
-	          'Why People Would Want This'
-	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          'Worldwide sales of wearable electronic devices are expected to generate $28.7 billion in revenue this year, and Americans consistently spend an average of over $10 billion on self-improvement books per year. Exzume aims to provide the benefits of both in one package.'
-	        )
-	      ),
-	      React.createElement(
-	        'div',
 	        { className: 'ui teal button', onClick: this.clickBack },
 	        'Back'
 	      )
