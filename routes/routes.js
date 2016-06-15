@@ -44,49 +44,23 @@ module.exports = function (router, passport) {
     })(req, res);
   });
 
-  // router.put('/admin/api/addinsight', function (req, res) {
-  //   User.findOne({ 'local.username': req.body.username }, function (err, user) {
-  //     if (err) { res.send(err); }
-  //
-  //     user.insights.push({
-  //       message: req.body.message,
-  //       liked: false,
-  //     });
-  //
-  //     user.save(function (err) {
-  //       if (err) { res.send(err); }
-  //
-  //       res.json({ message: 'user updated with new insight' });
-  //     });
-  //   });
-  // });
-
-  // {'local.username': 'Watts42', 'insights._id': ObjectId("575d152831ea218e0882bc73")}, {'insights.$': 1})
-
   router.put('/api/starinsight', function (req, res) {
-    // console.log('routes starinsight', req.body);
-    // var objectId = mongoose.Types.ObjectId(req.body.insightId);
-    //
-    // // db.foo.update({"array.value" : 22}, {"$set" : {"array.$.text" : "blah"}})
-    // User.update({
-    //   'local.username': req.body.username, 'insights._id': objectId, },
-    //   { '$set': { insights.$.liked: true }
-    // });
+    var objectId = mongoose.Types.ObjectId(req.body.insightId);
+    var conditions = { 'local.username': req.body.username, 'insights._id': objectId };
+    var update = { $set: { 'insights.$.liked': req.body.isLiked } };
+    var options = { multi: false };
 
-    // { username: 'Watts42', insightId: '575d136331ea218e0882bc58' }
-    // User.findOne({ 'local.username': req.body.username, 'insights._id': objectId },
-    //   { 'insights.$': 1 },
-    //   function (err, user) {
-    //     if (err) { console.log(err); }
-    //
-    //     user.insights[0].liked = !user.insights[0].liked;
-    //
-    //     user.update(function (err) {
-    //       if (err) {console.log(err); }
-    //     });
-    //
-    //     console.log(user);
-    //   });
+    // db.foo.update({"array.value" : 22}, {"$set" : {"array.$.text" : "blah"}})
+    User.update(conditions, update, options,
+      function (err, numAffected) {
+        if (err) {
+          console.log('route star insight err', err);
+          res.status(500).json({ message: 'internal server error - try refreshing the page' });
+        }
+
+        res.json({ message: 'insight star success' });
+      }
+    );
   });
 
   router.get('/api/signout', function (req, res) {

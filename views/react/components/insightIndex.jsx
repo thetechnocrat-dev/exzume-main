@@ -49,6 +49,7 @@ var InsightIndex = React.createClass({
           time={insight.date}
           message={insight.message}
           id={insight._id}
+          isLiked={insight.liked}
           username = {AuthStore.currentUser().local.username}
         />
       );

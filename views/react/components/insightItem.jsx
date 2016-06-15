@@ -3,21 +3,30 @@ var AuthActions = require('../actions/authActions');
 
 var InsightItem = React.createClass({
   getInitialState: function () {
-    return ({ isLiked: false });
+    return ({ isLiked: this.props.isLiked });
   },
 
   clickIcon: function () {
     // optimistically changes star color
-    this.setState({ isLiked: !(this.state.isLiked) });
+    var toggledLike = !(this.state.isLiked);
+    this.setState({ isLiked: toggledLike });
     console.log(this.props.id, this.props.username);
 
-    var params = { username: this.props.username, insightId: this.props.id };
+    var params = {
+      username: this.props.username,
+      insightId: this.props.id,
+      isLiked: toggledLike,
+    };
 
     AuthActions.starInsight(params, this.successCallback, this.errorCallback);
   },
 
   successCallback: function (resp) {
     console.log('ajax insight star success', resp);
+
+    // resets auth store with updated user object that has correct staring of insights
+    // yes if our db and stores were organized better there would be better ways to do this
+    AuthActions.retrieveSession();
   },
 
   errorCallback: function (resp) {
