@@ -24973,7 +24973,6 @@
 	  },
 	
 	  starInsight: function (params, successCallback, errorCallback) {
-	    console.log('api util', params);
 	    $.ajax({
 	      type: 'PUT',
 	      url: '/api/starinsight',
@@ -32943,6 +32942,8 @@
 	  },
 	
 	  errorCallback: function (resp) {
+	    // revert isLiked state since it was not changed on server
+	    this.setState({ isLiked: !this.state.isLiked });
 	    console.log('ajax insight star error', resp);
 	  },
 	

@@ -113,7 +113,6 @@ module.exports = {
   },
 
   starInsight: function (params, successCallback, errorCallback) {
-    console.log('api util', params);
     $.ajax({
       type: 'PUT',
       url: '/api/starinsight',

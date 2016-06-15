@@ -28,7 +28,6 @@ module.exports = function (router, passport) {
   router.post('/api/signup', function (req, res) {
     passport.authenticate('local-signup', function (err, user, info) {
       if (err) {
-        console.log('route - sign up error');
         res.status(500).json({ message: 'internal server error - try refreshing the page' });
       } else if (user) {
         req.login(user, function (err) {
@@ -54,7 +53,6 @@ module.exports = function (router, passport) {
     User.update(conditions, update, options,
       function (err, numAffected) {
         if (err) {
-          console.log('route star insight err', err);
           res.status(500).json({ message: 'internal server error - try refreshing the page' });
         }
 
