@@ -32694,39 +32694,75 @@
 	
 	  mixins: [History],
 	
+	  _onChange: function () {
+	    this.forceUpdate();
+	  },
+	
+	  componentDidMount: function () {
+	    this.authToken = AuthStore.addListener(this._onChange);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.authToken.remove();
+	  },
+	
 	  clickSurvey: function () {
 	    var url = AuthStore.currentUser().formURL;
 	    var win = window.open(url, '_blank');
 	    win.focus();
 	  },
 	
+	  makeDailySurveyButton: function () {
+	    if (AuthStore.currentUser().formURL == 'none') {
+	      return React.createElement(
+	        'div',
+	        { className: 'ui disabled blue button' },
+	        'Fill out daily survey'
+	      );
+	    } else {
+	      return React.createElement(
+	        'div',
+	        { className: 'ui blue button', onClick: this.clickSurvey },
+	        'Fill out daily survey'
+	      );
+	    }
+	  },
+	
+	  makeDashboard: function () {
+	    if (AuthStore.isSignedIn()) {
+	      return React.createElement(
+	        'div',
+	        null,
+	        this.makeDailySurveyButton(),
+	        React.createElement(
+	          'h1',
+	          { className: 'ui left aligned header' },
+	          'Your Data Streams'
+	        ),
+	        React.createElement(DataStreamIndex, null),
+	        React.createElement(
+	          'h1',
+	          { className: 'ui header' },
+	          'Your Insights'
+	        ),
+	        React.createElement(InsightIndex, null),
+	        React.createElement(
+	          'h1',
+	          { className: 'ui header' },
+	          'Your Data Visualizations (coming soon)'
+	        ),
+	        React.createElement(DataVisualizationIndex, null)
+	      );
+	    } else {
+	      return React.createElement('div', null);
+	    }
+	  },
+	
 	  render: function () {
 	    return React.createElement(
 	      'div',
 	      null,
-	      React.createElement(
-	        'div',
-	        { className: 'ui blue button', onClick: this.clickSurvey },
-	        'Fill out daily survey'
-	      ),
-	      React.createElement(
-	        'h1',
-	        { className: 'ui left aligned header' },
-	        'Your Data Streams'
-	      ),
-	      React.createElement(DataStreamIndex, null),
-	      React.createElement(
-	        'h1',
-	        { className: 'ui header' },
-	        'Your Insights'
-	      ),
-	      React.createElement(InsightIndex, null),
-	      React.createElement(
-	        'h1',
-	        { className: 'ui header' },
-	        'Your Data Visualizations (coming soon)'
-	      ),
-	      React.createElement(DataVisualizationIndex, null)
+	      this.makeDashboard()
 	    );
 	  }
 	
