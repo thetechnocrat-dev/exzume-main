@@ -1,4 +1,5 @@
 var User = require('../models/user');
+var mongoose = require('mongoose');
 
 module.exports = function (router, passport) {
 
@@ -43,12 +44,50 @@ module.exports = function (router, passport) {
     })(req, res);
   });
 
-  // router.post('/api/signup',
-  //   passport.authenticate('local-signup'),
-  //   function (req, res) {
-  //     res.json({ message: 'sign up success' });
-  //   }
-  // );
+  // router.put('/admin/api/addinsight', function (req, res) {
+  //   User.findOne({ 'local.username': req.body.username }, function (err, user) {
+  //     if (err) { res.send(err); }
+  //
+  //     user.insights.push({
+  //       message: req.body.message,
+  //       liked: false,
+  //     });
+  //
+  //     user.save(function (err) {
+  //       if (err) { res.send(err); }
+  //
+  //       res.json({ message: 'user updated with new insight' });
+  //     });
+  //   });
+  // });
+
+  // {'local.username': 'Watts42', 'insights._id': ObjectId("575d152831ea218e0882bc73")}, {'insights.$': 1})
+
+  router.put('/api/starinsight', function (req, res) {
+    // console.log('routes starinsight', req.body);
+    // var objectId = mongoose.Types.ObjectId(req.body.insightId);
+    //
+    // // db.foo.update({"array.value" : 22}, {"$set" : {"array.$.text" : "blah"}})
+    // User.update({
+    //   'local.username': req.body.username, 'insights._id': objectId, },
+    //   { '$set': { insights.$.liked: true }
+    // });
+
+    // { username: 'Watts42', insightId: '575d136331ea218e0882bc58' }
+    // User.findOne({ 'local.username': req.body.username, 'insights._id': objectId },
+    //   { 'insights.$': 1 },
+    //   function (err, user) {
+    //     if (err) { console.log(err); }
+    //
+    //     user.insights[0].liked = !user.insights[0].liked;
+    //
+    //     user.update(function (err) {
+    //       if (err) {console.log(err); }
+    //     });
+    //
+    //     console.log(user);
+    //   });
+  });
 
   router.get('/api/signout', function (req, res) {
     req.logout();
@@ -58,14 +97,6 @@ module.exports = function (router, passport) {
   router.get('/api/session', function (req, res) {
     res.json(req.user);
   });
-
-  // router.get('/api/session/insights', function (req, res) {
-  //   if (typeof req.users.insights === 'undefined') {
-  //     res.send({ error: 'no user in session' });
-  //   }
-  //
-  //   res.json({ user: req.user.insights });
-  // });
 
   router.put('/admin/api/addform', function (req, res) {
     User.findOne({ 'local.username': req.body.username }, function (err, user) {

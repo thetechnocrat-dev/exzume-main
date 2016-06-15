@@ -44,7 +44,13 @@ var InsightIndex = React.createClass({
   makeInsights: function () {
     return this.state.insights.map(function (insight, idx) {
       return (
-        <InsightItem key={idx} time={insight.date} message={insight.message} />
+        <InsightItem
+          key={idx}
+          time={insight.date}
+          message={insight.message}
+          id={insight._id}
+          username = {AuthStore.currentUser().local.username}
+        />
       );
     });
   },

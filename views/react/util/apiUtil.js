@@ -111,4 +111,24 @@ module.exports = {
         },
     });
   },
+
+  starInsight: function (params, successCallback, errorCallback) {
+    console.log('api util', params);
+    $.ajax({
+      type: 'PUT',
+      url: '/api/starinsight',
+      data: params,
+      success:
+        function (resp) {
+          successCallback(resp);
+          console.log('ajax star insight success', resp);
+        },
+
+      error:
+        function (resp) {
+          errorCallback();
+          console.log('ajax star insight error', resp);
+        },
+    });
+  },
 };

@@ -1,4 +1,5 @@
 var React = require('react');
+var AuthActions = require('../actions/authActions');
 
 var InsightItem = React.createClass({
   getInitialState: function () {
@@ -6,7 +7,21 @@ var InsightItem = React.createClass({
   },
 
   clickIcon: function () {
+    // optimistically changes star color
     this.setState({ isLiked: !(this.state.isLiked) });
+    console.log(this.props.id, this.props.username);
+
+    var params = { username: this.props.username, insightId: this.props.id };
+
+    AuthActions.starInsight(params, this.successCallback, this.errorCallback);
+  },
+
+  successCallback: function (resp) {
+    console.log('ajax insight star success', resp);
+  },
+
+  errorCallback: function (resp) {
+    console.log('ajax insight star error', resp);
   },
 
   makeIcon: function () {

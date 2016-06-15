@@ -24534,6 +24534,10 @@
 	
 	  addInsight: function (params, successCallback, errorCallback) {
 	    ApiUtil.addInsight(params, successCallback, errorCallback);
+	  },
+	
+	  starInsight: function (params, successCallback, errorCallback) {
+	    ApiUtil.starInsight(params, successCallback, errorCallback);
 	  }
 	};
 
@@ -24964,6 +24968,24 @@
 	      error: function (respError) {
 	        errorCallback();
 	        console.log('ajax add user insight error', respError);
+	      }
+	    });
+	  },
+	
+	  starInsight: function (params, successCallback, errorCallback) {
+	    console.log('api util', params);
+	    $.ajax({
+	      type: 'PUT',
+	      url: '/api/starinsight',
+	      data: params,
+	      success: function (resp) {
+	        successCallback(resp);
+	        console.log('ajax star insight success', resp);
+	      },
+	
+	      error: function (resp) {
+	        errorCallback();
+	        console.log('ajax star insight error', resp);
 	      }
 	    });
 	  }
@@ -32836,7 +32858,13 @@
 	
 	  makeInsights: function () {
 	    return this.state.insights.map(function (insight, idx) {
-	      return React.createElement(InsightItem, { key: idx, time: insight.date, message: insight.message });
+	      return React.createElement(InsightItem, {
+	        key: idx,
+	        time: insight.date,
+	        message: insight.message,
+	        id: insight._id,
+	        username: AuthStore.currentUser().local.username
+	      });
 	    });
 	  },
 	
@@ -32881,6 +32909,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var AuthActions = __webpack_require__(211);
 	
 	var InsightItem = React.createClass({
 	  displayName: 'InsightItem',
@@ -32890,7 +32919,21 @@
 	  },
 	
 	  clickIcon: function () {
+	    // optimistically changes star color
 	    this.setState({ isLiked: !this.state.isLiked });
+	    console.log(this.props.id, this.props.username);
+	
+	    var params = { username: this.props.username, insightId: this.props.id };
+	
+	    AuthActions.starInsight(params, this.successCallback, this.errorCallback);
+	  },
+	
+	  successCallback: function (resp) {
+	    console.log('ajax insight star success', resp);
+	  },
+	
+	  errorCallback: function (resp) {
+	    console.log('ajax insight star error', resp);
 	  },
 	
 	  makeIcon: function () {

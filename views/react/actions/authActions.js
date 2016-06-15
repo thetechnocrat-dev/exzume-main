@@ -39,4 +39,8 @@ module.exports = {
   addInsight: function (params, successCallback, errorCallback) {
     ApiUtil.addInsight(params, successCallback, errorCallback);
   },
+
+  starInsight: function (params, successCallback, errorCallback) {
+    ApiUtil.starInsight(params, successCallback, errorCallback);
+  },
 };
