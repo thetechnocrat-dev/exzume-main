@@ -32803,7 +32803,7 @@
 	  },
 	
 	  _onChange: function () {
-	    // if session is active get initial insights
+	    // if user session become active get insights
 	    if (AuthStore.isSignedIn()) {
 	      this.clickMoreInsights();
 	    };
@@ -32811,6 +32811,10 @@
 	
 	  componentDidMount: function () {
 	    this.authToken = AuthStore.addListener(this._onChange);
+	
+	    if (AuthStore.isSignedIn()) {
+	      this.clickMoreInsights();
+	    }
 	  },
 	
 	  componentWillUnmount: function () {
