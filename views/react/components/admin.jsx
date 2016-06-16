@@ -1,6 +1,6 @@
 var React = require('react');
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
-var AuthActions = require('../actions/authActions');
+var SessionActions = require('../actions/sessionActions');
 var History = require('react-router').History;
 
 var Admin = React.createClass({
@@ -23,7 +23,7 @@ var Admin = React.createClass({
       link: this.state.link,
     };
 
-    AuthActions.addFormUrl(params, this.successFormUrlCallback, this.errorFormUrlCallback);
+    SessionActions.addFormUrl(params, this.successFormUrlCallback, this.errorFormUrlCallback);
   },
 
   successFormUrlCallback: function (respData) {
@@ -46,7 +46,7 @@ var Admin = React.createClass({
       message: this.state.insightMessage,
     };
 
-    AuthActions.addInsight(params, this.successInsightCallback, this.errorInsightCallback);
+    SessionActions.addInsight(params, this.successInsightCallback, this.errorInsightCallback);
   },
 
   successInsightCallback: function (respData) {

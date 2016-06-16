@@ -1,7 +1,7 @@
 var React = require('react');
 var History = require('react-router').History;
-var AuthStore = require('../stores/authStore');
-var AuthActions = require('../actions/authActions');
+var SessionStore = require('../stores/sessionStore');
+var SessionActions = require('../actions/sessionActions');
 
 // components
 
@@ -13,16 +13,16 @@ var App = React.createClass({
   },
 
   componentDidMount: function () {
-    this.authToken = AuthStore.addListener(this._onChange);
+    this.sessionToken = SessionStore.addListener(this._onChange);
 
     // check for active session if there is not already an active session
-    if (!AuthStore.isSignedIn()) {
-      AuthActions.retrieveSession();
+    if (!SessionStore.isSignedIn()) {
+      SessionActions.retrieveSession();
     };
   },
 
   componentWillUnmount: function () {
-    this.authToken.remove();
+    this.sessionToken.remove();
   },
 
   clickAbout: function () {
@@ -46,7 +46,7 @@ var App = React.createClass({
   },
 
   clickSignOut: function () {
-    AuthActions.signOut(this.successCallback);
+    SessionActions.signOut(this.successCallback);
   },
 
   successCallback: function () {
@@ -55,7 +55,7 @@ var App = React.createClass({
 
   makeButtons: function () {
     var marginStyle = { marginLeft: '5%' };
-    if (AuthStore.isSignedIn()) {
+    if (SessionStore.isSignedIn()) {
       return (
         <div className="row">
           <div>

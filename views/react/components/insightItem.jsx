@@ -1,5 +1,5 @@
 var React = require('react');
-var AuthActions = require('../actions/authActions');
+var SessionActions = require('../actions/sessionActions');
 
 var InsightItem = React.createClass({
   getInitialState: function () {
@@ -18,15 +18,15 @@ var InsightItem = React.createClass({
       isLiked: toggledLike,
     };
 
-    AuthActions.starInsight(params, this.successCallback, this.errorCallback);
+    SessionActions.starInsight(params, this.successCallback, this.errorCallback);
   },
 
   successCallback: function (resp) {
     console.log('ajax insight star success', resp);
 
-    // resets auth store with updated user object that has correct staring of insights
+    // resets session store with updated user object that has correct staring of insights
     // yes if our db and stores were organized better there would be better ways to do this
-    AuthActions.retrieveSession();
+    SessionActions.retrieveSession();
   },
 
   errorCallback: function (resp) {

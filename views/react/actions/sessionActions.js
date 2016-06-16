@@ -1,11 +1,11 @@
 var Dispatcher = require('../dispatcher/dispatcher');
-var AuthConstants = require('../constants/authConstants');
+var SessionConstants = require('../constants/sessionConstants');
 var ApiUtil = require('../util/apiUtil');
 
 module.exports = {
   receiveSession: function (userData) {
     Dispatcher.dispatch({
-      actionType: AuthConstants.SESSION_RECEIVED,
+      actionType: SessionConstants.SESSION_RECEIVED,
       user: userData,
     });
   },
@@ -24,7 +24,7 @@ module.exports = {
 
   destroySession: function () {
     Dispatcher.dispatch({
-      actionType: AuthConstants.SESSION_DESTROYED,
+      actionType: SessionConstants.SESSION_DESTROYED,
     });
   },
 

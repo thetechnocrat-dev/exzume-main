@@ -57,7 +57,7 @@
 	var Splash = __webpack_require__(236);
 	var About = __webpack_require__(237);
 	var SignIn = __webpack_require__(238);
-	var SignUp = __webpack_require__(243);
+	var SignUp = __webpack_require__(239);
 	var Admin = __webpack_require__(244);
 	var Profile = __webpack_require__(245);
 	var DataStreamDetail = __webpack_require__(246);
@@ -247,31 +247,6 @@
 	// shim for using process in browser
 	
 	var process = module.exports = {};
-	
-	// cached from whatever global is present so that test runners that stub it
-	// don't break things.  But we need to wrap it in a try catch in case it is
-	// wrapped in strict mode code which doesn't define any globals.  It's inside a
-	// function because try/catches deoptimize in certain engines.
-	
-	var cachedSetTimeout;
-	var cachedClearTimeout;
-	
-	(function () {
-	  try {
-	    cachedSetTimeout = setTimeout;
-	  } catch (e) {
-	    cachedSetTimeout = function () {
-	      throw new Error('setTimeout is not defined');
-	    }
-	  }
-	  try {
-	    cachedClearTimeout = clearTimeout;
-	  } catch (e) {
-	    cachedClearTimeout = function () {
-	      throw new Error('clearTimeout is not defined');
-	    }
-	  }
-	} ())
 	var queue = [];
 	var draining = false;
 	var currentQueue;
@@ -296,7 +271,7 @@
 	    if (draining) {
 	        return;
 	    }
-	    var timeout = cachedSetTimeout(cleanUpNextTick);
+	    var timeout = setTimeout(cleanUpNextTick);
 	    draining = true;
 	
 	    var len = queue.length;
@@ -313,7 +288,7 @@
 	    }
 	    currentQueue = null;
 	    draining = false;
-	    cachedClearTimeout(timeout);
+	    clearTimeout(timeout);
 	}
 	
 	process.nextTick = function (fun) {
@@ -325,7 +300,7 @@
 	    }
 	    queue.push(new Item(fun, args));
 	    if (queue.length === 1 && !draining) {
-	        cachedSetTimeout(drainQueue, 0);
+	        setTimeout(drainQueue, 0);
 	    }
 	};
 	
@@ -24416,8 +24391,8 @@
 
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
-	var AuthActions = __webpack_require__(211);
-	var AuthStore = __webpack_require__(218);
+	var SessionActions = __webpack_require__(256);
+	var SessionStore = __webpack_require__(255);
 	
 	var Navbar = React.createClass({
 	  displayName: 'Navbar',
@@ -24429,26 +24404,26 @@
 	  },
 	
 	  _onChange: function () {
-	    if (AuthStore.isSignedIn()) {
-	      this.setState({ currentUser: AuthStore.currentUser().local.username });
+	    if (SessionStore.isSignedIn()) {
+	      this.setState({ currentUser: SessionStore.currentUser().local.username });
 	    } else {
 	      this.setState({ currentUser: '' });
 	    }
 	  },
 	
 	  componentDidMount: function () {
-	    this.authToken = AuthStore.addListener(this._onChange);
+	    this.sessionToken = SessionStore.addListener(this._onChange);
 	
 	    // check for active session if there is not already an active session
-	    if (!AuthStore.isSignedIn()) {
-	      AuthActions.retrieveSession();
+	    if (!SessionStore.isSignedIn()) {
+	      SessionActions.retrieveSession();
 	    } else {
-	      this.setState({ currentUser: AuthStore.currentUser().local.username });
+	      this.setState({ currentUser: SessionStore.currentUser().local.username });
 	    }
 	  },
 	
 	  componentWillUnmount: function () {
-	    this.authToken.remove();
+	    this.sessionToken.remove();
 	  },
 	
 	  clickLogo: function () {
@@ -24460,7 +24435,7 @@
 	  },
 	
 	  clickSignout: function () {
-	    AuthActions.signOut(this.successCallback);
+	    SessionActions.signOut(this.successCallback);
 	  },
 	
 	  successCallback: function () {
@@ -24468,7 +24443,7 @@
 	  },
 	
 	  makeUserDropDown: function () {
-	    if (AuthStore.isSignedIn()) {
+	    if (SessionStore.isSignedIn()) {
 	      return React.createElement(
 	        'div',
 	        { className: 'ui simple dropdown item' },
@@ -24516,57 +24491,7 @@
 	module.exports = Navbar;
 
 /***/ },
-/* 211 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Dispatcher = __webpack_require__(212);
-	var AuthConstants = __webpack_require__(216);
-	var ApiUtil = __webpack_require__(217);
-	
-	module.exports = {
-	  receiveSession: function (userData) {
-	    Dispatcher.dispatch({
-	      actionType: AuthConstants.SESSION_RECEIVED,
-	      user: userData
-	    });
-	  },
-	
-	  retrieveSession: function () {
-	    ApiUtil.fetchSession(this.receiveSession);
-	  },
-	
-	  signUp: function (params, successCallback, errorCallback) {
-	    ApiUtil.signUp(params, successCallback, errorCallback);
-	  },
-	
-	  signIn: function (params, successCallback, errorCallback) {
-	    ApiUtil.signIn(params, successCallback, errorCallback);
-	  },
-	
-	  destroySession: function () {
-	    Dispatcher.dispatch({
-	      actionType: AuthConstants.SESSION_DESTROYED
-	    });
-	  },
-	
-	  signOut: function (successCallback) {
-	    ApiUtil.signOut(this.destroySession, successCallback);
-	  },
-	
-	  addFormUrl: function (params, successCallback, errorCallback) {
-	    ApiUtil.addFormUrl(params, successCallback, errorCallback);
-	  },
-	
-	  addInsight: function (params, successCallback, errorCallback) {
-	    ApiUtil.addInsight(params, successCallback, errorCallback);
-	  },
-	
-	  starInsight: function (params, successCallback, errorCallback) {
-	    ApiUtil.starInsight(params, successCallback, errorCallback);
-	  }
-	};
-
-/***/ },
+/* 211 */,
 /* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -24883,15 +24808,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 216 */
-/***/ function(module, exports) {
-
-	module.exports = {
-	  SESSION_RECEIVED: 'SESSION_RECEIVED',
-	  SESSION_DESTROYED: 'SESSION_DESTROYED'
-	};
-
-/***/ },
+/* 216 */,
 /* 217 */
 /***/ function(module, exports) {
 
@@ -25016,47 +24933,7 @@
 	};
 
 /***/ },
-/* 218 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Dispatcher = __webpack_require__(212);
-	var Store = __webpack_require__(219).Store;
-	var AuthConstants = __webpack_require__(216);
-	
-	var AuthStore = new Store(Dispatcher);
-	var _currentUser = {};
-	
-	AuthStore.resetAuthStore = function (user) {
-	  _currentUser = user;
-	}, AuthStore.isSignedIn = function () {
-	  return !(typeof _currentUser.local === 'undefined');
-	}, AuthStore.currentUser = function () {
-	  return _currentUser;
-	}, AuthStore.getInsights = function (startIndex, size) {
-	  var insights = _currentUser.insights;
-	  if (startIndex >= insights.length) {
-	    return [];
-	  } else if (startIndex + size >= insights.length) {
-	    return insights.slice(startIndex);
-	  } else {
-	    return insights.slice(startIndex, startIndex + size);
-	  };
-	}, AuthStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case AuthConstants.SESSION_RECEIVED:
-	      this.resetAuthStore(payload.user);
-	      this.__emitChange();
-	      break;
-	    case AuthConstants.SESSION_DESTROYED:
-	      this.resetAuthStore({});
-	      this.__emitChange();
-	      break;
-	  }
-	};
-	
-	module.exports = AuthStore;
-
-/***/ },
+/* 218 */,
 /* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -31505,8 +31382,8 @@
 
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
-	var AuthStore = __webpack_require__(218);
-	var AuthActions = __webpack_require__(211);
+	var SessionStore = __webpack_require__(255);
+	var SessionActions = __webpack_require__(256);
 	
 	// components
 	
@@ -31520,16 +31397,16 @@
 	  },
 	
 	  componentDidMount: function () {
-	    this.authToken = AuthStore.addListener(this._onChange);
+	    this.sessionToken = SessionStore.addListener(this._onChange);
 	
 	    // check for active session if there is not already an active session
-	    if (!AuthStore.isSignedIn()) {
-	      AuthActions.retrieveSession();
+	    if (!SessionStore.isSignedIn()) {
+	      SessionActions.retrieveSession();
 	    };
 	  },
 	
 	  componentWillUnmount: function () {
-	    this.authToken.remove();
+	    this.sessionToken.remove();
 	  },
 	
 	  clickAbout: function () {
@@ -31553,7 +31430,7 @@
 	  },
 	
 	  clickSignOut: function () {
-	    AuthActions.signOut(this.successCallback);
+	    SessionActions.signOut(this.successCallback);
 	  },
 	
 	  successCallback: function () {
@@ -31562,7 +31439,7 @@
 	
 	  makeButtons: function () {
 	    var marginStyle = { marginLeft: '5%' };
-	    if (AuthStore.isSignedIn()) {
+	    if (SessionStore.isSignedIn()) {
 	      return React.createElement(
 	        'div',
 	        { className: 'row' },
@@ -31740,8 +31617,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var AuthActions = __webpack_require__(211);
-	var LinkedStateMixin = __webpack_require__(239);
+	var SessionActions = __webpack_require__(256);
+	var LinkedStateMixin = __webpack_require__(240);
 	var History = __webpack_require__(159).History;
 	
 	var SignIn = React.createClass({
@@ -31770,7 +31647,7 @@
 	
 	      // will remain in loading state until AJAX callback changes state
 	      this.setState({ loading: true });
-	      AuthActions.signIn(signInParams, this.successCallback, this.errorCallback);
+	      SessionActions.signIn(signInParams, this.successCallback, this.errorCallback);
 	    }
 	  },
 	
@@ -31895,239 +31772,9 @@
 /* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(240);
-
-/***/ },
-/* 240 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule LinkedStateMixin
-	 * @typechecks static-only
-	 */
-	
-	'use strict';
-	
-	var ReactLink = __webpack_require__(241);
-	var ReactStateSetters = __webpack_require__(242);
-	
-	/**
-	 * A simple mixin around ReactLink.forState().
-	 */
-	var LinkedStateMixin = {
-	  /**
-	   * Create a ReactLink that's linked to part of this component's state. The
-	   * ReactLink will have the current value of this.state[key] and will call
-	   * setState() when a change is requested.
-	   *
-	   * @param {string} key state key to update. Note: you may want to use keyOf()
-	   * if you're using Google Closure Compiler advanced mode.
-	   * @return {ReactLink} ReactLink instance linking to the state.
-	   */
-	  linkState: function (key) {
-	    return new ReactLink(this.state[key], ReactStateSetters.createStateKeySetter(this, key));
-	  }
-	};
-	
-	module.exports = LinkedStateMixin;
-
-/***/ },
-/* 241 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule ReactLink
-	 * @typechecks static-only
-	 */
-	
-	'use strict';
-	
-	/**
-	 * ReactLink encapsulates a common pattern in which a component wants to modify
-	 * a prop received from its parent. ReactLink allows the parent to pass down a
-	 * value coupled with a callback that, when invoked, expresses an intent to
-	 * modify that value. For example:
-	 *
-	 * React.createClass({
-	 *   getInitialState: function() {
-	 *     return {value: ''};
-	 *   },
-	 *   render: function() {
-	 *     var valueLink = new ReactLink(this.state.value, this._handleValueChange);
-	 *     return <input valueLink={valueLink} />;
-	 *   },
-	 *   _handleValueChange: function(newValue) {
-	 *     this.setState({value: newValue});
-	 *   }
-	 * });
-	 *
-	 * We have provided some sugary mixins to make the creation and
-	 * consumption of ReactLink easier; see LinkedValueUtils and LinkedStateMixin.
-	 */
-	
-	var React = __webpack_require__(2);
-	
-	/**
-	 * @param {*} value current value of the link
-	 * @param {function} requestChange callback to request a change
-	 */
-	function ReactLink(value, requestChange) {
-	  this.value = value;
-	  this.requestChange = requestChange;
-	}
-	
-	/**
-	 * Creates a PropType that enforces the ReactLink API and optionally checks the
-	 * type of the value being passed inside the link. Example:
-	 *
-	 * MyComponent.propTypes = {
-	 *   tabIndexLink: ReactLink.PropTypes.link(React.PropTypes.number)
-	 * }
-	 */
-	function createLinkTypeChecker(linkType) {
-	  var shapes = {
-	    value: typeof linkType === 'undefined' ? React.PropTypes.any.isRequired : linkType.isRequired,
-	    requestChange: React.PropTypes.func.isRequired
-	  };
-	  return React.PropTypes.shape(shapes);
-	}
-	
-	ReactLink.PropTypes = {
-	  link: createLinkTypeChecker
-	};
-	
-	module.exports = ReactLink;
-
-/***/ },
-/* 242 */
-/***/ function(module, exports) {
-
-	/**
-	 * Copyright 2013-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule ReactStateSetters
-	 */
-	
-	'use strict';
-	
-	var ReactStateSetters = {
-	  /**
-	   * Returns a function that calls the provided function, and uses the result
-	   * of that to set the component's state.
-	   *
-	   * @param {ReactCompositeComponent} component
-	   * @param {function} funcReturningState Returned callback uses this to
-	   *                                      determine how to update state.
-	   * @return {function} callback that when invoked uses funcReturningState to
-	   *                    determined the object literal to setState.
-	   */
-	  createStateSetter: function (component, funcReturningState) {
-	    return function (a, b, c, d, e, f) {
-	      var partialState = funcReturningState.call(component, a, b, c, d, e, f);
-	      if (partialState) {
-	        component.setState(partialState);
-	      }
-	    };
-	  },
-	
-	  /**
-	   * Returns a single-argument callback that can be used to update a single
-	   * key in the component's state.
-	   *
-	   * Note: this is memoized function, which makes it inexpensive to call.
-	   *
-	   * @param {ReactCompositeComponent} component
-	   * @param {string} key The key in the state that you should update.
-	   * @return {function} callback of 1 argument which calls setState() with
-	   *                    the provided keyName and callback argument.
-	   */
-	  createStateKeySetter: function (component, key) {
-	    // Memoize the setters.
-	    var cache = component.__keySetters || (component.__keySetters = {});
-	    return cache[key] || (cache[key] = createStateKeySetter(component, key));
-	  }
-	};
-	
-	function createStateKeySetter(component, key) {
-	  // Partial state is allocated outside of the function closure so it can be
-	  // reused with every call, avoiding memory allocation when this function
-	  // is called.
-	  var partialState = {};
-	  return function stateKeySetter(value) {
-	    partialState[key] = value;
-	    component.setState(partialState);
-	  };
-	}
-	
-	ReactStateSetters.Mixin = {
-	  /**
-	   * Returns a function that calls the provided function, and uses the result
-	   * of that to set the component's state.
-	   *
-	   * For example, these statements are equivalent:
-	   *
-	   *   this.setState({x: 1});
-	   *   this.createStateSetter(function(xValue) {
-	   *     return {x: xValue};
-	   *   })(1);
-	   *
-	   * @param {function} funcReturningState Returned callback uses this to
-	   *                                      determine how to update state.
-	   * @return {function} callback that when invoked uses funcReturningState to
-	   *                    determined the object literal to setState.
-	   */
-	  createStateSetter: function (funcReturningState) {
-	    return ReactStateSetters.createStateSetter(this, funcReturningState);
-	  },
-	
-	  /**
-	   * Returns a single-argument callback that can be used to update a single
-	   * key in the component's state.
-	   *
-	   * For example, these statements are equivalent:
-	   *
-	   *   this.setState({x: 1});
-	   *   this.createStateKeySetter('x')(1);
-	   *
-	   * Note: this is memoized function, which makes it inexpensive to call.
-	   *
-	   * @param {string} key The key in the state that you should update.
-	   * @return {function} callback of 1 argument which calls setState() with
-	   *                    the provided keyName and callback argument.
-	   */
-	  createStateKeySetter: function (key) {
-	    return ReactStateSetters.createStateKeySetter(this, key);
-	  }
-	};
-	
-	module.exports = ReactStateSetters;
-
-/***/ },
-/* 243 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var React = __webpack_require__(1);
-	var LinkedStateMixin = __webpack_require__(239);
-	var AuthActions = __webpack_require__(211);
+	var LinkedStateMixin = __webpack_require__(240);
+	var SessionActions = __webpack_require__(256);
 	var History = __webpack_require__(159).History;
 	
 	var Signup = React.createClass({
@@ -32160,7 +31807,7 @@
 	
 	      // will remain in loading state until AJAX callback changes state
 	      this.setState({ loading: true });
-	      AuthActions.signUp(signUpParams, this.successCallback, this.errorCallback);
+	      SessionActions.signUp(signUpParams, this.successCallback, this.errorCallback);
 	    }
 	  },
 	
@@ -32312,12 +31959,242 @@
 	module.exports = Signup;
 
 /***/ },
+/* 240 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(241);
+
+/***/ },
+/* 241 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule LinkedStateMixin
+	 * @typechecks static-only
+	 */
+	
+	'use strict';
+	
+	var ReactLink = __webpack_require__(242);
+	var ReactStateSetters = __webpack_require__(243);
+	
+	/**
+	 * A simple mixin around ReactLink.forState().
+	 */
+	var LinkedStateMixin = {
+	  /**
+	   * Create a ReactLink that's linked to part of this component's state. The
+	   * ReactLink will have the current value of this.state[key] and will call
+	   * setState() when a change is requested.
+	   *
+	   * @param {string} key state key to update. Note: you may want to use keyOf()
+	   * if you're using Google Closure Compiler advanced mode.
+	   * @return {ReactLink} ReactLink instance linking to the state.
+	   */
+	  linkState: function (key) {
+	    return new ReactLink(this.state[key], ReactStateSetters.createStateKeySetter(this, key));
+	  }
+	};
+	
+	module.exports = LinkedStateMixin;
+
+/***/ },
+/* 242 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule ReactLink
+	 * @typechecks static-only
+	 */
+	
+	'use strict';
+	
+	/**
+	 * ReactLink encapsulates a common pattern in which a component wants to modify
+	 * a prop received from its parent. ReactLink allows the parent to pass down a
+	 * value coupled with a callback that, when invoked, expresses an intent to
+	 * modify that value. For example:
+	 *
+	 * React.createClass({
+	 *   getInitialState: function() {
+	 *     return {value: ''};
+	 *   },
+	 *   render: function() {
+	 *     var valueLink = new ReactLink(this.state.value, this._handleValueChange);
+	 *     return <input valueLink={valueLink} />;
+	 *   },
+	 *   _handleValueChange: function(newValue) {
+	 *     this.setState({value: newValue});
+	 *   }
+	 * });
+	 *
+	 * We have provided some sugary mixins to make the creation and
+	 * consumption of ReactLink easier; see LinkedValueUtils and LinkedStateMixin.
+	 */
+	
+	var React = __webpack_require__(2);
+	
+	/**
+	 * @param {*} value current value of the link
+	 * @param {function} requestChange callback to request a change
+	 */
+	function ReactLink(value, requestChange) {
+	  this.value = value;
+	  this.requestChange = requestChange;
+	}
+	
+	/**
+	 * Creates a PropType that enforces the ReactLink API and optionally checks the
+	 * type of the value being passed inside the link. Example:
+	 *
+	 * MyComponent.propTypes = {
+	 *   tabIndexLink: ReactLink.PropTypes.link(React.PropTypes.number)
+	 * }
+	 */
+	function createLinkTypeChecker(linkType) {
+	  var shapes = {
+	    value: typeof linkType === 'undefined' ? React.PropTypes.any.isRequired : linkType.isRequired,
+	    requestChange: React.PropTypes.func.isRequired
+	  };
+	  return React.PropTypes.shape(shapes);
+	}
+	
+	ReactLink.PropTypes = {
+	  link: createLinkTypeChecker
+	};
+	
+	module.exports = ReactLink;
+
+/***/ },
+/* 243 */
+/***/ function(module, exports) {
+
+	/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule ReactStateSetters
+	 */
+	
+	'use strict';
+	
+	var ReactStateSetters = {
+	  /**
+	   * Returns a function that calls the provided function, and uses the result
+	   * of that to set the component's state.
+	   *
+	   * @param {ReactCompositeComponent} component
+	   * @param {function} funcReturningState Returned callback uses this to
+	   *                                      determine how to update state.
+	   * @return {function} callback that when invoked uses funcReturningState to
+	   *                    determined the object literal to setState.
+	   */
+	  createStateSetter: function (component, funcReturningState) {
+	    return function (a, b, c, d, e, f) {
+	      var partialState = funcReturningState.call(component, a, b, c, d, e, f);
+	      if (partialState) {
+	        component.setState(partialState);
+	      }
+	    };
+	  },
+	
+	  /**
+	   * Returns a single-argument callback that can be used to update a single
+	   * key in the component's state.
+	   *
+	   * Note: this is memoized function, which makes it inexpensive to call.
+	   *
+	   * @param {ReactCompositeComponent} component
+	   * @param {string} key The key in the state that you should update.
+	   * @return {function} callback of 1 argument which calls setState() with
+	   *                    the provided keyName and callback argument.
+	   */
+	  createStateKeySetter: function (component, key) {
+	    // Memoize the setters.
+	    var cache = component.__keySetters || (component.__keySetters = {});
+	    return cache[key] || (cache[key] = createStateKeySetter(component, key));
+	  }
+	};
+	
+	function createStateKeySetter(component, key) {
+	  // Partial state is allocated outside of the function closure so it can be
+	  // reused with every call, avoiding memory allocation when this function
+	  // is called.
+	  var partialState = {};
+	  return function stateKeySetter(value) {
+	    partialState[key] = value;
+	    component.setState(partialState);
+	  };
+	}
+	
+	ReactStateSetters.Mixin = {
+	  /**
+	   * Returns a function that calls the provided function, and uses the result
+	   * of that to set the component's state.
+	   *
+	   * For example, these statements are equivalent:
+	   *
+	   *   this.setState({x: 1});
+	   *   this.createStateSetter(function(xValue) {
+	   *     return {x: xValue};
+	   *   })(1);
+	   *
+	   * @param {function} funcReturningState Returned callback uses this to
+	   *                                      determine how to update state.
+	   * @return {function} callback that when invoked uses funcReturningState to
+	   *                    determined the object literal to setState.
+	   */
+	  createStateSetter: function (funcReturningState) {
+	    return ReactStateSetters.createStateSetter(this, funcReturningState);
+	  },
+	
+	  /**
+	   * Returns a single-argument callback that can be used to update a single
+	   * key in the component's state.
+	   *
+	   * For example, these statements are equivalent:
+	   *
+	   *   this.setState({x: 1});
+	   *   this.createStateKeySetter('x')(1);
+	   *
+	   * Note: this is memoized function, which makes it inexpensive to call.
+	   *
+	   * @param {string} key The key in the state that you should update.
+	   * @return {function} callback of 1 argument which calls setState() with
+	   *                    the provided keyName and callback argument.
+	   */
+	  createStateKeySetter: function (key) {
+	    return ReactStateSetters.createStateKeySetter(this, key);
+	  }
+	};
+	
+	module.exports = ReactStateSetters;
+
+/***/ },
 /* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var LinkedStateMixin = __webpack_require__(239);
-	var AuthActions = __webpack_require__(211);
+	var LinkedStateMixin = __webpack_require__(240);
+	var SessionActions = __webpack_require__(256);
 	var History = __webpack_require__(159).History;
 	
 	var Admin = React.createClass({
@@ -32342,7 +32219,7 @@
 	      link: this.state.link
 	    };
 	
-	    AuthActions.addFormUrl(params, this.successFormUrlCallback, this.errorFormUrlCallback);
+	    SessionActions.addFormUrl(params, this.successFormUrlCallback, this.errorFormUrlCallback);
 	  },
 	
 	  successFormUrlCallback: function (respData) {
@@ -32365,7 +32242,7 @@
 	      message: this.state.insightMessage
 	    };
 	
-	    AuthActions.addInsight(params, this.successInsightCallback, this.errorInsightCallback);
+	    SessionActions.addInsight(params, this.successInsightCallback, this.errorInsightCallback);
 	  },
 	
 	  successInsightCallback: function (respData) {
@@ -32529,7 +32406,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var AuthStore = __webpack_require__(218);
+	var SessionStore = __webpack_require__(255);
 	var Navbar = __webpack_require__(210);
 	var History = __webpack_require__(159).History;
 	
@@ -32539,7 +32416,7 @@
 	  mixins: [History],
 	
 	  getInitialState: function () {
-	    return { user: AuthStore.currentUser() };
+	    return { user: SessionStore.currentUser() };
 	  },
 	
 	  clickBack: function () {
@@ -32628,7 +32505,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var AuthStore = __webpack_require__(218);
+	var SessionStore = __webpack_require__(255);
 	var PropTypes = React.PropTypes;
 	var History = __webpack_require__(159).History;
 	
@@ -32638,7 +32515,7 @@
 	  mixins: [History],
 	
 	  getInitialState: function () {
-	    return { user: AuthStore.currentUser() };
+	    return { user: SessionStore.currentUser() };
 	  },
 	
 	  clickBack: function () {
@@ -32712,7 +32589,7 @@
 	var DataStreamIndex = __webpack_require__(248);
 	var InsightIndex = __webpack_require__(250);
 	var DataVisualizationIndex = __webpack_require__(252);
-	var AuthStore = __webpack_require__(218);
+	var SessionStore = __webpack_require__(255);
 	
 	var DashboardLanding = React.createClass({
 	  displayName: 'DashboardLanding',
@@ -32724,21 +32601,21 @@
 	  },
 	
 	  componentDidMount: function () {
-	    this.authToken = AuthStore.addListener(this._onChange);
+	    this.sessionToken = SessionStore.addListener(this._onChange);
 	  },
 	
 	  componentWillUnmount: function () {
-	    this.authToken.remove();
+	    this.sessionToken.remove();
 	  },
 	
 	  clickSurvey: function () {
-	    var url = AuthStore.currentUser().formURL;
+	    var url = SessionStore.currentUser().formURL;
 	    var win = window.open(url, '_blank');
 	    win.focus();
 	  },
 	
 	  makeDailySurveyButton: function () {
-	    if (AuthStore.currentUser().formURL == 'none') {
+	    if (SessionStore.currentUser().formURL == 'none') {
 	      return React.createElement(
 	        'div',
 	        { className: 'ui disabled blue button' },
@@ -32754,7 +32631,7 @@
 	  },
 	
 	  makeDashboard: function () {
-	    if (AuthStore.isSignedIn()) {
+	    if (SessionStore.isSignedIn()) {
 	      return React.createElement(
 	        'div',
 	        null,
@@ -32872,7 +32749,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var AuthStore = __webpack_require__(218);
+	var SessionStore = __webpack_require__(255);
 	
 	// components
 	var InsightItem = __webpack_require__(251);
@@ -32886,26 +32763,26 @@
 	
 	  _onChange: function () {
 	    // if user session become active get insights
-	    if (AuthStore.isSignedIn()) {
+	    if (SessionStore.isSignedIn()) {
 	      this.clickMoreInsights();
 	    };
 	  },
 	
 	  componentDidMount: function () {
-	    this.authToken = AuthStore.addListener(this._onChange);
+	    this.sessionToken = SessionStore.addListener(this._onChange);
 	
-	    if (AuthStore.isSignedIn()) {
+	    if (SessionStore.isSignedIn()) {
 	      this.clickMoreInsights();
 	    }
 	  },
 	
 	  componentWillUnmount: function () {
-	    this.authToken.remove();
+	    this.sessionToken.remove();
 	  },
 	
 	  clickMoreInsights: function () {
 	    var CHUNK_SIZE = 10;
-	    var moreInsights = AuthStore.getInsights(this.state.startIndex, CHUNK_SIZE);
+	    var moreInsights = SessionStore.getInsights(this.state.startIndex, CHUNK_SIZE);
 	    this.setState({ startIndex: this.state.startIndex + CHUNK_SIZE });
 	
 	    // makes it so user can not request more insights after all insights are already displayed
@@ -32924,7 +32801,7 @@
 	        message: insight.message,
 	        id: insight._id,
 	        isLiked: insight.liked,
-	        username: AuthStore.currentUser().local.username
+	        username: SessionStore.currentUser().local.username
 	      });
 	    });
 	  },
@@ -32970,7 +32847,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var AuthActions = __webpack_require__(211);
+	var SessionActions = __webpack_require__(256);
 	
 	var InsightItem = React.createClass({
 	  displayName: 'InsightItem',
@@ -32991,15 +32868,15 @@
 	      isLiked: toggledLike
 	    };
 	
-	    AuthActions.starInsight(params, this.successCallback, this.errorCallback);
+	    SessionActions.starInsight(params, this.successCallback, this.errorCallback);
 	  },
 	
 	  successCallback: function (resp) {
 	    console.log('ajax insight star success', resp);
 	
-	    // resets auth store with updated user object that has correct staring of insights
+	    // resets session store with updated user object that has correct staring of insights
 	    // yes if our db and stores were organized better there would be better ways to do this
-	    AuthActions.retrieveSession();
+	    SessionActions.retrieveSession();
 	  },
 	
 	  errorCallback: function (resp) {
@@ -33100,6 +32977,108 @@
 	});
 	
 	module.exports = DataVisualizationItem;
+
+/***/ },
+/* 254 */,
+/* 255 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Dispatcher = __webpack_require__(212);
+	var Store = __webpack_require__(219).Store;
+	var SessionConstants = __webpack_require__(257);
+	
+	var SessionStore = new Store(Dispatcher);
+	var _currentUser = {};
+	
+	SessionStore.resetSessionStore = function (user) {
+	  _currentUser = user;
+	}, SessionStore.isSignedIn = function () {
+	  return !(typeof _currentUser.local === 'undefined');
+	}, SessionStore.currentUser = function () {
+	  return _currentUser;
+	}, SessionStore.getInsights = function (startIndex, size) {
+	  var insights = _currentUser.insights;
+	  if (startIndex >= insights.length) {
+	    return [];
+	  } else if (startIndex + size >= insights.length) {
+	    return insights.slice(startIndex);
+	  } else {
+	    return insights.slice(startIndex, startIndex + size);
+	  };
+	}, SessionStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case SessionConstants.SESSION_RECEIVED:
+	      this.resetSessionStore(payload.user);
+	      this.__emitChange();
+	      break;
+	    case SessionConstants.SESSION_DESTROYED:
+	      this.resetSessionStore({});
+	      this.__emitChange();
+	      break;
+	  }
+	};
+	
+	module.exports = SessionStore;
+
+/***/ },
+/* 256 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Dispatcher = __webpack_require__(212);
+	var SessionConstants = __webpack_require__(257);
+	var ApiUtil = __webpack_require__(217);
+	
+	module.exports = {
+	  receiveSession: function (userData) {
+	    Dispatcher.dispatch({
+	      actionType: SessionConstants.SESSION_RECEIVED,
+	      user: userData
+	    });
+	  },
+	
+	  retrieveSession: function () {
+	    ApiUtil.fetchSession(this.receiveSession);
+	  },
+	
+	  signUp: function (params, successCallback, errorCallback) {
+	    ApiUtil.signUp(params, successCallback, errorCallback);
+	  },
+	
+	  signIn: function (params, successCallback, errorCallback) {
+	    ApiUtil.signIn(params, successCallback, errorCallback);
+	  },
+	
+	  destroySession: function () {
+	    Dispatcher.dispatch({
+	      actionType: SessionConstants.SESSION_DESTROYED
+	    });
+	  },
+	
+	  signOut: function (successCallback) {
+	    ApiUtil.signOut(this.destroySession, successCallback);
+	  },
+	
+	  addFormUrl: function (params, successCallback, errorCallback) {
+	    ApiUtil.addFormUrl(params, successCallback, errorCallback);
+	  },
+	
+	  addInsight: function (params, successCallback, errorCallback) {
+	    ApiUtil.addInsight(params, successCallback, errorCallback);
+	  },
+	
+	  starInsight: function (params, successCallback, errorCallback) {
+	    ApiUtil.starInsight(params, successCallback, errorCallback);
+	  }
+	};
+
+/***/ },
+/* 257 */
+/***/ function(module, exports) {
+
+	module.exports = {
+	  SESSION_RECEIVED: 'SESSION_RECEIVED',
+	  SESSION_DESTROYED: 'SESSION_DESTROYED'
+	};
 
 /***/ }
 /******/ ]);

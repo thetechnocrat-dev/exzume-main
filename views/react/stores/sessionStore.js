@@ -1,23 +1,23 @@
 var Dispatcher = require('../dispatcher/dispatcher');
 var Store = require('flux/utils').Store;
-var AuthConstants = require('../constants/authConstants');
+var SessionConstants = require('../constants/sessionConstants');
 
-var AuthStore = new Store(Dispatcher);
+var SessionStore = new Store(Dispatcher);
 var _currentUser = {};
 
-AuthStore.resetAuthStore = function (user) {
+SessionStore.resetSessionStore = function (user) {
   _currentUser = user;
 },
 
-AuthStore.isSignedIn = function () {
+SessionStore.isSignedIn = function () {
   return !(typeof _currentUser.local === 'undefined');
 },
 
-AuthStore.currentUser = function () {
+SessionStore.currentUser = function () {
   return _currentUser;
 },
 
-AuthStore.getInsights = function (startIndex, size) {
+SessionStore.getInsights = function (startIndex, size) {
   var insights = _currentUser.insights;
   if (startIndex >= insights.length) {
     return [];
@@ -28,17 +28,17 @@ AuthStore.getInsights = function (startIndex, size) {
   };
 },
 
-AuthStore.__onDispatch = function (payload) {
+SessionStore.__onDispatch = function (payload) {
   switch (payload.actionType) {
-    case AuthConstants.SESSION_RECEIVED:
-      this.resetAuthStore(payload.user);
+    case SessionConstants.SESSION_RECEIVED:
+      this.resetSessionStore(payload.user);
       this.__emitChange();
       break;
-    case AuthConstants.SESSION_DESTROYED:
-      this.resetAuthStore({});
+    case SessionConstants.SESSION_DESTROYED:
+      this.resetSessionStore({});
       this.__emitChange();
       break;
   }
 };
 
-module.exports = AuthStore;
+module.exports = SessionStore;

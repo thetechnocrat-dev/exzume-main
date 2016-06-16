@@ -1,5 +1,5 @@
 var React = require('react');
-var AuthStore = require('../stores/authStore');
+var SessionStore = require('../stores/sessionStore');
 var PropTypes = React.PropTypes;
 var History = require('react-router').History;
 
@@ -7,7 +7,7 @@ var DataStreamDetail = React.createClass({
   mixins: [History],
 
   getInitialState: function () {
-    return ({ user: AuthStore.currentUser() });
+    return ({ user: SessionStore.currentUser() });
   },
 
   clickBack: function () {

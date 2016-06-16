@@ -1,6 +1,6 @@
 var React = require('react');
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
-var AuthActions = require('../../actions/authActions');
+var SessionActions = require('../../actions/sessionActions');
 var History = require('react-router').History;
 
 var Signup = React.createClass({
@@ -33,7 +33,7 @@ var Signup = React.createClass({
 
       // will remain in loading state until AJAX callback changes state
       this.setState({ loading: true });
-      AuthActions.signUp(signUpParams, this.successCallback, this.errorCallback);
+      SessionActions.signUp(signUpParams, this.successCallback, this.errorCallback);
     }
   },
 

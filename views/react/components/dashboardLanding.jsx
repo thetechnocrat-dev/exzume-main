@@ -3,7 +3,7 @@ var History = require('react-router').History;
 var DataStreamIndex = require('./dataStreamIndex');
 var InsightIndex = require('./insightIndex');
 var DataVisualizationIndex = require('./dataVisualizationIndex');
-var AuthStore = require('../stores/authStore');
+var SessionStore = require('../stores/sessionStore');
 
 var DashboardLanding = React.createClass({
   mixins: [History],
@@ -13,21 +13,21 @@ var DashboardLanding = React.createClass({
   },
 
   componentDidMount: function () {
-    this.authToken = AuthStore.addListener(this._onChange);
+    this.sessionToken = SessionStore.addListener(this._onChange);
   },
 
   componentWillUnmount: function () {
-    this.authToken.remove();
+    this.sessionToken.remove();
   },
 
   clickSurvey: function () {
-    var url = AuthStore.currentUser().formURL;
+    var url = SessionStore.currentUser().formURL;
     var win = window.open(url, '_blank');
     win.focus();
   },
 
   makeDailySurveyButton: function () {
-    if (AuthStore.currentUser().formURL == 'none') {
+    if (SessionStore.currentUser().formURL == 'none') {
       return (
         <div className="ui disabled blue button">Fill out daily survey</div>
       );
@@ -39,7 +39,7 @@ var DashboardLanding = React.createClass({
   },
 
   makeDashboard: function () {
-    if (AuthStore.isSignedIn()) {
+    if (SessionStore.isSignedIn()) {
       return (
         <div>
           {this.makeDailySurveyButton()}

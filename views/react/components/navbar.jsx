@@ -1,7 +1,7 @@
 var React = require('react');
 var History = require('react-router').History;
-var AuthActions = require('../actions/authActions');
-var AuthStore = require('../stores/authStore');
+var SessionActions = require('../actions/sessionActions');
+var SessionStore = require('../stores/sessionStore');
 
 var Navbar = React.createClass({
   mixins: [History],
@@ -11,26 +11,26 @@ var Navbar = React.createClass({
   },
 
   _onChange: function () {
-    if (AuthStore.isSignedIn()) {
-      this.setState({ currentUser: AuthStore.currentUser().local.username });
+    if (SessionStore.isSignedIn()) {
+      this.setState({ currentUser: SessionStore.currentUser().local.username });
     } else {
       this.setState({ currentUser: '' });
     }
   },
 
   componentDidMount: function () {
-    this.authToken = AuthStore.addListener(this._onChange);
+    this.sessionToken = SessionStore.addListener(this._onChange);
 
     // check for active session if there is not already an active session
-    if (!AuthStore.isSignedIn()) {
-      AuthActions.retrieveSession();
+    if (!SessionStore.isSignedIn()) {
+      SessionActions.retrieveSession();
     } else {
-      this.setState({ currentUser: AuthStore.currentUser().local.username });
+      this.setState({ currentUser: SessionStore.currentUser().local.username });
     }
   },
 
   componentWillUnmount: function () {
-    this.authToken.remove();
+    this.sessionToken.remove();
   },
 
   clickLogo: function () {
@@ -42,7 +42,7 @@ var Navbar = React.createClass({
   },
 
   clickSignout: function () {
-    AuthActions.signOut(this.successCallback);
+    SessionActions.signOut(this.successCallback);
   },
 
   successCallback: function () {
@@ -50,7 +50,7 @@ var Navbar = React.createClass({
   },
 
   makeUserDropDown: function () {
-    if (AuthStore.isSignedIn()) {
+    if (SessionStore.isSignedIn()) {
       return (
         <div className="ui simple dropdown item">
           {this.state.currentUser}

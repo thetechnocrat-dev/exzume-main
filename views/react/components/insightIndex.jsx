@@ -1,5 +1,5 @@
 var React = require('react');
-var AuthStore = require('../stores/authStore');
+var SessionStore = require('../stores/sessionStore');
 
 // components
 var InsightItem = require('./insightItem');
@@ -11,26 +11,26 @@ var InsightIndex = React.createClass({
 
   _onChange: function () {
     // if user session become active get insights
-    if (AuthStore.isSignedIn()) {
+    if (SessionStore.isSignedIn()) {
       this.clickMoreInsights();
     };
   },
 
   componentDidMount: function () {
-    this.authToken = AuthStore.addListener(this._onChange);
+    this.sessionToken = SessionStore.addListener(this._onChange);
 
-    if (AuthStore.isSignedIn()) {
+    if (SessionStore.isSignedIn()) {
       this.clickMoreInsights();
     }
   },
 
   componentWillUnmount: function () {
-    this.authToken.remove();
+    this.sessionToken.remove();
   },
 
   clickMoreInsights: function () {
     var CHUNK_SIZE = 10;
-    var moreInsights = AuthStore.getInsights(this.state.startIndex, CHUNK_SIZE);
+    var moreInsights = SessionStore.getInsights(this.state.startIndex, CHUNK_SIZE);
     this.setState({ startIndex: this.state.startIndex + CHUNK_SIZE });
 
     // makes it so user can not request more insights after all insights are already displayed
@@ -50,7 +50,7 @@ var InsightIndex = React.createClass({
           message={insight.message}
           id={insight._id}
           isLiked={insight.liked}
-          username = {AuthStore.currentUser().local.username}
+          username = {SessionStore.currentUser().local.username}
         />
       );
     });
