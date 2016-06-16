@@ -1,8 +1,8 @@
 body {
-  background-image: url('./exzume-splash.jpg') !important;
-  background-size: cover !important;
+  background-image: url('../images/sand-splash.jpg');
+  background-size: 100% 100%;
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  /*font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;*/
 }
 
 a {

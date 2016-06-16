@@ -93,7 +93,7 @@ var App = React.createClass({
       <div>
         <div className="ui one column center aligned relaxed grid container" style={centerContainerStyle}>
           <div className="row">
-            <h1 className="ui blue huge header">exzume</h1>
+            <h1 className="ui black huge header">exzume</h1>
           </div>
           {this.makeButtons()}
         </div>
