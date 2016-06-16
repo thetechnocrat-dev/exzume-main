@@ -57,7 +57,7 @@
 	var Splash = __webpack_require__(236);
 	var About = __webpack_require__(237);
 	var SignIn = __webpack_require__(238);
-	var SignUp = __webpack_require__(239);
+	var SignUp = __webpack_require__(243);
 	var Admin = __webpack_require__(244);
 	var Profile = __webpack_require__(245);
 	var DataStreamDetail = __webpack_require__(246);
@@ -247,6 +247,31 @@
 	// shim for using process in browser
 	
 	var process = module.exports = {};
+	
+	// cached from whatever global is present so that test runners that stub it
+	// don't break things.  But we need to wrap it in a try catch in case it is
+	// wrapped in strict mode code which doesn't define any globals.  It's inside a
+	// function because try/catches deoptimize in certain engines.
+	
+	var cachedSetTimeout;
+	var cachedClearTimeout;
+	
+	(function () {
+	  try {
+	    cachedSetTimeout = setTimeout;
+	  } catch (e) {
+	    cachedSetTimeout = function () {
+	      throw new Error('setTimeout is not defined');
+	    }
+	  }
+	  try {
+	    cachedClearTimeout = clearTimeout;
+	  } catch (e) {
+	    cachedClearTimeout = function () {
+	      throw new Error('clearTimeout is not defined');
+	    }
+	  }
+	} ())
 	var queue = [];
 	var draining = false;
 	var currentQueue;
@@ -271,7 +296,7 @@
 	    if (draining) {
 	        return;
 	    }
-	    var timeout = setTimeout(cleanUpNextTick);
+	    var timeout = cachedSetTimeout(cleanUpNextTick);
 	    draining = true;
 	
 	    var len = queue.length;
@@ -288,7 +313,7 @@
 	    }
 	    currentQueue = null;
 	    draining = false;
-	    clearTimeout(timeout);
+	    cachedClearTimeout(timeout);
 	}
 	
 	process.nextTick = function (fun) {
@@ -300,7 +325,7 @@
 	    }
 	    queue.push(new Item(fun, args));
 	    if (queue.length === 1 && !draining) {
-	        setTimeout(drainQueue, 0);
+	        cachedSetTimeout(drainQueue, 0);
 	    }
 	};
 	
@@ -24391,8 +24416,8 @@
 
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
-	var SessionActions = __webpack_require__(256);
-	var SessionStore = __webpack_require__(255);
+	var SessionActions = __webpack_require__(211);
+	var SessionStore = __webpack_require__(218);
 	
 	var Navbar = React.createClass({
 	  displayName: 'Navbar',
@@ -24491,7 +24516,61 @@
 	module.exports = Navbar;
 
 /***/ },
-/* 211 */,
+/* 211 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Dispatcher = __webpack_require__(212);
+	var SessionConstants = __webpack_require__(216);
+	var ApiUtil = __webpack_require__(217);
+	
+	module.exports = {
+	  receiveSession: function (userData) {
+	    Dispatcher.dispatch({
+	      actionType: SessionConstants.SESSION_RECEIVED,
+	      user: userData
+	    });
+	  },
+	
+	  retrieveSession: function () {
+	    ApiUtil.fetchSession(this.receiveSession);
+	  },
+	
+	  signUp: function (params, successCallback, errorCallback) {
+	    ApiUtil.signUp(params, successCallback, errorCallback);
+	  },
+	
+	  signIn: function (params, successCallback, errorCallback) {
+	    ApiUtil.signIn(params, successCallback, errorCallback);
+	  },
+	
+	  destroySession: function () {
+	    Dispatcher.dispatch({
+	      actionType: SessionConstants.SESSION_DESTROYED
+	    });
+	  },
+	
+	  signOut: function (successCallback) {
+	    ApiUtil.signOut(this.destroySession, successCallback);
+	  },
+	
+	  addFormUrl: function (params, successCallback, errorCallback) {
+	    ApiUtil.addFormUrl(params, successCallback, errorCallback);
+	  },
+	
+	  addInsight: function (params, successCallback, errorCallback) {
+	    ApiUtil.addInsight(params, successCallback, errorCallback);
+	  },
+	
+	  starInsight: function (params, successCallback, errorCallback) {
+	    ApiUtil.starInsight(params, successCallback, errorCallback);
+	  },
+	
+	  addVisUrl: function (params, successCallback, errorCallback) {
+	    ApiUtil.addVisUrl(params, successCallback, errorCallback);
+	  }
+	};
+
+/***/ },
 /* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -24808,7 +24887,15 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 216 */,
+/* 216 */
+/***/ function(module, exports) {
+
+	module.exports = {
+	  SESSION_RECEIVED: 'SESSION_RECEIVED',
+	  SESSION_DESTROYED: 'SESSION_DESTROYED'
+	};
+
+/***/ },
 /* 217 */
 /***/ function(module, exports) {
 
@@ -24929,11 +25016,68 @@
 	        console.log('ajax star insight error', resp);
 	      }
 	    });
+	  },
+	
+	  addVisUrl: function (params, successCallback, errorCallback) {
+	    $.ajax({
+	      type: 'PUT',
+	      url: '/admin/api/addvis',
+	      data: params,
+	      success: function (respData) {
+	        successCallback(respData);
+	        console.log('ajax add vis URL success', respData);
+	      },
+	
+	      error: function (respError) {
+	        errorCallback(respError.responseText);
+	        console.log('ajax add vis URL error', respError);
+	      }
+	    });
 	  }
 	};
 
 /***/ },
-/* 218 */,
+/* 218 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Dispatcher = __webpack_require__(212);
+	var Store = __webpack_require__(219).Store;
+	var SessionConstants = __webpack_require__(216);
+	
+	var SessionStore = new Store(Dispatcher);
+	var _currentUser = {};
+	
+	SessionStore.resetSessionStore = function (user) {
+	  _currentUser = user;
+	}, SessionStore.isSignedIn = function () {
+	  return !(typeof _currentUser.local === 'undefined');
+	}, SessionStore.currentUser = function () {
+	  return _currentUser;
+	}, SessionStore.getInsights = function (startIndex, size) {
+	  var insights = _currentUser.insights;
+	  if (startIndex >= insights.length) {
+	    return [];
+	  } else if (startIndex + size >= insights.length) {
+	    return insights.slice(startIndex);
+	  } else {
+	    return insights.slice(startIndex, startIndex + size);
+	  };
+	}, SessionStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case SessionConstants.SESSION_RECEIVED:
+	      this.resetSessionStore(payload.user);
+	      this.__emitChange();
+	      break;
+	    case SessionConstants.SESSION_DESTROYED:
+	      this.resetSessionStore({});
+	      this.__emitChange();
+	      break;
+	  }
+	};
+	
+	module.exports = SessionStore;
+
+/***/ },
 /* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -31382,8 +31526,8 @@
 
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
-	var SessionStore = __webpack_require__(255);
-	var SessionActions = __webpack_require__(256);
+	var SessionStore = __webpack_require__(218);
+	var SessionActions = __webpack_require__(211);
 	
 	// components
 	
@@ -31617,8 +31761,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var SessionActions = __webpack_require__(256);
-	var LinkedStateMixin = __webpack_require__(240);
+	var SessionActions = __webpack_require__(211);
+	var LinkedStateMixin = __webpack_require__(239);
 	var History = __webpack_require__(159).History;
 	
 	var SignIn = React.createClass({
@@ -31772,200 +31916,10 @@
 /* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	var LinkedStateMixin = __webpack_require__(240);
-	var SessionActions = __webpack_require__(256);
-	var History = __webpack_require__(159).History;
-	
-	var Signup = React.createClass({
-	  displayName: 'Signup',
-	
-	  mixins: [LinkedStateMixin, History],
-	
-	  getInitialState: function () {
-	    return { errors: '', username: '', password: '', email: '', confirmPassword: '', loading: false };
-	  },
-	
-	  handleSubmit: function (event) {
-	    event.preventDefault();
-	    this.setState({ errors: '' });
-	
-	    if (this.state.password != this.state.confirmPassword) {
-	      this.setState({ errors: 'passwords do not match' });
-	    } else if (this.state.username === '') {
-	      this.setState({ errors: 'username is required' });
-	    } else if (this.state.password === '') {
-	      this.setState({ errors: 'password is required' });
-	    } else if (this.state.email === '') {
-	      this.setState({ errors: 'email is required' });
-	    } else {
-	      var signUpParams = {
-	        username: this.state.username,
-	        password: this.state.password,
-	        email: this.state.email
-	      };
-	
-	      // will remain in loading state until AJAX callback changes state
-	      this.setState({ loading: true });
-	      SessionActions.signUp(signUpParams, this.successCallback, this.errorCallback);
-	    }
-	  },
-	
-	  successCallback: function () {
-	    this.history.push('/dashboard');
-	  },
-	
-	  errorCallback: function (errorMessage) {
-	    this.setState({ loading: false });
-	    this.setState({ errors: errorMessage });
-	  },
-	
-	  makeErrors: function () {
-	    if (this.state.errors !== '') {
-	      return React.createElement(
-	        'div',
-	        { className: 'ui red message' },
-	        this.state.errors
-	      );
-	    }
-	  },
-	
-	  makeSubmitButton: function () {
-	    if (this.state.loading) {
-	      return React.createElement(
-	        'div',
-	        {
-	          className: 'ui teal disabled loading button',
-	          type: 'submit' },
-	        'Submit'
-	      );
-	    } else {
-	      return React.createElement(
-	        'div',
-	        { className: 'ui teal button', type: 'submit', onClick: this.handleSubmit },
-	        'Submit'
-	      );
-	    }
-	  },
-	
-	  clickHomeLink: function () {
-	    this.history.push('/');
-	  },
-	
-	  clickSignInLink: function () {
-	    this.history.push('/signin');
-	  },
-	
-	  render: function () {
-	    var containerStyle = { margin: '10%' };
-	    var linkStyle = { cursor: 'pointer', color: '#008080' };
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'ui container', style: containerStyle },
-	      React.createElement(
-	        'form',
-	        { className: 'ui form' },
-	        React.createElement(
-	          'h2',
-	          { className: 'ui header' },
-	          'Sign Up'
-	        ),
-	        this.makeErrors(),
-	        React.createElement(
-	          'div',
-	          { className: 'required field' },
-	          React.createElement(
-	            'label',
-	            null,
-	            'username'
-	          ),
-	          React.createElement('input', {
-	            type: 'text',
-	            name: 'username1',
-	            placeholder: '',
-	            valueLink: this.linkState('username')
-	          })
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'required field' },
-	          React.createElement(
-	            'label',
-	            null,
-	            'email'
-	          ),
-	          React.createElement('input', {
-	            type: 'text',
-	            name: 'email',
-	            placeholder: '',
-	            valueLink: this.linkState('email')
-	          })
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'required field' },
-	          React.createElement(
-	            'label',
-	            null,
-	            'password'
-	          ),
-	          React.createElement('input', {
-	            type: 'text',
-	            name: 'password',
-	            placeholder: '',
-	            valueLink: this.linkState('password')
-	          })
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'required field' },
-	          React.createElement(
-	            'label',
-	            null,
-	            'confirm password'
-	          ),
-	          React.createElement('input', {
-	            type: 'text',
-	            name: 'confirm password',
-	            placeholder: '',
-	            valueLink: this.linkState('confirmPassword')
-	          })
-	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          'Already have an account? Then use the ',
-	          React.createElement(
-	            'a',
-	            { style: linkStyle, onClick: this.clickSignInLink },
-	            'Sign In'
-	          ),
-	          ' form or go back to the ',
-	          React.createElement(
-	            'a',
-	            { style: linkStyle, onClick: this.clickHomeLink },
-	            'Home Page'
-	          ),
-	          '.'
-	        ),
-	        this.makeSubmitButton()
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = Signup;
+	module.exports = __webpack_require__(240);
 
 /***/ },
 /* 240 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(241);
-
-/***/ },
-/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -31982,8 +31936,8 @@
 	
 	'use strict';
 	
-	var ReactLink = __webpack_require__(242);
-	var ReactStateSetters = __webpack_require__(243);
+	var ReactLink = __webpack_require__(241);
+	var ReactStateSetters = __webpack_require__(242);
 	
 	/**
 	 * A simple mixin around ReactLink.forState().
@@ -32006,7 +31960,7 @@
 	module.exports = LinkedStateMixin;
 
 /***/ },
-/* 242 */
+/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32080,7 +32034,7 @@
 	module.exports = ReactLink;
 
 /***/ },
-/* 243 */
+/* 242 */
 /***/ function(module, exports) {
 
 	/**
@@ -32189,12 +32143,202 @@
 	module.exports = ReactStateSetters;
 
 /***/ },
+/* 243 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var LinkedStateMixin = __webpack_require__(239);
+	var SessionActions = __webpack_require__(211);
+	var History = __webpack_require__(159).History;
+	
+	var Signup = React.createClass({
+	  displayName: 'Signup',
+	
+	  mixins: [LinkedStateMixin, History],
+	
+	  getInitialState: function () {
+	    return { errors: '', username: '', password: '', email: '', confirmPassword: '', loading: false };
+	  },
+	
+	  handleSubmit: function (event) {
+	    event.preventDefault();
+	    this.setState({ errors: '' });
+	
+	    if (this.state.password != this.state.confirmPassword) {
+	      this.setState({ errors: 'passwords do not match' });
+	    } else if (this.state.username === '') {
+	      this.setState({ errors: 'username is required' });
+	    } else if (this.state.password === '') {
+	      this.setState({ errors: 'password is required' });
+	    } else if (this.state.email === '') {
+	      this.setState({ errors: 'email is required' });
+	    } else {
+	      var signUpParams = {
+	        username: this.state.username,
+	        password: this.state.password,
+	        email: this.state.email
+	      };
+	
+	      // will remain in loading state until AJAX callback changes state
+	      this.setState({ loading: true });
+	      SessionActions.signUp(signUpParams, this.successCallback, this.errorCallback);
+	    }
+	  },
+	
+	  successCallback: function () {
+	    this.history.push('/dashboard');
+	  },
+	
+	  errorCallback: function (errorMessage) {
+	    this.setState({ loading: false });
+	    this.setState({ errors: errorMessage });
+	  },
+	
+	  makeErrors: function () {
+	    if (this.state.errors !== '') {
+	      return React.createElement(
+	        'div',
+	        { className: 'ui red message' },
+	        this.state.errors
+	      );
+	    }
+	  },
+	
+	  makeSubmitButton: function () {
+	    if (this.state.loading) {
+	      return React.createElement(
+	        'div',
+	        {
+	          className: 'ui teal disabled loading button',
+	          type: 'submit' },
+	        'Submit'
+	      );
+	    } else {
+	      return React.createElement(
+	        'div',
+	        { className: 'ui teal button', type: 'submit', onClick: this.handleSubmit },
+	        'Submit'
+	      );
+	    }
+	  },
+	
+	  clickHomeLink: function () {
+	    this.history.push('/');
+	  },
+	
+	  clickSignInLink: function () {
+	    this.history.push('/signin');
+	  },
+	
+	  render: function () {
+	    var containerStyle = { margin: '10%' };
+	    var linkStyle = { cursor: 'pointer', color: '#008080' };
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'ui container', style: containerStyle },
+	      React.createElement(
+	        'form',
+	        { className: 'ui form' },
+	        React.createElement(
+	          'h2',
+	          { className: 'ui header' },
+	          'Sign Up'
+	        ),
+	        this.makeErrors(),
+	        React.createElement(
+	          'div',
+	          { className: 'required field' },
+	          React.createElement(
+	            'label',
+	            null,
+	            'username'
+	          ),
+	          React.createElement('input', {
+	            type: 'text',
+	            name: 'username',
+	            placeholder: '',
+	            valueLink: this.linkState('username')
+	          })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'required field' },
+	          React.createElement(
+	            'label',
+	            null,
+	            'email'
+	          ),
+	          React.createElement('input', {
+	            type: 'text',
+	            name: 'email',
+	            placeholder: '',
+	            valueLink: this.linkState('email')
+	          })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'required field' },
+	          React.createElement(
+	            'label',
+	            null,
+	            'password'
+	          ),
+	          React.createElement('input', {
+	            type: 'text',
+	            name: 'password',
+	            placeholder: '',
+	            valueLink: this.linkState('password')
+	          })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'required field' },
+	          React.createElement(
+	            'label',
+	            null,
+	            'confirm password'
+	          ),
+	          React.createElement('input', {
+	            type: 'text',
+	            name: 'confirm password',
+	            placeholder: '',
+	            valueLink: this.linkState('confirmPassword')
+	          })
+	        ),
+	        React.createElement(
+	          'p',
+	          null,
+	          'Already have an account? Then use the ',
+	          React.createElement(
+	            'a',
+	            { style: linkStyle, onClick: this.clickSignInLink },
+	            'Sign In'
+	          ),
+	          ' form or go back to the ',
+	          React.createElement(
+	            'a',
+	            { style: linkStyle, onClick: this.clickHomeLink },
+	            'Home Page'
+	          ),
+	          '.'
+	        ),
+	        this.makeSubmitButton()
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = Signup;
+
+/***/ },
 /* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var LinkedStateMixin = __webpack_require__(240);
-	var SessionActions = __webpack_require__(256);
+	var LinkedStateMixin = __webpack_require__(239);
+	var SessionActions = __webpack_require__(211);
 	var History = __webpack_require__(159).History;
 	
 	var Admin = React.createClass({
@@ -32203,7 +32347,9 @@
 	  mixins: [LinkedStateMixin, History],
 	
 	  getInitialState: function () {
-	    return { formUrlErrors: '', formUrlMessages: '', insightErrors: '', insightMessages: '' };
+	    return { formUrlErrors: '', formUrlMessages: '',
+	      insightErrors: '', insightMessages: '',
+	      visErrors: '', visMessages: '' };
 	  },
 	
 	  clickHome: function () {
@@ -32215,8 +32361,8 @@
 	    this.setState({ formUrlErrors: '', formUrlMessages: '' }); // clear messages from last submit
 	
 	    var params = {
-	      username: this.state.username,
-	      link: this.state.link
+	      username: this.state.username1,
+	      link: this.state.formLink
 	    };
 	
 	    SessionActions.addFormUrl(params, this.successFormUrlCallback, this.errorFormUrlCallback);
@@ -32235,7 +32381,7 @@
 	    this.setState({ insightErrors: '', insightMessages: '' });
 	
 	    var params = {
-	      username: this.state.username,
+	      username: this.state.username2,
 	      message: this.state.insightMessage
 	    };
 	
@@ -32248,6 +32394,26 @@
 	
 	  errorInsightCallback: function (respError) {
 	    this.setState({ insightErrors: respError });
+	  },
+	
+	  handleAddVisSubmit: function (event) {
+	    event.preventDefault();
+	    this.setState({ visErrors: '', visMessages: '' });
+	
+	    var params = {
+	      username: this.state.username3,
+	      link: this.state.visLink
+	    };
+	
+	    SessionActions.addVisUrl(params, this.successVisCallback, this.errorVisCallback);
+	  },
+	
+	  successVisCallback: function (respData) {
+	    this.setState({ visMessages: respData.message });
+	  },
+	
+	  errorVisCallback: function (respError) {
+	    this.setState({ visErrors: respError });
 	  },
 	
 	  render: function () {
@@ -32280,13 +32446,13 @@
 	          React.createElement(
 	            'label',
 	            null,
-	            'user'
+	            'username'
 	          ),
 	          React.createElement('input', {
 	            type: 'text',
-	            name: 'username',
+	            name: 'username1',
 	            placeholder: '',
-	            valueLink: this.linkState('username')
+	            valueLink: this.linkState('username1')
 	          })
 	        ),
 	        React.createElement(
@@ -32299,9 +32465,9 @@
 	          ),
 	          React.createElement('input', {
 	            type: 'text',
-	            name: 'link',
+	            name: 'formLink',
 	            placeholder: '',
-	            valueLink: this.linkState('link')
+	            valueLink: this.linkState('formLink')
 	          })
 	        ),
 	        React.createElement(
@@ -32321,7 +32487,7 @@
 	        React.createElement(
 	          'h2',
 	          { className: 'ui header' },
-	          'Add Google Insight to User Account'
+	          'Add Insight to User Account'
 	        ),
 	        React.createElement(
 	          'p',
@@ -32349,13 +32515,13 @@
 	          React.createElement(
 	            'label',
 	            null,
-	            'user'
+	            'username'
 	          ),
 	          React.createElement('input', {
 	            type: 'text',
-	            name: 'username',
+	            name: 'username2',
 	            placeholder: '',
-	            valueLink: this.linkState('username')
+	            valueLink: this.linkState('username2')
 	          })
 	        ),
 	        React.createElement(
@@ -32385,6 +32551,65 @@
 	        'or'
 	      ),
 	      React.createElement(
+	        'form',
+	        { className: 'ui form' },
+	        React.createElement(
+	          'h2',
+	          { className: 'ui header' },
+	          'Add Visualization to User Account'
+	        ),
+	        React.createElement(
+	          'p',
+	          null,
+	          this.state.visErrors
+	        ),
+	        React.createElement(
+	          'p',
+	          null,
+	          this.state.visMessages
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'required field' },
+	          React.createElement(
+	            'label',
+	            null,
+	            'username'
+	          ),
+	          React.createElement('input', {
+	            type: 'text',
+	            name: 'username3',
+	            placeholder: '',
+	            valueLink: this.linkState('username3')
+	          })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'required field' },
+	          React.createElement(
+	            'label',
+	            null,
+	            'visualization link'
+	          ),
+	          React.createElement('input', {
+	            type: 'text',
+	            name: 'visLink',
+	            placeholder: '',
+	            valueLink: this.linkState('visLink')
+	          })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'ui teal button', type: 'submit', onClick: this.handleAddVisSubmit },
+	          'Submit'
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'ui horizontal divider' },
+	        'or'
+	      ),
+	      React.createElement(
 	        'div',
 	        { className: 'ui teal button', onClick: this.clickHome },
 	        'Go Home'
@@ -32401,7 +32626,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var SessionStore = __webpack_require__(255);
+	var SessionStore = __webpack_require__(218);
 	var Navbar = __webpack_require__(210);
 	var History = __webpack_require__(159).History;
 	
@@ -32500,7 +32725,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var SessionStore = __webpack_require__(255);
+	var SessionStore = __webpack_require__(218);
 	var PropTypes = React.PropTypes;
 	var History = __webpack_require__(159).History;
 	
@@ -32583,8 +32808,8 @@
 	var History = __webpack_require__(159).History;
 	var DataStreamIndex = __webpack_require__(248);
 	var InsightIndex = __webpack_require__(250);
-	var DataVisualizationIndex = __webpack_require__(252);
-	var SessionStore = __webpack_require__(255);
+	var DataVisIndex = __webpack_require__(252);
+	var SessionStore = __webpack_require__(218);
 	
 	var DashboardLanding = React.createClass({
 	  displayName: 'DashboardLanding',
@@ -32646,9 +32871,9 @@
 	        React.createElement(
 	          'h1',
 	          { className: 'ui header' },
-	          'Your Data Visualizations (coming soon)'
+	          'Your Data Visualizations'
 	        ),
-	        React.createElement(DataVisualizationIndex, null)
+	        React.createElement(DataVisIndex, null)
 	      );
 	    } else {
 	      return React.createElement('div', null);
@@ -32744,7 +32969,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var SessionStore = __webpack_require__(255);
+	var SessionStore = __webpack_require__(218);
 	
 	// components
 	var InsightItem = __webpack_require__(251);
@@ -32842,7 +33067,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var SessionActions = __webpack_require__(256);
+	var SessionActions = __webpack_require__(211);
 	
 	var InsightItem = React.createClass({
 	  displayName: 'InsightItem',
@@ -32922,10 +33147,10 @@
 	var React = __webpack_require__(1);
 	
 	// components
-	var DataVisualizationItem = __webpack_require__(253);
+	var DataVisItem = __webpack_require__(253);
 	
-	var DataVisualizationIndex = React.createClass({
-	  displayName: 'DataVisualizationIndex',
+	var DataVisIndex = React.createClass({
+	  displayName: 'DataVisIndex',
 	
 	
 	  render: function () {
@@ -32935,17 +33160,17 @@
 	      React.createElement(
 	        'div',
 	        { className: 'doubling two column row' },
-	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/horizontalbar.png' }),
-	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/line.png' }),
-	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/scatter.png' }),
-	        React.createElement(DataVisualizationItem, { image: 'http://nvd3.org/examples/img/stackedbar.png' })
+	        React.createElement(DataVisItem, { image: 'http://nvd3.org/examples/img/horizontalbar.png' }),
+	        React.createElement(DataVisItem, { image: 'http://nvd3.org/examples/img/line.png' }),
+	        React.createElement(DataVisItem, { image: 'http://nvd3.org/examples/img/scatter.png' }),
+	        React.createElement(DataVisItem, { image: 'http://nvd3.org/examples/img/stackedbar.png' })
 	      )
 	    );
 	  }
 	
 	});
 	
-	module.exports = DataVisualizationIndex;
+	module.exports = DataVisIndex;
 
 /***/ },
 /* 253 */
@@ -32953,8 +33178,8 @@
 
 	var React = __webpack_require__(1);
 	
-	var DataVisualizationItem = React.createClass({
-	  displayName: "DataVisualizationItem",
+	var DataVisItem = React.createClass({
+	  displayName: "DataVisItem",
 	
 	
 	  render: function () {
@@ -32971,109 +33196,7 @@
 	
 	});
 	
-	module.exports = DataVisualizationItem;
-
-/***/ },
-/* 254 */,
-/* 255 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Dispatcher = __webpack_require__(212);
-	var Store = __webpack_require__(219).Store;
-	var SessionConstants = __webpack_require__(257);
-	
-	var SessionStore = new Store(Dispatcher);
-	var _currentUser = {};
-	
-	SessionStore.resetSessionStore = function (user) {
-	  _currentUser = user;
-	}, SessionStore.isSignedIn = function () {
-	  return !(typeof _currentUser.local === 'undefined');
-	}, SessionStore.currentUser = function () {
-	  return _currentUser;
-	}, SessionStore.getInsights = function (startIndex, size) {
-	  var insights = _currentUser.insights;
-	  if (startIndex >= insights.length) {
-	    return [];
-	  } else if (startIndex + size >= insights.length) {
-	    return insights.slice(startIndex);
-	  } else {
-	    return insights.slice(startIndex, startIndex + size);
-	  };
-	}, SessionStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case SessionConstants.SESSION_RECEIVED:
-	      this.resetSessionStore(payload.user);
-	      this.__emitChange();
-	      break;
-	    case SessionConstants.SESSION_DESTROYED:
-	      this.resetSessionStore({});
-	      this.__emitChange();
-	      break;
-	  }
-	};
-	
-	module.exports = SessionStore;
-
-/***/ },
-/* 256 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Dispatcher = __webpack_require__(212);
-	var SessionConstants = __webpack_require__(257);
-	var ApiUtil = __webpack_require__(217);
-	
-	module.exports = {
-	  receiveSession: function (userData) {
-	    Dispatcher.dispatch({
-	      actionType: SessionConstants.SESSION_RECEIVED,
-	      user: userData
-	    });
-	  },
-	
-	  retrieveSession: function () {
-	    ApiUtil.fetchSession(this.receiveSession);
-	  },
-	
-	  signUp: function (params, successCallback, errorCallback) {
-	    ApiUtil.signUp(params, successCallback, errorCallback);
-	  },
-	
-	  signIn: function (params, successCallback, errorCallback) {
-	    ApiUtil.signIn(params, successCallback, errorCallback);
-	  },
-	
-	  destroySession: function () {
-	    Dispatcher.dispatch({
-	      actionType: SessionConstants.SESSION_DESTROYED
-	    });
-	  },
-	
-	  signOut: function (successCallback) {
-	    ApiUtil.signOut(this.destroySession, successCallback);
-	  },
-	
-	  addFormUrl: function (params, successCallback, errorCallback) {
-	    ApiUtil.addFormUrl(params, successCallback, errorCallback);
-	  },
-	
-	  addInsight: function (params, successCallback, errorCallback) {
-	    ApiUtil.addInsight(params, successCallback, errorCallback);
-	  },
-	
-	  starInsight: function (params, successCallback, errorCallback) {
-	    ApiUtil.starInsight(params, successCallback, errorCallback);
-	  }
-	};
-
-/***/ },
-/* 257 */
-/***/ function(module, exports) {
-
-	module.exports = {
-	  SESSION_RECEIVED: 'SESSION_RECEIVED',
-	  SESSION_DESTROYED: 'SESSION_DESTROYED'
-	};
+	module.exports = DataVisItem;
 
 /***/ }
 /******/ ]);

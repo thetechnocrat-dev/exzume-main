@@ -7,7 +7,9 @@ var Admin = React.createClass({
   mixins: [LinkedStateMixin, History],
 
   getInitialState: function () {
-    return ({ formUrlErrors: '', formUrlMessages: '', insightErrors: '', insightMessages: '' });
+    return ({ formUrlErrors: '', formUrlMessages: '',
+              insightErrors: '', insightMessages: '',
+              visErrors: '', visMessages: '', });
   },
 
   clickHome: function () {
@@ -19,8 +21,8 @@ var Admin = React.createClass({
     this.setState({ formUrlErrors: '', formUrlMessages: '' }); // clear messages from last submit
 
     var params = {
-      username: this.state.username,
-      link: this.state.link,
+      username: this.state.username1,
+      link: this.state.formLink,
     };
 
     SessionActions.addFormUrl(params, this.successFormUrlCallback, this.errorFormUrlCallback);
@@ -39,7 +41,7 @@ var Admin = React.createClass({
     this.setState({ insightErrors: '', insightMessages: '' });
 
     var params = {
-      username: this.state.username,
+      username: this.state.username2,
       message: this.state.insightMessage,
     };
 
@@ -54,6 +56,26 @@ var Admin = React.createClass({
     this.setState({ insightErrors: respError });
   },
 
+  handleAddVisSubmit: function(event) {
+    event.preventDefault();
+    this.setState({ visErrors: '', visMessages: '' });
+
+    var params = {
+      username: this.state.username3,
+      link: this.state.visLink,
+    };
+
+    SessionActions.addVisUrl(params, this.successVisCallback, this.errorVisCallback);
+  },
+
+  successVisCallback: function (respData) {
+    this.setState({ visMessages: respData.message });
+  },
+
+  errorVisCallback: function (respError) {
+    this.setState({ visErrors: respError });
+  },
+
   render: function () {
     var containerStyle = { margin: '10%' };
 
@@ -65,12 +87,12 @@ var Admin = React.createClass({
           <p>{this.state.formUrlMessages}</p>
 
           <div className="required field">
-            <label>user</label>
+            <label>username</label>
             <input
               type="text"
-              name="username"
+              name="username1"
               placeholder=""
-              valueLink={this.linkState('username')}
+              valueLink={this.linkState('username1')}
             ></input>
           </div>
 
@@ -78,9 +100,9 @@ var Admin = React.createClass({
             <label>google form link</label>
             <input
               type="text"
-              name="link"
+              name="formLink"
               placeholder=""
-              valueLink={this.linkState('link')}
+              valueLink={this.linkState('formLink')}
             ></input>
           </div>
 
@@ -90,19 +112,19 @@ var Admin = React.createClass({
         <div className="ui horizontal divider">or</div>
 
         <form className="ui form">
-          <h2 className="ui header">Add Google Insight to User Account</h2>
+          <h2 className="ui header">Add Insight to User Account</h2>
             <p>{this.state.insightErrors}</p>
             <p>{this.state.insightMessages}</p>
           <p>{this.state.errors}</p>
           <p>{this.state.messages}</p>
 
           <div className="required field">
-            <label>user</label>
+            <label>username</label>
             <input
               type="text"
-              name="username"
+              name="username2"
               placeholder=""
-              valueLink={this.linkState('username')}
+              valueLink={this.linkState('username2')}
             ></input>
           </div>
 
@@ -117,6 +139,36 @@ var Admin = React.createClass({
           </div>
 
         <div className="ui teal button" type="submit" onClick={this.handleAddInsightSubmit}>Submit</div>
+        </form>
+
+        <div className="ui horizontal divider">or</div>
+
+        <form className="ui form">
+          <h2 className="ui header">Add Visualization to User Account</h2>
+          <p>{this.state.visErrors}</p>
+          <p>{this.state.visMessages}</p>
+
+          <div className="required field">
+            <label>username</label>
+            <input
+              type="text"
+              name="username3"
+              placeholder=""
+              valueLink={this.linkState('username3')}
+            ></input>
+          </div>
+
+          <div className="required field">
+            <label>visualization link</label>
+            <input
+              type="text"
+              name="visLink"
+              placeholder=""
+              valueLink={this.linkState('visLink')}
+            ></input>
+          </div>
+
+        <div className="ui teal button" type="submit" onClick={this.handleAddVisSubmit}>Submit</div>
         </form>
 
         <div className="ui horizontal divider">or</div>

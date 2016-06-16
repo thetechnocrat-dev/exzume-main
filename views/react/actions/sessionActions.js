@@ -43,4 +43,8 @@ module.exports = {
   starInsight: function (params, successCallback, errorCallback) {
     ApiUtil.starInsight(params, successCallback, errorCallback);
   },
+
+  addVisUrl: function (params, successCallback, errorCallback) {
+    ApiUtil.addVisUrl(params, successCallback, errorCallback);
+  },
 };

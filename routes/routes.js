@@ -108,4 +108,22 @@ module.exports = function (router, passport) {
       }
     });
   });
+
+  router.put('/admin/api/addvis', function (req, res) {
+    User.findOne({ 'local.username': req.body.username }, function (err, user) {
+      if (err) {
+        res.status(500).send('internal server error - try refreshing the page');
+      } else if (user == null) {
+        res.status(401).send('user not found');
+      } else if (user) {
+        user.vis.push({ url: req.body.link });
+
+        user.save(function (err) {
+          if (err) { res.send(err); }
+
+          res.json({ message: 'user updated with new vis' });
+        });
+      }
+    });
+  });
 };

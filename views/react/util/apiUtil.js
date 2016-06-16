@@ -130,4 +130,23 @@ module.exports = {
         },
     });
   },
+
+  addVisUrl: function (params, successCallback, errorCallback) {
+    $.ajax({
+      type: 'PUT',
+      url: '/admin/api/addvis',
+      data: params,
+      success:
+        function (respData) {
+          successCallback(respData);
+          console.log('ajax add vis URL success', respData);
+        },
+
+      error:
+        function (respError) {
+          errorCallback(respError.responseText);
+          console.log('ajax add vis URL error', respError);
+        },
+    });
+  },
 };

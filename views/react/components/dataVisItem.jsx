@@ -1,6 +1,6 @@
 var React = require('react');
 
-var DataVisualizationItem = React.createClass({
+var DataVisItem = React.createClass({
 
   render: function () {
     return (
@@ -14,4 +14,4 @@ var DataVisualizationItem = React.createClass({
 
 });
 
-module.exports = DataVisualizationItem;
+module.exports = DataVisItem;

@@ -91,7 +91,7 @@ var Signup = React.createClass({
             <label>username</label>
             <input
               type="text"
-              name="username1"
+              name="username"
               placeholder=""
               valueLink={this.linkState('username')}
             ></input>
