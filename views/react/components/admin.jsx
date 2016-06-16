@@ -27,17 +27,14 @@ var Admin = React.createClass({
   },
 
   successFormUrlCallback: function (respData) {
-    console.log('user add form URL success', respData);
     this.setState({ formUrlMessages: respData.message });
   },
 
-  errorFormUrlCallback: function () {
-    console.log('user add form URL error');
-    this.setState({ formUrlErrors: 'something went wrong =(' });
+  errorFormUrlCallback: function (respError) {
+    this.setState({ formUrlErrors: respError });
   },
 
   handleAddInsightSubmit: function (event) {
-    console.log('submit hit');
     event.preventDefault();
     this.setState({ insightErrors: '', insightMessages: '' });
 
@@ -50,13 +47,11 @@ var Admin = React.createClass({
   },
 
   successInsightCallback: function (respData) {
-    console.log('user add insight success');
     this.setState({ insightMessages: respData.message });
   },
 
-  errorInsightCallback: function () {
-    console.log('user add form URL error');
-    this.setState({ insightErrors: 'something went wrong =(' });
+  errorInsightCallback: function (respError) {
+    this.setState({ insightErrors: respError });
   },
 
   render: function () {

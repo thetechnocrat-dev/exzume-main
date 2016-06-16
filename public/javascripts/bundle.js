@@ -24842,8 +24842,8 @@
 	        console.log('ajax sign in success', respData);
 	      },
 	
-	      error: function (respData) {
-	        errorCallback(respData.responseText);
+	      error: function (respError) {
+	        errorCallback(respError.responseText);
 	        console.log('ajax sign in error', respData);
 	      }
 	    });
@@ -24891,7 +24891,7 @@
 	      },
 	
 	      error: function (respError) {
-	        errorCallback();
+	        errorCallback(respError.responseText);
 	        console.log('ajax add user form URL error', respError);
 	      }
 	    });
@@ -24908,7 +24908,7 @@
 	      },
 	
 	      error: function (respError) {
-	        errorCallback();
+	        errorCallback(respError.responseText);
 	        console.log('ajax add user insight error', respError);
 	      }
 	    });
@@ -31882,7 +31882,7 @@
 	          ),
 	          React.createElement('input', {
 	            type: 'text',
-	            name: 'username',
+	            name: 'username1',
 	            placeholder: '',
 	            valueLink: this.linkState('username')
 	          })
@@ -32223,17 +32223,14 @@
 	  },
 	
 	  successFormUrlCallback: function (respData) {
-	    console.log('user add form URL success', respData);
 	    this.setState({ formUrlMessages: respData.message });
 	  },
 	
-	  errorFormUrlCallback: function () {
-	    console.log('user add form URL error');
-	    this.setState({ formUrlErrors: 'something went wrong =(' });
+	  errorFormUrlCallback: function (respError) {
+	    this.setState({ formUrlErrors: respError });
 	  },
 	
 	  handleAddInsightSubmit: function (event) {
-	    console.log('submit hit');
 	    event.preventDefault();
 	    this.setState({ insightErrors: '', insightMessages: '' });
 	
@@ -32246,13 +32243,11 @@
 	  },
 	
 	  successInsightCallback: function (respData) {
-	    console.log('user add insight success');
 	    this.setState({ insightMessages: respData.message });
 	  },
 	
-	  errorInsightCallback: function () {
-	    console.log('user add form URL error');
-	    this.setState({ insightErrors: 'something went wrong =(' });
+	  errorInsightCallback: function (respError) {
+	    this.setState({ insightErrors: respError });
 	  },
 	
 	  render: function () {

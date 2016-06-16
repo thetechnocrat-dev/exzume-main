@@ -32,8 +32,8 @@ module.exports = {
         },
 
       error:
-        function (respData) {
-          errorCallback(respData.responseText);
+        function (respError) {
+          errorCallback(respError.responseText);
           console.log('ajax sign in error', respData);
         },
     });
@@ -87,7 +87,7 @@ module.exports = {
 
       error:
         function (respError) {
-          errorCallback();
+          errorCallback(respError.responseText);
           console.log('ajax add user form URL error', respError);
         },
     });
@@ -106,7 +106,7 @@ module.exports = {
 
       error:
         function (respError) {
-          errorCallback();
+          errorCallback(respError.responseText);
           console.log('ajax add user insight error', respError);
         },
     });
