@@ -32873,7 +32873,7 @@
 	          { className: 'ui header' },
 	          'Your Data Visualizations'
 	        ),
-	        React.createElement(DataVisIndex, null)
+	        React.createElement(DataVisIndex, { user: SessionStore.currentUser() })
 	      );
 	    } else {
 	      return React.createElement('div', null);
@@ -33160,10 +33160,10 @@
 	      React.createElement(
 	        'div',
 	        { className: 'doubling two column row' },
-	        React.createElement(DataVisItem, { image: 'http://nvd3.org/examples/img/horizontalbar.png' }),
-	        React.createElement(DataVisItem, { image: 'http://nvd3.org/examples/img/line.png' }),
-	        React.createElement(DataVisItem, { image: 'http://nvd3.org/examples/img/scatter.png' }),
-	        React.createElement(DataVisItem, { image: 'http://nvd3.org/examples/img/stackedbar.png' })
+	        this.props.user.vis.map(function (v, i) {
+	          return React.createElement(DataVisItem, { image: v.url });
+	        }),
+	        ';'
 	      )
 	    );
 	  }
