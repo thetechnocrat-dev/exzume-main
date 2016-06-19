@@ -9,10 +9,12 @@ var DataVisIndex = React.createClass({
     return (
       <div className="ui centered grid">
         <div className="doubling two column row">
-            <DataVisItem image="http://nvd3.org/examples/img/horizontalbar.png" />
-            <DataVisItem image="http://nvd3.org/examples/img/line.png" />
-            <DataVisItem image="http://nvd3.org/examples/img/scatter.png" />
-            <DataVisItem image="http://nvd3.org/examples/img/stackedbar.png" />
+          {this.props.user.vis.map(function(v, i) {
+              return (
+                <DataVisItem image={v.url} />
+              );
+            })
+          };
         </div>
       </div>
     );

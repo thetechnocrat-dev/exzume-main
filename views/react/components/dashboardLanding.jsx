@@ -48,7 +48,7 @@ var DashboardLanding = React.createClass({
           <h1 className="ui header">Your Insights</h1>
           <InsightIndex />
           <h1 className="ui header">Your Data Visualizations</h1>
-          <DataVisIndex />
+          <DataVisIndex user={SessionStore.currentUser()} />
         </div>
       );
     } else {
