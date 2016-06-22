@@ -9,13 +9,18 @@ var UserSchema = new Schema({
     email: String,
   },
   formURL: { type: String, default: 'none' },
+  vis: [{ url: String }],
   insights: [{
       message: String,
       date: { type: Date, default: Date.now },
       liked: Boolean,
     },
   ],
-  vis: [{ url: String }], // these are URLs for now
+  dataStreams: [{
+      type: Shema.Types.ObjectId,
+      ref: String,
+    },
+  ],
 }, { autoIndex: false });
 
 UserSchema.methods.generateHash = function (password) {
