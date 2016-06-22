@@ -17,7 +17,7 @@ var UserSchema = new Schema({
     },
   ],
   dataStreams: [{
-      type: Shema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: String,
     },
   ],
