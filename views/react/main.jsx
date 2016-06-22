@@ -27,7 +27,7 @@ var routes = (
     <Route component={Dashboard} path='/dashboard' >
       <IndexRoute component={DashboardLanding} ></IndexRoute>
       <Route component={Profile} path='/profile' ></Route>
-      <Route component={DataStreamDetail} path='formdetail'></Route>
+      <Route component={DataStreamDetail} path='/formdetail'></Route>
     </Route>
   </Route>
 );

@@ -76,7 +76,7 @@
 	    { component: Dashboard, path: '/dashboard' },
 	    React.createElement(IndexRoute, { component: DashboardLanding }),
 	    React.createElement(Route, { component: Profile, path: '/profile' }),
-	    React.createElement(Route, { component: DataStreamDetail, path: 'formdetail' })
+	    React.createElement(Route, { component: DataStreamDetail, path: '/formdetail' })
 	  )
 	);
 	
