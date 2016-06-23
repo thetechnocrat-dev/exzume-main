@@ -247,6 +247,31 @@
 	// shim for using process in browser
 	
 	var process = module.exports = {};
+	
+	// cached from whatever global is present so that test runners that stub it
+	// don't break things.  But we need to wrap it in a try catch in case it is
+	// wrapped in strict mode code which doesn't define any globals.  It's inside a
+	// function because try/catches deoptimize in certain engines.
+	
+	var cachedSetTimeout;
+	var cachedClearTimeout;
+	
+	(function () {
+	  try {
+	    cachedSetTimeout = setTimeout;
+	  } catch (e) {
+	    cachedSetTimeout = function () {
+	      throw new Error('setTimeout is not defined');
+	    }
+	  }
+	  try {
+	    cachedClearTimeout = clearTimeout;
+	  } catch (e) {
+	    cachedClearTimeout = function () {
+	      throw new Error('clearTimeout is not defined');
+	    }
+	  }
+	} ())
 	var queue = [];
 	var draining = false;
 	var currentQueue;
@@ -271,7 +296,7 @@
 	    if (draining) {
 	        return;
 	    }
-	    var timeout = setTimeout(cleanUpNextTick);
+	    var timeout = cachedSetTimeout(cleanUpNextTick);
 	    draining = true;
 	
 	    var len = queue.length;
@@ -288,7 +313,7 @@
 	    }
 	    currentQueue = null;
 	    draining = false;
-	    clearTimeout(timeout);
+	    cachedClearTimeout(timeout);
 	}
 	
 	process.nextTick = function (fun) {
@@ -300,7 +325,7 @@
 	    }
 	    queue.push(new Item(fun, args));
 	    if (queue.length === 1 && !draining) {
-	        setTimeout(drainQueue, 0);
+	        cachedSetTimeout(drainQueue, 0);
 	    }
 	};
 	
@@ -24882,7 +24907,7 @@
 	  signUp: function (params, successCallback, errorCallback) {
 	    $.ajax({
 	      type: 'POST',
-	      url: '/api/signup',
+	      url: '/signup',
 	      data: params,
 	      dataType: 'json',
 	      success: function (respData) {
@@ -24900,7 +24925,7 @@
 	  signIn: function (params, successCallback, errorCallback) {
 	    $.ajax({
 	      type: 'POST',
-	      url: '/api/signin',
+	      url: '/signin',
 	      data: params,
 	      dataType: 'json',
 	      success: function (respData) {
@@ -24918,7 +24943,7 @@
 	  signOut: function (actionCallback, successCallback) {
 	    $.ajax({
 	      type: 'GET',
-	      url: '/api/signout',
+	      url: '/auth/signout',
 	      success: function () {
 	        actionCallback();
 	        successCallback();
@@ -24934,7 +24959,7 @@
 	  fetchSession: function (successCallback) {
 	    $.ajax({
 	      type: 'GET',
-	      url: '/api/session',
+	      url: '/auth/session',
 	      success: function (respData) {
 	        successCallback(respData);
 	        console.log('ajax session success', respData);
@@ -24946,10 +24971,27 @@
 	    });
 	  },
 	
+	  starInsight: function (params, successCallback, errorCallback) {
+	    $.ajax({
+	      type: 'PUT',
+	      url: '/auth/starinsight',
+	      data: params,
+	      success: function (resp) {
+	        successCallback(resp);
+	        console.log('ajax star insight success', resp);
+	      },
+	
+	      error: function (resp) {
+	        errorCallback();
+	        console.log('ajax star insight error', resp);
+	      }
+	    });
+	  },
+	
 	  addFormUrl: function (params, successCallback, errorCallback) {
 	    $.ajax({
 	      type: 'PUT',
-	      url: '/admin/api/addform',
+	      url: '/admin/addform',
 	      data: params,
 	      success: function (respData) {
 	        successCallback(respData);
@@ -24966,7 +25008,7 @@
 	  addInsight: function (params, successCallback, errorCallback) {
 	    $.ajax({
 	      type: 'PUT',
-	      url: '/admin/api/addinsight',
+	      url: '/admin/addinsight',
 	      data: params,
 	      success: function (respData) {
 	        successCallback(respData);
@@ -24980,27 +25022,10 @@
 	    });
 	  },
 	
-	  starInsight: function (params, successCallback, errorCallback) {
-	    $.ajax({
-	      type: 'PUT',
-	      url: '/api/starinsight',
-	      data: params,
-	      success: function (resp) {
-	        successCallback(resp);
-	        console.log('ajax star insight success', resp);
-	      },
-	
-	      error: function (resp) {
-	        errorCallback();
-	        console.log('ajax star insight error', resp);
-	      }
-	    });
-	  },
-	
 	  addVisUrl: function (params, successCallback, errorCallback) {
 	    $.ajax({
 	      type: 'PUT',
-	      url: '/admin/api/addvis',
+	      url: '/admin/addvis',
 	      data: params,
 	      success: function (respData) {
 	        successCallback(respData);
@@ -25017,7 +25042,7 @@
 	  addFitbit: function (params, successCallback, errorCallback) {
 	    $.ajax({
 	      type: 'POST',
-	      url: '/api/datastream/fitbit',
+	      url: '/auth/datastream/fitbit',
 	      data: params,
 	      success: function (respData) {
 	        successCallback(respData);

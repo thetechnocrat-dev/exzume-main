@@ -2,7 +2,7 @@ module.exports = {
   signUp: function (params, successCallback, errorCallback) {
     $.ajax({
       type: 'POST',
-      url: '/api/signup',
+      url: '/signup',
       data: params,
       dataType: 'json',
       success:
@@ -22,7 +22,7 @@ module.exports = {
   signIn: function (params, successCallback, errorCallback) {
     $.ajax({
       type: 'POST',
-      url: '/api/signin',
+      url: '/signin',
       data: params,
       dataType: 'json',
       success:
@@ -42,7 +42,7 @@ module.exports = {
   signOut: function (actionCallback, successCallback) {
     $.ajax({
       type: 'GET',
-      url: '/api/signout',
+      url: '/auth/signout',
       success:
         function () {
           actionCallback();
@@ -60,7 +60,7 @@ module.exports = {
   fetchSession: function (successCallback) {
     $.ajax({
       type: 'GET',
-      url: '/api/session',
+      url: '/auth/session',
       success:
         function (respData) {
           successCallback(respData);
@@ -74,10 +74,29 @@ module.exports = {
     });
   },
 
+  starInsight: function (params, successCallback, errorCallback) {
+    $.ajax({
+      type: 'PUT',
+      url: '/auth/starinsight',
+      data: params,
+      success:
+        function (resp) {
+          successCallback(resp);
+          console.log('ajax star insight success', resp);
+        },
+
+      error:
+        function (resp) {
+          errorCallback();
+          console.log('ajax star insight error', resp);
+        },
+    });
+  },
+
   addFormUrl: function (params, successCallback, errorCallback) {
     $.ajax({
       type: 'PUT',
-      url: '/admin/api/addform',
+      url: '/admin/addform',
       data: params,
       success:
         function (respData) {
@@ -96,7 +115,7 @@ module.exports = {
   addInsight: function (params, successCallback, errorCallback) {
     $.ajax({
       type: 'PUT',
-      url: '/admin/api/addinsight',
+      url: '/admin/addinsight',
       data: params,
       success:
         function (respData) {
@@ -112,29 +131,10 @@ module.exports = {
     });
   },
 
-  starInsight: function (params, successCallback, errorCallback) {
-    $.ajax({
-      type: 'PUT',
-      url: '/api/starinsight',
-      data: params,
-      success:
-        function (resp) {
-          successCallback(resp);
-          console.log('ajax star insight success', resp);
-        },
-
-      error:
-        function (resp) {
-          errorCallback();
-          console.log('ajax star insight error', resp);
-        },
-    });
-  },
-
   addVisUrl: function (params, successCallback, errorCallback) {
     $.ajax({
       type: 'PUT',
-      url: '/admin/api/addvis',
+      url: '/admin/addvis',
       data: params,
       success:
         function (respData) {
@@ -153,7 +153,7 @@ module.exports = {
   addFitbit: function (params, successCallback, errorCallback) {
     $.ajax({
       type: 'POST',
-      url: '/api/datastream/fitbit',
+      url: '/auth/datastream/fitbit',
       data: params,
       success:
         function (respData) {
