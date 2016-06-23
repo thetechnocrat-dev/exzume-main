@@ -70,7 +70,7 @@ module.exports = function (router, passport) {
     res.json(req.user);
   });
 
-  router.post('/api/fitbit/', function (req, res) {
+  router.get('/api/fitbit', function (req, res) {
     console.log('fitbit');
     res.redirect('/');
   });
