@@ -55,13 +55,13 @@
 	var App = __webpack_require__(208);
 	var Dashboard = __webpack_require__(209);
 	var Splash = __webpack_require__(236);
-	var About = __webpack_require__(237);
-	var SignIn = __webpack_require__(238);
-	var SignUp = __webpack_require__(243);
-	var Admin = __webpack_require__(244);
-	var Profile = __webpack_require__(245);
-	var DataStreamDetail = __webpack_require__(246);
-	var DashboardLanding = __webpack_require__(247);
+	var About = __webpack_require__(238);
+	var SignIn = __webpack_require__(239);
+	var SignUp = __webpack_require__(244);
+	var Admin = __webpack_require__(245);
+	var Profile = __webpack_require__(246);
+	var DataStreamDetail = __webpack_require__(247);
+	var DashboardLanding = __webpack_require__(248);
 	
 	var routes = React.createElement(
 	  Route,
@@ -247,31 +247,6 @@
 	// shim for using process in browser
 	
 	var process = module.exports = {};
-	
-	// cached from whatever global is present so that test runners that stub it
-	// don't break things.  But we need to wrap it in a try catch in case it is
-	// wrapped in strict mode code which doesn't define any globals.  It's inside a
-	// function because try/catches deoptimize in certain engines.
-	
-	var cachedSetTimeout;
-	var cachedClearTimeout;
-	
-	(function () {
-	  try {
-	    cachedSetTimeout = setTimeout;
-	  } catch (e) {
-	    cachedSetTimeout = function () {
-	      throw new Error('setTimeout is not defined');
-	    }
-	  }
-	  try {
-	    cachedClearTimeout = clearTimeout;
-	  } catch (e) {
-	    cachedClearTimeout = function () {
-	      throw new Error('clearTimeout is not defined');
-	    }
-	  }
-	} ())
 	var queue = [];
 	var draining = false;
 	var currentQueue;
@@ -296,7 +271,7 @@
 	    if (draining) {
 	        return;
 	    }
-	    var timeout = cachedSetTimeout(cleanUpNextTick);
+	    var timeout = setTimeout(cleanUpNextTick);
 	    draining = true;
 	
 	    var len = queue.length;
@@ -313,7 +288,7 @@
 	    }
 	    currentQueue = null;
 	    draining = false;
-	    cachedClearTimeout(timeout);
+	    clearTimeout(timeout);
 	}
 	
 	process.nextTick = function (fun) {
@@ -325,7 +300,7 @@
 	    }
 	    queue.push(new Item(fun, args));
 	    if (queue.length === 1 && !draining) {
-	        cachedSetTimeout(drainQueue, 0);
+	        setTimeout(drainQueue, 0);
 	    }
 	};
 	
@@ -31549,7 +31524,7 @@
 	var History = __webpack_require__(159).History;
 	var SessionStore = __webpack_require__(218);
 	var SessionActions = __webpack_require__(211);
-	var TreeCanvas = __webpack_require__(254);
+	var TreeCanvas = __webpack_require__(237);
 	
 	// components
 	
@@ -31708,6 +31683,205 @@
 
 /***/ },
 /* 237 */
+/***/ function(module, exports) {
+
+	// credit too http://kennethjorgensen.com/blog/2014/canvas-trees
+	
+	Snake = function (canvas) {
+		this.setCanvas(canvas);
+	
+		this.x = this.canvasWidth / 2;
+		this.y = this.canvasHeight;
+		this.radius = 10;
+		this.speed = this.canvasWidth / 500;
+		this.angle = Math.PI / 2;
+		this.fillStyle = "#009c95";
+		this.shadowColor = "#009c95";
+		this.shadowBlur = 2;
+		this.generation = 0;
+		this.lifespan = 0;
+		this.totalDistance = 0;
+		this.distance = 0;
+	};
+	
+	Snake.prototype = {
+		setCanvas: function (canvas) {
+			this.canvas = document.getElementById('canvastree');
+			this.context = canvas.getContext("2d");
+			this.canvasWidth = 700;
+			this.canvasHeight = 299;
+		},
+	
+		next: function () {
+			this.draw();
+			this.iterate();
+			this.randomize();
+			// 		this.limitSpeed();
+			// 		this.reset(context);
+			this.split();
+			this.lifespan++;
+			this.die();
+		},
+	
+		draw: function () {
+			var context = this.context;
+			context.save();
+			context.fillStyle = this.fillStyle;
+			context.shadowColor = this.shadowColor;
+			context.shadowBlur = this.shadowBlur;
+			context.beginPath();
+			context.moveTo(this.x, this.y);
+			context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, true);
+			context.closePath();
+			context.fill();
+			context.restore();
+		},
+	
+		iterate: function () {
+			var lastX = this.x;
+			var lastY = this.y;
+			this.x += this.speed * Math.cos(this.angle);
+			this.y += this.speed * -Math.sin(this.angle);
+			this.radius *= 0.99 - this.generation / 250; // minus 0.004 per generation
+			var deltaDistance = Math.sqrt(Math.abs(lastX - this.x) + Math.abs(lastY - this.y));
+			this.distance += deltaDistance;
+			this.totalDistance += deltaDistance;
+			if (this.speed > this.radius * 2) this.speed = this.radius * 2;
+		},
+	
+		randomize: function () {
+			this.angle += Math.random() / 5 - 1 / 5 / 2;
+		},
+	
+		reset: function (context) {
+			var $canvas = jQuery(context.canvas);
+			var margin = 30 + this.radius;
+			var width = $canvas.width();
+			var height = $canvas.height();
+	
+			if (this.x < -margin || this.x > width + margin || this.y < -margin || this.y > height + margin) {
+				// 			this.x = width/2;
+				this.y = height;
+				// New color
+				var grey = Math.floor(Math.random() * 255).toString(16);
+				this.fillStyle = "#" + grey + grey + grey;
+				this.shadowColor = this.fillStyle;
+			}
+		},
+	
+		split: function () {
+			// Calculate split chance
+			var splitChance = 0;
+			// Trunk
+			if (this.generation == 0) splitChance = (this.distance - this.canvasHeight / 5) / 100;
+			// Branch
+			else if (this.generation < 3) splitChance = (this.distance - this.canvasHeight / 10) / 100;
+	
+			// Split if we are allowed
+			if (Math.random() < splitChance) {
+				var n = 2 + Math.round(Math.random() * 2);
+				for (var i = 0; i < n; i++) {
+					var snake = new Snake(this.canvas);
+					snake.x = this.x;
+					snake.y = this.y;
+					snake.angle = this.angle;
+					snake.speed = this.speed;
+					snake.radius = this.radius * 0.9;
+					snake.generation = this.generation + 1;
+					snake.fillStyle = this.fillStyle;
+					snake.shadowColor = this.shadowColor;
+					snake.shadowBlur = this.shadowBlur;
+					snake.totalDistance = this.totalDistance;
+					this.collection.add(snake);
+				}
+				this.collection.remove(this);
+			}
+		},
+	
+		die: function () {
+			if (this.radius < 0.2) {
+				this.collection.remove(this);
+				// 			console.log(this.distance);
+			}
+		}
+	};
+	
+	SnakeCollection = function () {
+		this.canvas = canvas;
+	
+		this.snakes = [];
+	};
+	
+	SnakeCollection.prototype = {
+		next: function () {
+			n = this.snakes.length;
+			for (var s in this.snakes) {
+				var snake = this.snakes[s];
+				if (this.snakes[s]) this.snakes[s].next();
+			}
+		},
+	
+		add: function (snake) {
+			this.snakes.push(snake);
+			snake.collection = this;
+		},
+	
+		remove: function (snake) {
+			for (var s in this.snakes) if (this.snakes[s] === snake) this.snakes.splice(s, 1);
+		}
+	};
+	
+	function randHex() {
+		var num = Math.round(Math.random() * 255).toString(16);
+		if (num.length == 1) num = "0" + num;
+		return num;
+	}
+	
+	module.exports = function () {
+		// Convenience
+		canvas = document.getElementById('canvastree');
+		context = canvas.getContext("2d");
+	
+		// Dimensions
+		// var width = canvas.width();
+		// var height = canvas.height();
+		var width = 700;
+		var height = 299;
+	
+		// Set actual canvas size to match css
+		// canvas.attr("width", width);
+		// canvas.attr("height", height);
+	
+		canvas.width = width;
+		canvas.height = height;
+	
+		// Information
+		jQuery("#info").html("Size: " + canvas.width + "x" + canvas.height);
+	
+		// Frame rate
+		var frame = 0;
+	
+		// Snakes
+		var n = 2 + Math.random() * 3;
+		var initialRadius = width / 50;
+		snakes = new SnakeCollection();
+		for (var i = 0; i < n; i++) {
+			var snake = new Snake(canvas);
+			snake.x = width / 2 - initialRadius + i * initialRadius * 2 / n;
+			snake.radius = initialRadius;
+			snakes.add(snake);
+		}
+	
+		// Frame drawer
+		var interval = setInterval(function () {
+			snakes.next();
+	
+			frame++;
+		}, 0);
+	};
+
+/***/ },
+/* 238 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -31786,12 +31960,12 @@
 	module.exports = About;
 
 /***/ },
-/* 238 */
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var SessionActions = __webpack_require__(211);
-	var LinkedStateMixin = __webpack_require__(239);
+	var LinkedStateMixin = __webpack_require__(240);
 	var History = __webpack_require__(159).History;
 	
 	var SignIn = React.createClass({
@@ -31942,13 +32116,13 @@
 	module.exports = SignIn;
 
 /***/ },
-/* 239 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(240);
+	module.exports = __webpack_require__(241);
 
 /***/ },
-/* 240 */
+/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -31965,8 +32139,8 @@
 	
 	'use strict';
 	
-	var ReactLink = __webpack_require__(241);
-	var ReactStateSetters = __webpack_require__(242);
+	var ReactLink = __webpack_require__(242);
+	var ReactStateSetters = __webpack_require__(243);
 	
 	/**
 	 * A simple mixin around ReactLink.forState().
@@ -31989,7 +32163,7 @@
 	module.exports = LinkedStateMixin;
 
 /***/ },
-/* 241 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32063,7 +32237,7 @@
 	module.exports = ReactLink;
 
 /***/ },
-/* 242 */
+/* 243 */
 /***/ function(module, exports) {
 
 	/**
@@ -32172,11 +32346,11 @@
 	module.exports = ReactStateSetters;
 
 /***/ },
-/* 243 */
+/* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var LinkedStateMixin = __webpack_require__(239);
+	var LinkedStateMixin = __webpack_require__(240);
 	var SessionActions = __webpack_require__(211);
 	var History = __webpack_require__(159).History;
 	
@@ -32362,11 +32536,11 @@
 	module.exports = Signup;
 
 /***/ },
-/* 244 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var LinkedStateMixin = __webpack_require__(239);
+	var LinkedStateMixin = __webpack_require__(240);
 	var SessionActions = __webpack_require__(211);
 	var History = __webpack_require__(159).History;
 	
@@ -32651,7 +32825,7 @@
 	module.exports = Admin;
 
 /***/ },
-/* 245 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -32750,7 +32924,7 @@
 	module.exports = Profile;
 
 /***/ },
-/* 246 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -32830,14 +33004,14 @@
 	module.exports = DataStreamDetail;
 
 /***/ },
-/* 247 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
-	var DataStreamIndex = __webpack_require__(248);
-	var InsightIndex = __webpack_require__(250);
-	var DataVisIndex = __webpack_require__(252);
+	var DataStreamIndex = __webpack_require__(249);
+	var InsightIndex = __webpack_require__(251);
+	var DataVisIndex = __webpack_require__(253);
 	var SessionStore = __webpack_require__(218);
 	
 	var DashboardLanding = React.createClass({
@@ -32922,7 +33096,7 @@
 	module.exports = DashboardLanding;
 
 /***/ },
-/* 248 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -32930,7 +33104,7 @@
 	var SessionStore = __webpack_require__(218);
 	
 	// components
-	var DataStreamItem = __webpack_require__(249);
+	var DataStreamItem = __webpack_require__(250);
 	
 	var DataStreamIndex = React.createClass({
 	  displayName: 'DataStreamIndex',
@@ -32991,7 +33165,7 @@
 	module.exports = DataStreamIndex;
 
 /***/ },
-/* 249 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -33025,14 +33199,14 @@
 	module.exports = DataStreamItem;
 
 /***/ },
-/* 250 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var SessionStore = __webpack_require__(218);
 	
 	// components
-	var InsightItem = __webpack_require__(251);
+	var InsightItem = __webpack_require__(252);
 	
 	var InsightIndex = React.createClass({
 	  displayName: 'InsightIndex',
@@ -33123,7 +33297,7 @@
 	module.exports = InsightIndex;
 
 /***/ },
-/* 251 */
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -33201,13 +33375,13 @@
 	module.exports = InsightItem;
 
 /***/ },
-/* 252 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	
 	// components
-	var DataVisItem = __webpack_require__(253);
+	var DataVisItem = __webpack_require__(254);
 	
 	var DataVisIndex = React.createClass({
 	  displayName: 'DataVisIndex',
@@ -33221,9 +33395,8 @@
 	        'div',
 	        { className: 'doubling two column row' },
 	        this.props.user.vis.map(function (v, i) {
-	          return React.createElement(DataVisItem, { image: v.url });
-	        }),
-	        ';'
+	          return React.createElement(DataVisItem, { key: i, image: v.url });
+	        })
 	      )
 	    );
 	  }
@@ -33233,7 +33406,7 @@
 	module.exports = DataVisIndex;
 
 /***/ },
-/* 253 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -33257,205 +33430,6 @@
 	});
 	
 	module.exports = DataVisItem;
-
-/***/ },
-/* 254 */
-/***/ function(module, exports) {
-
-	// credit too http://kennethjorgensen.com/blog/2014/canvas-trees
-	
-	Snake = function (canvas) {
-		this.setCanvas(canvas);
-	
-		this.x = this.canvasWidth / 2;
-		this.y = this.canvasHeight;
-		this.radius = 10;
-		this.speed = this.canvasWidth / 500;
-		this.angle = Math.PI / 2;
-		this.fillStyle = "#009c95";
-		this.shadowColor = "#009c95";
-		this.shadowBlur = 2;
-		this.generation = 0;
-		this.lifespan = 0;
-		this.totalDistance = 0;
-		this.distance = 0;
-	};
-	
-	Snake.prototype = {
-		setCanvas: function (canvas) {
-			this.canvas = document.getElementById('canvastree');
-			this.context = canvas.getContext("2d");
-			this.canvasWidth = 700;
-			this.canvasHeight = 299;
-		},
-	
-		next: function () {
-			this.draw();
-			this.iterate();
-			this.randomize();
-			// 		this.limitSpeed();
-			// 		this.reset(context);
-			this.split();
-			this.lifespan++;
-			this.die();
-		},
-	
-		draw: function () {
-			var context = this.context;
-			context.save();
-			context.fillStyle = this.fillStyle;
-			context.shadowColor = this.shadowColor;
-			context.shadowBlur = this.shadowBlur;
-			context.beginPath();
-			context.moveTo(this.x, this.y);
-			context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, true);
-			context.closePath();
-			context.fill();
-			context.restore();
-		},
-	
-		iterate: function () {
-			var lastX = this.x;
-			var lastY = this.y;
-			this.x += this.speed * Math.cos(this.angle);
-			this.y += this.speed * -Math.sin(this.angle);
-			this.radius *= 0.99 - this.generation / 250; // minus 0.004 per generation
-			var deltaDistance = Math.sqrt(Math.abs(lastX - this.x) + Math.abs(lastY - this.y));
-			this.distance += deltaDistance;
-			this.totalDistance += deltaDistance;
-			if (this.speed > this.radius * 2) this.speed = this.radius * 2;
-		},
-	
-		randomize: function () {
-			this.angle += Math.random() / 5 - 1 / 5 / 2;
-		},
-	
-		reset: function (context) {
-			var $canvas = jQuery(context.canvas);
-			var margin = 30 + this.radius;
-			var width = $canvas.width();
-			var height = $canvas.height();
-	
-			if (this.x < -margin || this.x > width + margin || this.y < -margin || this.y > height + margin) {
-				// 			this.x = width/2;
-				this.y = height;
-				// New color
-				var grey = Math.floor(Math.random() * 255).toString(16);
-				this.fillStyle = "#" + grey + grey + grey;
-				this.shadowColor = this.fillStyle;
-			}
-		},
-	
-		split: function () {
-			// Calculate split chance
-			var splitChance = 0;
-			// Trunk
-			if (this.generation == 0) splitChance = (this.distance - this.canvasHeight / 5) / 100;
-			// Branch
-			else if (this.generation < 3) splitChance = (this.distance - this.canvasHeight / 10) / 100;
-	
-			// Split if we are allowed
-			if (Math.random() < splitChance) {
-				var n = 2 + Math.round(Math.random() * 2);
-				for (var i = 0; i < n; i++) {
-					var snake = new Snake(this.canvas);
-					snake.x = this.x;
-					snake.y = this.y;
-					snake.angle = this.angle;
-					snake.speed = this.speed;
-					snake.radius = this.radius * 0.9;
-					snake.generation = this.generation + 1;
-					snake.fillStyle = this.fillStyle;
-					snake.shadowColor = this.shadowColor;
-					snake.shadowBlur = this.shadowBlur;
-					snake.totalDistance = this.totalDistance;
-					this.collection.add(snake);
-				}
-				this.collection.remove(this);
-			}
-		},
-	
-		die: function () {
-			if (this.radius < 0.2) {
-				this.collection.remove(this);
-				// 			console.log(this.distance);
-			}
-		}
-	};
-	
-	SnakeCollection = function () {
-		this.canvas = canvas;
-	
-		this.snakes = [];
-	};
-	
-	SnakeCollection.prototype = {
-		next: function () {
-			n = this.snakes.length;
-			for (var s in this.snakes) {
-				var snake = this.snakes[s];
-				if (this.snakes[s]) this.snakes[s].next();
-			}
-		},
-	
-		add: function (snake) {
-			this.snakes.push(snake);
-			snake.collection = this;
-		},
-	
-		remove: function (snake) {
-			for (var s in this.snakes) if (this.snakes[s] === snake) this.snakes.splice(s, 1);
-		}
-	};
-	
-	function randHex() {
-		var num = Math.round(Math.random() * 255).toString(16);
-		if (num.length == 1) num = "0" + num;
-		return num;
-	}
-	
-	module.exports = function () {
-		// Convenience
-		canvas = document.getElementById('canvastree');
-		context = canvas.getContext("2d");
-	
-		// Dimensions
-		// var width = canvas.width();
-		// var height = canvas.height();
-		var width = 700;
-		var height = 299;
-	
-		// Set actual canvas size to match css
-		// canvas.attr("width", width);
-		// canvas.attr("height", height);
-	
-		canvas.width = width;
-		canvas.height = height;
-	
-		// Information
-		jQuery("#info").html("Size: " + canvas.width + "x" + canvas.height);
-	
-		// Frame rate
-		var frame = 0;
-	
-		// Snakes
-		var n = 2 + Math.random() * 3;
-		var initialRadius = width / 50;
-		snakes = new SnakeCollection();
-		for (var i = 0; i < n; i++) {
-			var snake = new Snake(canvas);
-			snake.x = width / 2 - initialRadius + i * initialRadius * 2 / n;
-			snake.radius = initialRadius;
-			snakes.add(snake);
-		}
-	
-		// Frame drawer
-		var interval = setInterval(function () {
-			snakes.next();
-	
-			frame++;
-		}, 0);
-	};
 
 /***/ }
 /******/ ]);

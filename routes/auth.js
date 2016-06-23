@@ -4,13 +4,16 @@ var mongoose = require('mongoose');
 
 module.exports = function (router, passport) {
   // make sure a user is logged in
-  router.use(function(req, res, next) {
-      // if user is authenticated in the session, call the next() to call the next request handler; Passport adds this method to request object.
+  router.use(function (req, res, next) {
+      // if user is authenticated in the session, call the next() to call the
+      // next request handler; Passport adds this method to request object.
       if (req.isAuthenticated())
           return next();
+
       // if the user is not authenticated then redirect him to the auth/login page
       res.redirect('/');
-  });
+    }
+  );
 
   router.put('/starinsight', function (req, res) {
     var objectId = mongoose.Types.ObjectId(req.body.insightId);
