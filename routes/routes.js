@@ -72,7 +72,9 @@ module.exports = function (router, passport) {
 
   router.get('/api/fitbit', function (req, res) {
     console.log('fitbit');
-    res.redirect('/');
+
+    // #/?= handles any extras things fitbit leaves on query string
+    res.redirect('/#/?=');
   });
 
   router.put('/admin/api/addform', function (req, res) {
