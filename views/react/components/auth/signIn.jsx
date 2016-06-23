@@ -93,7 +93,7 @@ var SignIn = React.createClass({
           <div className="required field">
             <label>password</label>
             <input
-              type="text"
+              type="password"
               name="password"
               placeholder=""
               valueLink={this.linkState('password')}

@@ -110,7 +110,7 @@ var Signup = React.createClass({
           <div className="required field">
             <label>password</label>
             <input
-              type="text"
+              type="password"
               name="password"
               placeholder=""
               valueLink={this.linkState('password')}
@@ -120,7 +120,7 @@ var Signup = React.createClass({
           <div className="required field">
             <label>confirm password</label>
             <input
-              type="text"
+              type="password"
               name="confirm password"
               placeholder=""
               valueLink={this.linkState('confirmPassword')}

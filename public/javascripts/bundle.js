@@ -32083,7 +32083,7 @@
 	            'password'
 	          ),
 	          React.createElement('input', {
-	            type: 'text',
+	            type: 'password',
 	            name: 'password',
 	            placeholder: '',
 	            valueLink: this.linkState('password')
@@ -32488,7 +32488,7 @@
 	            'password'
 	          ),
 	          React.createElement('input', {
-	            type: 'text',
+	            type: 'password',
 	            name: 'password',
 	            placeholder: '',
 	            valueLink: this.linkState('password')
@@ -32503,7 +32503,7 @@
 	            'confirm password'
 	          ),
 	          React.createElement('input', {
-	            type: 'text',
+	            type: 'password',
 	            name: 'confirm password',
 	            placeholder: '',
 	            valueLink: this.linkState('confirmPassword')
