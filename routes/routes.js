@@ -95,6 +95,7 @@ module.exports = function (router, passport) {
 
         user.save(function (err) {
           if (err) { res.send(err); }
+
           console.log('here');
           res.json({ message: 'user updated with new insight' });
         });
