@@ -24542,6 +24542,10 @@
 	
 	  addVisUrl: function (params, successCallback, errorCallback) {
 	    ApiUtil.addVisUrl(params, successCallback, errorCallback);
+	  },
+	
+	  addFitbit(params, successCallback, errorCallback) {
+	    ApiUtil.addFitbit(params, successCallback, errorCallback);
 	  }
 	};
 
@@ -25006,6 +25010,23 @@
 	      error: function (respError) {
 	        errorCallback(respError.responseText);
 	        console.log('ajax add vis URL error', respError);
+	      }
+	    });
+	  },
+	
+	  addFitbit: function (params, successCallback, errorCallback) {
+	    $.ajax({
+	      type: 'POST',
+	      url: '/api/datastream/fitbit',
+	      data: params,
+	      success: function (respData) {
+	        successCallback(respData);
+	        console.log('ajax add fitbit success', respData);
+	      },
+	
+	      error: function (respError) {
+	        errorCallback(respError.responseText);
+	        console.log('ajax add fitbit error', respError);
 	      }
 	    });
 	  }
@@ -32880,6 +32901,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var SessionActions = __webpack_require__(211);
+	var SessionStore = __webpack_require__(218);
 	
 	// components
 	var DataStreamItem = __webpack_require__(249);
@@ -32888,6 +32911,17 @@
 	  displayName: 'DataStreamIndex',
 	
 	  clickFitbit: function () {
+	    var fitbitParams = { username: SessionStore.currentUser().local.username };
+	
+	    // should put the fitbit url call as a callback incas
+	    SessionActions.addFitbit(fitbitParams, this.fitbitSuccess, this.fitbitError);
+	  },
+	
+	  fitbitError: function () {
+	    console.log('fitbit error');
+	  },
+	
+	  fitbitSuccess: function () {
 	    var url = 'https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=227TQM&redirect_uri=http%3A%2F%2Fwww.exzume.com%2Fapi%2Ffitbit%2F&scope=activity%20nutrition%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight';
 	    var win = window.open(url, '_blank');
 	    win.focus();

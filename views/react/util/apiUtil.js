@@ -149,4 +149,23 @@ module.exports = {
         },
     });
   },
+
+  addFitbit: function (params, successCallback, errorCallback) {
+    $.ajax({
+      type: 'POST',
+      url: '/api/datastream/fitbit',
+      data: params,
+      success:
+        function (respData) {
+          successCallback(respData);
+          console.log('ajax add fitbit success', respData);
+        },
+
+      error:
+        function (respError) {
+          errorCallback(respError.responseText);
+          console.log('ajax add fitbit error', respError);
+        },
+    });
+  },
 };
