@@ -2,6 +2,7 @@ var React = require('react');
 var History = require('react-router').History;
 var SessionStore = require('../stores/sessionStore');
 var SessionActions = require('../actions/sessionActions');
+var TreeCanvas = require('../util/canvas/tree');
 
 // components
 
@@ -19,6 +20,8 @@ var App = React.createClass({
     if (!SessionStore.isSignedIn()) {
       SessionActions.retrieveSession();
     };
+
+    TreeCanvas();
   },
 
   componentWillUnmount: function () {
@@ -93,9 +96,12 @@ var App = React.createClass({
       <div>
         <div className="ui one column center aligned relaxed grid container" style={centerContainerStyle}>
           <div className="row">
-            <h1 className="ui black huge header">exzume</h1>
+            <h1 className="ui blue huge header">exzume</h1>
           </div>
           {this.makeButtons()}
+          <div className="row">
+            <canvas id="canvastree" width="700" height="299" />
+          </div>
         </div>
       </div>
     );

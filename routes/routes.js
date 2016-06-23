@@ -70,6 +70,11 @@ module.exports = function (router, passport) {
     res.json(req.user);
   });
 
+  router.post('/api/fitbit/', function (req, res) {
+    console.log('fitbit');
+    res.redirect('/');
+  });
+
   router.put('/admin/api/addform', function (req, res) {
     User.findOne({ 'local.username': req.body.username }, function (err, user) {
       if (err) {
