@@ -8,3 +8,12 @@ $ npm install
 $ webpack --watch
 
 $ node ./bin/www
+
+# account info - for signing up for api dev accounts
+
+email: exzume.app@gmail.com
+pw   : knowthyself42!
+
+current accounts
+
+fitbit: https://dev.fitbit.com/apps/details/227TQM

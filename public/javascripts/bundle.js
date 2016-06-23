@@ -247,31 +247,6 @@
 	// shim for using process in browser
 	
 	var process = module.exports = {};
-	
-	// cached from whatever global is present so that test runners that stub it
-	// don't break things.  But we need to wrap it in a try catch in case it is
-	// wrapped in strict mode code which doesn't define any globals.  It's inside a
-	// function because try/catches deoptimize in certain engines.
-	
-	var cachedSetTimeout;
-	var cachedClearTimeout;
-	
-	(function () {
-	  try {
-	    cachedSetTimeout = setTimeout;
-	  } catch (e) {
-	    cachedSetTimeout = function () {
-	      throw new Error('setTimeout is not defined');
-	    }
-	  }
-	  try {
-	    cachedClearTimeout = clearTimeout;
-	  } catch (e) {
-	    cachedClearTimeout = function () {
-	      throw new Error('clearTimeout is not defined');
-	    }
-	  }
-	} ())
 	var queue = [];
 	var draining = false;
 	var currentQueue;
@@ -296,7 +271,7 @@
 	    if (draining) {
 	        return;
 	    }
-	    var timeout = cachedSetTimeout(cleanUpNextTick);
+	    var timeout = setTimeout(cleanUpNextTick);
 	    draining = true;
 	
 	    var len = queue.length;
@@ -313,7 +288,7 @@
 	    }
 	    currentQueue = null;
 	    draining = false;
-	    cachedClearTimeout(timeout);
+	    clearTimeout(timeout);
 	}
 	
 	process.nextTick = function (fun) {
@@ -325,7 +300,7 @@
 	    }
 	    queue.push(new Item(fun, args));
 	    if (queue.length === 1 && !draining) {
-	        cachedSetTimeout(drainQueue, 0);
+	        setTimeout(drainQueue, 0);
 	    }
 	};
 	
@@ -32904,6 +32879,11 @@
 	var DataStreamIndex = React.createClass({
 	  displayName: 'DataStreamIndex',
 	
+	  clickFitbit: function () {
+	    var url = 'https://www.fitbit.com/oauth2/authorize?response_type=token&client_id=227TQM&redirect_uri=http%3A%2F%2Fwww.exzume.com%2F&scope=activity%20nutrition%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800';
+	    var win = window.open(url, '_blank');
+	    win.focus();
+	  },
 	
 	  render: function () {
 	    return React.createElement(
@@ -32916,9 +32896,22 @@
 	          'div',
 	          { className: 'column' },
 	          React.createElement(
-	            'button',
-	            { className: 'ui disabled teal icon button' },
-	            React.createElement('i', { className: 'large plus icon' })
+	            'div',
+	            { className: 'ui simple dropdown' },
+	            React.createElement(
+	              'button',
+	              { className: 'ui teal icon button' },
+	              React.createElement('i', { className: 'large plus icon' })
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'menu' },
+	              React.createElement(
+	                'div',
+	                { className: 'item', onClick: this.clickFitbit },
+	                'Fitbit'
+	              )
+	            )
 	          )
 	        ),
 	        React.createElement(DataStreamItem, { icon: 'blue google', label: 'Google Form' })
@@ -32943,7 +32936,7 @@
 	  mixins: [History],
 	
 	  clickIconButton: function () {
-	    this.history.push('/dashboard/formdetail');
+	    this.history.push('/formdetail');
 	  },
 	
 	  render: function () {
