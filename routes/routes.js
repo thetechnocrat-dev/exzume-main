@@ -71,10 +71,10 @@ module.exports = function (router, passport) {
   });
 
   router.get('/api/fitbit', function (req, res) {
-    console.log('fitbit');
+    var accessToken = req.query.access_token;
 
     // #/?= handles any extras things fitbit leaves on query string
-    res.redirect('/#/?=');
+    res.redirect('/#/?=' + accessToken);
   });
 
   router.put('/admin/api/addform', function (req, res) {
