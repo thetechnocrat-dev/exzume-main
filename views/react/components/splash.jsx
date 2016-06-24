@@ -68,7 +68,7 @@ var App = React.createClass({
             <div className="ui teal button" onClick={this.clickSignOut}>sign out</div>
           </div>
           <div style={marginStyle}>
-            <div className="ui teal button" onClick={this.clickDashboard}>dashboard</div>
+            <div className="ui yellow button" onClick={this.clickDashboard}>dashboard</div>
           </div>
         </div>
       );
@@ -82,7 +82,7 @@ var App = React.createClass({
             <div className="ui teal button" onClick={this.clickSignIn}>sign in</div>
           </div>
           <div style={marginStyle}>
-            <div className="ui teal button" onClick={this.clickSignUp}>sign up</div>
+            <div className="ui yellow button" onClick={this.clickSignUp}>sign up</div>
           </div>
         </div>
       );
@@ -90,13 +90,14 @@ var App = React.createClass({
   },
 
   render: function () {
-    var centerContainerStyle = { marginTop: '20%', marginBottom: '2%', };
+    var centerContainerStyle = { marginTop: '2.5%', marginBottom: '2%', };
+    var titleStyle = { fontSize: '3em', };
 
     return (
       <div>
         <div className="ui one column center aligned relaxed grid container" style={centerContainerStyle}>
           <div className="row">
-            <h1 className="ui blue huge header">exzume</h1>
+            <h1 className="ui violet huge header" style={titleStyle}>exzume</h1>
           </div>
           {this.makeButtons()}
           <div className="row">

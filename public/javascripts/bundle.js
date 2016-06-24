@@ -31609,7 +31609,7 @@
 	          { style: marginStyle },
 	          React.createElement(
 	            'div',
-	            { className: 'ui teal button', onClick: this.clickDashboard },
+	            { className: 'ui yellow button', onClick: this.clickDashboard },
 	            'dashboard'
 	          )
 	        )
@@ -31641,7 +31641,7 @@
 	          { style: marginStyle },
 	          React.createElement(
 	            'div',
-	            { className: 'ui teal button', onClick: this.clickSignUp },
+	            { className: 'ui yellow button', onClick: this.clickSignUp },
 	            'sign up'
 	          )
 	        )
@@ -31650,7 +31650,8 @@
 	  },
 	
 	  render: function () {
-	    var centerContainerStyle = { marginTop: '20%', marginBottom: '2%' };
+	    var centerContainerStyle = { marginTop: '2.5%', marginBottom: '2%' };
+	    var titleStyle = { fontSize: '3em' };
 	
 	    return React.createElement(
 	      'div',
@@ -31663,7 +31664,7 @@
 	          { className: 'row' },
 	          React.createElement(
 	            'h1',
-	            { className: 'ui blue huge header' },
+	            { className: 'ui violet huge header', style: titleStyle },
 	            'exzume'
 	          )
 	        ),
@@ -31695,8 +31696,8 @@
 		this.radius = 10;
 		this.speed = this.canvasWidth / 500;
 		this.angle = Math.PI / 2;
-		this.fillStyle = "#009c95";
-		this.shadowColor = "#009c95";
+		this.fillStyle = "#3BCDBF";
+		this.shadowColor = "#3BCDBF";
 		this.shadowBlur = 2;
 		this.generation = 0;
 		this.lifespan = 0;

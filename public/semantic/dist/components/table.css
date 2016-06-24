@@ -623,10 +623,10 @@
 
 /* Yellow */
 .ui.yellow.table {
-  border-top: 0.2em solid #FBBD08;
+  border-top: 0.2em solid #FBA100;
 }
 .ui.inverted.yellow.table {
-  background-color: #FBBD08 !important;
+  background-color: #FBA100 !important;
   color: #FFFFFF !important;
 }
 
@@ -650,10 +650,10 @@
 
 /* Teal */
 .ui.teal.table {
-  border-top: 0.2em solid #00B5AD;
+  border-top: 0.2em solid #3BCDBF;
 }
 .ui.inverted.teal.table {
-  background-color: #00B5AD !important;
+  background-color: #3BCDBF !important;
   color: #FFFFFF !important;
 }
 
@@ -668,10 +668,10 @@
 
 /* Violet */
 .ui.violet.table {
-  border-top: 0.2em solid #6435C9;
+  border-top: 0.2em solid #6C648B;
 }
 .ui.inverted.violet.table {
-  background-color: #6435C9 !important;
+  background-color: #6C648B !important;
   color: #FFFFFF !important;
 }
 

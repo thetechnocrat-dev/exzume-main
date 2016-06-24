@@ -383,7 +383,7 @@
 
 /* Yellow */
 .ui.yellow.progress .bar {
-  background-color: #FBBD08;
+  background-color: #FBA100;
 }
 .ui.yellow.inverted.progress .bar {
   background-color: #FFE21F;
@@ -407,7 +407,7 @@
 
 /* Teal */
 .ui.teal.progress .bar {
-  background-color: #00B5AD;
+  background-color: #3BCDBF;
 }
 .ui.teal.inverted.progress .bar {
   background-color: #6DFFFF;
@@ -423,7 +423,7 @@
 
 /* Violet */
 .ui.violet.progress .bar {
-  background-color: #6435C9;
+  background-color: #6C648B;
 }
 .ui.violet.inverted.progress .bar {
   background-color: #A291FB;
