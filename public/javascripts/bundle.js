@@ -31653,19 +31653,18 @@
 	  },
 	
 	  render: function () {
-	    var centerContainerStyle = { marginTop: '2.5%', marginBottom: '2%' };
-	    var titleStyle = { fontSize: '3em' };
+	    var titleStyle = { fontSize: '3em', marginTop: '2.5%' };
 	    var lowerDivStyle = { width: '100%', backgroundColor: '#3BCDBF' };
 	    var whiteFontStyle = { color: 'white' };
+	    var backgroundStyle = { backgroundColor: '#f4f1f0' };
 	
 	    return React.createElement(
 	      'div',
-	      null,
+	      { style: backgroundStyle },
 	      React.createElement(
 	        'div',
 	        {
-	          className: 'ui one column center aligned relaxed grid container',
-	          style: centerContainerStyle
+	          className: 'ui one column center aligned relaxed grid container'
 	        },
 	        React.createElement(
 	          'div',

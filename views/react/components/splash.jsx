@@ -93,16 +93,15 @@ var App = React.createClass({
   },
 
   render: function () {
-    var centerContainerStyle = { marginTop: '2.5%', marginBottom: '2%', };
-    var titleStyle = { fontSize: '3em', };
+    var titleStyle = { fontSize: '3em', marginTop: '2.5%', };
     var lowerDivStyle = { width: '100%', backgroundColor: '#3BCDBF' };
     var whiteFontStyle = { color: 'white' };
+    var backgroundStyle = { backgroundColor: '#f4f1f0' };
 
     return (
-      <div>
+      <div style={backgroundStyle}>
         <div
           className="ui one column center aligned relaxed grid container"
-          style={centerContainerStyle}
         >
           <div className="row">
             <h1 className="ui violet huge header" style={titleStyle}>exzume</h1>
