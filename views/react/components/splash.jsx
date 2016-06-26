@@ -3,8 +3,10 @@ var History = require('react-router').History;
 var SessionStore = require('../stores/sessionStore');
 var SessionActions = require('../actions/sessionActions');
 var TreeCanvas = require('../util/canvas/tree');
+var scrollIntoView = require('scroll-into-view');
 
 // components
+var AboutSplash = require('./aboutSplash');
 
 var App = React.createClass({
   mixins: [History],
@@ -29,7 +31,8 @@ var App = React.createClass({
   },
 
   clickAbout: function () {
-    this.history.push('/about');
+    var element = document.getElementById('aboutAnchor');
+    scrollIntoView(element);
   },
 
   clickSampleAccount: function () {
@@ -92,10 +95,15 @@ var App = React.createClass({
   render: function () {
     var centerContainerStyle = { marginTop: '2.5%', marginBottom: '2%', };
     var titleStyle = { fontSize: '3em', };
+    var lowerDivStyle = { width: '100%', backgroundColor: '#3BCDBF' };
+    var whiteFontStyle = { color: 'white' };
 
     return (
       <div>
-        <div className="ui one column center aligned relaxed grid container" style={centerContainerStyle}>
+        <div
+          className="ui one column center aligned relaxed grid container"
+          style={centerContainerStyle}
+        >
           <div className="row">
             <h1 className="ui violet huge header" style={titleStyle}>exzume</h1>
           </div>
@@ -104,7 +112,40 @@ var App = React.createClass({
             <canvas id="canvastree" width="700" height="299" />
           </div>
         </div>
-      </div>
+        <div
+          id="aboutAnchor"
+          style={lowerDivStyle}
+        >
+          <div
+            className="ui center aligned grid container"
+          >
+            <div className="one column stackable row">
+              <div className="column">
+                <h1 className="ui huge header" style={whiteFontStyle}>
+                  How to use your data to make better decisions with exzume
+                </h1>
+              </div>
+            </div>
+              <div className="three column stackable row">
+                <div className="column">
+                  <div style={whiteFontStyle}>
+                    1. Sync all the data collecting devices and apps you are already using such as fitbit, twitter, github and many more...
+                  </div>
+                </div>
+                <div className="column">
+                  <div style={whiteFontStyle}>
+                    2. (Optional) To get the most out of your data fill out our reccomended 1 minute daily survey based on your interests. Using our survey tool you can also collect data on anything you are curious about. (Do naps really increase your productivity?)
+                  </div>
+                </div>
+                <div className="column">
+                  <div style={whiteFontStyle}>
+                    3. That's it! We do all the data crunching and turn your data into useful text based insight. (If you are a data guru yourself or just want to see your life as a bunch of lines and graphs you can either use our built in data explorer or download your data as a csv).
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
     );
   },
 

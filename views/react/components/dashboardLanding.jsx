@@ -20,6 +20,10 @@ var DashboardLanding = React.createClass({
     this.sessionToken.remove();
   },
 
+  clickScrollTest: function () {
+
+  },
+
   clickSurvey: function () {
     var url = SessionStore.currentUser().formURL;
     var win = window.open(url, '_blank');
@@ -65,7 +69,6 @@ var DashboardLanding = React.createClass({
       </div>
     );
   },
-
 });
 
 module.exports = DashboardLanding;
