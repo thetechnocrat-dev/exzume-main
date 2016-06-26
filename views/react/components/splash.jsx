@@ -128,17 +128,17 @@ var App = React.createClass({
               <div className="three column stackable row">
                 <div className="column">
                   <div style={whiteFontStyle}>
-                    1. Sync all the data collecting devices and apps you already use (i.e. fitbit, twitter, github and many more…).
+                    1. <b>Sync data collecting devices and apps</b> you already use (i.e. fitbit, twitter, github and many more…).
                   </div>
                 </div>
                 <div className="column">
                   <div style={whiteFontStyle}>
-                    2. (Optional) To benefit the most from your data, fill out our recommended 1 minute daily survey based on your interests. Using our survey tool, you can also collect data on anything you are curious about.
+                    2. <b>(Recommended) Fill out a 1 minute daily survey</b> designed off your interestes to get the most out of your data. Using our survey tool, you can collect data on anything you are curious about.
                   </div>
                 </div>
                 <div className="column">
                   <div style={whiteFontStyle}>
-                    3. That's it! We do all the data crunching and turn your data into useful insights. (If you are a data guru or want to envision your life as a bunch of lines and graphs, you can either use our built in data explorer or download your data as a csv).
+                    3. <b>That's it!</b> We do all the data crunching and turn your data into useful insights. (If you are a data guru or want to envision your life as a bunch of lines and graphs, you can either use our built in data explorer or download your data as a csv).
                   </div>
                 </div>
               </div>

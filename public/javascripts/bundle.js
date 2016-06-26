@@ -31715,7 +31715,13 @@
 	              React.createElement(
 	                'div',
 	                { style: whiteFontStyle },
-	                '1. Sync all the data collecting devices and apps you already use (i.e. fitbit, twitter, github and many more…).'
+	                '1. ',
+	                React.createElement(
+	                  'b',
+	                  null,
+	                  'Sync data collecting devices and apps'
+	                ),
+	                ' you already use (i.e. fitbit, twitter, github and many more…).'
 	              )
 	            ),
 	            React.createElement(
@@ -31724,7 +31730,13 @@
 	              React.createElement(
 	                'div',
 	                { style: whiteFontStyle },
-	                '2. (Optional) To benefit the most from your data, fill out our recommended 1 minute daily survey based on your interests. Using our survey tool, you can also collect data on anything you are curious about.'
+	                '2. ',
+	                React.createElement(
+	                  'b',
+	                  null,
+	                  '(Recommended) Fill out a 1 minute daily survey'
+	                ),
+	                ' designed off your interestes to get the most out of your data. Using our survey tool, you can collect data on anything you are curious about.'
 	              )
 	            ),
 	            React.createElement(
@@ -31733,7 +31745,13 @@
 	              React.createElement(
 	                'div',
 	                { style: whiteFontStyle },
-	                '3. That\'s it! We do all the data crunching and turn your data into useful insights. (If you are a data guru or want to envision your life as a bunch of lines and graphs, you can either use our built in data explorer or download your data as a csv).'
+	                '3. ',
+	                React.createElement(
+	                  'b',
+	                  null,
+	                  'That\'s it!'
+	                ),
+	                ' We do all the data crunching and turn your data into useful insights. (If you are a data guru or want to envision your life as a bunch of lines and graphs, you can either use our built in data explorer or download your data as a csv).'
 	              )
 	            )
 	          )
