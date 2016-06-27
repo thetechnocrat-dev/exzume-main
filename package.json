@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "postinstall": "webpack -p --config ./webpack.config.js --progress"
   },
   "dependencies": {
     "babel-core": "^6.1.4",
@@ -37,8 +38,5 @@
   },
   "devDependencies": {
     "webpack": "^1.13.1"
-  },
-  "scripts": {
-    "postinstall": "webpack -p --config ./webpack.config.js --progress"
   }
 }

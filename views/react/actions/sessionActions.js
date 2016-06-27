@@ -48,7 +48,7 @@ module.exports = {
     ApiUtil.addVisUrl(params, successCallback, errorCallback);
   },
 
-  addFitbit(params, successCallback, errorCallback) {
+  addFitbit: function (params, successCallback, errorCallback) {
     ApiUtil.addFitbit(params, successCallback, errorCallback);
   },
 };
