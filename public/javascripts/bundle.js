@@ -55,13 +55,13 @@
 	var App = __webpack_require__(208);
 	var Dashboard = __webpack_require__(209);
 	var Splash = __webpack_require__(236);
-	var About = __webpack_require__(238);
-	var SignIn = __webpack_require__(239);
-	var SignUp = __webpack_require__(244);
-	var Admin = __webpack_require__(245);
-	var Profile = __webpack_require__(246);
-	var DataStreamDetail = __webpack_require__(247);
-	var DashboardLanding = __webpack_require__(248);
+	var About = __webpack_require__(242);
+	var SignIn = __webpack_require__(243);
+	var SignUp = __webpack_require__(248);
+	var Admin = __webpack_require__(249);
+	var Profile = __webpack_require__(250);
+	var DataStreamDetail = __webpack_require__(251);
+	var DashboardLanding = __webpack_require__(252);
 	
 	var routes = React.createElement(
 	  Route,
@@ -31525,10 +31525,10 @@
 	var SessionStore = __webpack_require__(218);
 	var SessionActions = __webpack_require__(211);
 	var TreeCanvas = __webpack_require__(237);
-	var scrollIntoView = __webpack_require__(255);
+	var scrollIntoView = __webpack_require__(238);
 	
 	// components
-	var AboutSplash = __webpack_require__(258);
+	var AboutSplash = __webpack_require__(241);
 	
 	var App = React.createClass({
 	  displayName: 'App',
@@ -31657,6 +31657,7 @@
 	    var lowerDivStyle = { width: '100%', backgroundColor: '#3BCDBF' };
 	    var whiteFontStyle = { color: 'white' };
 	    var backgroundStyle = { backgroundColor: '#f4f1f0' };
+	    var stepStyle = { fontSize: '1.5em' };
 	
 	    return React.createElement(
 	      'div',
@@ -31715,11 +31716,10 @@
 	              React.createElement(
 	                'div',
 	                { style: whiteFontStyle },
-	                '1. ',
 	                React.createElement(
 	                  'b',
-	                  null,
-	                  'Sync data collecting devices and apps'
+	                  { style: stepStyle },
+	                  '1. Sync data collecting devices and apps'
 	                ),
 	                ' you already use (i.e. fitbit, twitter, github and many more…).'
 	              )
@@ -31730,11 +31730,10 @@
 	              React.createElement(
 	                'div',
 	                { style: whiteFontStyle },
-	                '2. ',
 	                React.createElement(
 	                  'b',
-	                  null,
-	                  '(Recommended) Fill out a 1 minute daily survey'
+	                  { style: stepStyle },
+	                  '2. (Recommended) Fill out a 1 minute daily survey'
 	                ),
 	                ' designed off your interestes to get the most out of your data. Using our survey tool, you can collect data on anything you are curious about.'
 	              )
@@ -31745,11 +31744,10 @@
 	              React.createElement(
 	                'div',
 	                { style: whiteFontStyle },
-	                '3. ',
 	                React.createElement(
 	                  'b',
-	                  null,
-	                  'That\'s it!'
+	                  { style: stepStyle },
+	                  '3. That\'s it!'
 	                ),
 	                ' We do all the data crunching and turn your data into useful insights. (If you are a data guru or want to envision your life as a bunch of lines and graphs, you can either use our built in data explorer or download your data as a csv).'
 	              )
@@ -31785,6 +31783,7 @@
 		this.lifespan = 0;
 		this.totalDistance = 0;
 		this.distance = 0;
+		this.shouldAddwords = true;
 	};
 	
 	Snake.prototype = {
@@ -31884,13 +31883,20 @@
 		die: function () {
 			if (this.radius < 0.2) {
 				this.collection.remove(this);
-				// 			console.log(this.distance);
+				if (this.collection.shouldAddwords) {
+					this.collection.shouldAddwords = false;
+					this.collection.writeSlogan();
+				}
+				// console.log(this.distance);
 			}
 		}
 	};
 	
 	SnakeCollection = function () {
 		this.canvas = canvas;
+		this.context = canvas.getContext("2d");
+		this.shouldAddwords = true;
+		this.alpha = 0.1; // for making text fade in
 	
 		this.snakes = [];
 	};
@@ -31911,6 +31917,30 @@
 	
 		remove: function (snake) {
 			for (var s in this.snakes) if (this.snakes[s] === snake) this.snakes.splice(s, 1);
+		},
+	
+		writeSlogan: function () {
+			this.intervalID = window.setInterval(this.fadeIn.bind(this), 40);
+		},
+	
+		fadeIn: function () {
+			if (this.alpha <= 1) {
+				// clear over old text with white font
+				this.context.font = '2em' + ' Lato';
+				this.context.fillStyle = 'white';
+				this.context.textAlign = 'center';
+				this.context.fillText('cultivate your data', canvas.width / 2, canvas.height / 10);
+				this.context.save(); // save context so that opacity change doesn't affect tree
+	
+				// white new text
+				this.context.globalAlpha = this.alpha;
+				this.context.fillStyle = '#6C648B';
+				this.context.fillText('cultivate your data', canvas.width / 2, canvas.height / 10);
+				this.context.restore(); // restore context for drawing tree
+				this.alpha += 0.01;
+			} else {
+				window.clearInterval(this.intervalID);
+			}
 		}
 	};
 	
@@ -31965,6 +31995,334 @@
 
 /***/ },
 /* 238 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var raf = __webpack_require__(239),
+	    COMPLETE = 'complete',
+	    CANCELED = 'canceled';
+	
+	function setElementScroll(element, x, y){
+	    if(element === window){
+	        element.scrollTo(x, y);
+	    }else{
+	        element.scrollLeft = x;
+	        element.scrollTop = y;
+	    }
+	}
+	
+	function getTargetScrollLocation(target, parent, align){
+	    var targetPosition = target.getBoundingClientRect(),
+	        parentPosition,
+	        x,
+	        y,
+	        differenceX,
+	        differenceY,
+	        leftAlign = align && align.left != null ? align.left : 0.5,
+	        topAlign = align && align.top != null ? align.top : 0.5,
+	        leftScalar = leftAlign,
+	        topScalar = topAlign;
+	
+	    if(parent === window){
+	        x = targetPosition.left + window.scrollX - window.innerWidth * leftScalar + Math.min(targetPosition.width, window.innerWidth) * leftScalar;
+	        y = targetPosition.top + window.scrollY - window.innerHeight * topScalar + Math.min(targetPosition.height, window.innerHeight) * topScalar;
+	        x = Math.max(Math.min(x, document.body.scrollWidth - window.innerWidth * leftScalar), 0);
+	        y = Math.max(Math.min(y, document.body.scrollHeight- window.innerHeight * topScalar), 0);
+	        differenceX = x - window.scrollX;
+	        differenceY = y - window.scrollY;
+	    }else{
+	        parentPosition = parent.getBoundingClientRect();
+	        var offsetTop = targetPosition.top - (parentPosition.top - parent.scrollTop);
+	        var offsetLeft = targetPosition.left - (parentPosition.left - parent.scrollLeft);
+	        x = offsetLeft + (targetPosition.width * leftScalar) - parent.clientWidth * leftScalar;
+	        y = offsetTop + (targetPosition.height * topScalar) - parent.clientHeight * topScalar;
+	        x = Math.max(Math.min(x, parent.scrollWidth - parent.clientWidth), 0);
+	        y = Math.max(Math.min(y, parent.scrollHeight - parent.clientHeight), 0);
+	        differenceX = x - parent.scrollLeft;
+	        differenceY = y - parent.scrollTop;
+	    }
+	
+	    return {
+	        x: x,
+	        y: y,
+	        differenceX: differenceX,
+	        differenceY: differenceY
+	    };
+	}
+	
+	function animate(parent){
+	    raf(function(){
+	        var scrollSettings = parent._scrollSettings;
+	        if(!scrollSettings){
+	            return;
+	        }
+	
+	        var location = getTargetScrollLocation(scrollSettings.target, parent, scrollSettings.align),
+	            time = Date.now() - scrollSettings.startTime,
+	            timeValue = Math.min(1 / scrollSettings.time * time, 1);
+	
+	        if(
+	            time > scrollSettings.time + 20 ||
+	            (Math.abs(location.differenceY) <= 1 && Math.abs(location.differenceX) <= 1)
+	        ){
+	            setElementScroll(parent, location.x, location.y);
+	            parent._scrollSettings = null;
+	            return scrollSettings.end(COMPLETE);
+	        }
+	
+	        var valueX = timeValue,
+	            valueY = timeValue;
+	
+	        setElementScroll(parent,
+	            location.x - location.differenceX * Math.pow(1 - valueX, valueX / 2),
+	            location.y - location.differenceY * Math.pow(1 - valueY, valueY / 2)
+	        );
+	
+	        animate(parent);
+	    });
+	}
+	
+	function transitionScrollTo(target, parent, settings, callback){
+	    var idle = !parent._scrollSettings;
+	
+	    if(parent._scrollSettings){
+	        parent._scrollSettings.end(CANCELED);
+	    }
+	
+	    function end(endType){
+	        parent._scrollSettings = null;
+	        callback(endType);
+	        parent.removeEventListener('touchstart', end);
+	    }
+	
+	    parent._scrollSettings = {
+	        startTime: Date.now(),
+	        target: target,
+	        time: settings.time,
+	        ease: settings.ease,
+	        align: settings.align,
+	        end: end
+	    };
+	    parent.addEventListener('touchstart', end.bind(null, CANCELED));
+	
+	    if(idle){
+	        animate(parent);
+	    }
+	}
+	
+	module.exports = function(target, settings, callback){
+	    if(!target){
+	        return;
+	    }
+	
+	    if(typeof settings === 'function'){
+	        callback = settings;
+	        settings = null;
+	    }
+	
+	    if(!settings){
+	        settings = {};
+	    }
+	
+	    settings.time = settings.time || 1000;
+	    settings.ease = settings.ease || function(v){return v;};
+	
+	    var parent = target.parentElement,
+	        parents = 0;
+	
+	    function done(endType){
+	        parents--;
+	        if(!parents){
+	            callback && callback(endType);
+	        }
+	    }
+	
+	    while(parent){
+	        if(
+	            settings.validTarget ? settings.validTarget(parent, parents) : true &&
+	            parent === window ||
+	            (
+	                parent.scrollHeight !== parent.clientHeight ||
+	                parent.scrollWidth !== parent.clientWidth
+	            ) &&
+	            getComputedStyle(parent).overflow !== 'hidden'
+	        ){
+	            parents++;
+	            transitionScrollTo(target, parent, settings, done);
+	        }
+	
+	        parent = parent.parentElement;
+	
+	        if(!parent){
+	            return;
+	        }
+	
+	        if(parent.tagName === 'BODY'){
+	            parent = window;
+	        }
+	    }
+	};
+
+/***/ },
+/* 239 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {var now = __webpack_require__(240)
+	  , root = typeof window === 'undefined' ? global : window
+	  , vendors = ['moz', 'webkit']
+	  , suffix = 'AnimationFrame'
+	  , raf = root['request' + suffix]
+	  , caf = root['cancel' + suffix] || root['cancelRequest' + suffix]
+	
+	for(var i = 0; !raf && i < vendors.length; i++) {
+	  raf = root[vendors[i] + 'Request' + suffix]
+	  caf = root[vendors[i] + 'Cancel' + suffix]
+	      || root[vendors[i] + 'CancelRequest' + suffix]
+	}
+	
+	// Some versions of FF have rAF but not cAF
+	if(!raf || !caf) {
+	  var last = 0
+	    , id = 0
+	    , queue = []
+	    , frameDuration = 1000 / 60
+	
+	  raf = function(callback) {
+	    if(queue.length === 0) {
+	      var _now = now()
+	        , next = Math.max(0, frameDuration - (_now - last))
+	      last = next + _now
+	      setTimeout(function() {
+	        var cp = queue.slice(0)
+	        // Clear queue here to prevent
+	        // callbacks from appending listeners
+	        // to the current frame's queue
+	        queue.length = 0
+	        for(var i = 0; i < cp.length; i++) {
+	          if(!cp[i].cancelled) {
+	            try{
+	              cp[i].callback(last)
+	            } catch(e) {
+	              setTimeout(function() { throw e }, 0)
+	            }
+	          }
+	        }
+	      }, Math.round(next))
+	    }
+	    queue.push({
+	      handle: ++id,
+	      callback: callback,
+	      cancelled: false
+	    })
+	    return id
+	  }
+	
+	  caf = function(handle) {
+	    for(var i = 0; i < queue.length; i++) {
+	      if(queue[i].handle === handle) {
+	        queue[i].cancelled = true
+	      }
+	    }
+	  }
+	}
+	
+	module.exports = function(fn) {
+	  // Wrap in a new function to prevent
+	  // `cancel` potentially being assigned
+	  // to the native rAF function
+	  return raf.call(root, fn)
+	}
+	module.exports.cancel = function() {
+	  caf.apply(root, arguments)
+	}
+	module.exports.polyfill = function() {
+	  root.requestAnimationFrame = raf
+	  root.cancelAnimationFrame = caf
+	}
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 240 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {// Generated by CoffeeScript 1.7.1
+	(function() {
+	  var getNanoSeconds, hrtime, loadTime;
+	
+	  if ((typeof performance !== "undefined" && performance !== null) && performance.now) {
+	    module.exports = function() {
+	      return performance.now();
+	    };
+	  } else if ((typeof process !== "undefined" && process !== null) && process.hrtime) {
+	    module.exports = function() {
+	      return (getNanoSeconds() - loadTime) / 1e6;
+	    };
+	    hrtime = process.hrtime;
+	    getNanoSeconds = function() {
+	      var hr;
+	      hr = hrtime();
+	      return hr[0] * 1e9 + hr[1];
+	    };
+	    loadTime = getNanoSeconds();
+	  } else if (Date.now) {
+	    module.exports = function() {
+	      return Date.now() - loadTime;
+	    };
+	    loadTime = Date.now();
+	  } else {
+	    module.exports = function() {
+	      return new Date().getTime() - loadTime;
+	    };
+	    loadTime = new Date().getTime();
+	  }
+	
+	}).call(this);
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+
+/***/ },
+/* 241 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var aboutSplash = React.createClass({
+	  displayName: 'aboutSplash',
+	
+	  getInitialState: function () {
+	    return { hover: false };
+	  },
+	
+	  toggleHover: function () {
+	    this.setState({ hover: !this.state.hover });
+	  },
+	
+	  render: function () {
+	    var splashPictureStyle = {
+	      height: '208',
+	      minWidth: '100%',
+	      backgroundSize: '100% 100%',
+	      backgroundPosition: 'center',
+	      transition: 'all .5s ease-in-out',
+	      backgroundImage: 'url(' + this.props.imgPath + ')'
+	    };
+	
+	    if (this.state.hover) {
+	      splashPictureStyle.backgroundSize = '120% 120%';
+	    };
+	
+	    return React.createElement('div', { style: splashPictureStyle,
+	      onMouseEnter: this.toggleHover,
+	      onMouseLeave: this.toggleHover
+	    });
+	  }
+	
+	});
+	
+	module.exports = aboutSplash;
+
+/***/ },
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -32043,12 +32401,12 @@
 	module.exports = About;
 
 /***/ },
-/* 239 */
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var SessionActions = __webpack_require__(211);
-	var LinkedStateMixin = __webpack_require__(240);
+	var LinkedStateMixin = __webpack_require__(244);
 	var History = __webpack_require__(159).History;
 	
 	var SignIn = React.createClass({
@@ -32199,13 +32557,13 @@
 	module.exports = SignIn;
 
 /***/ },
-/* 240 */
+/* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(241);
+	module.exports = __webpack_require__(245);
 
 /***/ },
-/* 241 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32222,8 +32580,8 @@
 	
 	'use strict';
 	
-	var ReactLink = __webpack_require__(242);
-	var ReactStateSetters = __webpack_require__(243);
+	var ReactLink = __webpack_require__(246);
+	var ReactStateSetters = __webpack_require__(247);
 	
 	/**
 	 * A simple mixin around ReactLink.forState().
@@ -32246,7 +32604,7 @@
 	module.exports = LinkedStateMixin;
 
 /***/ },
-/* 242 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32320,7 +32678,7 @@
 	module.exports = ReactLink;
 
 /***/ },
-/* 243 */
+/* 247 */
 /***/ function(module, exports) {
 
 	/**
@@ -32429,11 +32787,11 @@
 	module.exports = ReactStateSetters;
 
 /***/ },
-/* 244 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var LinkedStateMixin = __webpack_require__(240);
+	var LinkedStateMixin = __webpack_require__(244);
 	var SessionActions = __webpack_require__(211);
 	var History = __webpack_require__(159).History;
 	
@@ -32619,11 +32977,11 @@
 	module.exports = Signup;
 
 /***/ },
-/* 245 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var LinkedStateMixin = __webpack_require__(240);
+	var LinkedStateMixin = __webpack_require__(244);
 	var SessionActions = __webpack_require__(211);
 	var History = __webpack_require__(159).History;
 	
@@ -32908,7 +33266,7 @@
 	module.exports = Admin;
 
 /***/ },
-/* 246 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -33007,7 +33365,7 @@
 	module.exports = Profile;
 
 /***/ },
-/* 247 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -33087,14 +33445,14 @@
 	module.exports = DataStreamDetail;
 
 /***/ },
-/* 248 */
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
-	var DataStreamIndex = __webpack_require__(249);
-	var InsightIndex = __webpack_require__(251);
-	var DataVisIndex = __webpack_require__(253);
+	var DataStreamIndex = __webpack_require__(253);
+	var InsightIndex = __webpack_require__(255);
+	var DataVisIndex = __webpack_require__(257);
 	var SessionStore = __webpack_require__(218);
 	
 	var DashboardLanding = React.createClass({
@@ -33180,7 +33538,7 @@
 	module.exports = DashboardLanding;
 
 /***/ },
-/* 249 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -33188,7 +33546,7 @@
 	var SessionStore = __webpack_require__(218);
 	
 	// components
-	var DataStreamItem = __webpack_require__(250);
+	var DataStreamItem = __webpack_require__(254);
 	
 	var DataStreamIndex = React.createClass({
 	  displayName: 'DataStreamIndex',
@@ -33249,7 +33607,7 @@
 	module.exports = DataStreamIndex;
 
 /***/ },
-/* 250 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -33283,14 +33641,14 @@
 	module.exports = DataStreamItem;
 
 /***/ },
-/* 251 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var SessionStore = __webpack_require__(218);
 	
 	// components
-	var InsightItem = __webpack_require__(252);
+	var InsightItem = __webpack_require__(256);
 	
 	var InsightIndex = React.createClass({
 	  displayName: 'InsightIndex',
@@ -33381,7 +33739,7 @@
 	module.exports = InsightIndex;
 
 /***/ },
-/* 252 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -33459,13 +33817,13 @@
 	module.exports = InsightItem;
 
 /***/ },
-/* 253 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	
 	// components
-	var DataVisItem = __webpack_require__(254);
+	var DataVisItem = __webpack_require__(258);
 	
 	var DataVisIndex = React.createClass({
 	  displayName: 'DataVisIndex',
@@ -33490,7 +33848,7 @@
 	module.exports = DataVisIndex;
 
 /***/ },
-/* 254 */
+/* 258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -33514,334 +33872,6 @@
 	});
 	
 	module.exports = DataVisItem;
-
-/***/ },
-/* 255 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var raf = __webpack_require__(256),
-	    COMPLETE = 'complete',
-	    CANCELED = 'canceled';
-	
-	function setElementScroll(element, x, y){
-	    if(element === window){
-	        element.scrollTo(x, y);
-	    }else{
-	        element.scrollLeft = x;
-	        element.scrollTop = y;
-	    }
-	}
-	
-	function getTargetScrollLocation(target, parent, align){
-	    var targetPosition = target.getBoundingClientRect(),
-	        parentPosition,
-	        x,
-	        y,
-	        differenceX,
-	        differenceY,
-	        leftAlign = align && align.left != null ? align.left : 0.5,
-	        topAlign = align && align.top != null ? align.top : 0.5,
-	        leftScalar = leftAlign,
-	        topScalar = topAlign;
-	
-	    if(parent === window){
-	        x = targetPosition.left + window.scrollX - window.innerWidth * leftScalar + Math.min(targetPosition.width, window.innerWidth) * leftScalar;
-	        y = targetPosition.top + window.scrollY - window.innerHeight * topScalar + Math.min(targetPosition.height, window.innerHeight) * topScalar;
-	        x = Math.max(Math.min(x, document.body.scrollWidth - window.innerWidth * leftScalar), 0);
-	        y = Math.max(Math.min(y, document.body.scrollHeight- window.innerHeight * topScalar), 0);
-	        differenceX = x - window.scrollX;
-	        differenceY = y - window.scrollY;
-	    }else{
-	        parentPosition = parent.getBoundingClientRect();
-	        var offsetTop = targetPosition.top - (parentPosition.top - parent.scrollTop);
-	        var offsetLeft = targetPosition.left - (parentPosition.left - parent.scrollLeft);
-	        x = offsetLeft + (targetPosition.width * leftScalar) - parent.clientWidth * leftScalar;
-	        y = offsetTop + (targetPosition.height * topScalar) - parent.clientHeight * topScalar;
-	        x = Math.max(Math.min(x, parent.scrollWidth - parent.clientWidth), 0);
-	        y = Math.max(Math.min(y, parent.scrollHeight - parent.clientHeight), 0);
-	        differenceX = x - parent.scrollLeft;
-	        differenceY = y - parent.scrollTop;
-	    }
-	
-	    return {
-	        x: x,
-	        y: y,
-	        differenceX: differenceX,
-	        differenceY: differenceY
-	    };
-	}
-	
-	function animate(parent){
-	    raf(function(){
-	        var scrollSettings = parent._scrollSettings;
-	        if(!scrollSettings){
-	            return;
-	        }
-	
-	        var location = getTargetScrollLocation(scrollSettings.target, parent, scrollSettings.align),
-	            time = Date.now() - scrollSettings.startTime,
-	            timeValue = Math.min(1 / scrollSettings.time * time, 1);
-	
-	        if(
-	            time > scrollSettings.time + 20 ||
-	            (Math.abs(location.differenceY) <= 1 && Math.abs(location.differenceX) <= 1)
-	        ){
-	            setElementScroll(parent, location.x, location.y);
-	            parent._scrollSettings = null;
-	            return scrollSettings.end(COMPLETE);
-	        }
-	
-	        var valueX = timeValue,
-	            valueY = timeValue;
-	
-	        setElementScroll(parent,
-	            location.x - location.differenceX * Math.pow(1 - valueX, valueX / 2),
-	            location.y - location.differenceY * Math.pow(1 - valueY, valueY / 2)
-	        );
-	
-	        animate(parent);
-	    });
-	}
-	
-	function transitionScrollTo(target, parent, settings, callback){
-	    var idle = !parent._scrollSettings;
-	
-	    if(parent._scrollSettings){
-	        parent._scrollSettings.end(CANCELED);
-	    }
-	
-	    function end(endType){
-	        parent._scrollSettings = null;
-	        callback(endType);
-	        parent.removeEventListener('touchstart', end);
-	    }
-	
-	    parent._scrollSettings = {
-	        startTime: Date.now(),
-	        target: target,
-	        time: settings.time,
-	        ease: settings.ease,
-	        align: settings.align,
-	        end: end
-	    };
-	    parent.addEventListener('touchstart', end.bind(null, CANCELED));
-	
-	    if(idle){
-	        animate(parent);
-	    }
-	}
-	
-	module.exports = function(target, settings, callback){
-	    if(!target){
-	        return;
-	    }
-	
-	    if(typeof settings === 'function'){
-	        callback = settings;
-	        settings = null;
-	    }
-	
-	    if(!settings){
-	        settings = {};
-	    }
-	
-	    settings.time = settings.time || 1000;
-	    settings.ease = settings.ease || function(v){return v;};
-	
-	    var parent = target.parentElement,
-	        parents = 0;
-	
-	    function done(endType){
-	        parents--;
-	        if(!parents){
-	            callback && callback(endType);
-	        }
-	    }
-	
-	    while(parent){
-	        if(
-	            settings.validTarget ? settings.validTarget(parent, parents) : true &&
-	            parent === window ||
-	            (
-	                parent.scrollHeight !== parent.clientHeight ||
-	                parent.scrollWidth !== parent.clientWidth
-	            ) &&
-	            getComputedStyle(parent).overflow !== 'hidden'
-	        ){
-	            parents++;
-	            transitionScrollTo(target, parent, settings, done);
-	        }
-	
-	        parent = parent.parentElement;
-	
-	        if(!parent){
-	            return;
-	        }
-	
-	        if(parent.tagName === 'BODY'){
-	            parent = window;
-	        }
-	    }
-	};
-
-/***/ },
-/* 256 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {var now = __webpack_require__(257)
-	  , root = typeof window === 'undefined' ? global : window
-	  , vendors = ['moz', 'webkit']
-	  , suffix = 'AnimationFrame'
-	  , raf = root['request' + suffix]
-	  , caf = root['cancel' + suffix] || root['cancelRequest' + suffix]
-	
-	for(var i = 0; !raf && i < vendors.length; i++) {
-	  raf = root[vendors[i] + 'Request' + suffix]
-	  caf = root[vendors[i] + 'Cancel' + suffix]
-	      || root[vendors[i] + 'CancelRequest' + suffix]
-	}
-	
-	// Some versions of FF have rAF but not cAF
-	if(!raf || !caf) {
-	  var last = 0
-	    , id = 0
-	    , queue = []
-	    , frameDuration = 1000 / 60
-	
-	  raf = function(callback) {
-	    if(queue.length === 0) {
-	      var _now = now()
-	        , next = Math.max(0, frameDuration - (_now - last))
-	      last = next + _now
-	      setTimeout(function() {
-	        var cp = queue.slice(0)
-	        // Clear queue here to prevent
-	        // callbacks from appending listeners
-	        // to the current frame's queue
-	        queue.length = 0
-	        for(var i = 0; i < cp.length; i++) {
-	          if(!cp[i].cancelled) {
-	            try{
-	              cp[i].callback(last)
-	            } catch(e) {
-	              setTimeout(function() { throw e }, 0)
-	            }
-	          }
-	        }
-	      }, Math.round(next))
-	    }
-	    queue.push({
-	      handle: ++id,
-	      callback: callback,
-	      cancelled: false
-	    })
-	    return id
-	  }
-	
-	  caf = function(handle) {
-	    for(var i = 0; i < queue.length; i++) {
-	      if(queue[i].handle === handle) {
-	        queue[i].cancelled = true
-	      }
-	    }
-	  }
-	}
-	
-	module.exports = function(fn) {
-	  // Wrap in a new function to prevent
-	  // `cancel` potentially being assigned
-	  // to the native rAF function
-	  return raf.call(root, fn)
-	}
-	module.exports.cancel = function() {
-	  caf.apply(root, arguments)
-	}
-	module.exports.polyfill = function() {
-	  root.requestAnimationFrame = raf
-	  root.cancelAnimationFrame = caf
-	}
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 257 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {// Generated by CoffeeScript 1.7.1
-	(function() {
-	  var getNanoSeconds, hrtime, loadTime;
-	
-	  if ((typeof performance !== "undefined" && performance !== null) && performance.now) {
-	    module.exports = function() {
-	      return performance.now();
-	    };
-	  } else if ((typeof process !== "undefined" && process !== null) && process.hrtime) {
-	    module.exports = function() {
-	      return (getNanoSeconds() - loadTime) / 1e6;
-	    };
-	    hrtime = process.hrtime;
-	    getNanoSeconds = function() {
-	      var hr;
-	      hr = hrtime();
-	      return hr[0] * 1e9 + hr[1];
-	    };
-	    loadTime = getNanoSeconds();
-	  } else if (Date.now) {
-	    module.exports = function() {
-	      return Date.now() - loadTime;
-	    };
-	    loadTime = Date.now();
-	  } else {
-	    module.exports = function() {
-	      return new Date().getTime() - loadTime;
-	    };
-	    loadTime = new Date().getTime();
-	  }
-	
-	}).call(this);
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
-
-/***/ },
-/* 258 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	var aboutSplash = React.createClass({
-	  displayName: 'aboutSplash',
-	
-	  getInitialState: function () {
-	    return { hover: false };
-	  },
-	
-	  toggleHover: function () {
-	    this.setState({ hover: !this.state.hover });
-	  },
-	
-	  render: function () {
-	    var splashPictureStyle = {
-	      height: '208',
-	      minWidth: '100%',
-	      backgroundSize: '100% 100%',
-	      backgroundPosition: 'center',
-	      transition: 'all .5s ease-in-out',
-	      backgroundImage: 'url(' + this.props.imgPath + ')'
-	    };
-	
-	    if (this.state.hover) {
-	      splashPictureStyle.backgroundSize = '120% 120%';
-	    };
-	
-	    return React.createElement('div', { style: splashPictureStyle,
-	      onMouseEnter: this.toggleHover,
-	      onMouseLeave: this.toggleHover
-	    });
-	  }
-	
-	});
-	
-	module.exports = aboutSplash;
 
 /***/ }
 /******/ ]);

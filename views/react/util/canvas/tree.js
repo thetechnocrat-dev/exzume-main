@@ -15,6 +15,7 @@ Snake = function(canvas) {
 	this.lifespan = 0;
 	this.totalDistance = 0;
 	this.distance = 0;
+	this.shouldAddwords = true;
 };
 
 Snake.prototype = {
@@ -117,13 +118,20 @@ Snake.prototype = {
 	die: function() {
 		if (this.radius < 0.2) {
 			this.collection.remove(this);
-// 			console.log(this.distance);
+			if (this.collection.shouldAddwords) {
+				this.collection.shouldAddwords = false;
+				this.collection.writeSlogan();
+			}
+			// console.log(this.distance);
 		}
 	}
 }
 
 SnakeCollection = function() {
 	this.canvas = canvas;
+	this.context = canvas.getContext("2d");
+	this.shouldAddwords = true;
+	this.alpha = 0.1; // for making text fade in
 
 	this.snakes = [];
 }
@@ -147,7 +155,31 @@ SnakeCollection.prototype = {
 		for (var s in this.snakes)
 			if (this.snakes[s] === snake)
 				this.snakes.splice(s, 1);
-	}
+	},
+
+	writeSlogan: function () {
+		this.intervalID = window.setInterval(this.fadeIn.bind(this), 40);
+	},
+
+	fadeIn: function () {
+		if (this.alpha <= 1) {
+			// clear over old text with white font
+			this.context.font = '2em' + ' Lato';
+			this.context.fillStyle = 'white';
+			this.context.textAlign = 'center';
+			this.context.fillText('cultivate your data', canvas.width / 2, canvas.height / 10);
+			this.context.save(); // save context so that opacity change doesn't affect tree
+
+			// white new text
+			this.context.globalAlpha = this.alpha;
+			this.context.fillStyle = '#6C648B';
+			this.context.fillText('cultivate your data', canvas.width / 2, canvas.height / 10);
+			this.context.restore(); // restore context for drawing tree
+			this.alpha += 0.01;
+		} else {
+			window.clearInterval(this.intervalID);
+		}
+	},
 }
 
 function randHex() {

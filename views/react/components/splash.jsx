@@ -97,6 +97,7 @@ var App = React.createClass({
     var lowerDivStyle = { width: '100%', backgroundColor: '#3BCDBF' };
     var whiteFontStyle = { color: 'white' };
     var backgroundStyle = { backgroundColor: '#f4f1f0' };
+    var stepStyle = { fontSize: '1.5em', };
 
     return (
       <div style={backgroundStyle}>
@@ -128,17 +129,17 @@ var App = React.createClass({
               <div className="three column stackable row">
                 <div className="column">
                   <div style={whiteFontStyle}>
-                    1. <b>Sync data collecting devices and apps</b> you already use (i.e. fitbit, twitter, github and many more…).
+                    <b style={stepStyle}>1. Sync data collecting devices and apps</b> you already use (i.e. fitbit, twitter, github and many more…).
                   </div>
                 </div>
                 <div className="column">
                   <div style={whiteFontStyle}>
-                    2. <b>(Recommended) Fill out a 1 minute daily survey</b> designed off your interestes to get the most out of your data. Using our survey tool, you can collect data on anything you are curious about.
+                    <b style={stepStyle}>2. (Recommended) Fill out a 1 minute daily survey</b> designed off your interestes to get the most out of your data. Using our survey tool, you can collect data on anything you are curious about.
                   </div>
                 </div>
                 <div className="column">
                   <div style={whiteFontStyle}>
-                    3. <b>That's it!</b> We do all the data crunching and turn your data into useful insights. (If you are a data guru or want to envision your life as a bunch of lines and graphs, you can either use our built in data explorer or download your data as a csv).
+                    <b style={stepStyle}>3. That's it!</b> We do all the data crunching and turn your data into useful insights. (If you are a data guru or want to envision your life as a bunch of lines and graphs, you can either use our built in data explorer or download your data as a csv).
                   </div>
                 </div>
               </div>
