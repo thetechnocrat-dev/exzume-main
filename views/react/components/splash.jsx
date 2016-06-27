@@ -52,7 +52,7 @@ var App = React.createClass({
   },
 
   clickBetaAccess: function () {
-    var bodyMessage = 'Thank you for your interest in exzume! If you have time we would love to hear why you are interested.';
+    var bodyMessage = 'Thank you for your interest in exzume! We will notify you by replying to this email when beta access is avaible. If you have time we would love to hear why you are interested.';
     var email = 'exzume.app@gmail.com';
     var subject = 'exzume beta access';
     document.location.href = 'mailto:' + email + '?subject=' + subject + '&body=' + bodyMessage;
@@ -92,7 +92,7 @@ var App = React.createClass({
             <div className="ui teal button" onClick={this.clickSignIn}>sign in</div>
           </div>
           <div style={marginStyle}>
-            <div className="ui yellow button" onClick={this.clickBetaAccess}>request beta access</div>
+            <div className="ui yellow button" onClick={this.clickBetaAccess}>request beta</div>
           </div>
         </div>
       );
