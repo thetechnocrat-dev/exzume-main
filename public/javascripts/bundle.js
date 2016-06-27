@@ -31768,13 +31768,16 @@
 
 	// credit too http://kennethjorgensen.com/blog/2014/canvas-trees
 	
-	Snake = function (canvas) {
-		this.setCanvas(canvas);
+	// I know this code is messy and needs cleanup....
 	
-		this.x = this.canvasWidth / 2;
-		this.y = this.canvasHeight;
+	Snake = function (canvas, width, height) {
+		this.setCanvas(canvas);
+		this.x = width / 2;
+		this.y = height;
+		this.canvasWidth = width;
+		this.canvasHeight = height;
 		this.radius = 10;
-		this.speed = this.canvasWidth / 500;
+		this.speed = width / 600;
 		this.angle = Math.PI / 2;
 		this.fillStyle = "#3BCDBF";
 		this.shadowColor = "#3BCDBF";
@@ -31788,10 +31791,8 @@
 	
 	Snake.prototype = {
 		setCanvas: function (canvas) {
-			this.canvas = document.getElementById('canvastree');
+			this.canvas = canvas;
 			this.context = canvas.getContext("2d");
-			this.canvasWidth = 700;
-			this.canvasHeight = 299;
 		},
 	
 		next: function () {
@@ -31835,35 +31836,27 @@
 			this.angle += Math.random() / 5 - 1 / 5 / 2;
 		},
 	
-		reset: function (context) {
-			var $canvas = jQuery(context.canvas);
-			var margin = 30 + this.radius;
-			var width = $canvas.width();
-			var height = $canvas.height();
-	
-			if (this.x < -margin || this.x > width + margin || this.y < -margin || this.y > height + margin) {
-				// 			this.x = width/2;
-				this.y = height;
-				// New color
-				var grey = Math.floor(Math.random() * 255).toString(16);
-				this.fillStyle = "#" + grey + grey + grey;
-				this.shadowColor = this.fillStyle;
-			}
-		},
-	
 		split: function () {
 			// Calculate split chance
 			var splitChance = 0;
 			// Trunk
-			if (this.generation == 0) splitChance = (this.distance - this.canvasHeight / 5) / 100;
+			var splitChance = 0;
+			// Trunk
+			if (this.generation == 0) {
+				splitChance = (this.distance - this.canvasHeight / 5) / 100;
+			}
 			// Branch
-			else if (this.generation < 3) splitChance = (this.distance - this.canvasHeight / 10) / 100;
+			else if (this.generation < 3) {
+					splitChance = (this.distance - this.canvasHeight / 10) / 100;
+				} else if (this.generation < 6) {
+					splitChance = (this.distance - this.canvasHeight / 15) / 100;
+				}
 	
 			// Split if we are allowed
 			if (Math.random() < splitChance) {
 				var n = 2 + Math.round(Math.random() * 2);
 				for (var i = 0; i < n; i++) {
-					var snake = new Snake(this.canvas);
+					var snake = new Snake(this.canvas, this.canvasWidth, this.canvasHeight);
 					snake.x = this.x;
 					snake.y = this.y;
 					snake.angle = this.angle;
@@ -31892,11 +31885,13 @@
 		}
 	};
 	
-	SnakeCollection = function () {
+	SnakeCollection = function (canvas, width, height) {
 		this.canvas = canvas;
 		this.context = canvas.getContext("2d");
 		this.shouldAddwords = true;
 		this.alpha = 0.1; // for making text fade in
+		this.canvasWidth = width;
+		this.canvasHeight = height;
 	
 		this.snakes = [];
 	};
@@ -31929,13 +31924,13 @@
 				this.context.font = '2em' + ' Lato';
 				this.context.fillStyle = 'white';
 				this.context.textAlign = 'center';
-				this.context.fillText('cultivate your data', canvas.width / 2, canvas.height / 10);
+				this.context.fillText('cultivate your data', this.canvasWidth / 2, this.canvasHeight / 10);
 				this.context.save(); // save context so that opacity change doesn't affect tree
 	
 				// white new text
 				this.context.globalAlpha = this.alpha;
 				this.context.fillStyle = '#6C648B';
-				this.context.fillText('cultivate your data', canvas.width / 2, canvas.height / 10);
+				this.context.fillText('cultivate your data', this.canvasWidth / 2, this.canvasHeight / 10);
 				this.context.restore(); // restore context for drawing tree
 				this.alpha += 0.01;
 			} else {
@@ -31952,35 +31947,48 @@
 	
 	module.exports = function () {
 		// Convenience
-		canvas = document.getElementById('canvastree');
-		context = canvas.getContext("2d");
+		var canvas = document.getElementById('canvastree');
+		var context = canvas.getContext("2d");
+	
+		// make canvas hi-res
+		var PIXEL_RATIO = function () {
+			var ctx = document.createElement("canvas").getContext("2d"),
+			    dpr = window.devicePixelRatio || 1,
+			    bsr = ctx.webkitBackingStorePixelRatio || ctx.mozBackingStorePixelRatio || ctx.msBackingStorePixelRatio || ctx.oBackingStorePixelRatio || ctx.backingStorePixelRatio || 1;
+	
+			return dpr / bsr;
+		}();
+	
+		var CANVAS_WIDTH = 700;
+		var CANVAS_HEIGHT = 299;
+	
+		canvas.width = CANVAS_WIDTH * PIXEL_RATIO;
+		canvas.height = CANVAS_HEIGHT * PIXEL_RATIO;
+		canvas.style.width = CANVAS_WIDTH + "px";
+		canvas.style.height = CANVAS_HEIGHT + "px";
+		canvas.getContext("2d").setTransform(PIXEL_RATIO, 0, 0, PIXEL_RATIO, 0, 0);
 	
 		// Dimensions
 		// var width = canvas.width();
 		// var height = canvas.height();
-		var width = 700;
-		var height = 299;
 	
 		// Set actual canvas size to match css
 		// canvas.attr("width", width);
 		// canvas.attr("height", height);
 	
-		canvas.width = width;
-		canvas.height = height;
-	
 		// Information
-		jQuery("#info").html("Size: " + canvas.width + "x" + canvas.height);
+		// jQuery("#info").html("Size: "+canvas.width+"x"+canvas.height);
 	
 		// Frame rate
 		var frame = 0;
 	
 		// Snakes
 		var n = 2 + Math.random() * 3;
-		var initialRadius = width / 50;
-		snakes = new SnakeCollection();
+		var initialRadius = CANVAS_WIDTH / 50;
+		snakes = new SnakeCollection(canvas, CANVAS_WIDTH, CANVAS_HEIGHT);
 		for (var i = 0; i < n; i++) {
-			var snake = new Snake(canvas);
-			snake.x = width / 2 - initialRadius + i * initialRadius * 2 / n;
+			var snake = new Snake(canvas, CANVAS_WIDTH, CANVAS_HEIGHT);
+			snake.x = CANVAS_WIDTH / 2 - initialRadius + i * initialRadius * 2 / n;
 			snake.radius = initialRadius;
 			snakes.add(snake);
 		}
