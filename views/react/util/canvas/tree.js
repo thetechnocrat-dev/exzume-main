@@ -9,7 +9,7 @@ Snake = function (canvas, width, height) {
 	this.canvasWidth = width;
 	this.canvasHeight = height;
 	this.radius = 10;
-	this.speed = width / (600);
+	this.speed = height / (225);
 	this.angle = Math.PI/2;
 	this.fillStyle = "#3BCDBF";
 	this.shadowColor = "#3BCDBF";
@@ -200,7 +200,7 @@ module.exports = function() {
 		return dpr / bsr;
 	})();
 
-	var CANVAS_WIDTH = 700;
+	var CANVAS_WIDTH = 400;
 	var CANVAS_HEIGHT = 299;
 
 	canvas.width = CANVAS_WIDTH * PIXEL_RATIO;
@@ -227,7 +227,7 @@ module.exports = function() {
 
 	// Snakes
 	var n = 2+Math.random()*3;
-	var initialRadius = CANVAS_WIDTH / 50;
+	var initialRadius = CANVAS_WIDTH / 30;
 	snakes = new SnakeCollection(canvas, CANVAS_WIDTH, CANVAS_HEIGHT);
 	for (var i=0 ; i<n ; i++) {
 		var snake = new Snake(canvas, CANVAS_WIDTH, CANVAS_HEIGHT);

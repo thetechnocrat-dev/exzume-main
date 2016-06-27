@@ -109,7 +109,7 @@ var App = React.createClass({
           </div>
           {this.makeButtons()}
           <div className="row">
-            <canvas id="canvastree" width="700" height="299" />
+            <canvas id="canvastree" width="500" height="299" />
           </div>
         </div>
         <div
