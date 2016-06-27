@@ -55,13 +55,13 @@
 	var App = __webpack_require__(208);
 	var Dashboard = __webpack_require__(209);
 	var Splash = __webpack_require__(236);
-	var About = __webpack_require__(238);
-	var SignIn = __webpack_require__(239);
-	var SignUp = __webpack_require__(244);
-	var Admin = __webpack_require__(245);
-	var Profile = __webpack_require__(246);
-	var DataStreamDetail = __webpack_require__(247);
-	var DashboardLanding = __webpack_require__(248);
+	var About = __webpack_require__(241);
+	var SignIn = __webpack_require__(242);
+	var SignUp = __webpack_require__(247);
+	var Admin = __webpack_require__(248);
+	var Profile = __webpack_require__(249);
+	var DataStreamDetail = __webpack_require__(250);
+	var DashboardLanding = __webpack_require__(251);
 	
 	var routes = React.createElement(
 	  Route,
@@ -247,6 +247,31 @@
 	// shim for using process in browser
 	
 	var process = module.exports = {};
+	
+	// cached from whatever global is present so that test runners that stub it
+	// don't break things.  But we need to wrap it in a try catch in case it is
+	// wrapped in strict mode code which doesn't define any globals.  It's inside a
+	// function because try/catches deoptimize in certain engines.
+	
+	var cachedSetTimeout;
+	var cachedClearTimeout;
+	
+	(function () {
+	  try {
+	    cachedSetTimeout = setTimeout;
+	  } catch (e) {
+	    cachedSetTimeout = function () {
+	      throw new Error('setTimeout is not defined');
+	    }
+	  }
+	  try {
+	    cachedClearTimeout = clearTimeout;
+	  } catch (e) {
+	    cachedClearTimeout = function () {
+	      throw new Error('clearTimeout is not defined');
+	    }
+	  }
+	} ())
 	var queue = [];
 	var draining = false;
 	var currentQueue;
@@ -271,7 +296,7 @@
 	    if (draining) {
 	        return;
 	    }
-	    var timeout = setTimeout(cleanUpNextTick);
+	    var timeout = cachedSetTimeout(cleanUpNextTick);
 	    draining = true;
 	
 	    var len = queue.length;
@@ -288,7 +313,7 @@
 	    }
 	    currentQueue = null;
 	    draining = false;
-	    clearTimeout(timeout);
+	    cachedClearTimeout(timeout);
 	}
 	
 	process.nextTick = function (fun) {
@@ -300,7 +325,7 @@
 	    }
 	    queue.push(new Item(fun, args));
 	    if (queue.length === 1 && !draining) {
-	        setTimeout(drainQueue, 0);
+	        cachedSetTimeout(drainQueue, 0);
 	    }
 	};
 	
@@ -31525,7 +31550,7 @@
 	var SessionStore = __webpack_require__(218);
 	var SessionActions = __webpack_require__(211);
 	var TreeCanvas = __webpack_require__(237);
-	var scrollIntoView = __webpack_require__(255);
+	var scrollIntoView = __webpack_require__(238);
 	
 	// components
 	var AboutSplash = __webpack_require__(258);
@@ -31967,6 +31992,293 @@
 /* 238 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var raf = __webpack_require__(239),
+	    COMPLETE = 'complete',
+	    CANCELED = 'canceled';
+	
+	function setElementScroll(element, x, y){
+	    if(element === window){
+	        element.scrollTo(x, y);
+	    }else{
+	        element.scrollLeft = x;
+	        element.scrollTop = y;
+	    }
+	}
+	
+	function getTargetScrollLocation(target, parent, align){
+	    var targetPosition = target.getBoundingClientRect(),
+	        parentPosition,
+	        x,
+	        y,
+	        differenceX,
+	        differenceY,
+	        leftAlign = align && align.left != null ? align.left : 0.5,
+	        topAlign = align && align.top != null ? align.top : 0.5,
+	        leftScalar = leftAlign,
+	        topScalar = topAlign;
+	
+	    if(parent === window){
+	        x = targetPosition.left + window.scrollX - window.innerWidth * leftScalar + Math.min(targetPosition.width, window.innerWidth) * leftScalar;
+	        y = targetPosition.top + window.scrollY - window.innerHeight * topScalar + Math.min(targetPosition.height, window.innerHeight) * topScalar;
+	        x = Math.max(Math.min(x, document.body.scrollWidth - window.innerWidth * leftScalar), 0);
+	        y = Math.max(Math.min(y, document.body.scrollHeight- window.innerHeight * topScalar), 0);
+	        differenceX = x - window.scrollX;
+	        differenceY = y - window.scrollY;
+	    }else{
+	        parentPosition = parent.getBoundingClientRect();
+	        var offsetTop = targetPosition.top - (parentPosition.top - parent.scrollTop);
+	        var offsetLeft = targetPosition.left - (parentPosition.left - parent.scrollLeft);
+	        x = offsetLeft + (targetPosition.width * leftScalar) - parent.clientWidth * leftScalar;
+	        y = offsetTop + (targetPosition.height * topScalar) - parent.clientHeight * topScalar;
+	        x = Math.max(Math.min(x, parent.scrollWidth - parent.clientWidth), 0);
+	        y = Math.max(Math.min(y, parent.scrollHeight - parent.clientHeight), 0);
+	        differenceX = x - parent.scrollLeft;
+	        differenceY = y - parent.scrollTop;
+	    }
+	
+	    return {
+	        x: x,
+	        y: y,
+	        differenceX: differenceX,
+	        differenceY: differenceY
+	    };
+	}
+	
+	function animate(parent){
+	    raf(function(){
+	        var scrollSettings = parent._scrollSettings;
+	        if(!scrollSettings){
+	            return;
+	        }
+	
+	        var location = getTargetScrollLocation(scrollSettings.target, parent, scrollSettings.align),
+	            time = Date.now() - scrollSettings.startTime,
+	            timeValue = Math.min(1 / scrollSettings.time * time, 1);
+	
+	        if(
+	            time > scrollSettings.time + 20 ||
+	            (Math.abs(location.differenceY) <= 1 && Math.abs(location.differenceX) <= 1)
+	        ){
+	            setElementScroll(parent, location.x, location.y);
+	            parent._scrollSettings = null;
+	            return scrollSettings.end(COMPLETE);
+	        }
+	
+	        var valueX = timeValue,
+	            valueY = timeValue;
+	
+	        setElementScroll(parent,
+	            location.x - location.differenceX * Math.pow(1 - valueX, valueX / 2),
+	            location.y - location.differenceY * Math.pow(1 - valueY, valueY / 2)
+	        );
+	
+	        animate(parent);
+	    });
+	}
+	
+	function transitionScrollTo(target, parent, settings, callback){
+	    var idle = !parent._scrollSettings;
+	
+	    if(parent._scrollSettings){
+	        parent._scrollSettings.end(CANCELED);
+	    }
+	
+	    function end(endType){
+	        parent._scrollSettings = null;
+	        callback(endType);
+	        parent.removeEventListener('touchstart', end);
+	    }
+	
+	    parent._scrollSettings = {
+	        startTime: Date.now(),
+	        target: target,
+	        time: settings.time,
+	        ease: settings.ease,
+	        align: settings.align,
+	        end: end
+	    };
+	    parent.addEventListener('touchstart', end.bind(null, CANCELED));
+	
+	    if(idle){
+	        animate(parent);
+	    }
+	}
+	
+	module.exports = function(target, settings, callback){
+	    if(!target){
+	        return;
+	    }
+	
+	    if(typeof settings === 'function'){
+	        callback = settings;
+	        settings = null;
+	    }
+	
+	    if(!settings){
+	        settings = {};
+	    }
+	
+	    settings.time = settings.time || 1000;
+	    settings.ease = settings.ease || function(v){return v;};
+	
+	    var parent = target.parentElement,
+	        parents = 0;
+	
+	    function done(endType){
+	        parents--;
+	        if(!parents){
+	            callback && callback(endType);
+	        }
+	    }
+	
+	    while(parent){
+	        if(
+	            settings.validTarget ? settings.validTarget(parent, parents) : true &&
+	            parent === window ||
+	            (
+	                parent.scrollHeight !== parent.clientHeight ||
+	                parent.scrollWidth !== parent.clientWidth
+	            ) &&
+	            getComputedStyle(parent).overflow !== 'hidden'
+	        ){
+	            parents++;
+	            transitionScrollTo(target, parent, settings, done);
+	        }
+	
+	        parent = parent.parentElement;
+	
+	        if(!parent){
+	            return;
+	        }
+	
+	        if(parent.tagName === 'BODY'){
+	            parent = window;
+	        }
+	    }
+	};
+
+/***/ },
+/* 239 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {var now = __webpack_require__(240)
+	  , root = typeof window === 'undefined' ? global : window
+	  , vendors = ['moz', 'webkit']
+	  , suffix = 'AnimationFrame'
+	  , raf = root['request' + suffix]
+	  , caf = root['cancel' + suffix] || root['cancelRequest' + suffix]
+	
+	for(var i = 0; !raf && i < vendors.length; i++) {
+	  raf = root[vendors[i] + 'Request' + suffix]
+	  caf = root[vendors[i] + 'Cancel' + suffix]
+	      || root[vendors[i] + 'CancelRequest' + suffix]
+	}
+	
+	// Some versions of FF have rAF but not cAF
+	if(!raf || !caf) {
+	  var last = 0
+	    , id = 0
+	    , queue = []
+	    , frameDuration = 1000 / 60
+	
+	  raf = function(callback) {
+	    if(queue.length === 0) {
+	      var _now = now()
+	        , next = Math.max(0, frameDuration - (_now - last))
+	      last = next + _now
+	      setTimeout(function() {
+	        var cp = queue.slice(0)
+	        // Clear queue here to prevent
+	        // callbacks from appending listeners
+	        // to the current frame's queue
+	        queue.length = 0
+	        for(var i = 0; i < cp.length; i++) {
+	          if(!cp[i].cancelled) {
+	            try{
+	              cp[i].callback(last)
+	            } catch(e) {
+	              setTimeout(function() { throw e }, 0)
+	            }
+	          }
+	        }
+	      }, Math.round(next))
+	    }
+	    queue.push({
+	      handle: ++id,
+	      callback: callback,
+	      cancelled: false
+	    })
+	    return id
+	  }
+	
+	  caf = function(handle) {
+	    for(var i = 0; i < queue.length; i++) {
+	      if(queue[i].handle === handle) {
+	        queue[i].cancelled = true
+	      }
+	    }
+	  }
+	}
+	
+	module.exports = function(fn) {
+	  // Wrap in a new function to prevent
+	  // `cancel` potentially being assigned
+	  // to the native rAF function
+	  return raf.call(root, fn)
+	}
+	module.exports.cancel = function() {
+	  caf.apply(root, arguments)
+	}
+	module.exports.polyfill = function() {
+	  root.requestAnimationFrame = raf
+	  root.cancelAnimationFrame = caf
+	}
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 240 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {// Generated by CoffeeScript 1.7.1
+	(function() {
+	  var getNanoSeconds, hrtime, loadTime;
+	
+	  if ((typeof performance !== "undefined" && performance !== null) && performance.now) {
+	    module.exports = function() {
+	      return performance.now();
+	    };
+	  } else if ((typeof process !== "undefined" && process !== null) && process.hrtime) {
+	    module.exports = function() {
+	      return (getNanoSeconds() - loadTime) / 1e6;
+	    };
+	    hrtime = process.hrtime;
+	    getNanoSeconds = function() {
+	      var hr;
+	      hr = hrtime();
+	      return hr[0] * 1e9 + hr[1];
+	    };
+	    loadTime = getNanoSeconds();
+	  } else if (Date.now) {
+	    module.exports = function() {
+	      return Date.now() - loadTime;
+	    };
+	    loadTime = Date.now();
+	  } else {
+	    module.exports = function() {
+	      return new Date().getTime() - loadTime;
+	    };
+	    loadTime = new Date().getTime();
+	  }
+	
+	}).call(this);
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+
+/***/ },
+/* 241 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
 	
@@ -32043,12 +32355,12 @@
 	module.exports = About;
 
 /***/ },
-/* 239 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var SessionActions = __webpack_require__(211);
-	var LinkedStateMixin = __webpack_require__(240);
+	var LinkedStateMixin = __webpack_require__(243);
 	var History = __webpack_require__(159).History;
 	
 	var SignIn = React.createClass({
@@ -32199,13 +32511,13 @@
 	module.exports = SignIn;
 
 /***/ },
-/* 240 */
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(241);
+	module.exports = __webpack_require__(244);
 
 /***/ },
-/* 241 */
+/* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32222,8 +32534,8 @@
 	
 	'use strict';
 	
-	var ReactLink = __webpack_require__(242);
-	var ReactStateSetters = __webpack_require__(243);
+	var ReactLink = __webpack_require__(245);
+	var ReactStateSetters = __webpack_require__(246);
 	
 	/**
 	 * A simple mixin around ReactLink.forState().
@@ -32246,7 +32558,7 @@
 	module.exports = LinkedStateMixin;
 
 /***/ },
-/* 242 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32320,7 +32632,7 @@
 	module.exports = ReactLink;
 
 /***/ },
-/* 243 */
+/* 246 */
 /***/ function(module, exports) {
 
 	/**
@@ -32429,11 +32741,11 @@
 	module.exports = ReactStateSetters;
 
 /***/ },
-/* 244 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var LinkedStateMixin = __webpack_require__(240);
+	var LinkedStateMixin = __webpack_require__(243);
 	var SessionActions = __webpack_require__(211);
 	var History = __webpack_require__(159).History;
 	
@@ -32619,11 +32931,11 @@
 	module.exports = Signup;
 
 /***/ },
-/* 245 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var LinkedStateMixin = __webpack_require__(240);
+	var LinkedStateMixin = __webpack_require__(243);
 	var SessionActions = __webpack_require__(211);
 	var History = __webpack_require__(159).History;
 	
@@ -32908,7 +33220,7 @@
 	module.exports = Admin;
 
 /***/ },
-/* 246 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -33007,7 +33319,7 @@
 	module.exports = Profile;
 
 /***/ },
-/* 247 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -33087,14 +33399,14 @@
 	module.exports = DataStreamDetail;
 
 /***/ },
-/* 248 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
-	var DataStreamIndex = __webpack_require__(249);
-	var InsightIndex = __webpack_require__(251);
-	var DataVisIndex = __webpack_require__(253);
+	var DataStreamIndex = __webpack_require__(252);
+	var InsightIndex = __webpack_require__(254);
+	var DataVisIndex = __webpack_require__(256);
 	var SessionStore = __webpack_require__(218);
 	
 	var DashboardLanding = React.createClass({
@@ -33180,7 +33492,7 @@
 	module.exports = DashboardLanding;
 
 /***/ },
-/* 249 */
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -33188,7 +33500,7 @@
 	var SessionStore = __webpack_require__(218);
 	
 	// components
-	var DataStreamItem = __webpack_require__(250);
+	var DataStreamItem = __webpack_require__(253);
 	
 	var DataStreamIndex = React.createClass({
 	  displayName: 'DataStreamIndex',
@@ -33249,7 +33561,7 @@
 	module.exports = DataStreamIndex;
 
 /***/ },
-/* 250 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -33283,14 +33595,14 @@
 	module.exports = DataStreamItem;
 
 /***/ },
-/* 251 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var SessionStore = __webpack_require__(218);
 	
 	// components
-	var InsightItem = __webpack_require__(252);
+	var InsightItem = __webpack_require__(255);
 	
 	var InsightIndex = React.createClass({
 	  displayName: 'InsightIndex',
@@ -33381,7 +33693,7 @@
 	module.exports = InsightIndex;
 
 /***/ },
-/* 252 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -33459,13 +33771,13 @@
 	module.exports = InsightItem;
 
 /***/ },
-/* 253 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	
 	// components
-	var DataVisItem = __webpack_require__(254);
+	var DataVisItem = __webpack_require__(257);
 	
 	var DataVisIndex = React.createClass({
 	  displayName: 'DataVisIndex',
@@ -33490,7 +33802,7 @@
 	module.exports = DataVisIndex;
 
 /***/ },
-/* 254 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -33514,293 +33826,6 @@
 	});
 	
 	module.exports = DataVisItem;
-
-/***/ },
-/* 255 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var raf = __webpack_require__(256),
-	    COMPLETE = 'complete',
-	    CANCELED = 'canceled';
-	
-	function setElementScroll(element, x, y){
-	    if(element === window){
-	        element.scrollTo(x, y);
-	    }else{
-	        element.scrollLeft = x;
-	        element.scrollTop = y;
-	    }
-	}
-	
-	function getTargetScrollLocation(target, parent, align){
-	    var targetPosition = target.getBoundingClientRect(),
-	        parentPosition,
-	        x,
-	        y,
-	        differenceX,
-	        differenceY,
-	        leftAlign = align && align.left != null ? align.left : 0.5,
-	        topAlign = align && align.top != null ? align.top : 0.5,
-	        leftScalar = leftAlign,
-	        topScalar = topAlign;
-	
-	    if(parent === window){
-	        x = targetPosition.left + window.scrollX - window.innerWidth * leftScalar + Math.min(targetPosition.width, window.innerWidth) * leftScalar;
-	        y = targetPosition.top + window.scrollY - window.innerHeight * topScalar + Math.min(targetPosition.height, window.innerHeight) * topScalar;
-	        x = Math.max(Math.min(x, document.body.scrollWidth - window.innerWidth * leftScalar), 0);
-	        y = Math.max(Math.min(y, document.body.scrollHeight- window.innerHeight * topScalar), 0);
-	        differenceX = x - window.scrollX;
-	        differenceY = y - window.scrollY;
-	    }else{
-	        parentPosition = parent.getBoundingClientRect();
-	        var offsetTop = targetPosition.top - (parentPosition.top - parent.scrollTop);
-	        var offsetLeft = targetPosition.left - (parentPosition.left - parent.scrollLeft);
-	        x = offsetLeft + (targetPosition.width * leftScalar) - parent.clientWidth * leftScalar;
-	        y = offsetTop + (targetPosition.height * topScalar) - parent.clientHeight * topScalar;
-	        x = Math.max(Math.min(x, parent.scrollWidth - parent.clientWidth), 0);
-	        y = Math.max(Math.min(y, parent.scrollHeight - parent.clientHeight), 0);
-	        differenceX = x - parent.scrollLeft;
-	        differenceY = y - parent.scrollTop;
-	    }
-	
-	    return {
-	        x: x,
-	        y: y,
-	        differenceX: differenceX,
-	        differenceY: differenceY
-	    };
-	}
-	
-	function animate(parent){
-	    raf(function(){
-	        var scrollSettings = parent._scrollSettings;
-	        if(!scrollSettings){
-	            return;
-	        }
-	
-	        var location = getTargetScrollLocation(scrollSettings.target, parent, scrollSettings.align),
-	            time = Date.now() - scrollSettings.startTime,
-	            timeValue = Math.min(1 / scrollSettings.time * time, 1);
-	
-	        if(
-	            time > scrollSettings.time + 20 ||
-	            (Math.abs(location.differenceY) <= 1 && Math.abs(location.differenceX) <= 1)
-	        ){
-	            setElementScroll(parent, location.x, location.y);
-	            parent._scrollSettings = null;
-	            return scrollSettings.end(COMPLETE);
-	        }
-	
-	        var valueX = timeValue,
-	            valueY = timeValue;
-	
-	        setElementScroll(parent,
-	            location.x - location.differenceX * Math.pow(1 - valueX, valueX / 2),
-	            location.y - location.differenceY * Math.pow(1 - valueY, valueY / 2)
-	        );
-	
-	        animate(parent);
-	    });
-	}
-	
-	function transitionScrollTo(target, parent, settings, callback){
-	    var idle = !parent._scrollSettings;
-	
-	    if(parent._scrollSettings){
-	        parent._scrollSettings.end(CANCELED);
-	    }
-	
-	    function end(endType){
-	        parent._scrollSettings = null;
-	        callback(endType);
-	        parent.removeEventListener('touchstart', end);
-	    }
-	
-	    parent._scrollSettings = {
-	        startTime: Date.now(),
-	        target: target,
-	        time: settings.time,
-	        ease: settings.ease,
-	        align: settings.align,
-	        end: end
-	    };
-	    parent.addEventListener('touchstart', end.bind(null, CANCELED));
-	
-	    if(idle){
-	        animate(parent);
-	    }
-	}
-	
-	module.exports = function(target, settings, callback){
-	    if(!target){
-	        return;
-	    }
-	
-	    if(typeof settings === 'function'){
-	        callback = settings;
-	        settings = null;
-	    }
-	
-	    if(!settings){
-	        settings = {};
-	    }
-	
-	    settings.time = settings.time || 1000;
-	    settings.ease = settings.ease || function(v){return v;};
-	
-	    var parent = target.parentElement,
-	        parents = 0;
-	
-	    function done(endType){
-	        parents--;
-	        if(!parents){
-	            callback && callback(endType);
-	        }
-	    }
-	
-	    while(parent){
-	        if(
-	            settings.validTarget ? settings.validTarget(parent, parents) : true &&
-	            parent === window ||
-	            (
-	                parent.scrollHeight !== parent.clientHeight ||
-	                parent.scrollWidth !== parent.clientWidth
-	            ) &&
-	            getComputedStyle(parent).overflow !== 'hidden'
-	        ){
-	            parents++;
-	            transitionScrollTo(target, parent, settings, done);
-	        }
-	
-	        parent = parent.parentElement;
-	
-	        if(!parent){
-	            return;
-	        }
-	
-	        if(parent.tagName === 'BODY'){
-	            parent = window;
-	        }
-	    }
-	};
-
-/***/ },
-/* 256 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {var now = __webpack_require__(257)
-	  , root = typeof window === 'undefined' ? global : window
-	  , vendors = ['moz', 'webkit']
-	  , suffix = 'AnimationFrame'
-	  , raf = root['request' + suffix]
-	  , caf = root['cancel' + suffix] || root['cancelRequest' + suffix]
-	
-	for(var i = 0; !raf && i < vendors.length; i++) {
-	  raf = root[vendors[i] + 'Request' + suffix]
-	  caf = root[vendors[i] + 'Cancel' + suffix]
-	      || root[vendors[i] + 'CancelRequest' + suffix]
-	}
-	
-	// Some versions of FF have rAF but not cAF
-	if(!raf || !caf) {
-	  var last = 0
-	    , id = 0
-	    , queue = []
-	    , frameDuration = 1000 / 60
-	
-	  raf = function(callback) {
-	    if(queue.length === 0) {
-	      var _now = now()
-	        , next = Math.max(0, frameDuration - (_now - last))
-	      last = next + _now
-	      setTimeout(function() {
-	        var cp = queue.slice(0)
-	        // Clear queue here to prevent
-	        // callbacks from appending listeners
-	        // to the current frame's queue
-	        queue.length = 0
-	        for(var i = 0; i < cp.length; i++) {
-	          if(!cp[i].cancelled) {
-	            try{
-	              cp[i].callback(last)
-	            } catch(e) {
-	              setTimeout(function() { throw e }, 0)
-	            }
-	          }
-	        }
-	      }, Math.round(next))
-	    }
-	    queue.push({
-	      handle: ++id,
-	      callback: callback,
-	      cancelled: false
-	    })
-	    return id
-	  }
-	
-	  caf = function(handle) {
-	    for(var i = 0; i < queue.length; i++) {
-	      if(queue[i].handle === handle) {
-	        queue[i].cancelled = true
-	      }
-	    }
-	  }
-	}
-	
-	module.exports = function(fn) {
-	  // Wrap in a new function to prevent
-	  // `cancel` potentially being assigned
-	  // to the native rAF function
-	  return raf.call(root, fn)
-	}
-	module.exports.cancel = function() {
-	  caf.apply(root, arguments)
-	}
-	module.exports.polyfill = function() {
-	  root.requestAnimationFrame = raf
-	  root.cancelAnimationFrame = caf
-	}
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 257 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {// Generated by CoffeeScript 1.7.1
-	(function() {
-	  var getNanoSeconds, hrtime, loadTime;
-	
-	  if ((typeof performance !== "undefined" && performance !== null) && performance.now) {
-	    module.exports = function() {
-	      return performance.now();
-	    };
-	  } else if ((typeof process !== "undefined" && process !== null) && process.hrtime) {
-	    module.exports = function() {
-	      return (getNanoSeconds() - loadTime) / 1e6;
-	    };
-	    hrtime = process.hrtime;
-	    getNanoSeconds = function() {
-	      var hr;
-	      hr = hrtime();
-	      return hr[0] * 1e9 + hr[1];
-	    };
-	    loadTime = getNanoSeconds();
-	  } else if (Date.now) {
-	    module.exports = function() {
-	      return Date.now() - loadTime;
-	    };
-	    loadTime = Date.now();
-	  } else {
-	    module.exports = function() {
-	      return new Date().getTime() - loadTime;
-	    };
-	    loadTime = new Date().getTime();
-	  }
-	
-	}).call(this);
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 258 */
