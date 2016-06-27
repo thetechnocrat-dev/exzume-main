@@ -43,12 +43,19 @@ var App = React.createClass({
     this.history.push('/signin');
   },
 
-  clickSignUp: function () {
-    this.history.push('/signup');
-  },
+  // clickSignUp: function () {
+  //   this.history.push('/signup');
+  // },
 
   clickDashboard: function () {
     this.history.push('/dashboard');
+  },
+
+  clickBetaAccess: function () {
+    var bodyMessage = 'Thank you for your interest in exzume! If you have time we would love to hear why you are interested.';
+    var email = 'exzume.app@gmail.com';
+    var subject = 'exzume beta access';
+    document.location.href = 'mailto:' + email + '?subject=' + subject + '&body=' + bodyMessage;
   },
 
   clickSignOut: function () {
@@ -85,7 +92,7 @@ var App = React.createClass({
             <div className="ui teal button" onClick={this.clickSignIn}>sign in</div>
           </div>
           <div style={marginStyle}>
-            <div className="ui yellow button" onClick={this.clickSignUp}>sign up</div>
+            <div className="ui yellow button" onClick={this.clickBetaAccess}>request beta access</div>
           </div>
         </div>
       );
@@ -109,7 +116,7 @@ var App = React.createClass({
           </div>
           {this.makeButtons()}
           <div className="row">
-            <canvas id="canvastree" width="500" height="299" />
+            <canvas id="canvastree" width="400" height="299" />
           </div>
         </div>
         <div

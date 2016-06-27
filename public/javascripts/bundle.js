@@ -31567,12 +31567,19 @@
 	    this.history.push('/signin');
 	  },
 	
-	  clickSignUp: function () {
-	    this.history.push('/signup');
-	  },
+	  // clickSignUp: function () {
+	  //   this.history.push('/signup');
+	  // },
 	
 	  clickDashboard: function () {
 	    this.history.push('/dashboard');
+	  },
+	
+	  clickBetaAccess: function () {
+	    var bodyMessage = 'Thank you for your interest in exzume! If you have time we would love to hear why you are interested.';
+	    var email = 'exzume.app@gmail.com';
+	    var subject = 'exzume beta access';
+	    document.location.href = 'mailto:' + email + '?subject=' + subject + '&body=' + bodyMessage;
 	  },
 	
 	  clickSignOut: function () {
@@ -31644,8 +31651,8 @@
 	          { style: marginStyle },
 	          React.createElement(
 	            'div',
-	            { className: 'ui yellow button', onClick: this.clickSignUp },
-	            'sign up'
+	            { className: 'ui yellow button', onClick: this.clickBetaAccess },
+	            'request beta access'
 	          )
 	        )
 	      );
@@ -31680,7 +31687,7 @@
 	        React.createElement(
 	          'div',
 	          { className: 'row' },
-	          React.createElement('canvas', { id: 'canvastree', width: '500', height: '299' })
+	          React.createElement('canvas', { id: 'canvastree', width: '400', height: '299' })
 	        )
 	      ),
 	      React.createElement(
