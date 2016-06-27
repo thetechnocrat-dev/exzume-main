@@ -37,5 +37,8 @@
   },
   "devDependencies": {
     "webpack": "^1.13.1"
+  },
+  "scripts": {
+    "postinstall": "webpack -p --config ./webpack.prod.config.js --progress"
   }
 }
