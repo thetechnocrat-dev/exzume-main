@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var ExzumeSurveySchema = new Schema({
+var SurveySchema = new Schema({
   owner: String,
   icon: String,
   features: [{
@@ -12,4 +12,4 @@ var ExzumeSurveySchema = new Schema({
   ],
 }, { autoIndex: false });
 
-module.exports = mongoose.model('ExzumeSurvey', ExzumeSurveySchema);
+module.exports = mongoose.model('Survey', SurveySchema);
