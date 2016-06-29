@@ -171,7 +171,7 @@ module.exports = {
 
   addCorr: function (params, successCallback, errorCallback) {
     $.ajax({
-      type: 'POST',
+      type: 'PUT',
       url: '/admin/addcorr',
       data: params,
       success:
