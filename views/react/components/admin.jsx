@@ -76,6 +76,27 @@ var Admin = React.createClass({
     this.setState({ visErrors: respError });
   },
 
+  handleCorrSubmit: function(event) {
+    event.preventDefault();
+    this.setState({ corrErrors: '', corrMessages: '' });
+
+    var params = {
+      username: this.state.username4,
+      xVar: this.state.xVar,
+      yVar: this.state.yVar,
+    };
+
+    SessionActions.addCorr(params, this.successCorrCallback, this.errorCorrCallback);
+  },
+
+  successCorrCallback: function (respData) {
+    this.setState({ corrMessages: respData.message });
+  },
+
+  errorCorrCallback: function (respError) {
+    this.setState({ corrErrors: respError });
+  },
+
   render: function () {
     var containerStyle = { margin: '10%' };
 
@@ -169,6 +190,46 @@ var Admin = React.createClass({
           </div>
 
         <div className="ui teal button" type="submit" onClick={this.handleAddVisSubmit}>Submit</div>
+        </form>
+
+        <div className="ui horizontal divider">or</div>
+
+        <form className="ui form">
+          <h2 className="ui header">Add Correlation to User Account</h2>
+          <p>{this.state.corrErrors}</p>
+          <p>{this.state.corrMessages}</p>
+
+          <div className="required field">
+            <label>username</label>
+            <input
+              type="text"
+              name="username4"
+              placeholder=""
+              valueLink={this.linkState('username4')}
+            ></input>
+          </div>
+
+          <div className="required field">
+            <label>x variable</label>
+            <input
+              type="text"
+              name="xVar"
+              placeholder=""
+              valueLink={this.linkState('xVar')}
+            ></input>
+          </div>
+
+          <div className="required field">
+            <label>y variable</label>
+            <input
+              type="text"
+              name="yVar"
+              placeholder=""
+              valueLink={this.linkState('yVar')}
+            ></input>
+          </div>
+
+        <div className="ui teal button" type="submit" onClick={this.handleCorrSubmit}>Submit</div>
         </form>
 
         <div className="ui horizontal divider">or</div>

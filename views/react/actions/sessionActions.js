@@ -51,4 +51,9 @@ module.exports = {
   addFitbit: function (params, successCallback, errorCallback) {
     ApiUtil.addFitbit(params, successCallback, errorCallback);
   },
+
+  addCorr: function (params, successCallback, errorCallback) {
+    ApiUtil.addCorr(params, successCallback, errorCallback);
+  },
+  
 };

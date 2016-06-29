@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//configure passport
+// configure passport
 var passport = require('passport');
 var expressSession = require('express-session');
 var MongoStore = require('connect-mongo')(expressSession);
@@ -48,7 +48,7 @@ app.use(expressSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// initialize Passport
+// initialize passport
 var initPassport = require('./config/passport/init');
 initPassport(passport);
 
@@ -64,21 +64,6 @@ app.use('/auth', auth);
 var admin = express.Router();
 require('./routes/admin')(admin, passport);
 app.use('/admin', admin);
-
-// spawn data analysis child processes
-var spawn = require('child_process').spawn;
-var py = spawn('python', ['./analysis/crunch.py']);
-data = [1,2,3,4,5,6,7,8,9];
-dataString = '';
-
-py.stdin.write(JSON.stringify(data));
-py.stdin.end();
-py.stdout.on('data', function(data){
-  dataString += data.toString();
-});
-py.stdout.on('end', function(){
-  console.log('Sum of numbers = ', dataString);
-});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

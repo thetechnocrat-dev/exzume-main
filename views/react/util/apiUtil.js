@@ -168,4 +168,24 @@ module.exports = {
         },
     });
   },
+
+  addCorr: function (params, successCallback, errorCallback) {
+    $.ajax({
+      type: 'POST',
+      url: '/admin/addcorr',
+      data: params,
+      success:
+        function (respData) {
+          successCallback(respData);
+          console.log('ajax add corr success', respData);
+        },
+
+      error:
+        function (respError) {
+          errorCallback(respError.responseText);
+          console.log('ajax add corr error', respError);
+        },
+    });
+  },
+
 };
