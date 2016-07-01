@@ -55,5 +55,5 @@ module.exports = {
   addCorr: function (params, successCallback, errorCallback) {
     ApiUtil.addCorr(params, successCallback, errorCallback);
   },
-  
+
 };
