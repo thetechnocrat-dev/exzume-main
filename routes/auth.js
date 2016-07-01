@@ -74,6 +74,7 @@ module.exports = function (router, passport) {
 
   router.get('/fitbit', function (req, res) {
     var accessToken = req.query.code;
+    console.log(accessToken);
 
     // #/?= handles any extras things fitbit leaves on query string
     res.redirect('/#/?=' + accessToken);
