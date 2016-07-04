@@ -1,6 +1,7 @@
 var User = require('../models/user');
 var Fitbit = require('../models/dataStreams/fitbit');
 var mongoose = require('mongoose');
+var axios = require('axios');
 
 module.exports = function (router, passport) {
   // makes sure a user is logged in
@@ -73,11 +74,40 @@ module.exports = function (router, passport) {
   });
 
   router.get('/fitbit', function (req, res) {
-    var accessToken = req.query.code;
-    console.log(accessToken);
+    var authorizationToken = req.query.code;
+    // axios.get('https://api.github.com/users/' + 'mcmenemy')
+    //   .then(function (response) {
+    //     console.log(response.data); // ex.: { user: 'Your User'}
+    //     console.log(response.status); // ex.: 200
+    //   }
+    // );
+
+    var config = {
+      headers: {
+        Authorization: 'Basic Y2xpZW50X2lkOmNsaWVudCBzZWNyZXQ=',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        client_id: '227TQM',
+        grant_type: 'authorization_code',
+        redirect_uri: 'http://www.exzume.com/',
+        code: req.query.code,
+      },
+    };
+
+    var data = {};
+
+    axios.post('https://api.fitbit.com/oauth2/token', data, config)
+      .then(function (resp) {
+        console.log(resp.status);
+      })
+      .catch(function (resp) {
+        console.log(resp);
+        console.log(resp.errors);
+      });
+
+    // make call to fitbit with autorationToken to get refresh and access token
 
     // #/?= handles any extras things fitbit leaves on query string
-    res.redirect('/#/?=' + accessToken);
+    res.redirect('/#/?=' + authorizationToken);
   });
 
   router.get('/signout', function (req, res) {
