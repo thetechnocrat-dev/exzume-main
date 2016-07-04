@@ -63,7 +63,7 @@ module.exports = function (router, passport) {
   });
 
   router.put('/addcorr', function (req, res) {
-    User.findOne({ 'local.username': req.body.username }, function (err, user) {
+    User.findOne({ 'local.username': req.body.username }, function (err, user, survey) {
       if (err) {
         res.status(500).send('internal server error - try refreshing the page');
       } else if (user == null) {
@@ -71,17 +71,43 @@ module.exports = function (router, passport) {
       } else if (user) {
         // user.vis.push({ url: req.body.link });
         // seed database
-        var exec = child_process.exec;
-        exec('mongoimport --db exzume-main --collection surveys --type json --file ../analysis/seed.json', function(err, stout, stderr) {
-          if (err) {
-            console.log('child process exited with error code', err.code);
-            return;
-          }
-          console.log(stdout);
+          var survey = new Survey({
+            "owner": "a",
+            "icon": "",
+            "features": [
+              { "name": "Sleep Hours",
+                "dates": ["2016-06-16 21:58:31.843Z",
+                          "2016-06-17 21:58:31.843Z",
+                          "2016-06-18 21:58:31.843Z",
+                          "2016-06-19 21:58:31.843Z",
+                          "2016-06-20 21:58:31.843Z",
+                          "2016-06-21 21:58:31.843Z",
+                         ],
+                "data": [6, 7, 8, 7, 7.5, 9],
+              },
+              { "name": "Productivity",
+                "dates": ["2016-06-16 21:58:31.843Z",
+                          "2016-06-17 21:58:31.843Z",
+                          "2016-06-18 21:58:31.843Z",
+                          "2016-06-19 21:58:31.843Z",
+                          "2016-06-20 21:58:31.843Z",
+                          "2016-06-21 21:58:31.843Z",
+                         ],
+                "data": [3, 3, 4, 5, 7, 5],
+              }
+            ]
+          });
+
+          survey.save(function(err) {
+            if (err) throw err;
+
+            console.log('survey successfully saved');
+          });
+
           // spawn data analysis child process if import succeeds
           var spawn = child_process.spawn;
           var py = spawn('python', ['../analysis/crunch.py']);
-          Survey.findOne({ 'owner': req.body.username }, function(err, survey) {
+          Survey.findOne({ owner: req.body.username }, function(err, survey) {
             if (err) {
               res.status(500).send('internal server error - try refreshing the page');
             } else if (survey == null) {
@@ -90,7 +116,7 @@ module.exports = function (router, passport) {
               if (survey.features[0].name === req.body.xVar &&
                   survey.features[1].name === req.body.yVar) {
                 data1 = survey.features[0].data;
-                data2 = survey.features[0].data;
+                data2 = survey.features[1].data;
                 console.log(JSON.stringify(data1));
                 console.log(JSON.stringify(data2));
                 py.stdin.write(JSON.stringify(data1));
@@ -106,14 +132,11 @@ module.exports = function (router, passport) {
                 // user.vis.push?(function (err) {
                 //   if (err) { res.send(err); }
                 //
-                //   res.json({ message: 'correlation successfully made' });
+                  // res.json({ message: 'correlation successfully made' });
                 // });
               }
             }
-          })
-
-        });
-
+          });
       }
     });
   });
