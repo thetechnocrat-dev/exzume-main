@@ -2,6 +2,7 @@ var passport = require('passport');
 var mongoose = require('mongoose');
 var localSignup = require('./local-signup');
 var localSignin = require('./local-login');
+var fitbit = require('./fitbit');
 
 module.exports = function () {
   var User = mongoose.model('User');
@@ -19,4 +20,5 @@ module.exports = function () {
 
   localSignup(passport);
   localSignin(passport);
+  fitbit(passport);
 };

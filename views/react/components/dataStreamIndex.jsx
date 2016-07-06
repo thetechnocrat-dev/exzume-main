@@ -9,7 +9,6 @@ var DataStreamIndex = React.createClass({
   clickFitbit: function () {
     var fitbitParams = { username: SessionStore.currentUser().local.username, };
 
-    // should put the fitbit url call as a callback incas
     SessionActions.addFitbit(fitbitParams, this.fitbitSuccess, this.fitbitError);
   },
 
@@ -18,9 +17,7 @@ var DataStreamIndex = React.createClass({
   },
 
   fitbitSuccess: function () {
-    var url = 'https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=227TQM&redirect_uri=http%3A%2F%2Fwww.exzume.com%2Fapi%2Ffitbit%2F&scope=activity%20nutrition%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight';
-    var win = window.open(url, '_blank');
-    win.focus();
+
   },
 
   render: function () {

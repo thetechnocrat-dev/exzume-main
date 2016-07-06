@@ -68,17 +68,35 @@ var App = React.createClass({
 
   makeButtons: function () {
     var marginStyle = { marginLeft: '5%' };
+    var buttonFrontStyle = { color: 'white', };
     if (SessionStore.isSignedIn()) {
       return (
         <div className="row">
           <div>
-            <div className="ui teal button" onClick={this.clickAbout}>about</div>
+            <div
+              className="ui teal button"
+              onClick={this.clickAbout}
+              style={buttonFrontStyle}
+            >
+            about
+          </div>
           </div>
           <div style={marginStyle}>
-            <div className="ui teal button" onClick={this.clickSignOut}>sign out</div>
+            <div
+              className="ui teal button"
+              onClick={this.clickSignOut}
+              style={buttonFrontStyle}
+            >
+              sign out
+            </div>
           </div>
           <div style={marginStyle}>
-            <div className="ui yellow button" onClick={this.clickDashboard}>dashboard</div>
+            <div className="ui yellow button"
+              onClick={this.clickDashboard}
+              style={buttonFrontStyle}
+            >
+              dashboard
+            </div>
           </div>
         </div>
       );
@@ -86,13 +104,30 @@ var App = React.createClass({
       return (
         <div className="row">
           <div>
-            <div className="ui teal button" onClick={this.clickAbout}>about</div>
+            <div
+              className="ui teal button"
+              onClick={this.clickAbout}
+              style={buttonFrontStyle}
+            >
+              about
+            </div>
           </div>
           <div style={marginStyle}>
-            <div className="ui teal button" onClick={this.clickSignIn}>sign in</div>
+            <div
+              className="ui teal button"
+              onClick={this.clickSignIn}
+              style={buttonFrontStyle}
+            >
+              sign in
+            </div>
           </div>
           <div style={marginStyle}>
-            <div className="ui yellow button" onClick={this.clickBetaAccess}>request beta</div>
+            <div className="ui yellow button"
+              onClick={this.clickBetaAccess}
+              style={buttonFrontStyle}
+            >
+            request beta
+          </div>
           </div>
         </div>
       );
@@ -103,11 +138,11 @@ var App = React.createClass({
     var titleStyle = { fontSize: '3em', marginTop: '2.5%', };
     var lowerDivStyle = { width: '100%', backgroundColor: '#3BCDBF' };
     var whiteFontStyle = { color: 'white' };
-    var backgroundStyle = { backgroundColor: '#f4f1f0' };
+    var lightBackgroundStyle = { backgroundColor: '#white' };
     var stepStyle = { fontSize: '1.5em', };
 
     return (
-      <div style={backgroundStyle}>
+      <div style={lightBackgroundStyle}>
         <div
           className="ui one column center aligned relaxed grid container"
         >

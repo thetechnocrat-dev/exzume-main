@@ -1,17 +1,18 @@
 var User = require('../models/user');
 var Fitbit = require('../models/dataStreams/fitbit');
 var mongoose = require('mongoose');
+var passport = require('passport');
 
 module.exports = function (router, passport) {
-  // make sure a user is logged in
+  // makes sure a user is logged in
   router.use(function (req, res, next) {
       // if user is authenticated in the session, call the next() to call the
       // next request handler; Passport adds this method to request object.
-      if (req.isAuthenticated())
-          return next();
-
-      // if the user is not authenticated then redirect him to the auth/login page
-      res.redirect('/');
+      if (req.isAuthenticated()) {
+        return next();
+      } else {
+        res.redirect('/');
+      }
     }
   );
 
@@ -37,48 +38,56 @@ module.exports = function (router, passport) {
     res.json(req.user);
   });
 
-  router.post('/datastream/fitbit', function (req, res) {
-    var fitbit = new Fitbit();
-    fitbit.owner = req.body.username;
-    fitbit.icon = 'circle thin';
+  // router.post('/fitbit', function (req, res) {
+    // function that is called later if fitbit datastream succesfully saves
+  //   var addFitbitToUser = function (fitbitId) {
+  //     User.findOne({ 'local.username': req.body.username }, function (err, user) {
+  //       if (err) {
+  //         res.status(500).send('internal server error - try refreshing the page');
+  //       } else if (user === null) {
+  //         res.status(401).send('user not found');
+  //       } else if (user) {
+  //         user.dataStreams.push(fitbitId);
+  //
+  //         user.save(function (err) {
+  //           if (err) { res.send(err); }
+  //
+  //           res.json({ message: 'fitbit data stream added to user' });
+  //         });
+  //       }
+  //     });
+  //   };
+  //
+  //   var fitbit = new Fitbit();
+  //   fitbit.owner = req.body.username;
+  //   fitbit.icon = 'circle thin';
+  //
+  //   fitbit.save(function (err) {
+  //     if (err) {
+  //       res.send(err);
+  //     } else {
+  //       var fitbitId = fitbit.id;
+  //       addFitbitToUser(fitbitId);
+  //     };
+  //   });
+  //
+  // });
 
-    fitbit.save(function (err) {
-      if (err, fitbit) {
-        res.send(err);
-      } else {
-        var fitbitId = fitbit.id;
-        console.log('fitbit data stream created');
-      };
-    });
+  router.get('/fitbit',
+    passport.authenticate('fitbit', { scope: ['activity', 'heartrate', 'location', 'profile'] }
+  ));
 
-    User.findOne({ 'local.username': req.body.username }, function (err, user) {
-      if (err) {
-        res.status(500).send('internal server error - try refreshing the page');
-      } else if (user === null) {
-        res.status(401).send('user not found');
-      } else if (user) {
-        user.dataStreams.push(res.fitbitId);
-
-        user.save(function (err) {
-          if (err) { res.send(err); }
-
-          console.log('here');
-          res.json({ message: 'user updated with new insight' });
-        });
-      }
-    });
-  });
-
-  router.get('/fitbit', function (req, res) {
-    var accessToken = req.query.code;
-
-    // #/?= handles any extras things fitbit leaves on query string
-    res.redirect('/#/?=' + accessToken);
-  });
+  router.get('/fitbit/callback', passport.authenticate('fitbit', {
+        successRedirect: '/',
+        failureRedirect: '/',
+  }));
 
   router.get('/signout', function (req, res) {
     req.logout();
     res.json({ message: 'sign out success' });
   });
 
+  router.get('/*', function (req, res) {
+    res.redirect('/');
+  });
 };
