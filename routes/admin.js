@@ -104,9 +104,6 @@ module.exports = function (router, passport) {
             console.log('survey successfully saved');
           });
 
-          // spawn data analysis child process if import succeeds
-          var spawn = child_process.spawn;
-          var py = spawn('python', ['../analysis/crunch.py']);
           Survey.findOne({ owner: req.body.username }, function(err, survey) {
             if (err) {
               res.status(500).send('internal server error - try refreshing the page');
@@ -115,19 +112,25 @@ module.exports = function (router, passport) {
             } else if (survey) {
               if (survey.features[0].name === req.body.xVar &&
                   survey.features[1].name === req.body.yVar) {
-                data1 = survey.features[0].data;
-                data2 = survey.features[1].data;
-                console.log(JSON.stringify(data1));
-                console.log(JSON.stringify(data2));
-                py.stdin.write(JSON.stringify(data1));
-                py.stdin.write(JSON.stringify(data2));
+                    // spawn data analysis child process if import succeeds
+                var spawn = child_process.spawn;
+                var py = spawn('python', ['./crunch.py']);
+                dataString = '';
+                data = survey.features[0].data;
+                // data2 = survey.features[1].data;
+                console.log(JSON.stringify(data));
+                // console.log(JSON.stringify(data2));
+                py.stdin.write(JSON.stringify(data));
+                // py.stdin.write(JSON.stringify(data2));
                 py.stdin.end();
-                // py.stdout.on('data', function(data1, data2){
-                //   dataString += data.toString();
-                // });
-                // py.stdout.on('end', function(){
-                //   console.log('Sum of numbers = ', dataString);
-                // });
+                py.stdout.on('data', function(data){
+                  dataString += data.toString();
+                });
+                py.stdout.on('end', function(){
+                  console.log('Sum of numbers = ', dataString);
+                });
+
+
                 //
                 // user.vis.push?(function (err) {
                 //   if (err) { res.send(err); }
