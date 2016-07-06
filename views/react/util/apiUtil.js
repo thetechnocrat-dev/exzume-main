@@ -150,7 +150,7 @@ module.exports = {
     });
   },
 
-  addFitbit: function (params, successCallback, errorCallback) {
+  addFitbit: function (successCallback, errorCallback) {
     $.ajax({
       type: 'GET',
       url: '/auth/fitbit',

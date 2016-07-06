@@ -6,11 +6,6 @@ var SessionStore = require('../stores/sessionStore');
 var DataStreamItem = require('./dataStreamItem');
 
 var DataStreamIndex = React.createClass({
-  clickFitbit: function () {
-    var fitbitParams = { username: SessionStore.currentUser().local.username, };
-
-    SessionActions.addFitbit(fitbitParams, this.fitbitSuccess, this.fitbitError);
-  },
 
   fitbitError: function () {
     console.log('fitbit error');
@@ -30,7 +25,7 @@ var DataStreamIndex = React.createClass({
                 <i className="large plus icon"></i>
               </button>
               <div className="menu">
-                <div className="item" onClick={this.clickFitbit}>Fitbit</div>
+                <a className="item" href='/auth/fitbit'>Fitbit</a>
               </div>
             </div>
           </div>
