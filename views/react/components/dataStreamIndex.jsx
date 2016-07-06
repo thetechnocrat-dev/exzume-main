@@ -25,17 +25,17 @@ var DataStreamIndex = React.createClass({
   },
 
   render: function () {
+    // <div className="menu">
+    //   <div className="item" onClick={this.clickFitbit}>Fitbit</div>
+    // </div>
     return (
       <div className='ui left aligned grid'>
         <div className="doubling eight column row">
           <div className="column">
             <div className="ui simple dropdown">
-              <button className="ui teal icon button">
+              <button className="ui disabled teal icon button">
                 <i className="large plus icon"></i>
               </button>
-              <div className="menu">
-                <div className="item" onClick={this.clickFitbit}>Fitbit</div>
-              </div>
             </div>
           </div>
           <DataStreamItem icon="blue google" label="Google Form" />
