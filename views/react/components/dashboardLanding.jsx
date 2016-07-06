@@ -33,7 +33,12 @@ var DashboardLanding = React.createClass({
   makeDailySurveyButton: function () {
     if (SessionStore.currentUser().formURL == 'none') {
       return (
-        <div className="ui disabled blue button">Fill out daily survey</div>
+        <div className="ui blue button"
+          data-tooltip="Your custom survey will be linked to your account soon!"
+          data-position="bottom left"
+        >
+          Fill out daily survey
+        </div>
       );
     } else {
       return (
