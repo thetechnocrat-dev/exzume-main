@@ -152,9 +152,8 @@ module.exports = {
 
   addFitbit: function (params, successCallback, errorCallback) {
     $.ajax({
-      type: 'POST',
-      url: '/auth/datastream/fitbit',
-      data: params,
+      type: 'GET',
+      url: '/auth/fitbit',
       success:
         function (respData) {
           successCallback(respData);

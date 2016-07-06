@@ -1,7 +1,7 @@
 var User = require('../models/user');
 var Fitbit = require('../models/dataStreams/fitbit');
 var mongoose = require('mongoose');
-var axios = require('axios');
+var passport = require('passport');
 
 module.exports = function (router, passport) {
   // makes sure a user is logged in
@@ -38,81 +38,56 @@ module.exports = function (router, passport) {
     res.json(req.user);
   });
 
-  router.post('/datastream/fitbit', function (req, res) {
+  // router.post('/fitbit', function (req, res) {
     // function that is called later if fitbit datastream succesfully saves
-    var addFitbitToUser = function (fitbitId) {
-      User.findOne({ 'local.username': req.body.username }, function (err, user) {
-        if (err) {
-          res.status(500).send('internal server error - try refreshing the page');
-        } else if (user === null) {
-          res.status(401).send('user not found');
-        } else if (user) {
-          user.dataStreams.push(fitbitId);
+  //   var addFitbitToUser = function (fitbitId) {
+  //     User.findOne({ 'local.username': req.body.username }, function (err, user) {
+  //       if (err) {
+  //         res.status(500).send('internal server error - try refreshing the page');
+  //       } else if (user === null) {
+  //         res.status(401).send('user not found');
+  //       } else if (user) {
+  //         user.dataStreams.push(fitbitId);
+  //
+  //         user.save(function (err) {
+  //           if (err) { res.send(err); }
+  //
+  //           res.json({ message: 'fitbit data stream added to user' });
+  //         });
+  //       }
+  //     });
+  //   };
+  //
+  //   var fitbit = new Fitbit();
+  //   fitbit.owner = req.body.username;
+  //   fitbit.icon = 'circle thin';
+  //
+  //   fitbit.save(function (err) {
+  //     if (err) {
+  //       res.send(err);
+  //     } else {
+  //       var fitbitId = fitbit.id;
+  //       addFitbitToUser(fitbitId);
+  //     };
+  //   });
+  //
+  // });
 
-          user.save(function (err) {
-            if (err) { res.send(err); }
+  router.get('/fitbit',
+    passport.authenticate('fitbit', { scope: ['activity', 'heartrate', 'location', 'profile'] }
+  ));
 
-            res.json({ message: 'fitbit data stream added to user' });
-          });
-        }
-      });
-    };
-
-    var fitbit = new Fitbit();
-    fitbit.owner = req.body.username;
-    fitbit.icon = 'circle thin';
-
-    fitbit.save(function (err) {
-      if (err) {
-        res.send(err);
-      } else {
-        var fitbitId = fitbit.id;
-        addFitbitToUser(fitbitId);
-      };
-    });
-
-  });
-
-  router.get('/fitbit', function (req, res) {
-    var authorizationToken = req.query.code;
-    // axios.get('https://api.github.com/users/' + 'mcmenemy')
-    //   .then(function (response) {
-    //     console.log(response.data); // ex.: { user: 'Your User'}
-    //     console.log(response.status); // ex.: 200
-    //   }
-    // );
-
-    var config = {
-      headers: {
-        Authorization: 'Basic Y2xpZW50X2lkOmNsaWVudCBzZWNyZXQ=',
-        'Content-Type': 'application/x-www-form-urlencoded',
-        client_id: '227TQM',
-        grant_type: 'authorization_code',
-        redirect_uri: 'http://www.exzume.com/',
-        code: req.query.code,
-      },
-    };
-
-    var data = {};
-
-    axios.post('https://api.fitbit.com/oauth2/token', data, config)
-      .then(function (resp) {
-        console.log(resp.status);
-      })
-      .catch(function (resp) {
-        console.log(resp);
-        console.log(resp.errors);
-      });
-
-    // make call to fitbit with autorationToken to get refresh and access token
-
-    // #/?= handles any extras things fitbit leaves on query string
-    res.redirect('/#/?=' + authorizationToken);
-  });
+  router.get('/fitbit/callback', passport.authenticate('fitbit', {
+        successRedirect: '/',
+        failureRedirect: '/',
+  }));
 
   router.get('/signout', function (req, res) {
     req.logout();
     res.json({ message: 'sign out success' });
   });
 
+  router.get('/*', function (req, res) {
+    res.redirect('/');
+  });
 };

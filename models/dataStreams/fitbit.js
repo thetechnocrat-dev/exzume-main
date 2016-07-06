@@ -3,7 +3,6 @@ var Schema = mongoose.Schema;
 
 var FitbitSchema = new Schema({
   owner: String,
-  icon: String,
   accessToken: String,
   refreshToken: String,
   features: [{
