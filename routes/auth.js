@@ -74,8 +74,8 @@ module.exports = function (router, passport) {
   // });
 
   router.get('/fitbit',
-    passport.authenticate('fitbit', { scope: ['activity', 'heartrate', 'location', 'profile'] }
-  ));
+    passport.authenticate('fitbit', { scope: ['activity', 'heartrate', 'location', 'profile'] })
+  );
 
   router.get('/fitbit/callback', passport.authenticate('fitbit', {
         successRedirect: '/',
