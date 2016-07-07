@@ -12,9 +12,6 @@ module.exports = function (passport) {
     },
     function (req, accessToken, refreshToken, profile, done) {
       var user = req.user;
-      console.log(user);
-      console.log(accessToken);
-
       var fitbit = new Fitbit();
       fitbit.owner = user.local.username;
       fitbit.accessToken = accessToken;

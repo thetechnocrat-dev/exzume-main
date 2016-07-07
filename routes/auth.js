@@ -43,7 +43,7 @@ module.exports = function (router, passport) {
   );
 
   router.get('/fitbit/callback', passport.authenticate('fitbit', {
-        successRedirect: '/',
+        successRedirect: '/#/dashboard?=',
         failureRedirect: '/',
   }));
 
