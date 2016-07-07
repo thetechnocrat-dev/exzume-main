@@ -1,5 +1,6 @@
 var passport = require('passport');
 var FitbitStrategy = require('passport-fitbit-oauth2').FitbitOAuth2Strategy;
+var Fitbit = require('../../models/dataStreams/fitbit');
 var User = require('../../models/user');
 
 module.exports = function (passport) {
@@ -10,22 +11,24 @@ module.exports = function (passport) {
       passReqToCallback : true
     },
     function (req, accessToken, refreshToken, profile, done) {
-      // process.nextTick(function () {
-        console.log('hi josh');
-        console.log(req.user);
-        console.log(accessToken);
-        done(err, req.user);
-        //   User.findOne({ fitbitId: profile.id }, function (err, req, user) {
-        //     console.log('hi alan');
-        //       console.log('error', err);
-        //       console.log('user', req.user);
-        //       // console.log(req.user);
-        //
-        //     // if (err) console.log(err);
-        //     // if (user) console.log('this is user object ' + user );
-        //     return done(err, user);
-        //   });
-      // })
-    }
-  ));
+      var user = req.user;
+      console.log(user);
+      console.log(accessToken);
+
+      var fitbit = new Fitbit();
+      fitbit.owner = user.local.username;
+      fitbit.accessToken = accessToken;
+      fitbit.refreshToken = refreshToken;
+      fitbit.save(function (err) {
+        if (err) {
+          done(err, user);
+        } else {
+          user.dataStreams.push(fitbit.id);
+          user.save(function (err) {
+            console.log('here');
+            done(err, user);
+          });
+        };
+      });
+  }));
 };

@@ -38,41 +38,6 @@ module.exports = function (router, passport) {
     res.json(req.user);
   });
 
-  // router.post('/fitbit', function (req, res) {
-    // function that is called later if fitbit datastream succesfully saves
-  //   var addFitbitToUser = function (fitbitId) {
-  //     User.findOne({ 'local.username': req.body.username }, function (err, user) {
-  //       if (err) {
-  //         res.status(500).send('internal server error - try refreshing the page');
-  //       } else if (user === null) {
-  //         res.status(401).send('user not found');
-  //       } else if (user) {
-  //         user.dataStreams.push(fitbitId);
-  //
-  //         user.save(function (err) {
-  //           if (err) { res.send(err); }
-  //
-  //           res.json({ message: 'fitbit data stream added to user' });
-  //         });
-  //       }
-  //     });
-  //   };
-  //
-  //   var fitbit = new Fitbit();
-  //   fitbit.owner = req.body.username;
-  //   fitbit.icon = 'circle thin';
-  //
-  //   fitbit.save(function (err) {
-  //     if (err) {
-  //       res.send(err);
-  //     } else {
-  //       var fitbitId = fitbit.id;
-  //       addFitbitToUser(fitbitId);
-  //     };
-  //   });
-  //
-  // });
-
   router.get('/fitbit',
     passport.authenticate('fitbit', { scope: ['activity', 'heartrate', 'location', 'profile'] })
   );
