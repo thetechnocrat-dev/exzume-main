@@ -65,6 +65,10 @@ var admin = express.Router();
 require('./routes/admin')(admin, passport);
 app.use('/admin', admin);
 
+var acme = express.Router();
+require('./routes/acme')(acme);
+app.use('/.well-known/acme-challenge', acme);
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   var err = new Error('Not Found');
