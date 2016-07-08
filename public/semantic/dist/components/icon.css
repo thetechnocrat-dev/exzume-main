@@ -215,14 +215,14 @@ i.inverted.icon {
 
 /* Red */
 i.red.icon {
-  color: #DB2828 !important;
+  color: #D14D28 !important;
 }
 i.inverted.red.icon {
   color: #FF695E !important;
 }
 i.inverted.bordered.red.icon,
 i.inverted.circular.red.icon {
-  background-color: #DB2828 !important;
+  background-color: #D14D28 !important;
   color: #FFFFFF !important;
 }
 
@@ -241,14 +241,14 @@ i.inverted.circular.orange.icon {
 
 /* Yellow */
 i.yellow.icon {
-  color: #FBA100 !important;
+  color: #F5DF65 !important;
 }
 i.inverted.yellow.icon {
   color: #FFE21F !important;
 }
 i.inverted.bordered.yellow.icon,
 i.inverted.circular.yellow.icon {
-  background-color: #FBA100 !important;
+  background-color: #F5DF65 !important;
   color: #FFFFFF !important;
 }
 
@@ -267,40 +267,40 @@ i.inverted.circular.olive.icon {
 
 /* Green */
 i.green.icon {
-  color: #21BA45 !important;
+  color: #2B9464 !important;
 }
 i.inverted.green.icon {
   color: #2ECC40 !important;
 }
 i.inverted.bordered.green.icon,
 i.inverted.circular.green.icon {
-  background-color: #21BA45 !important;
+  background-color: #2B9464 !important;
   color: #FFFFFF !important;
 }
 
 /* Teal */
 i.teal.icon {
-  color: #3BCDBF !important;
+  color: #00B5AD !important;
 }
 i.inverted.teal.icon {
   color: #6DFFFF !important;
 }
 i.inverted.bordered.teal.icon,
 i.inverted.circular.teal.icon {
-  background-color: #3BCDBF !important;
+  background-color: #00B5AD !important;
   color: #FFFFFF !important;
 }
 
 /* Blue */
 i.blue.icon {
-  color: #2185D0 !important;
+  color: #59C8DF !important;
 }
 i.inverted.blue.icon {
   color: #54C8FF !important;
 }
 i.inverted.bordered.blue.icon,
 i.inverted.circular.blue.icon {
-  background-color: #2185D0 !important;
+  background-color: #59C8DF !important;
   color: #FFFFFF !important;
 }
 
@@ -345,14 +345,14 @@ i.inverted.circular.pink.icon {
 
 /* Brown */
 i.brown.icon {
-  color: #A5673F !important;
+  color: #B0A472 !important;
 }
 i.inverted.brown.icon {
   color: #D67C1C !important;
 }
 i.inverted.bordered.brown.icon,
 i.inverted.circular.brown.icon {
-  background-color: #A5673F !important;
+  background-color: #B0A472 !important;
   color: #FFFFFF !important;
 }
 

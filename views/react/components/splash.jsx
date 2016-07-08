@@ -52,7 +52,7 @@ var App = React.createClass({
   },
 
   clickBetaAccess: function () {
-    var bodyMessage = 'Thank you for your interest in exzume! We will notify you by replying to this email when beta access is avaible. If you have time we would love to hear why you are interested.';
+    var bodyMessage = 'Thank you for your interest in exzume! We will notify you by replying to this email when beta access is available. If you have time we would love to hear why you are interested.';
     var email = 'exzume.app@gmail.com';
     var subject = 'exzume beta access';
     document.location.href = 'mailto:' + email + '?subject=' + subject + '&body=' + bodyMessage;
@@ -74,7 +74,7 @@ var App = React.createClass({
         <div className="row">
           <div>
             <div
-              className="ui teal button"
+              className="ui green button"
               onClick={this.clickAbout}
               style={buttonFrontStyle}
             >
@@ -83,7 +83,7 @@ var App = React.createClass({
           </div>
           <div style={marginStyle}>
             <div
-              className="ui teal button"
+              className="ui green button"
               onClick={this.clickSignOut}
               style={buttonFrontStyle}
             >
@@ -91,7 +91,7 @@ var App = React.createClass({
             </div>
           </div>
           <div style={marginStyle}>
-            <div className="ui yellow button"
+            <div className="ui red button"
               onClick={this.clickDashboard}
               style={buttonFrontStyle}
             >
@@ -105,7 +105,7 @@ var App = React.createClass({
         <div className="row">
           <div>
             <div
-              className="ui teal button"
+              className="ui green button"
               onClick={this.clickAbout}
               style={buttonFrontStyle}
             >
@@ -114,7 +114,7 @@ var App = React.createClass({
           </div>
           <div style={marginStyle}>
             <div
-              className="ui teal button"
+              className="ui green button"
               onClick={this.clickSignIn}
               style={buttonFrontStyle}
             >
@@ -122,7 +122,7 @@ var App = React.createClass({
             </div>
           </div>
           <div style={marginStyle}>
-            <div className="ui yellow button"
+            <div className="ui red button"
               onClick={this.clickBetaAccess}
               style={buttonFrontStyle}
             >
@@ -136,8 +136,8 @@ var App = React.createClass({
 
   render: function () {
     var titleStyle = { fontSize: '3em', marginTop: '2.5%', };
-    var lowerDivStyle = { width: '100%', backgroundColor: '#3BCDBF' };
-    var whiteFontStyle = { color: 'white' };
+    var dividerStyle = { width: '100%', height: '300px', backgroundColor: '#2B9464', marginBottom: '5%', };
+    var panelStyle = { color: 'black' };
     var lightBackgroundStyle = { backgroundColor: '#white' };
     var stepStyle = { fontSize: '1.5em', };
 
@@ -147,43 +147,53 @@ var App = React.createClass({
           className="ui one column center aligned relaxed grid container"
         >
           <div className="row">
-            <h1 className="ui violet huge header" style={titleStyle}>exzume</h1>
+            <h1 className="ui blue huge header" style={titleStyle}>exzume</h1>
           </div>
           {this.makeButtons()}
           <div className="row">
             <canvas id="canvastree" width="400" height="299" />
           </div>
         </div>
-        <div
-          id="aboutAnchor"
-          style={lowerDivStyle}
-        >
+        <div style={dividerStyle} />
+        <div id="aboutAnchor">
           <div
             className="ui center aligned grid container"
           >
-            <div className="one column stackable row">
-              <div className="column">
-                <h1 className="ui huge header" style={whiteFontStyle}>
-                  How to use your data to make better decisions with exzume
-                </h1>
-              </div>
-            </div>
               <div className="three column stackable row">
+
                 <div className="column">
-                  <div style={whiteFontStyle}>
-                    <b style={stepStyle}>1. Sync data collecting devices and apps</b> you already use (i.e. fitbit, twitter, github and many more…).
+                  <div style={panelStyle}>
+                    <div class="row">
+                      <i className="huge refresh icon"></i>
+                    </div>
+                    <div class="row">
+                      <b style={stepStyle}>Sync devices & apps you already use (e.g. Fitbit, Spotify, RescueTime).</b>
+                    </div>
                   </div>
                 </div>
+
                 <div className="column">
-                  <div style={whiteFontStyle}>
-                    <b style={stepStyle}>2. (Recommended) Fill out a 1 minute daily survey</b> designed off your interestes to get the most out of your data. Using our survey tool, you can collect data on anything you are curious about.
+                  <div style={panelStyle}>
+                    <div class="row">
+                      <i className="huge list layout icon"></i>
+                    </div>
+                    <div class="row">
+                      <b style={stepStyle}>Fill out a short daily survey customized for you.</b>
+                    </div>
                   </div>
                 </div>
+
                 <div className="column">
-                  <div style={whiteFontStyle}>
-                    <b style={stepStyle}>3. That's it!</b> We do all the data crunching and turn your data into useful insights. (If you are a data guru or want to envision your life as a bunch of lines and graphs, you can either use our built in data explorer or download your data as a csv).
+                  <div style={panelStyle}>
+                    <div class="row">
+                      <i className="huge checkmark icon"></i>
+                    </div>
+                    <div class="row">
+                      <b style={stepStyle}>That's it! We do all the data crunching & turn your data into useful insights.</b>
+                    </div>
                   </div>
                 </div>
+
               </div>
             </div>
           </div>

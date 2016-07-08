@@ -11,8 +11,8 @@ Snake = function (canvas, width, height) {
 	this.radius = 10;
 	this.speed = height / (225);
 	this.angle = Math.PI/2;
-	this.fillStyle = "#3BCDBF";
-	this.shadowColor = "#3BCDBF";
+	this.fillStyle = "#2B9464";
+	this.shadowColor = "#2B9464";
 	this.shadowBlur = 2;
 	this.generation = 0;
 	this.lifespan = 0;
@@ -165,7 +165,7 @@ SnakeCollection.prototype = {
 
 			// white new text
 			this.context.globalAlpha = this.alpha;
-			this.context.fillStyle = '#6C648B';
+			this.context.fillStyle = '#59C8DF';
 			this.context.fillText('cultivate your data', this.canvasWidth / 2, this.canvasHeight / 10);
 			this.context.restore(); // restore context for drawing tree
 			this.alpha += 0.01;

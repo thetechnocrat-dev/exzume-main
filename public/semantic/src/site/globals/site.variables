@@ -3,6 +3,9 @@
 *******************************/
 @primaryColor: #009688;
 @secondaryColor: #B2DFDB;
-@teal: #3BCDBF;
+@green: #2B9464;
 @violet: #6C648B;
-@yellow: #FBA100;
+@yellow: #F5DF65;
+@blue: #59C8DF;
+@brown: #B0A472;
+@red: #D14D28;
