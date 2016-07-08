@@ -39,7 +39,7 @@
   line-height: 1.2142em;
   font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   padding: 0.67861429em 1em;
-  background: #FFFFFF;
+  background: #F6FBFC;
   border: 1px solid rgba(34, 36, 38, 0.15);
   color: rgba(0, 0, 0, 0.87);
   border-radius: 0.28571429rem;
@@ -136,7 +136,7 @@
 .ui.input.focus input,
 .ui.input input:focus {
   border-color: #85B7D9;
-  background: #FFFFFF;
+  background: #F6FBFC;
   color: rgba(0, 0, 0, 0.8);
   box-shadow: none;
 }
@@ -218,7 +218,7 @@
 
 /* Transparent Inverted */
 .ui.transparent.inverted.input {
-  color: #FFFFFF;
+  color: #F6FBFC;
 }
 .ui.transparent.inverted.input input {
   color: inherit;

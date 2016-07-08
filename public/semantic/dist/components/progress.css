@@ -238,7 +238,7 @@
   left: 0px;
   right: 0px;
   bottom: 0px;
-  background: #FFFFFF;
+  background: #F6FBFC;
   border-radius: 0.28571429rem;
   -webkit-animation: progress-active 2s ease infinite;
           animation: progress-active 2s ease infinite;
@@ -298,7 +298,7 @@
   color: #F9FAFB;
 }
 .ui.inverted.progress > .label {
-  color: #FFFFFF;
+  color: #F6FBFC;
 }
 .ui.inverted.progress.success > .label {
   color: #1FCC99;
