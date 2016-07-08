@@ -66,10 +66,11 @@ var Navbar = React.createClass({
 
   render: function () {
     var menuItemStyle = { cursor: 'pointer' };
+    var buttonFontStyle = { color: '#F6FBFC', };
 
     return (
-      <div className="ui teal inverted menu">
-        <div className="item" style={menuItemStyle} onClick={this.clickLogo}>Exzume</div>
+      <div className="ui green inverted menu" style={buttonFontStyle}>
+        <div className="item" style={menuItemStyle} onClick={this.clickLogo}>exzume</div>
         <div className="right menu" style={menuItemStyle}>
           {this.makeUserDropDown()}
         </div>

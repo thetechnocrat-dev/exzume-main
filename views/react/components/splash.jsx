@@ -71,7 +71,7 @@ var App = React.createClass({
 
   makeButtons: function () {
     var marginStyle = { marginLeft: '5%' };
-    var buttonFrontStyle = { color: '#f6fbfc', };
+    var buttonFontStyle = { color: '#F6FBFC', };
     if (SessionStore.isSignedIn()) {
       return (
         <div className="row">
@@ -79,7 +79,7 @@ var App = React.createClass({
             <div
               className="ui green button"
               onClick={this.clickAbout}
-              style={buttonFrontStyle}
+              style={buttonFontStyle}
             >
             about
           </div>
@@ -88,7 +88,7 @@ var App = React.createClass({
             <div
               className="ui green button"
               onClick={this.clickSignOut}
-              style={buttonFrontStyle}
+              style={buttonFontStyle}
             >
               sign out
             </div>
@@ -96,7 +96,7 @@ var App = React.createClass({
           <div style={marginStyle}>
             <div className="ui yellow button"
               onClick={this.clickDashboard}
-              style={buttonFrontStyle}
+              style={buttonFontStyle}
             >
               dashboard
             </div>
@@ -110,7 +110,7 @@ var App = React.createClass({
             <div
               className="ui green button"
               onClick={this.clickAbout}
-              style={buttonFrontStyle}
+              style={buttonFontStyle}
             >
               about
             </div>
@@ -119,7 +119,7 @@ var App = React.createClass({
             <div
               className="ui green button"
               onClick={this.clickSignIn}
-              style={buttonFrontStyle}
+              style={buttonFontStyle}
             >
               sign in
             </div>
@@ -127,7 +127,7 @@ var App = React.createClass({
           <div style={marginStyle}>
             <div className="ui yellow button"
               onClick={this.clickBetaAccess}
-              style={buttonFrontStyle}
+              style={buttonFontStyle}
             >
             request beta
           </div>
@@ -144,7 +144,7 @@ var App = React.createClass({
     var titleStyle = { fontSize: '3em', marginTop: '2.5%', };
     var dividerStyle = { width: '100%', height: '300px', backgroundColor: '#1FCC99', marginBottom: '5%', };
     var panelStyle = { color: '#black' };
-    var topSectStyle = { overflow: 'hidden', backgroundColor: '#F6FBFC', width: '100%', height: viewPortHeight + 'px', };
+    var topSectStyle = { overflow: 'hidden', width: '100%', height: viewPortHeight + 'px', };
     var stepsContainerStyle = { marginTop: '5%', };
     var topSectBotStyle = { height: viewPortHeight + 'px', backgroundColor: '#1FCC99', };
     var stepStyle = { fontSize: '1.5em', };

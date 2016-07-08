@@ -21,8 +21,8 @@ var DataStreamIndex = React.createClass({
         <div className="doubling eight column row">
           <div className="column">
             <div className="ui simple dropdown">
-              <button className="ui teal icon button">
-                <i className="large plus icon"></i>
+              <button className="ui green icon button">
+                <i className="large plus white icon"></i>
               </button>
               <div className="menu">
                 <a className="item" href='/auth/fitbit'>Fitbit</a>

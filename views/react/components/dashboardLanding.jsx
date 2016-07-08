@@ -27,9 +27,11 @@ var DashboardLanding = React.createClass({
   },
 
   makeDailySurveyButton: function () {
+    var buttonFontStyle = { color: '#F6FBFC', };
     if (SessionStore.currentUser().formURL == 'none') {
       return (
-        <div className="ui blue button"
+        <div className="ui yellow button"
+          style={buttonFontStyle}
           data-tooltip="Your custom survey will be linked to your account soon!"
           data-position="bottom left"
         >
@@ -38,7 +40,7 @@ var DashboardLanding = React.createClass({
       );
     } else {
       return (
-        <div className="ui blue button" onClick={this.clickSurvey}>Fill out daily survey</div>
+        <div style={buttonFontStyle} className="ui yellow button" onClick={this.clickSurvey}>Fill out daily survey</div>
       );
     }
   },

@@ -3,6 +3,7 @@
 *******************************/
 @primaryColor: #009688;
 @secondaryColor: #B2DFDB;
+@white: #F6FBFC;
 @green: #1FCC99;
 @violet: #E400FF;
 @yellow: #FFC219;

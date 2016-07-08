@@ -160,13 +160,13 @@ SnakeCollection.prototype = {
 			this.context.font = '2em' + ' Lato';
 			this.context.fillStyle = 'white';
 			this.context.textAlign = 'center';
-			this.context.fillText('cultivate your data', this.canvasWidth / 2, this.canvasHeight / 15);
+			this.context.fillText('cultivate your data', this.canvasWidth / 2, this.canvasHeight / 17);
 			this.context.save(); // save context so that opacity change doesn't affect tree
 
 			// white new text
 			this.context.globalAlpha = this.alpha;
 			this.context.fillStyle = 'black';
-			this.context.fillText('cultivate your data', this.canvasWidth / 2, this.canvasHeight / 15);
+			this.context.fillText('cultivate your data', this.canvasWidth / 2, this.canvasHeight / 17);
 			this.context.restore(); // restore context for drawing tree
 			this.alpha += 0.01;
 		} else {
