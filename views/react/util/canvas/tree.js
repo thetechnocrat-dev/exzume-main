@@ -4,7 +4,7 @@
 
 Snake = function (canvas, width, height) {
 	this.setCanvas(canvas);
-	this.x = width / 2;
+	this.x = width / 5;
 	this.y = height;
 	this.canvasWidth = width;
 	this.canvasHeight = height;
@@ -200,7 +200,12 @@ module.exports = function(windowWidth, windowHeight) {
 		return dpr / bsr;
 	})();
 
-	var CANVAS_WIDTH = 400;
+	if (windowWidth < 500) {
+		var CANVAS_WIDTH = 400;
+	} else {
+		var CANVAS_WIDTH = 600;
+	}
+
 	var CANVAS_HEIGHT = .6 * windowHeight;
 
 	canvas.width = CANVAS_WIDTH * PIXEL_RATIO;
