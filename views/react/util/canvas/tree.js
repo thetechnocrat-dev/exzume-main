@@ -201,12 +201,12 @@ module.exports = function(windowWidth, windowHeight) {
 	})();
 
 	if (windowWidth < 500) {
-		var CANVAS_WIDTH = 400;
+		var CANVAS_WIDTH = windowWidth;
 	} else {
-		var CANVAS_WIDTH = 600;
+		var CANVAS_WIDTH = 500;
 	}
 
-	var CANVAS_HEIGHT = .6 * windowHeight;
+	var CANVAS_HEIGHT = .5 * windowHeight;
 
 	canvas.width = CANVAS_WIDTH * PIXEL_RATIO;
 	canvas.height = CANVAS_HEIGHT * PIXEL_RATIO;
