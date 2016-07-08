@@ -188,6 +188,7 @@ module.exports = {
   },
 
   addFitbitData: function (params, successCallback, errorCallback) {
+    console.log('in put request');
     $.ajax({
       type: 'PUT',
       url: '/admin/addfitbitdata',

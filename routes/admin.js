@@ -82,7 +82,7 @@ module.exports = function (router, passport) {
               console.log(response);
             })
             .catch(function (error) {
-                // console.log(error);
+                console.log(error);
             });
 
       }

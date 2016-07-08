@@ -76,7 +76,7 @@ var Admin = React.createClass({
     this.setState({ visErrors: respError });
   },
 
-  handleCorrSubmit: function(event) {
+  handleCorrSubmit: function (event) {
     event.preventDefault();
     this.setState({ corrErrors: '', corrMessages: '' });
 
@@ -98,6 +98,7 @@ var Admin = React.createClass({
   },
 
   handleAddFitbitData: function (event) {
+    console.log('here');
     event.preventDefault();
     this.setState({ fitbitErrors: '', fitbitMessages: '' });
 
