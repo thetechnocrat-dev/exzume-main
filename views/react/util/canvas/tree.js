@@ -182,7 +182,7 @@ function randHex() {
 	return num;
 }
 
-module.exports = function() {
+module.exports = function(windowWidth, windowHeight) {
 	// Convenience
 	var canvas = document.getElementById('canvastree');
 	var context = canvas.getContext("2d");
@@ -201,7 +201,7 @@ module.exports = function() {
 	})();
 
 	var CANVAS_WIDTH = 400;
-	var CANVAS_HEIGHT = 299;
+	var CANVAS_HEIGHT = .6 * windowHeight;
 
 	canvas.width = CANVAS_WIDTH * PIXEL_RATIO;
 	canvas.height = CANVAS_HEIGHT * PIXEL_RATIO;

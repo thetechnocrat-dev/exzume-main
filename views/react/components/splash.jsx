@@ -23,7 +23,10 @@ var App = React.createClass({
       SessionActions.retrieveSession();
     };
 
-    TreeCanvas();
+    var viewPortWidth = window.innerWidth;
+    var viewPortHeight = window.innerHeight;
+
+    TreeCanvas(viewPortWidth, viewPortHeight);
   },
 
   componentWillUnmount: function () {
