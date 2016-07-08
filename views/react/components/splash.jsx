@@ -207,6 +207,11 @@ var App = React.createClass({
             </div>
           </div>
         </div>
+
+        <h3 class="ui center aligned header">
+          © exzume 2016
+        </h3>
+        
       </div>
     );
   },
