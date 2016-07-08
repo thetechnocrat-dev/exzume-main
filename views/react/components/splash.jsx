@@ -141,7 +141,8 @@ var App = React.createClass({
     var titleStyle = { fontSize: '3em', marginTop: '2.5%', };
     var dividerStyle = { width: '100%', height: '300px', backgroundColor: '#1FCC99', marginBottom: '5%', };
     var panelStyle = { color: '#black' };
-    var topSectStyle = { overflow: 'hidden', backgroundColor: '#F6FBFC', width: '100%', height: viewPortHeight + 'px', marginBottom: '5%', };
+    var topSectStyle = { overflow: 'hidden', backgroundColor: '#F6FBFC', width: '100%', height: viewPortHeight + 'px', };
+    var stepsContainerStyle = { marginTop: '5%', };
     var topSectBotStyle = { height: viewPortHeight + 'px', backgroundColor: '#1FCC99', };
     var stepStyle = { fontSize: '1.5em', };
 
@@ -163,7 +164,7 @@ var App = React.createClass({
         </div>
         <div id="aboutAnchor">
           <div
-            className="ui center aligned grid container"
+            className="ui center aligned grid container" style={stepsContainerStyle}
             >
             <div className="three column stackable row">
 
