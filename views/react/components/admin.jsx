@@ -97,6 +97,25 @@ var Admin = React.createClass({
     this.setState({ corrErrors: respError });
   },
 
+  handleAddFitbitData: function (event) {
+    event.preventDefault();
+    this.setState({ fitbitErrors: '', fitbitMessages: '' });
+
+    var params = {
+      username: this.state.username5,
+    };
+
+    SessionActions.addFitbitData(params, this.successFitbitCallback, this.errorFitbitCallback);
+  },
+
+  successFitbitCallback: function (respData) {
+    this.setState({ fitbitMessages: respData.message });
+  },
+
+  errorFitbitCallback: function (respError) {
+    this.setState({ fitbitErrors: respError });
+  },
+
   render: function () {
     var containerStyle = { margin: '10%' };
 
@@ -127,7 +146,7 @@ var Admin = React.createClass({
             ></input>
           </div>
 
-        <div className="ui teal button" type="submit" onClick={this.handleAddFormUrlSubmit}>Submit</div>
+        <div className="ui green button" type="submit" onClick={this.handleAddFormUrlSubmit}>Submit</div>
         </form>
 
         <div className="ui horizontal divider">or</div>
@@ -159,7 +178,7 @@ var Admin = React.createClass({
             ></input>
           </div>
 
-        <div className="ui teal button" type="submit" onClick={this.handleAddInsightSubmit}>Submit</div>
+        <div className="ui green button" type="submit" onClick={this.handleAddInsightSubmit}>Submit</div>
         </form>
 
         <div className="ui horizontal divider">or</div>
@@ -189,7 +208,7 @@ var Admin = React.createClass({
             ></input>
           </div>
 
-        <div className="ui teal button" type="submit" onClick={this.handleAddVisSubmit}>Submit</div>
+        <div className="ui green button" type="submit" onClick={this.handleAddVisSubmit}>Submit</div>
         </form>
 
         <div className="ui horizontal divider">or</div>
@@ -229,12 +248,32 @@ var Admin = React.createClass({
             ></input>
           </div>
 
-        <div className="ui teal button" type="submit" onClick={this.handleCorrSubmit}>Submit</div>
+        <div className="ui green button" type="submit" onClick={this.handleCorrSubmit}>Submit</div>
         </form>
 
         <div className="ui horizontal divider">or</div>
 
-        <div className="ui teal button" onClick={this.clickHome}>Go Home</div>
+          <form className="ui form">
+            <h2 className="ui header">Put Fitbit Data into User's Fitbit DataStream</h2>
+            <p>{this.state.visErrors}</p>
+            <p>{this.state.visMessages}</p>
+
+            <div className="required field">
+              <label>username</label>
+              <input
+                type="text"
+                name="username5"
+                placeholder=""
+                valueLink={this.linkState('username5')}
+              ></input>
+            </div>
+
+          <div className="ui green button" type="submit" onClick={this.handleAddFitbitData}>Submit</div>
+          </form>
+
+          <div className="ui horizontal divider">or</div>
+
+        <div className="ui green button" onClick={this.clickHome}>Go Home</div>
       </div>
     );
   },

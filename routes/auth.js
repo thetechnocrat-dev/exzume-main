@@ -39,7 +39,9 @@ module.exports = function (router, passport) {
   });
 
   router.get('/fitbit',
-    passport.authenticate('fitbit', { scope: ['activity', 'heartrate', 'location', 'profile'] })
+    passport.authenticate('fitbit', { scope: ['activity', 'heartrate', 'location',
+                                              'nutrition', 'profile', 'settings',
+                                              'sleep', 'social', 'weight'] })
   );
 
   router.get('/fitbit/callback', passport.authenticate('fitbit', {

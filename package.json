@@ -23,6 +23,7 @@
     "flux": "^2.1.1",
     "gulp": "^3.9.1",
     "history": "1.13.x",
+    "moment": "^2.14.1",
     "mongoose": "^4.4.20",
     "morgan": "~1.6.1",
     "passport": "^0.3.2",

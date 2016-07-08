@@ -187,4 +187,23 @@ module.exports = {
     });
   },
 
+  addFitbitData: function (params, successCallback, errorCallback) {
+    $.ajax({
+      type: 'PUT',
+      url: '/admin/addfitbitdata',
+      data: params,
+      success:
+        function (respData) {
+          successCallback(respData);
+          console.log('ajax add fitbit data success', respData);
+        },
+
+      error:
+        function (respError) {
+          errorCallback(respError.responseText);
+          console.log('ajax add fitbit data error', respError);
+        },
+    });
+  },
+
 };

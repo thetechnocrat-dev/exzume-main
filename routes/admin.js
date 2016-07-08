@@ -1,4 +1,7 @@
 var User = require('../models/user');
+var Fitbit = require('../models/dataStreams/fitbit');
+var axios = require('axios');
+var moment = require('moment');
 var mongoose = require('mongoose');
 var child_process = require('child_process');
 var Survey = require('../models/dataStreams/survey');
@@ -60,6 +63,31 @@ module.exports = function (router, passport) {
         });
       }
     });
+  });
+
+  router.put('/addfitbitdata', function (req, res) {
+    console.log('made it too addfitbitdata');
+    console.log(req.body);
+    Fitbit.findOne({ 'owner': req.body.username }, function (err, fitbit) {
+      if (err) {
+        res.status(500).send('internal server error - try refreshing the page');
+      } else if (fitbit == null) {
+        res.status(401).send('fitbit datastream not found');
+      } else if (fitbit) {
+        var date = moment().format('YYYY-MM-DD');
+        console.log(date);
+        console.log(fitbit.profileId);
+        console.log(fitbit);
+        axios.get('https://api.fitbit.com/1/user/' + fitbit.profileId + '/activities/date/' + date + '.json').then(function (response) {
+              console.log(response);
+            })
+            .catch(function (error) {
+                // console.log(error);
+            });
+
+      }
+    });
+
   });
 
   router.put('/addcorr', function (req, res) {
