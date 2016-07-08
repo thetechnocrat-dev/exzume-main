@@ -15,8 +15,8 @@
 
 @font-face {
   font-family: 'Icons';
-  src: url("./../themes/default/assets/fonts/icons.eot");
-  src: url("./../themes/default/assets/fonts/icons.eot?#iefix") format('embedded-opentype'), url("./../themes/default/assets/fonts/icons.woff2") format('woff2'), url("./../themes/default/assets/fonts/icons.woff") format('woff'), url("./../themes/default/assets/fonts/icons.ttf") format('truetype'), url("./../themes/default/assets/fonts/icons.svg#icons") format('svg');
+  src: url(".\../themes/default/assets/fonts/icons.eot");
+  src: url(".\../themes/default/assets/fonts/icons.eot?#iefix") format('embedded-opentype'), url(".\../themes/default/assets/fonts/icons.woff2") format('woff2'), url(".\../themes/default/assets/fonts/icons.woff") format('woff'), url(".\../themes/default/assets/fonts/icons.ttf") format('truetype'), url(".\../themes/default/assets/fonts/icons.svg#icons") format('svg');
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
@@ -241,14 +241,14 @@ i.inverted.circular.orange.icon {
 
 /* Yellow */
 i.yellow.icon {
-  color: #F5DF65 !important;
+  color: #FFC219 !important;
 }
 i.inverted.yellow.icon {
   color: #FFE21F !important;
 }
 i.inverted.bordered.yellow.icon,
 i.inverted.circular.yellow.icon {
-  background-color: #F5DF65 !important;
+  background-color: #FFC219 !important;
   color: #FFFFFF !important;
 }
 
@@ -267,14 +267,14 @@ i.inverted.circular.olive.icon {
 
 /* Green */
 i.green.icon {
-  color: #CDDC39 !important;
+  color: #1FCC99 !important;
 }
 i.inverted.green.icon {
   color: #2ECC40 !important;
 }
 i.inverted.bordered.green.icon,
 i.inverted.circular.green.icon {
-  background-color: #CDDC39 !important;
+  background-color: #1FCC99 !important;
   color: #FFFFFF !important;
 }
 
@@ -293,27 +293,27 @@ i.inverted.circular.teal.icon {
 
 /* Blue */
 i.blue.icon {
-  color: #59C8DF !important;
+  color: #09B281 !important;
 }
 i.inverted.blue.icon {
   color: #54C8FF !important;
 }
 i.inverted.bordered.blue.icon,
 i.inverted.circular.blue.icon {
-  background-color: #59C8DF !important;
+  background-color: #09B281 !important;
   color: #FFFFFF !important;
 }
 
 /* Violet */
 i.violet.icon {
-  color: #6C648B !important;
+  color: #E400FF !important;
 }
 i.inverted.violet.icon {
   color: #A291FB !important;
 }
 i.inverted.bordered.violet.icon,
 i.inverted.circular.violet.icon {
-  background-color: #6C648B !important;
+  background-color: #E400FF !important;
   color: #FFFFFF !important;
 }
 

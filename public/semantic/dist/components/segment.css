@@ -517,10 +517,10 @@
 
 /* Yellow */
 .ui.yellow.segment:not(.inverted) {
-  border-top: 2px solid #F5DF65;
+  border-top: 2px solid #FFC219;
 }
 .ui.inverted.yellow.segment {
-  background-color: #F5DF65 !important;
+  background-color: #FFC219 !important;
   color: #FFFFFF !important;
 }
 
@@ -535,10 +535,10 @@
 
 /* Green */
 .ui.green.segment:not(.inverted) {
-  border-top: 2px solid #CDDC39;
+  border-top: 2px solid #1FCC99;
 }
 .ui.inverted.green.segment {
-  background-color: #CDDC39 !important;
+  background-color: #1FCC99 !important;
   color: #FFFFFF !important;
 }
 
@@ -553,19 +553,19 @@
 
 /* Blue */
 .ui.blue.segment:not(.inverted) {
-  border-top: 2px solid #59C8DF;
+  border-top: 2px solid #09B281;
 }
 .ui.inverted.blue.segment {
-  background-color: #59C8DF !important;
+  background-color: #09B281 !important;
   color: #FFFFFF !important;
 }
 
 /* Violet */
 .ui.violet.segment:not(.inverted) {
-  border-top: 2px solid #6C648B;
+  border-top: 2px solid #E400FF;
 }
 .ui.inverted.violet.segment {
-  background-color: #6C648B !important;
+  background-color: #E400FF !important;
   color: #FFFFFF !important;
 }
 

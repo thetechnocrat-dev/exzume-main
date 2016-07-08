@@ -1291,8 +1291,8 @@ Floated Menu / Item
 }
 .ui.menu .yellow.active.item,
 .ui.yellow.menu .active.item {
-  border-color: #F5DF65 !important;
-  color: #F5DF65 !important;
+  border-color: #FFC219 !important;
+  color: #FFC219 !important;
 }
 .ui.menu .olive.active.item,
 .ui.olive.menu .active.item {
@@ -1301,8 +1301,8 @@ Floated Menu / Item
 }
 .ui.menu .green.active.item,
 .ui.green.menu .active.item {
-  border-color: #CDDC39 !important;
-  color: #CDDC39 !important;
+  border-color: #1FCC99 !important;
+  color: #1FCC99 !important;
 }
 .ui.menu .teal.active.item,
 .ui.teal.menu .active.item {
@@ -1311,13 +1311,13 @@ Floated Menu / Item
 }
 .ui.menu .blue.active.item,
 .ui.blue.menu .active.item {
-  border-color: #59C8DF !important;
-  color: #59C8DF !important;
+  border-color: #09B281 !important;
+  color: #09B281 !important;
 }
 .ui.menu .violet.active.item,
 .ui.violet.menu .active.item {
-  border-color: #6C648B !important;
-  color: #6C648B !important;
+  border-color: #E400FF !important;
+  color: #E400FF !important;
 }
 .ui.menu .purple.active.item,
 .ui.purple.menu .active.item {
@@ -1486,7 +1486,7 @@ Floated Menu / Item
 /* Yellow */
 .ui.inverted.menu .yellow.active.item,
 .ui.inverted.yellow.menu {
-  background-color: #F5DF65;
+  background-color: #FFC219;
 }
 .ui.inverted.yellow.menu .item:before {
   background-color: rgba(34, 36, 38, 0.1);
@@ -1510,7 +1510,7 @@ Floated Menu / Item
 /* Green */
 .ui.inverted.menu .green.active.item,
 .ui.inverted.green.menu {
-  background-color: #CDDC39;
+  background-color: #1FCC99;
 }
 .ui.inverted.green.menu .item:before {
   background-color: rgba(34, 36, 38, 0.1);
@@ -1534,7 +1534,7 @@ Floated Menu / Item
 /* Blue */
 .ui.inverted.menu .blue.active.item,
 .ui.inverted.blue.menu {
-  background-color: #59C8DF;
+  background-color: #09B281;
 }
 .ui.inverted.blue.menu .item:before {
   background-color: rgba(34, 36, 38, 0.1);
@@ -1546,7 +1546,7 @@ Floated Menu / Item
 /* Violet */
 .ui.inverted.menu .violet.active.item,
 .ui.inverted.violet.menu {
-  background-color: #6C648B;
+  background-color: #E400FF;
 }
 .ui.inverted.violet.menu .item:before {
   background-color: rgba(34, 36, 38, 0.1);

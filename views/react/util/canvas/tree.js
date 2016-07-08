@@ -11,8 +11,8 @@ Snake = function (canvas, width, height) {
 	this.radius = 10;
 	this.speed = height / (225);
 	this.angle = Math.PI/2;
-	this.fillStyle = "#CDDC39";
-	this.shadowColor = "#CDDC39";
+	this.fillStyle = "#1FCC99";
+	this.shadowColor = "#1FCC99";
 	this.shadowBlur = 2;
 	this.generation = 0;
 	this.lifespan = 0;
@@ -151,7 +151,7 @@ SnakeCollection.prototype = {
 	},
 
 	writeSlogan: function () {
-		this.intervalID = window.setInterval(this.fadeIn.bind(this), 40);
+		this.intervalID = window.setInterval(this.fadeIn.bind(this), 5);
 	},
 
 	fadeIn: function () {
@@ -160,13 +160,13 @@ SnakeCollection.prototype = {
 			this.context.font = '2em' + ' Lato';
 			this.context.fillStyle = 'white';
 			this.context.textAlign = 'center';
-			this.context.fillText('cultivate your data', this.canvasWidth / 2, this.canvasHeight / 10);
+			this.context.fillText('cultivate your data', this.canvasWidth / 2, this.canvasHeight / 15);
 			this.context.save(); // save context so that opacity change doesn't affect tree
 
 			// white new text
 			this.context.globalAlpha = this.alpha;
-			this.context.fillStyle = '#59C8DF';
-			this.context.fillText('cultivate your data', this.canvasWidth / 2, this.canvasHeight / 10);
+			this.context.fillStyle = 'black';
+			this.context.fillText('cultivate your data', this.canvasWidth / 2, this.canvasHeight / 15);
 			this.context.restore(); // restore context for drawing tree
 			this.alpha += 0.01;
 		} else {
@@ -200,8 +200,8 @@ module.exports = function() {
 		return dpr / bsr;
 	})();
 
-	var CANVAS_WIDTH = 400;
-	var CANVAS_HEIGHT = 299;
+	var CANVAS_WIDTH = 400 * 2;
+	var CANVAS_HEIGHT = 299 * 2;
 
 	canvas.width = CANVAS_WIDTH * PIXEL_RATIO;
 	canvas.height = CANVAS_HEIGHT * PIXEL_RATIO;

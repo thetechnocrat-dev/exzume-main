@@ -68,7 +68,7 @@ var App = React.createClass({
 
   makeButtons: function () {
     var marginStyle = { marginLeft: '5%' };
-    var buttonFrontStyle = { color: 'white', };
+    var buttonFrontStyle = { color: '#f6fbfc', };
     if (SessionStore.isSignedIn()) {
       return (
         <div className="row">
@@ -91,7 +91,7 @@ var App = React.createClass({
             </div>
           </div>
           <div style={marginStyle}>
-            <div className="ui red button"
+            <div className="ui yellow button"
               onClick={this.clickDashboard}
               style={buttonFrontStyle}
             >
@@ -122,7 +122,7 @@ var App = React.createClass({
             </div>
           </div>
           <div style={marginStyle}>
-            <div className="ui red button"
+            <div className="ui yellow button"
               onClick={this.clickBetaAccess}
               style={buttonFrontStyle}
             >
@@ -136,9 +136,9 @@ var App = React.createClass({
 
   render: function () {
     var titleStyle = { fontSize: '3em', marginTop: '2.5%', };
-    var dividerStyle = { width: '100%', height: '300px', backgroundColor: '#CDDC39', marginBottom: '5%', };
-    var panelStyle = { color: 'black' };
-    var lightBackgroundStyle = { backgroundColor: '#white' };
+    var dividerStyle = { width: '100%', height: '300px', backgroundColor: '#1FCC99', marginBottom: '5%', };
+    var panelStyle = { color: '#black' };
+    var lightBackgroundStyle = { backgroundColor: '#F6FBFC' };
     var stepStyle = { fontSize: '1.5em', };
 
     return (
@@ -147,7 +147,7 @@ var App = React.createClass({
           className="ui one column center aligned relaxed grid container"
         >
           <div className="row">
-            <h1 className="ui blue huge header" style={titleStyle}>exzume</h1>
+            <h1 className="ui black huge header" style={titleStyle}>exzume</h1>
           </div>
           {this.makeButtons()}
           <div className="row">
