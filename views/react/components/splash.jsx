@@ -148,6 +148,7 @@ var App = React.createClass({
     var stepsContainerStyle = { marginTop: '5%', };
     var topSectBotStyle = { height: viewPortHeight + 'px', backgroundColor: '#1FCC99', };
     var stepStyle = { fontSize: '1.5em', };
+    var footerContainerStyle = { marginTop: '10%' };
 
     return (
       <div>
@@ -208,7 +209,7 @@ var App = React.createClass({
           </div>
         </div>
 
-        <h3 className="ui center aligned header">
+        <h3 className="ui center aligned header" style={footerContainerStyle}>
           © exzume 2016
         </h3>
       </div>
