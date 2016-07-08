@@ -141,7 +141,7 @@ var App = React.createClass({
     var titleStyle = { fontSize: '3em', marginTop: '2.5%', };
     var dividerStyle = { width: '100%', height: '300px', backgroundColor: '#1FCC99', marginBottom: '5%', };
     var panelStyle = { color: '#black' };
-    var topSectStyle = { overflow: 'hidden', backgroundColor: '#F6FBFC', width: '100%', height: viewPortHeight + 'px' };
+    var topSectStyle = { overflow: 'hidden', backgroundColor: '#F6FBFC', width: '100%', height: viewPortHeight + 'px', marginBottom: '5%', };
     var topSectBotStyle = { height: viewPortHeight + 'px', backgroundColor: '#1FCC99', };
     var stepStyle = { fontSize: '1.5em', };
 
