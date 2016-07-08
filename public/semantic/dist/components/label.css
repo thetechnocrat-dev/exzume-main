@@ -1,5 +1,5 @@
 /*!
- * # Semantic UI 2.1.8 - Label
+ * # Semantic UI 2.2.1 - Label
  * http://github.com/semantic-org/semantic-ui/
  *
  *
@@ -652,7 +652,7 @@ a.ui.olive.label:hover {
 
 /* Ribbon */
 .ui.olive.ribbon.label {
-  border-color: #206c49 !important;
+  border-color: #b2c022 !important;
 }
 
 /* Basic */
@@ -672,16 +672,16 @@ a.ui.basic.olive.label:hover {
 
 .ui.green.labels .label,
 .ui.green.label {
-  background-color: #2B9464 !important;
-  border-color: #2B9464 !important;
+  background-color: #CDDC39 !important;
+  border-color: #CDDC39 !important;
   color: #FFFFFF !important;
 }
 
 /* Link */
 .ui.green.labels .label:hover,
 a.ui.green.label:hover {
-  background-color: #218557 !important;
-  border-color: #218557 !important;
+  background-color: #cddf1d !important;
+  border-color: #cddf1d !important;
   color: #FFFFFF !important;
 }
 
@@ -693,20 +693,20 @@ a.ui.green.label:hover {
 
 /* Ribbon */
 .ui.green.ribbon.label {
-  border-color: #206c49 !important;
+  border-color: #b2c022 !important;
 }
 
 /* Basic */
 .ui.basic.green.label {
   background-color: #FFFFFF !important;
-  color: #2B9464 !important;
-  border-color: #2B9464 !important;
+  color: #CDDC39 !important;
+  border-color: #CDDC39 !important;
 }
 .ui.basic.green.labels a.label:hover,
 a.ui.basic.green.label:hover {
   background-color: #FFFFFF !important;
-  color: #218557 !important;
-  border-color: #218557 !important;
+  color: #cddf1d !important;
+  border-color: #cddf1d !important;
 }
 
 /*--- Teal ---*/

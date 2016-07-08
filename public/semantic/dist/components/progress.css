@@ -1,5 +1,5 @@
 /*!
- * # Semantic UI 2.1.8 - Progress Bar
+ * # Semantic UI 2.2.1 - Progress Bar
  * http://github.com/semantic-org/semantic-ui/
  *
  *
@@ -179,7 +179,7 @@
 ---------------*/
 
 .ui.progress.success .bar {
-  background-color: #2B9464 !important;
+  background-color: #CDDC39 !important;
 }
 .ui.progress.success .bar,
 .ui.progress.success .bar::after {
@@ -301,7 +301,7 @@
   color: #FFFFFF;
 }
 .ui.inverted.progress.success > .label {
-  color: #2B9464;
+  color: #CDDC39;
 }
 .ui.inverted.progress.warning > .label {
   color: #F2C037;
@@ -398,7 +398,7 @@
 
 /* Green */
 .ui.green.progress .bar {
-  background-color: #2B9464;
+  background-color: #CDDC39;
 }
 .ui.green.inverted.progress .bar {
   background-color: #2ECC40;

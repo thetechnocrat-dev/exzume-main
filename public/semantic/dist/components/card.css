@@ -1,5 +1,5 @@
 /*!
- * # Semantic UI 2.1.8 - Item
+ * # Semantic UI 2.2.1 - Item
  * http://github.com/semantic-org/semantic-ui/
  *
  *
@@ -549,12 +549,12 @@ a.ui.card:hover,
 .ui.green.cards > .card,
 .ui.cards > .green.card,
 .ui.green.card {
-  box-shadow: 0px 0px 0px 1px #D4D4D5, 0px 2px 0px 0px #2B9464, 0px 1px 3px 0px #D4D4D5;
+  box-shadow: 0px 0px 0px 1px #D4D4D5, 0px 2px 0px 0px #CDDC39, 0px 1px 3px 0px #D4D4D5;
 }
 .ui.green.cards > .card:hover,
 .ui.cards > .green.card:hover,
 .ui.green.card:hover {
-  box-shadow: 0px 0px 0px 1px #D4D4D5, 0px 2px 0px 0px #218557, 0px 1px 3px 0px #BCBDBD;
+  box-shadow: 0px 0px 0px 1px #D4D4D5, 0px 2px 0px 0px #cddf1d, 0px 1px 3px 0px #BCBDBD;
 }
 
 /* Teal */

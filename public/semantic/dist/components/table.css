@@ -1,5 +1,5 @@
 /*!
- * # Semantic UI 2.1.8 - Table
+ * # Semantic UI 2.2.1 - Table
  * http://github.com/semantic-org/semantic-ui/
  *
  *
@@ -653,10 +653,10 @@
 
 /* Green */
 .ui.green.table {
-  border-top: 0.2em solid #2B9464;
+  border-top: 0.2em solid #CDDC39;
 }
 .ui.inverted.green.table {
-  background-color: #2B9464 !important;
+  background-color: #CDDC39 !important;
   color: #FFFFFF !important;
 }
 

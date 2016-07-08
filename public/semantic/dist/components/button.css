@@ -1,5 +1,5 @@
 /*!
- * # Semantic UI 2.1.8 - Button
+ * # Semantic UI 2.2.1 - Button
  * http://github.com/semantic-org/semantic-ui/
  *
  *
@@ -923,13 +923,13 @@
 .ui.toggle.buttons .active.button,
 .ui.buttons .button.toggle.active,
 .ui.button.toggle.active {
-  background-color: #2B9464 !important;
+  background-color: #CDDC39 !important;
   box-shadow: none !important;
   text-shadow: none;
   color: #FFFFFF !important;
 }
 .ui.button.toggle.active:hover {
-  background-color: #218557 !important;
+  background-color: #cddf1d !important;
   text-shadow: none;
   color: #FFFFFF !important;
 }
@@ -1791,7 +1791,7 @@
 
 .ui.green.buttons .button,
 .ui.green.button {
-  background-color: #2B9464;
+  background-color: #CDDC39;
   color: #FFFFFF;
   text-shadow: none;
   background-image: none;
@@ -1801,19 +1801,19 @@
 }
 .ui.green.buttons .button:hover,
 .ui.green.button:hover {
-  background-color: #218557;
+  background-color: #cddf1d;
   color: #FFFFFF;
   text-shadow: none;
 }
 .ui.green.buttons .button:focus,
 .ui.green.button:focus {
-  background-color: #1a7d4f;
+  background-color: #c7d913;
   color: #FFFFFF;
   text-shadow: none;
 }
 .ui.green.buttons .button:active,
 .ui.green.button:active {
-  background-color: #206c49;
+  background-color: #b2c022;
   color: #FFFFFF;
   text-shadow: none;
 }
@@ -1821,7 +1821,7 @@
 .ui.green.buttons .active.button:active,
 .ui.green.active.button,
 .ui.green.button .active.button:active {
-  background-color: #1e8757;
+  background-color: #d0e319;
   color: #FFFFFF;
   text-shadow: none;
 }
@@ -1829,31 +1829,31 @@
 /* Basic */
 .ui.basic.green.buttons .button,
 .ui.basic.green.button {
-  box-shadow: 0px 0px 0px 1px #2B9464 inset !important;
-  color: #2B9464 !important;
+  box-shadow: 0px 0px 0px 1px #CDDC39 inset !important;
+  color: #CDDC39 !important;
 }
 .ui.basic.green.buttons .button:hover,
 .ui.basic.green.button:hover {
   background: transparent !important;
-  box-shadow: 0px 0px 0px 1px #218557 inset !important;
-  color: #218557 !important;
+  box-shadow: 0px 0px 0px 1px #cddf1d inset !important;
+  color: #cddf1d !important;
 }
 .ui.basic.green.buttons .button:focus,
 .ui.basic.green.button:focus {
   background: transparent !important;
-  box-shadow: 0px 0px 0px 1px #1a7d4f inset !important;
-  color: #218557 !important;
+  box-shadow: 0px 0px 0px 1px #c7d913 inset !important;
+  color: #cddf1d !important;
 }
 .ui.basic.green.buttons .active.button,
 .ui.basic.green.active.button {
   background: transparent !important;
-  box-shadow: 0px 0px 0px 1px #1e8757 inset !important;
-  color: #206c49 !important;
+  box-shadow: 0px 0px 0px 1px #d0e319 inset !important;
+  color: #b2c022 !important;
 }
 .ui.basic.green.buttons .button:active,
 .ui.basic.green.button:active {
-  box-shadow: 0px 0px 0px 1px #206c49 inset !important;
-  color: #206c49 !important;
+  box-shadow: 0px 0px 0px 1px #b2c022 inset !important;
+  color: #b2c022 !important;
 }
 .ui.buttons:not(.vertical) > .basic.green.button:not(:first-child) {
   margin-left: -1px;
@@ -3208,7 +3208,7 @@
 /* Standard */
 .ui.positive.buttons .button,
 .ui.positive.button {
-  background-color: #2B9464;
+  background-color: #CDDC39;
   color: #FFFFFF;
   text-shadow: none;
   background-image: none;
@@ -3218,19 +3218,19 @@
 }
 .ui.positive.buttons .button:hover,
 .ui.positive.button:hover {
-  background-color: #218557;
+  background-color: #cddf1d;
   color: #FFFFFF;
   text-shadow: none;
 }
 .ui.positive.buttons .button:focus,
 .ui.positive.button:focus {
-  background-color: #1a7d4f;
+  background-color: #c7d913;
   color: #FFFFFF;
   text-shadow: none;
 }
 .ui.positive.buttons .button:active,
 .ui.positive.button:active {
-  background-color: #206c49;
+  background-color: #b2c022;
   color: #FFFFFF;
   text-shadow: none;
 }
@@ -3238,7 +3238,7 @@
 .ui.positive.buttons .active.button:active,
 .ui.positive.active.button,
 .ui.positive.button .active.button:active {
-  background-color: #1e8757;
+  background-color: #d0e319;
   color: #FFFFFF;
   text-shadow: none;
 }
@@ -3246,31 +3246,31 @@
 /* Basic */
 .ui.basic.positive.buttons .button,
 .ui.basic.positive.button {
-  box-shadow: 0px 0px 0px 1px #2B9464 inset !important;
-  color: #2B9464 !important;
+  box-shadow: 0px 0px 0px 1px #CDDC39 inset !important;
+  color: #CDDC39 !important;
 }
 .ui.basic.positive.buttons .button:hover,
 .ui.basic.positive.button:hover {
   background: transparent !important;
-  box-shadow: 0px 0px 0px 1px #218557 inset !important;
-  color: #218557 !important;
+  box-shadow: 0px 0px 0px 1px #cddf1d inset !important;
+  color: #cddf1d !important;
 }
 .ui.basic.positive.buttons .button:focus,
 .ui.basic.positive.button:focus {
   background: transparent !important;
-  box-shadow: 0px 0px 0px 1px #1a7d4f inset !important;
-  color: #218557 !important;
+  box-shadow: 0px 0px 0px 1px #c7d913 inset !important;
+  color: #cddf1d !important;
 }
 .ui.basic.positive.buttons .active.button,
 .ui.basic.positive.active.button {
   background: transparent !important;
-  box-shadow: 0px 0px 0px 1px #1e8757 inset !important;
-  color: #206c49 !important;
+  box-shadow: 0px 0px 0px 1px #d0e319 inset !important;
+  color: #b2c022 !important;
 }
 .ui.basic.positive.buttons .button:active,
 .ui.basic.positive.button:active {
-  box-shadow: 0px 0px 0px 1px #206c49 inset !important;
-  color: #206c49 !important;
+  box-shadow: 0px 0px 0px 1px #b2c022 inset !important;
+  color: #b2c022 !important;
 }
 .ui.buttons:not(.vertical) > .basic.primary.button:not(:first-child) {
   margin-left: -1px;

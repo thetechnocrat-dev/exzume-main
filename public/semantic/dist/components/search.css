@@ -1,5 +1,5 @@
 /*!
- * # Semantic UI 2.1.8 - Search
+ * # Semantic UI 2.2.1 - Search
  * http://github.com/semantic-org/semantic-ui/
  *
  *
@@ -127,7 +127,7 @@
 }
 .ui.search > .results .result .price {
   float: right;
-  color: #2B9464;
+  color: #CDDC39;
 }
 
 /*--------------

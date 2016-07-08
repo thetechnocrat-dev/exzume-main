@@ -1,5 +1,5 @@
 /*!
- * # Semantic UI 2.1.8 - Step
+ * # Semantic UI 2.2.1 - Step
  * http://github.com/semantic-org/semantic-ui/
  *
  *
@@ -389,7 +389,7 @@
 /* Completed */
 .ui.steps .step.completed > .icon:before,
 .ui.ordered.steps .step.completed:before {
-  color: #2B9464;
+  color: #CDDC39;
 }
 
 /* Disabled */

@@ -136,7 +136,7 @@ var App = React.createClass({
 
   render: function () {
     var titleStyle = { fontSize: '3em', marginTop: '2.5%', };
-    var dividerStyle = { width: '100%', height: '300px', backgroundColor: '#2B9464', marginBottom: '5%', };
+    var dividerStyle = { width: '100%', height: '300px', backgroundColor: '#CDDC39', marginBottom: '5%', };
     var panelStyle = { color: 'black' };
     var lightBackgroundStyle = { backgroundColor: '#white' };
     var stepStyle = { fontSize: '1.5em', };

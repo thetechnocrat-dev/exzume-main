@@ -1,5 +1,5 @@
 /*!
- * # Semantic UI 2.1.8 - Header
+ * # Semantic UI 2.2.1 - Header
  * http://github.com/semantic-org/semantic-ui/
  *
  *
@@ -403,13 +403,13 @@ a.ui.inverted.yellow.header:hover {
 /*--- Green ---*/
 
 .ui.green.header {
-  color: #2B9464 !important;
+  color: #CDDC39 !important;
 }
 a.ui.green.header:hover {
-  color: #218557 !important;
+  color: #cddf1d !important;
 }
 .ui.green.dividing.header {
-  border-bottom: 2px solid #2B9464;
+  border-bottom: 2px solid #CDDC39;
 }
 
 /* Inverted */
