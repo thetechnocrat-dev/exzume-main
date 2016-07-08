@@ -8,4 +8,7 @@ module.exports = function (router) {
     res.send('hrV-sNM6Ug23a1d3CPhKCn6761E6mAHZ_igVJWRojGg.0wCL6T35wH1HkXWY_2odZ64L0no2f27NrtpJDrMi4qU');
   });
 
+  router.get('/b9uLmhx7vULq52VATsPoB2pN0x99GYm8KHX1SIjcpYY', function (req, res) {
+    res.send('b9uLmhx7vULq52VATsPoB2pN0x99GYm8KHX1SIjcpYY.0wCL6T35wH1HkXWY_2odZ64L0no2f27NrtpJDrMi4qU');
+  });
 };
