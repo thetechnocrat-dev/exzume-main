@@ -135,69 +135,75 @@ var App = React.createClass({
   },
 
   render: function () {
+    var viewPortWidth = window.innerWidth;
+    var viewPortHeight = window.innerHeight;
+    console.log(viewPortHeight, viewPortWidth);
     var titleStyle = { fontSize: '3em', marginTop: '2.5%', };
     var dividerStyle = { width: '100%', height: '300px', backgroundColor: '#1FCC99', marginBottom: '5%', };
     var panelStyle = { color: '#black' };
-    var lightBackgroundStyle = { backgroundColor: '#F6FBFC' };
+    var topSectStyle = { overflow: 'hidden', backgroundColor: '#F6FBFC', width: '100%', height: viewPortHeight + 'px' };
+    var topSectBotStyle = { height: viewPortHeight + 'px', backgroundColor: '#1FCC99', };
     var stepStyle = { fontSize: '1.5em', };
 
     return (
-      <div style={lightBackgroundStyle}>
-        <div
-          className="ui one column center aligned relaxed grid container"
-        >
-          <div className="row">
-            <h1 className="ui black huge header" style={titleStyle}>exzume</h1>
+      <div>
+        <div style={topSectStyle}>
+          <div
+            className="ui one column center aligned relaxed grid container"
+            >
+            <div className="row">
+              <h1 className="ui black huge header" style={titleStyle}>exzume</h1>
+            </div>
+            {this.makeButtons()}
+            <div className="row">
+              <canvas id="canvastree" width="400" height="299" />
+            </div>
           </div>
-          {this.makeButtons()}
-          <div className="row">
-            <canvas id="canvastree" width="400" height="299" />
-          </div>
+          <div style={topSectBotStyle} />
         </div>
-        <div style={dividerStyle} />
         <div id="aboutAnchor">
           <div
             className="ui center aligned grid container"
-          >
-              <div className="three column stackable row">
+            >
+            <div className="three column stackable row">
 
-                <div className="column">
-                  <div style={panelStyle}>
-                    <div class="row">
-                      <i className="huge refresh icon"></i>
-                    </div>
-                    <div class="row">
-                      <b style={stepStyle}>Sync devices & apps you already use (e.g. Fitbit, Spotify, RescueTime).</b>
-                    </div>
+              <div className="column">
+                <div style={panelStyle}>
+                  <div className="row">
+                    <i className="huge refresh icon"></i>
+                  </div>
+                  <div className="row">
+                    <b style={stepStyle}>Sync devices & apps you already use (e.g. Fitbit, Spotify, RescueTime).</b>
                   </div>
                 </div>
-
-                <div className="column">
-                  <div style={panelStyle}>
-                    <div class="row">
-                      <i className="huge list layout icon"></i>
-                    </div>
-                    <div class="row">
-                      <b style={stepStyle}>Fill out a short daily survey customized for you.</b>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="column">
-                  <div style={panelStyle}>
-                    <div class="row">
-                      <i className="huge checkmark icon"></i>
-                    </div>
-                    <div class="row">
-                      <b style={stepStyle}>That's it! We do all the data crunching & turn your data into useful insights.</b>
-                    </div>
-                  </div>
-                </div>
-
               </div>
+
+              <div className="column">
+                <div style={panelStyle}>
+                  <div className="row">
+                    <i className="huge list layout icon"></i>
+                  </div>
+                  <div className="row">
+                    <b style={stepStyle}>Fill out a short daily survey customized for you.</b>
+                  </div>
+                </div>
+              </div>
+
+              <div className="column">
+                <div style={panelStyle}>
+                  <div className="row">
+                    <i className="huge checkmark icon"></i>
+                  </div>
+                  <div className="row">
+                    <b style={stepStyle}>That's it! We do all the data crunching & turn your data into useful insights.</b>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
+      </div>
     );
   },
 

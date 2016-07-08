@@ -200,8 +200,8 @@ module.exports = function() {
 		return dpr / bsr;
 	})();
 
-	var CANVAS_WIDTH = 400 * 2;
-	var CANVAS_HEIGHT = 299 * 2;
+	var CANVAS_WIDTH = 400;
+	var CANVAS_HEIGHT = 299;
 
 	canvas.width = CANVAS_WIDTH * PIXEL_RATIO;
 	canvas.height = CANVAS_HEIGHT * PIXEL_RATIO;
