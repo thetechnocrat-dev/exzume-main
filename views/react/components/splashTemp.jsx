@@ -1,15 +1,47 @@
 var React = require('react');
 
 var SplashTemp = React.createClass({
+  getInitialState: function () {
+    return ({ shouldShowNav: false });
+  },
+
+  componentDidMount: function () {
+    document.addEventListener('scroll', this.handleScroll);
+  },
+
+  componentWillUnmount: function () {
+    document.removeEventListener('scroll', this.handleScroll);
+  },
+
+  handleScroll: function () {
+    var doc = document.documentElement;
+    var top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+    var viewPortHeight = window.innerHeight;
+    if (this.state.shouldShowNav && top < viewPortHeight) {
+      this.setState({ shouldShowNav: false });
+    } else if (top > viewPortHeight) {
+      this.setState({ shouldShowNav: true });
+    }
+  },
+
+  getNavBarClassName: function () {
+    if (this.state.shouldShowNav) {
+      return 'ui large top fixed menu';
+    } else {
+      return 'ui large top fixed hidden menu';
+    };
+  },
 
   render: function () {
     var stepsContainerStyle = { marginTop: '5%', };
     var stepStyle = { fontSize: '1.5em', };
     var panelStyle = { color: '#black' };
+    var navBarClassName = this.getNavBarClassName();
+    var mastheadStyle = { height: window.innerHeight };
 
     return (
       <div>
-        <div className="ui large top fixed hidden menu">
+        <div className={navBarClassName}>
           <div className="ui container">
             <a className="active item">Home</a>
             <a className="item">About</a>
@@ -33,130 +65,128 @@ var SplashTemp = React.createClass({
           <a className="item">Signup</a>
         </div>
 
-        <div className="pusher">
-          <div className="ui inverted vertical masthead center aligned segment">
+        <div className="ui inverted vertical masthead center aligned segment" style={mastheadStyle}>
 
-            <div className="ui container">
-              <div className="ui large secondary inverted pointing menu">
-                <a className="toc item">
-                  <i className="sidebar icon"></i>
-                </a>
-                <a className="active item">Home</a>
-                <a className="item">About</a>
-                <a className="item">Contact</a>
-                <div className="right item">
-                  <a className="ui inverted button">Sign In</a>
-                  <a className="ui inverted button">Sign Up</a>
-                </div>
+          <div className="ui container">
+            <div className="ui large secondary inverted pointing menu">
+              <a className="toc item">
+                <i className="sidebar icon"></i>
+              </a>
+              <a className="active item">Home</a>
+              <a className="item">About</a>
+              <a className="item">Contact</a>
+              <div className="right item">
+                <a className="ui inverted button">Sign In</a>
+                <a className="ui inverted button">Sign Up</a>
               </div>
             </div>
-
-            <div className="ui text container">
-              <h1 className="ui inverted header">
-                exzume
-              </h1>
-              <h2>cultivate your data.</h2>
-              <div className="ui huge primary button">Get Started <i className="right arrow icon"></i></div>
-            </div>
-
           </div>
 
-          <div id="aboutAnchor">
-
+          <div className="ui text container">
+            <h1 className="ui inverted header">
+              exzume
+            </h1>
+            <h2>cultivate your data.</h2>
+            <div className="ui huge primary button">Get Started <i className="right arrow icon"></i></div>
           </div>
 
+        </div>
 
-          <div className="ui vertical stripe segment">
-            <div className="ui center aligned stackable grid container">
-              <div className="row">
-                <div className="sixteen wide column">
-                  <h1 className="ui header">Exzume Creates Useful Insights from Your Data</h1>
-                  <h2 className="ui header">Here's How to Use It...</h2>
+        <div id="aboutAnchor">
+
+        </div>
+
+
+        <div className="ui vertical stripe segment">
+          <div className="ui center aligned stackable grid container">
+            <div className="row">
+              <div className="sixteen wide column">
+                <h1 className="ui header">Exzume Creates Useful Insights from Your Data</h1>
+                <h2 className="ui header">Here's How to Use It...</h2>
+              </div>
+              <div className="ui center aligned grid container" style={stepsContainerStyle}>
+                <div className="three column stackable row">
+
+                  <div className="column">
+                    <div style={panelStyle}>
+                      <i className="massive refresh icon"></i>
+                      <h2>Sync devices & apps you already use (e.g. Fitbit, Spotify, RescueTime).</h2>
+                    </div>
+                  </div>
+
+                  <div className="column">
+                    <div style={panelStyle}>
+                      <i className="massive list layout icon"></i>
+                      <h2>Fill out a short daily survey dynamically customized for you.</h2>
+                    </div>
+                  </div>
+
+                  <div className="column">
+                    <div style={panelStyle}>
+                      <i className="massive checkmark icon"></i>
+                      <h2>That's it! We do all the data crunching & turn your data into useful insights.</h2>
+                    </div>
+                  </div>
+
+              </div>
+            </div>
+            </div>
+            </div>
+          </div>
+
+          {/*<div className="ui vertical stripe quote segment">
+            <div className="ui equal width stackable internally celled grid">
+              <div className="center aligned row">
+                <div className="column">
+                  <h3>"What a Company"</h3>
+                  <p>That is what they all say about us</p>
                 </div>
-                <div className="ui center aligned grid container" style={stepsContainerStyle}>
-                  <div className="three column stackable row">
-
-                    <div className="column">
-                      <div style={panelStyle}>
-                        <i className="massive refresh icon"></i>
-                        <h2>Sync devices & apps you already use (e.g. Fitbit, Spotify, RescueTime).</h2>
-                      </div>
-                    </div>
-
-                    <div className="column">
-                      <div style={panelStyle}>
-                        <i className="massive list layout icon"></i>
-                        <h2>Fill out a short daily survey dynamically customized for you.</h2>
-                      </div>
-                    </div>
-
-                    <div className="column">
-                      <div style={panelStyle}>
-                        <i className="massive checkmark icon"></i>
-                        <h2>That's it! We do all the data crunching & turn your data into useful insights.</h2>
-                      </div>
-                    </div>
-
+                <div className="column">
+                  <h3>"I shouldn't have gone with their competitor."</h3>
+                  <p>
+                    <img src="assets/images/avatar/nan.jpg" className="ui avatar image" /> <b>Nan</b> Chief Fun Officer Acme Toys
+                    </p>
+                  </div>
                 </div>
               </div>
-              </div>
+            </div>*/}
+
+            <div className="ui vertical stripe segment">
+              <div className="ui text container">
+                <h3 className="ui header">Why We Made Exzume</h3>
+                <p>There are many apps and wearable devices that collect data about our lives. However, this data is hardly ever used to provide actionable insights that we can actualize to improve the quality of our lives. </p>
+                <a className="ui large button">Read More</a>
+                {/*<h4 className="ui horizontal header divider">
+                  <a href="#">Success Stories</a>
+                </h4>
+                <h3 className="ui header">Did We Tell You About Michael?</h3>
+                <p>Yes I know you probably disregarded the earlier boasts as non-sequitur filler content, but its really true. It took years of gene splicing and combinatory DNA research, but our bananas can really dance.</p>
+                <a className="ui large button">I'm Still Quite Interested</a>
+                */}
               </div>
             </div>
 
-            {/*<div className="ui vertical stripe quote segment">
-              <div className="ui equal width stackable internally celled grid">
-                <div className="center aligned row">
-                  <div className="column">
-                    <h3>"What a Company"</h3>
-                    <p>That is what they all say about us</p>
-                  </div>
-                  <div className="column">
-                    <h3>"I shouldn't have gone with their competitor."</h3>
-                    <p>
-                      <img src="assets/images/avatar/nan.jpg" className="ui avatar image" /> <b>Nan</b> Chief Fun Officer Acme Toys
-                      </p>
+
+            <div className="ui inverted vertical footer segment">
+              <div className="ui container">
+                <div className="ui stackable inverted divided equal height stackable grid">
+                  <div className="three wide column">
+                    <h4 className="ui inverted header">About</h4>
+                    <div className="ui inverted link list">
+                      <a href="#" className="item">Privacy Policy</a>
+                      <a href="#" className="item">Contact Us</a>
                     </div>
                   </div>
-                </div>
-              </div>*/}
-
-              <div className="ui vertical stripe segment">
-                <div className="ui text container">
-                  <h3 className="ui header">Why We Made Exzume</h3>
-                  <p>There are many apps and wearable devices that collect data about our lives. However, this data is hardly ever used to provide actionable insights that we can actualize to improve the quality of our lives. </p>
-                  <a className="ui large button">Read More</a>
-                  {/*<h4 className="ui horizontal header divider">
-                    <a href="#">Success Stories</a>
-                  </h4>
-                  <h3 className="ui header">Did We Tell You About Michael?</h3>
-                  <p>Yes I know you probably disregarded the earlier boasts as non-sequitur filler content, but its really true. It took years of gene splicing and combinatory DNA research, but our bananas can really dance.</p>
-                  <a className="ui large button">I'm Still Quite Interested</a>
-                  */}
-                </div>
-              </div>
-
-
-              <div className="ui inverted vertical footer segment">
-                <div className="ui container">
-                  <div className="ui stackable inverted divided equal height stackable grid">
-                    <div className="three wide column">
-                      <h4 className="ui inverted header">About</h4>
-                      <div className="ui inverted link list">
-                        <a href="#" className="item">Privacy Policy</a>
-                        <a href="#" className="item">Contact Us</a>
-                      </div>
+                  <div className="three wide column">
+                    <h4 className="ui inverted header">Services</h4>
+                    <div className="ui inverted link list">
+                      <a href="https://www.myvessyl.com/" className="item">Vessyl Pre-Order</a>
+                      <a href="#" className="item">Exzume FAQ</a>
                     </div>
-                    <div className="three wide column">
-                      <h4 className="ui inverted header">Services</h4>
-                      <div className="ui inverted link list">
-                        <a href="https://www.myvessyl.com/" className="item">Vessyl Pre-Order</a>
-                        <a href="#" className="item">Exzume FAQ</a>
-                      </div>
-                    </div>
-                    <div className="seven wide column">
-                      <h4 className="ui inverted header">© exzume 2016</h4>
-                      <p>We could save your life.</p>
-                    </div>
+                  </div>
+                  <div className="seven wide column">
+                    <h4 className="ui inverted header">© exzume 2016</h4>
+                    <p>We could save your life.</p>
                   </div>
                 </div>
               </div>
