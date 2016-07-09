@@ -3,8 +3,10 @@ var History = require('react-router').History;
 var SessionStore = require('../stores/sessionStore');
 var SessionActions = require('../actions/sessionActions');
 var Scroll = require('react-scroll');
+// components
+var Footer = require('./footer');
 
-var SplashTemp = React.createClass({
+var Splash = React.createClass({
   mixins: [History],
 
   getInitialState: function () {
@@ -16,7 +18,6 @@ var SplashTemp = React.createClass({
   },
 
   componentDidMount: function () {
-    console.log('did mount');
     window.addEventListener('scroll', this.handleScroll);
     window.addEventListener('resize', this.handleResize);
     this.sessionToken = SessionStore.addListener(this._onChange);
@@ -220,35 +221,11 @@ var SplashTemp = React.createClass({
               </div>
             </div>
 
-
-            <div className="ui inverted vertical footer segment">
-              <div className="ui container">
-                <div className="ui stackable inverted divided equal height stackable grid">
-                  <div className="three wide column">
-                    <h4 className="ui inverted header">About</h4>
-                    <div className="ui inverted link list">
-                      <a href="#" className="item">Privacy Policy</a>
-                      <a href="#" className="item">Contact Us</a>
-                    </div>
-                  </div>
-                  <div className="three wide column">
-                    <h4 className="ui inverted header">Services</h4>
-                    <div className="ui inverted link list">
-                      <a href="https://www.myvessyl.com/" className="item">Vessyl Pre-Order</a>
-                      <a href="#" className="item">Exzume FAQ</a>
-                    </div>
-                  </div>
-                  <div className="seven wide column">
-                    <h4 className="ui inverted header">© exzume 2016</h4>
-                    <p>We could save your life.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <Footer />
       </div>
     );
   },
 
 });
 
-module.exports = SplashTemp;
+module.exports = Splash;
