@@ -16,12 +16,10 @@ var Admin = require('./components/admin');
 var Profile = require('./components/profile');
 var DataStreamDetail = require('./components/dataStreamDetail');
 var DashboardLanding = require('./components/dashboardLanding');
-var SplashTemp = require('./components/splashTemp');
 
 var routes = (
   <Route component={App} path='/'>
     <IndexRoute component={Splash} ></IndexRoute>
-    <Route component={SplashTemp} path='/splash' ></Route>
     <Route component={Admin} path='/admin' ></Route>
     <Route component={About} path='/about' ></Route>
     <Route component={SignIn} path='/signin' ></Route>
