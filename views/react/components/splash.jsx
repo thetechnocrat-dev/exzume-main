@@ -3,6 +3,9 @@ var History = require('react-router').History;
 var SessionStore = require('../stores/sessionStore');
 var SessionActions = require('../actions/sessionActions');
 var Scroll = require('react-scroll');
+var SessionActions = require('../actions/sessionActions');
+var SessionStore = require('../stores/sessionStore');
+
 // components
 var Footer = require('./footer');
 
@@ -70,6 +73,32 @@ var Splash = React.createClass({
     };
   },
 
+  makeStickyNavRightButtons: function () {
+    if (SessionStore.isSignedIn()) {
+      return (
+        <div className="right menu">
+          <div className="item">
+            <a className="ui button">Sign In</a>
+          </div>
+          <div className="item">
+            <a className="ui primary button">Dashboard</a>
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="right menu">
+          <div className="item">
+            <a className="ui button">Sign In</a>
+          </div>
+          <div className="item">
+            <a className="ui primary button">Request Beta</a>
+          </div>
+        </div>
+      );
+    }
+  },
+
   makeStickyNavbar: function () {
     var homeClassName;
     var aboutClassName;
@@ -92,14 +121,7 @@ var Splash = React.createClass({
           <a className={homeClassName}>Home</a>
           <a className={aboutClassName}>About</a>
           <a className={contactClassName}>Contact</a>
-          <div className="right menu">
-            <div className="item">
-              <a className="ui button">Sign In</a>
-            </div>
-            <div className="item">
-              <a className="ui primary button">Sign Up</a>
-            </div>
-          </div>
+          {this.makeStickyNavRightButtons()}
         </div>
       </div>
     );
