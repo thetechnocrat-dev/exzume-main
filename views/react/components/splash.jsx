@@ -39,9 +39,12 @@ var Splash = React.createClass({
 
   handleScroll: function () {
     var doc = document.documentElement;
+    var maxScroll = doc.scrollHeight;
     var currentPos = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
     if (this.state.shouldShowStickyNav && currentPos < this.state.viewPortHeight) {
       this.setState({ shouldShowStickyNav: false, activeNavBarItem: 'home' });
+    } else if (currentPos === (maxScroll - this.state.viewPortHeight)) {
+      this.setState({ shouldShowStickyNav: true, activeNavBarItem: 'contact' });
     } else if (currentPos > this.state.viewPortHeight) {
       this.setState({ shouldShowStickyNav: true, activeNavBarItem: 'about' });
     }
@@ -57,12 +60,36 @@ var Splash = React.createClass({
     Scroll.animateScroll.scrollTo(this.state.viewPortHeight * SCROLL_PADDING);
   },
 
+  clickHome: function () {
+    Scroll.animateScroll.scrollTo(0);
+  },
+
+  clickContact: function () {
+    var maxScroll = document.documentElement.scrollHeight;
+    Scroll.animateScroll.scrollTo(maxScroll);
+  },
+
+  clickBetaAccess: function () {
+    var bodyMessage = 'Thank you for your interest in exzume! We will notify you by replying to this email when beta access is available. If you have time we would love to hear why you are interested.';
+    var email = 'exzume.app@gmail.com';
+    var subject = 'exzume beta access';
+    document.location.href = 'mailto:' + email + '?subject=' + subject + '&body=' + bodyMessage;
+  },
+
   clickDashboard: function () {
     this.history.push('/dashboard');
   },
 
   clickSignIn: function () {
     this.history.push('/signin');
+  },
+
+  clickSignout: function () {
+    SessionActions.signOut(this.successCallback);
+  },
+
+  successCallback: function () {
+    this.history.push('/');
   },
 
   getNavBarClassName: function () {
@@ -78,10 +105,10 @@ var Splash = React.createClass({
       return (
         <div className="right menu">
           <div className="item">
-            <a className="ui button">Sign In</a>
+            <a className="ui button" onClick={this.clickSignout}>Sign Out</a>
           </div>
           <div className="item">
-            <a className="ui primary button">Dashboard</a>
+            <a className="ui primary button" onClick={this.clickDashboard}>Dashboard</a>
           </div>
         </div>
       );
@@ -89,10 +116,10 @@ var Splash = React.createClass({
       return (
         <div className="right menu">
           <div className="item">
-            <a className="ui button">Sign In</a>
+            <a className="ui button" onClick={this.clickSignIn}>Sign In</a>
           </div>
           <div className="item">
-            <a className="ui primary button">Request Beta</a>
+            <a className="ui primary button" onClick={this.clickBetaAccess}>Request Beta</a>
           </div>
         </div>
       );
@@ -113,14 +140,18 @@ var Splash = React.createClass({
       homeClassName = 'item';
       aboutClassName = 'active item';
       contactClassName = 'item';
+    } else if (this.state.activeNavBarItem === 'contact') {
+      homeClassName = 'item';
+      aboutClassName = 'item';
+      contactClassName = 'active item';
     }
 
     return (
       <div className={navBarClassName}>
         <div className="ui container">
-          <a className={homeClassName}>Home</a>
-          <a className={aboutClassName}>About</a>
-          <a className={contactClassName}>Contact</a>
+          <a className={homeClassName} onClick={this.clickHome}>Home</a>
+          <a className={aboutClassName} onClick={this.clickAbout}>About</a>
+          <a className={contactClassName} onClick={this.clickContact}>Contact</a>
           {this.makeStickyNavRightButtons()}
         </div>
       </div>
@@ -167,7 +198,7 @@ var Splash = React.createClass({
               exzume
             </h1>
             <h2>cultivate your data.</h2>
-            <div className="ui huge primary button">Get Started <i className="right arrow icon"></i></div>
+            <div className="ui huge primary button" onClick={this.clickAbout}>Learn More<i className="right arrow icon"></i></div>
           </div>
 
         </div>
