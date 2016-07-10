@@ -100,6 +100,14 @@ var Splash = React.createClass({
     };
   },
 
+  makeTopNavBarRightButtons: function () {
+
+  },
+
+  makeTopNavBar: function () {
+
+  },
+
   makeStickyNavRightButtons: function () {
     if (SessionStore.isSignedIn()) {
       return (
@@ -177,21 +185,6 @@ var Splash = React.createClass({
         </div>
 
         <div className="ui inverted vertical masthead center aligned segment" style={mastheadStyle}>
-
-          <div className="ui container">
-            <div className="ui large secondary inverted pointing menu">
-              <a className="toc item">
-                <i className="sidebar icon"></i>
-              </a>
-              <a className="active item">Home</a>
-              <a className="item" onClick={this.clickAbout}>About</a>
-              <a className="item">Contact</a>
-              <div className="right item">
-                <a className="ui inverted button">Sign In</a>
-                <a className="ui inverted button">Sign Up</a>
-              </div>
-            </div>
-          </div>
 
           <div className="ui text container">
             <h1 className="ui inverted header">
