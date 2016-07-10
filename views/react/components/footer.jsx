@@ -23,7 +23,7 @@
               </div>
               <div className="seven wide column">
                 <h4 className="ui inverted header">© exzume 2016</h4>
-                <p>We could save your life.</p>
+                <p>“We become what we repeatedly do.” ― Sean Covey</p>
               </div>
             </div>
           </div>
