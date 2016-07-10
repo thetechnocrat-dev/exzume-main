@@ -93,16 +93,22 @@ var Splash = React.createClass({
     this.history.push('/');
   },
 
-  getNavBarClassName: function () {
-    if (this.state.shouldShowStickyNav) {
-      return 'ui large top fixed menu';
-    } else {
-      return 'ui large top fixed hidden menu';
-    };
-  },
-
   makeTopNavBarRightButtons: function () {
-
+    if (SessionStore.isSignedIn()) {
+      return (
+        <div className="right item">
+          <a className="ui inverted button" onClick={this.clickSignIn}>Sign in</a>
+          <a className="ui inverted button" onClick={this.clickDashboard}>Dashboard</a>
+        </div>
+      );
+    } else {
+      return (
+        <div className="right item">
+          <a className="ui inverted button" onClick={this.clickSignIn}>Sign in</a>
+          <a className="ui inverted button" onClick={this.clickBetaAccess}>Request Beta</a>
+        </div>
+      );
+    }
   },
 
   makeTopNavBar: function () {
@@ -112,17 +118,21 @@ var Splash = React.createClass({
           <a className="toc item">
             <i className="sidebar icon"></i>
           </a>
-          <a className="active item">Home</a>
-          <a className="item">Work</a>
-          <a className="item">Company</a>
-          <a className="item">Careers</a>
-          <div className="right item">
-            <a className="ui inverted button">Log in</a>
-            <a className="ui inverted button">Sign Up</a>
-          </div>
+          <a className="active item" onClick={this.clickHome}>Home</a>
+          <a className="item" onClick={this.clickAbout}>About</a>
+          <a className="item" onClick={this.clickContact}>Contact</a>
+          {this.makeTopNavBarRightButtons()}
         </div>
       </div>
     );
+  },
+
+  getStickNavBarClassName: function () {
+    if (this.state.shouldShowStickyNav) {
+      return 'ui large top fixed menu';
+    } else {
+      return 'ui large top fixed hidden menu';
+    };
   },
 
   makeStickyNavRightButtons: function () {
@@ -155,7 +165,7 @@ var Splash = React.createClass({
     var homeClassName;
     var aboutClassName;
     var contactClassName;
-    var navBarClassName = this.getNavBarClassName();
+    var navBarClassName = this.getStickNavBarClassName();
 
     if (this.state.activeNavBarItem === 'home') {
       homeClassName = 'active item';
