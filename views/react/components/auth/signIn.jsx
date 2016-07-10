@@ -100,9 +100,7 @@ var SignIn = React.createClass({
             ></input>
           </div>
 
-          <p>Don't have an account? Then use
-            the <a style={linkStyle} onClick={this.clickSignUpLink}>Sign Up</a> form
-            or go back to the <a style={linkStyle} onClick={this.clickHomeLink}>Home Page</a>.
+          <p>Don't have an account? Then go back to the <a style={linkStyle} onClick={this.clickHomeLink}>Home Page</a> and request beta access!
           </p>
 
           {this.makeSubmitButton()}
