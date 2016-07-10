@@ -97,14 +97,14 @@ var Splash = React.createClass({
     if (SessionStore.isSignedIn()) {
       return (
         <div className="right item">
-          <a className="ui inverted button" onClick={this.clickSignIn}>Sign in</a>
+          <a className="ui inverted button" onClick={this.clickSignOut}>Sign Out</a>
           <a className="ui inverted button" onClick={this.clickDashboard}>Dashboard</a>
         </div>
       );
     } else {
       return (
         <div className="right item">
-          <a className="ui inverted button" onClick={this.clickSignIn}>Sign in</a>
+          <a className="ui inverted button" onClick={this.clickSignIn}>Sign In</a>
           <a className="ui inverted button" onClick={this.clickBetaAccess}>Request Beta</a>
         </div>
       );
