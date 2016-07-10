@@ -64,7 +64,7 @@ module.exports = {
       success:
         function (respData) {
           successCallback(respData);
-          console.log('ajax session success', respData);
+          console.log('ajax session success');
         },
 
       error:

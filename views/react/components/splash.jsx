@@ -115,9 +115,9 @@ var Splash = React.createClass({
     return (
       <div className="ui container">
         <div className="ui large secondary inverted pointing menu">
-          <a className="toc item">
+          {/*<a className="toc item">
             <i className="sidebar icon"></i>
-          </a>
+          </a>*/}
           <a className="active item" onClick={this.clickHome}>Home</a>
           <a className="item" onClick={this.clickAbout}>About</a>
           <a className="item" onClick={this.clickContact}>Contact</a>
