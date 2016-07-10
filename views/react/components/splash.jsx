@@ -85,7 +85,7 @@ var Splash = React.createClass({
     this.history.push('/signin');
   },
 
-  clickSignout: function () {
+  clickSignOut: function () {
     SessionActions.signOut(this.successCallback);
   },
 
