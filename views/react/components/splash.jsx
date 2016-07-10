@@ -7,6 +7,7 @@ var SessionActions = require('../actions/sessionActions');
 var SessionStore = require('../stores/sessionStore');
 
 // components
+var SideNavbar = require('./sideNavbar');
 var Footer = require('./footer');
 
 var Splash = React.createClass({
@@ -176,13 +177,7 @@ var Splash = React.createClass({
       <div>
         {this.makeStickyNavbar()}
 
-        <div className="ui vertical inverted sidebar menu">
-          <a className="active item">Home</a>
-          <a className="item">About</a>
-          <a className="item">Contact</a>
-          <a className="item">Signin</a>
-          <a className="item">Signup</a>
-        </div>
+        <SideNavbar />
 
         <div className="ui inverted vertical masthead center aligned segment" style={mastheadStyle}>
 

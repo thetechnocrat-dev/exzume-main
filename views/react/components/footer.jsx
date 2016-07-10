@@ -10,7 +10,7 @@
               <div className="three wide column">
                 <h4 className="ui inverted header">Company</h4>
                 <div className="ui inverted link list">
-                  <a href="#" className="item">Privacy Policy</a>
+                  <a className="item">Privacy Policy</a>
                   <a href="mailto:exzume.app@gmail.com" className="item">Contact Us</a>
                 </div>
               </div>
@@ -18,7 +18,7 @@
                 <h4 className="ui inverted header">Services</h4>
                 <div className="ui inverted link list">
                   <a href="https://www.myvessyl.com/" className="item">Vessyl Pre-Order</a>
-                  <a href="#" className="item">Exzume FAQ</a>
+                  <a className="item">Exzume FAQ</a>
                 </div>
               </div>
               <div className="seven wide column">
