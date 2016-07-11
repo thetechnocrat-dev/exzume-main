@@ -168,21 +168,21 @@ module.exports = {
     });
   },
 
-  addCorr: function (params, successCallback, errorCallback) {
+  selectSeries: function (params, successCallback, errorCallback) {
     $.ajax({
-      type: 'PUT',
-      url: '/admin/addcorr',
+      type: 'GET',
+      url: '/auth/selectseries',
       data: params,
       success:
         function (respData) {
           successCallback(respData);
-          console.log('ajax add corr success', respData);
+          console.log('ajax select series success', respData);
         },
 
       error:
         function (respError) {
           errorCallback(respError.responseText);
-          console.log('ajax add corr error', respError);
+          console.log('ajax select series error', respError);
         },
     });
   },
