@@ -16,6 +16,8 @@ var DataVisIndex = React.createClass({
           })}
         </div>
       </div>
+
+
     );
   },
 

@@ -11,6 +11,7 @@ var Dashboard = React.createClass({
       <div className="ui container">
         <Navbar />
         {this.props.children}
+
       </div>
     );
   },

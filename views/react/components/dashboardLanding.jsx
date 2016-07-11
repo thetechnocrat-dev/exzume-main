@@ -2,6 +2,7 @@ var React = require('react');
 var History = require('react-router').History;
 var DataStreamIndex = require('./dataStreamIndex');
 var InsightIndex = require('./insightIndex');
+var DataExpTool = require('./dataExpTool');
 var DataVisIndex = require('./dataVisIndex');
 var SessionStore = require('../stores/sessionStore');
 
@@ -54,6 +55,9 @@ var DashboardLanding = React.createClass({
           <DataStreamIndex />
           <h1 className="ui header">Your Insights</h1>
           <InsightIndex />
+          <h1 className="ui header">Data Exploration Tool</h1>
+          <p>Choose any two features to correlate.</p>
+          <DataExpTool />
           <h1 className="ui header">Your Data Visualizations</h1>
           <DataVisIndex user={SessionStore.currentUser()} />
         </div>
