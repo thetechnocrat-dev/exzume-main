@@ -17,6 +17,10 @@ SessionStore.currentUser = function () {
   return _currentUser;
 },
 
+SessionStore.currentUsername = function () {
+  return _currentUser.local.username;
+},
+
 SessionStore.getInsights = function (startIndex, size) {
   var insights = _currentUser.insights;
   if (startIndex >= insights.length) {

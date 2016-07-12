@@ -14,12 +14,8 @@ module.exports = {
     ApiUtil.fetchData(this.receivedData);
   },
 
-  // signUp: function (params, successCallback, errorCallback) {
-  //   ApiUtil.signUp(params, successCallback, errorCallback);
-  // },
-  //
-  // signIn: function (params, successCallback, errorCallback) {
-  //   ApiUtil.signIn(params, successCallback, errorCallback);
-  // },
+  addSurveyQuestion: function (params, success, err) {
+    ApiUtil.addSurveyQuestion(params, success, err);
+  },
 
 };

@@ -1,57 +1,68 @@
 var React = require('react');
+var LinkedStateMixin = require('react-addons-linked-state-mixin');
+var SessionStore = require('../stores/sessionStore');
+var DataActions = require('../actions/dataActions');
 
 // components
-var Navbar = require('./navbar');
-var TextQuestion = require('./form/textQuestion');
-var MultipleChoice = require('./form/multipleChoice');
 
 var Survey = React.createClass({
+  mixins: [LinkedStateMixin],
+
+  getInitialState: function () {
+    return ({ questionPrompt: '', questionType: 'text' });
+  },
+
+  setQuestionType: function (type) {
+    this.setState({ questionType: type });
+  },
+
+  submitAddQuestion: function () {
+    var params = {
+      owner: SessionStore.currentUsername(),
+      prompt: this.state.questionPrompt,
+      type: this.state.questionType,
+    };
+
+    DataActions.addSurveyQuestion(params, this.success, this.err);
+  },
+
+  success: function () {
+
+  },
+
+  err: function () {
+
+  },
 
   render: function () {
     return (
       <div className="ui container">
-        <Navbar />
         <form className="ui form">
 
-          <h2 className="ui header">Food</h2>
-          <TextQuestion
-            label="What did you eat for breakfast?"
-            name="breakfast"
-            placeholder="breakfast"
-          />
+          <div className="required field">
+            <label>Question Prompt</label>
+            <input
+              type="text"
+              name="question prompt"
+              placeholder=""
+              valueLink={this.linkState('questionPrompt')}
+              ></input>
+          </div>
 
-          <TextQuestion
-            label="What did you eat for lunch?"
-            name="lunch"
-            placeholder="lunch"
-          />
+          <div className="required field">
+            <label>Question Type</label>
+            <select className="ui fluid dropdown">
+              <option value="text" onClick={this.setQuestionType.bind(null, 'text')}>text</option>
+              <option
+                value="agreement scale"
+                onClick={this.setQuestionType.bind(null, 'agreement scale')}
+              >
+                agreement scale
+              </option>
+            </select>
+          </div>
 
-          <TextQuestion
-            label="What did you eat for dinner?"
-            name="dinner"
-            placeholder="dinner"
-          />
-
-          <TextQuestion
-            label="What did you eat for snacks?"
-            name="snacks"
-            placeholder="snacks"
-          />
-
-          <h2 className="ui header">Exercise</h2>
-          <TextQuestion
-            label="How many minutes did you exercise?"
-            name="exercise-minutes"
-            placeholder="minutes"
-          />
-
-          <MultipleChoice
-            label="How hard was your exercise"
-            checkBoxes={ ['easy', 'medium', 'hard'] }
-          />
-
-        <h2 className="ui header">Etc</h2>
-
+          <div className="ui green button" onClick={this.submitAddQuestion}>Submit</div>
         </form>
       </div>
     );

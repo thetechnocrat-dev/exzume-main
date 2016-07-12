@@ -206,4 +206,23 @@ module.exports = {
     });
   },
 
+  addSurveyQuestion: function (params, successCallback, errorCallback) {
+    $.ajax({
+      type: 'PUT',
+      url: '/auth/addsurveyquestion',
+      data: params,
+      success:
+        function (respData) {
+          successCallback(respData);
+          console.log('ajax add survey question success', respData);
+        },
+
+      error:
+        function (respError) {
+          errorCallback(respError.responseText);
+          console.log('ajax add survey question error', respError);
+        },
+    });
+  },
+
 };

@@ -57,8 +57,11 @@ module.exports = {
   },
 
   addFitbitData: function (params, successCallback, errorCallback) {
-    console.log('put action');
     ApiUtil.addFitbitData(params, successCallback, errorCallback);
+  },
+
+  addSurveyQuestion: function (params, successCallback, errorCallback) {
+    ApiUtil.addSurveyQuestion(params, successCallback, errorCallback);
   },
 
 };
