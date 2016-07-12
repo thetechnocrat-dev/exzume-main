@@ -12,15 +12,15 @@ var Survey = React.createClass({
     return ({ questionPrompt: '', questionType: 'text' });
   },
 
-  setQuestionType: function (type) {
-    this.setState({ questionType: type });
+  setQuestionType: function (format) {
+    this.setState({ questionType: format });
   },
 
   submitAddQuestion: function () {
     var params = {
       owner: SessionStore.currentUsername(),
       prompt: this.state.questionPrompt,
-      type: this.state.questionType,
+      format: this.state.questionType,
     };
 
     DataActions.addSurveyQuestion(params, this.success, this.err);
@@ -42,7 +42,7 @@ var Survey = React.createClass({
           <div className="required field">
             <label>Question Prompt</label>
             <input
-              type="text"
+              format="text"
               name="question prompt"
               placeholder=""
               valueLink={this.linkState('questionPrompt')}

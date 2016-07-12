@@ -55,99 +55,94 @@ module.exports = function (router, passport) {
     res.json({ message: 'sign out success' });
   });
 
-  // router.get('/selectseries', function (req, res) {
-  //   User.findOne({ 'local.username': req.body.username }, function (err, user, survey) {
-  //     if (err) {
-  //       res.status(500).send('internal server error - try refreshing the page');
-  //     } else if (user == null) {
-  //       res.status(401).send('user not found');
-  //     } else if (user) {
-  //         var dateArr1 = [];
-  //         var dataArr1 = [];
-  //         var dateArr2 = []
-  //         var dataArr2 = [];
-  //
-  //         Survey.findOne({ 'owner': req.body.username, }, 'features', function(err, survey) {
-  //           if (err) {
-  //             res.status(500).send('internal server error - try refreshing the page');
-  //           } else if (survey == null) {
-  //             res.status(401).send('survey responses for user not found');
-  //           } else if (survey) {
-  //             for (f in features) {
-  //               if (features[f].name == req.body.f1) {
-  //                 console.log(features[f].name);
-  //                 dateArr1 = features[f].dates;
-  //                 dataArr1 = features[f].data;
-  //               } else if (features[f].name == req.body.f2) {
-  //                 console.log(features[f].name);
-  //                 dateArr2 = features[f].dates;
-  //                 dataArr2 = features[f].data;
-  //               }
-  //             }
-  //           }
-  //         });
-  //
-  //         var createValArray = function(arr1, arr2) {
-  //           var valArray = [];
-  //           var kvPair = {};
-  //           for (int i = 0; i<arr1.length; i++) {
-  //               kvPair = {};
-  //               kvPair.x = arr1[i];
-  //               kvPair.y = arr2[i];
-  //               valArray.push(kvPair);
-  //           }
-  //           return valArray;
-  //         }
-  //
-  //         var lineData = [
-  //           {
-  //             name: 'series1',
-  //             values: createValueArray(dateArr1, dataArr1),
-  //             strokeWidth: 3,
-  //             strokeDashArray: "5,5",
-  //           },
-  //           {
-  //             name: 'series2',
-  //             values : createValueArray(dateArr2, dataArr2),
-  //           }
-  //         ];
-  //
-  //         res.json({lineData: lineData});
-  //
-  //
-  //
-  //
-  //             // if (survey.features[0].name === req.body.xVar &&
-  //             //     survey.features[1].name === req.body.yVar) {
-  //             //       // spawn data analysis child process if import succeeds
-  //             //   var spawn = child_process.spawn;
-  //             //   var py = spawn('python', ['./crunch.py']);
-  //             //   dataString = '';
-  //             //   data = survey.features[0].data;
-  //             //   // data2 = survey.features[1].data;
-  //             //   console.log(JSON.stringify(data));
-  //             //   // console.log(JSON.stringify(data2));
-  //             //   py.stdin.write(JSON.stringify(data));
-  //             //   // py.stdin.write(JSON.stringify(data2));
-  //             //   py.stdin.end();
-  //             //   py.stdout.on('data', function(data){
-  //             //     dataString += data.toString();
-  //             //   });
-  //             //   py.stdout.on('end', function(){
-  //             //     console.log('Sum of numbers = ', dataString);
-  //             //   });
-  //
-  //
-  //               //
-  //               // user.vis.push?(function (err) {
-  //               //   if (err) { res.send(err); }
-  //               //
-  //                 // res.json({ message: 'correlation successfully made' });
-  //               // });
-  //
-  //     }
-  //   });
-  // });
+  router.get('/selectseries', function (req, res) {
+    User.findOne({ 'local.username': req.body.username }, function (err, user, survey) {
+      if (err) {
+        res.status(500).send('internal server error - try refreshing the page');
+      } else if (user == null) {
+        res.status(401).send('user not found');
+      } else if (user) {
+        var dateArr1 = [];
+        var dataArr1 = [];
+        var dateArr2 = []
+        var dataArr2 = [];
+
+          Survey.findOne({ owner: req.body.username, }, 'features', function (err, survey) {
+            if (err) {
+              res.status(500).send('internal server error - try refreshing the page');
+            } else if (survey == null) {
+              res.status(401).send('survey responses for user not found');
+            } else if (survey) {
+              for (f in features) {
+                if (features[f].name == req.body.f1) {
+                  console.log(features[f].name);
+                  dateArr1 = features[f].dates;
+                  dataArr1 = features[f].data;
+                } else if (features[f].name == req.body.f2) {
+                  console.log(features[f].name);
+                  dateArr2 = features[f].dates;
+                  dataArr2 = features[f].data;
+                }
+              }
+            }
+          });
+
+          var createValArray = function(arr1, arr2) {
+            var valArray = [];
+            var kvPair = {};
+            for (var i = 0; i < arr1.length; i++) {
+                kvPair = {};
+                kvPair.x = arr1[i];
+                kvPair.y = arr2[i];
+                valArray.push(kvPair);
+            }
+            return valArray;
+          }
+
+          var lineData = [
+            {
+              name: 'series1',
+              values: createValueArray(dateArr1, dataArr1),
+              strokeWidth: 3,
+              strokeDashArray: '5,5',
+            },
+            {
+              name: 'series2',
+              values : createValueArray(dateArr2, dataArr2),
+            }
+          ];
+
+          res.json({ lineData: lineData });
+      }
+    });
+  });
+
+  // if (survey.features[0].name === req.body.xVar &&
+              //     survey.features[1].name === req.body.yVar) {
+              //       // spawn data analysis child process if import succeeds
+              //   var spawn = child_process.spawn;
+              //   var py = spawn('python', ['./crunch.py']);
+              //   dataString = '';
+              //   data = survey.features[0].data;
+              //   // data2 = survey.features[1].data;
+              //   console.log(JSON.stringify(data));
+              //   // console.log(JSON.stringify(data2));
+              //   py.stdin.write(JSON.stringify(data));
+              //   // py.stdin.write(JSON.stringify(data2));
+              //   py.stdin.end();
+              //   py.stdout.on('data', function(data){
+              //     dataString += data.toString();
+              //   });
+              //   py.stdout.on('end', function(){
+              //     console.log('Sum of numbers = ', dataString);
+              //   });
+                //
+                // user.vis.push?(function (err) {
+                //   if (err) { res.send(err); }
+                //
+                  // res.json({ message: 'correlation successfully made' });
+                // });
+
 
   router.put('/addsurveyquestion', function (req, res) {
     Survey.findOne({ 'owner': req.body.owner }, function (err, survey) {
