@@ -145,6 +145,7 @@ module.exports = function (router, passport) {
 
 
   router.put('/addsurveyquestion', function (req, res) {
+    console.log(req.body);
     Survey.findOne({ 'owner': req.body.owner }, function (err, survey) {
       if (err) {
         res.status(500).send('internal server error - try refreshing the page');

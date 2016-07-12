@@ -9,18 +9,19 @@ var Survey = React.createClass({
   mixins: [LinkedStateMixin],
 
   getInitialState: function () {
-    return ({ questionPrompt: '', questionType: 'text' });
+    return ({ questionPrompt: '', questionFormat: 'text' });
   },
 
   setQuestionType: function (format) {
-    this.setState({ questionType: format });
+    console.log('here');
+    this.setState({ questionFormat: format });
   },
 
   submitAddQuestion: function () {
     var params = {
       owner: SessionStore.currentUsername(),
       prompt: this.state.questionPrompt,
-      format: this.state.questionType,
+      format: this.state.questionFormat,
     };
 
     DataActions.addSurveyQuestion(params, this.success, this.err);
@@ -51,15 +52,10 @@ var Survey = React.createClass({
 
           <div className="required field">
             <label>Question Type</label>
-            <select className="ui fluid dropdown">
-              <option value="text" onClick={this.setQuestionType.bind(null, 'text')}>text</option>
-              <option
-                value="agreement scale"
-                onClick={this.setQuestionType.bind(null, 'agreement scale')}
-              >
-                agreement scale
-              </option>
-            </select>
+            <div className="ui simple dropdown item">
+              {this.state.questionFormat}
+              <i className
+            </div>
           </div>
 
           <div className="ui green button" onClick={this.submitAddQuestion}>Submit</div>
