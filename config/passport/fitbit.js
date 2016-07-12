@@ -1,7 +1,6 @@
-var passport = require('passport');
+// var passport = require('passport');
 var FitbitStrategy = require('passport-fitbit-oauth2').FitbitOAuth2Strategy;
 var Fitbit = require('../../models/dataStreams/fitbit');
-var User = require('../../models/user');
 
 module.exports = function (passport) {
   passport.use(new FitbitStrategy({

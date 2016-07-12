@@ -1,4 +1,4 @@
-var User = require('../models/user');
+var User = require('../models/user'); // don't need?
 var mongoose = require('mongoose');
 
 module.exports = function (router, passport) {

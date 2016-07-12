@@ -12,7 +12,16 @@ var SurveySchema = new Schema({
   ],
 }, { autoIndex: false });
 
-module.exports = mongoose.model('Survey', SurveySchema);
+var Survey;
+
+if (mongoose.models.Survey) {
+  Survey = mongoose.model('Survey');
+} else {
+  Survey = mongoose.model('Survey', SurveySchema);
+}
+
+module.exports = Survey;
+// module.exports = mongoose.model('Survey', SurveySchema);
 
 // question types:
 // agreement scale  - 1 through 7 agreement scale

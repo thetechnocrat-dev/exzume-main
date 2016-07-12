@@ -1,10 +1,10 @@
 var User = require('../models/user');
 var Fitbit = require('../models/dataStreams/fitbit');
+var Survey = require('../models/dataStreams/survey');
+
 var axios = require('axios');
 var moment = require('moment');
-var mongoose = require('mongoose');
 var child_process = require('child_process');
-var Survey = require('../models/dataStreams/survey');
 
 module.exports = function (router, passport) {
 

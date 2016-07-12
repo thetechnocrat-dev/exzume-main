@@ -1,11 +1,9 @@
-var passport = require('passport');
-var mongoose = require('mongoose');
 var localSignup = require('./local-signup');
 var localSignin = require('./local-login');
 var fitbit = require('./fitbit');
+var User = require('../../models/user');
 
-module.exports = function () {
-  var User = mongoose.model('User');
+module.exports = function (passport) {
 
   // serialize so that passwords are not stored in database
   passport.serializeUser(function (user, done) {
