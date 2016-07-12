@@ -5,7 +5,7 @@ var SurveySchema = new Schema({
   owner: String,
   features: [{
       prompt: String,
-      type: String, // see notes below for accepted formats
+      format: String, // see notes below for accepted formats
       dates: [Date],
       data: [],
     },
