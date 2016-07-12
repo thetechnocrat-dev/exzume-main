@@ -214,7 +214,7 @@ var Splash = React.createClass({
               <h1 className="ui inverted header">
                 exzume
               </h1>
-              <h2>cultivate your data.</h2>
+              <h2>explore your data.</h2>
               <div className="ui huge primary button" onClick={this.clickAbout}>Learn More<i className="right arrow icon"></i></div>
             </div>
           </div>
@@ -225,7 +225,7 @@ var Splash = React.createClass({
             <div className="ui center aligned stackable grid container">
               <div className="row">
                 <div className="sixteen wide column">
-                  <h1 className="ui header">Exzume Creates Useful Insights from Your Data</h1>
+                  <h1 className="ui header">Exzume Allows You to Find Insights from Your Data</h1>
                   <h2 className="ui header">Here's How to Use It...</h2>
                 </div>
                 <div className="ui center aligned grid container" style={stepsContainerStyle}>
@@ -240,15 +240,15 @@ var Splash = React.createClass({
 
                     <div className="column">
                       <div style={panelStyle}>
-                        <i className="massive list layout icon"></i>
-                        <h2>Fill out a short daily survey dynamically customized for you.</h2>
+                        <i className="massive tasks icon"></i>
+                        <h2>Track your life habits & answer questions you are curious about.</h2>
                       </div>
                     </div>
 
                     <div className="column">
                       <div style={panelStyle}>
-                        <i className="massive checkmark icon"></i>
-                        <h2>That's it! We do all the data crunching & turn your data into useful insights.</h2>
+                        <i className="massive line chart icon"></i>
+                        <h2>Discover trends, correlations, and life-improving insights.</h2>
                       </div>
                     </div>
 

@@ -6,7 +6,7 @@ module.exports = function (passport) {
       clientID:     '227TQM',
       clientSecret: 'd44c4411eec72933ccd86d7efe8ea12d',
       callbackURL: '/auth/fitbit/callback/',
-      passReqToCallback: true
+      passReqToCallback: true,
     },
     function (req, accessToken, refreshToken, profile, done) {
       var user = req.user;
@@ -26,5 +26,5 @@ module.exports = function (passport) {
           });
         };
       });
-  }));
+    }));
 };
