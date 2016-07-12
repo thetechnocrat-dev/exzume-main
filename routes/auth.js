@@ -152,18 +152,41 @@ module.exports = function (router, passport) {
       } else if (survey == null) {
         res.status(401).send('survey responses for user not found');
       } else if (survey) {
-        survey.features.push({
+        var newFeature = {
           prompt: req.body.prompt,
           format: req.body.format,
           dates: [],
           data: [],
-        });
+        };
+
+        survey.features.push(newFeature);
 
         survey.save(function (err) {
           if (err) {res.send(err); }
 
-          res.json({ message: 'user updated with new survey feature' });
+          res.json({ feature: newFeature });
         });
+      }
+    });
+  });
+
+  router.get('/surveyquestions', function (req, res) {
+    var owner = req.user.local.username;
+
+    Survey.findOne({ owner: owner }, function (err, survey) {
+      if (err) {
+        res.status(500).send('internal server error - try refreshing the page');
+      } else if (survey == null) {
+        res.status(401).send('survey responses for user not found');
+      } else if (survey) {
+        var surveyQuestions = survey.features.map(function (element) {
+          var currentObj = {};
+          currentObj.prompt = element.prompt;
+          currentObj.format = element.format;
+          return currentObj;
+        });
+
+        res.json({ surveyQuestions: surveyQuestions });
       }
     });
   });

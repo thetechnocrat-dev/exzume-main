@@ -1,6 +1,7 @@
 var React = require('react');
 var History = require('react-router').History;
 var SessionStore = require('../stores/sessionStore');
+var DataActions = require('../actions/dataActions');
 
 //components
 var Survey = require('./survey');
@@ -34,7 +35,7 @@ var DashboardLanding = React.createClass({
     if (SessionStore.isSignedIn()) {
       return (
         <div>
-          <h1 className="ui left aligned header">Your Daily Trackings</h1>
+          <h1 className="ui left aligned header">Your Manual Trackings</h1>
           <Survey />
           <h1 className="ui left aligned header">Your Data Streams</h1>
           <DataStreamIndex />

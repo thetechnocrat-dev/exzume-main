@@ -206,13 +206,14 @@ module.exports = {
     });
   },
 
-  addSurveyQuestion: function (params, successCallback, errorCallback) {
+  addSurveyQuestion: function (params, action, successCallback, errorCallback) {
     $.ajax({
       type: 'PUT',
       url: '/auth/addsurveyquestion',
       data: params,
       success:
         function (respData) {
+          action(respData);
           successCallback(respData);
           console.log('ajax add survey question success', respData);
         },
@@ -221,6 +222,23 @@ module.exports = {
         function (respError) {
           errorCallback(respError.responseText);
           console.log('ajax add survey question error', respError);
+        },
+    });
+  },
+
+  fetchSurveyQuestions: function (successCallback) {
+    $.ajax({
+      type: 'GET',
+      url: '/auth/surveyquestions',
+      success:
+        function (respData) {
+          successCallback(respData);
+          console.log('ajax get survey questions success');
+        },
+
+      error:
+        function (respError) {
+          console.log('ajax get survey question error', respError);
         },
     });
   },

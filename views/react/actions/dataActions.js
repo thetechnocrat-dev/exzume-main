@@ -14,8 +14,26 @@ module.exports = {
     ApiUtil.fetchData(this.receivedData);
   },
 
+  receiveSurveyQuestion: function (surveyQuestion) {
+    Dispatcher.dispatch({
+      actionType: DataConstants.SURVEY_QUESTION_RECEIVED,
+      data: surveyQuestion,
+    });
+  },
+
   addSurveyQuestion: function (params, success, err) {
-    ApiUtil.addSurveyQuestion(params, success, err);
+    ApiUtil.addSurveyQuestion(params, this.receiveSurveyQuestion, success, err);
+  },
+
+  receiveSurveyQuestions: function (surveyQuestions) {
+    Dispatcher.dispatch({
+      actionType: DataConstants.SURVEY_QUESTIONS_RECEIVED,
+      data: surveyQuestions,
+    });
+  },
+
+  retrieveSurveyQuestions: function () {
+    ApiUtil.fetchSurveyQuestions(this.receiveSurveyQuestions);
   },
 
 };
