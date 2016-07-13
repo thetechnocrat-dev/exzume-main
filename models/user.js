@@ -19,9 +19,9 @@ var UserSchema = new Schema({
       liked: Boolean,
     },
   ],
-  survey: { type: mongoose.Schema.Types.ObjectId, ref: 'Survey' },
-  fitbit: { type: mongoose.Schema.Types.ObjectId, ref: 'Fitbit' },
-  lastfm: { type: mongoose.Schema.Types.ObjectId, ref: 'LastFM' },
+  survey: { type: Schema.Types.ObjectId, ref: 'Survey' },
+  fitbit: { type: Schema.Types.ObjectId, ref: 'Fitbit' },
+  lastfm: { type: Schema.Types.ObjectId, ref: 'LastFM' },
 }, { autoIndex: false });
 
 UserSchema.methods.generateHash = function (password) {

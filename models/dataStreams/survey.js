@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 var SurveySchema = new Schema({
   owner: String,
   features: [{
+      featureId: Schema.Types.ObjectId,
       prompt: String,
       format: String, // see notes below for accepted formats
       dates: [Date],
