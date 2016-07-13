@@ -243,6 +243,25 @@ module.exports = {
     });
   },
 
+  fetchData: function (params, action) {
+    $.ajax({
+      type: 'PUT',
+      url: '/auth/selectseries',
+      data: params,
+      success:
+        function (respData) {
+          console.log(respData);
+          action(respData);
+          console.log('ajax get series data success');
+        },
+
+      error:
+        function (respError) {
+          console.log('ajax get series data error', respError);
+        },
+    });
+  },
+
   submitSurveyAnswer: function (params, success, error) {
     console.log(params);
     $.ajax({

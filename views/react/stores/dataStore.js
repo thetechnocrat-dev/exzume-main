@@ -7,7 +7,7 @@ var _seriesData = [];
 var _surveyQuestions = [];
 
 DataStore.resetSeriesData = function (lineData) {
-  _seriesData = lineData;
+  _seriesData = [lineData];
 },
 
 DataStore.getSeriesData = function () {
@@ -29,7 +29,7 @@ DataStore.addSurveyQuestion = function (surveyQuestion) {
 DataStore.__onDispatch = function (payload) {
   switch (payload.actionType) {
     case DataConstants.DATA_RECEIVED:
-      this.resetSeriesData(payload.lineData);
+      this.resetSeriesData(payload.lineData.data);
       this.__emitChange();
       break;
     case DataConstants.SURVEY_QUESTIONS_RECEIVED:

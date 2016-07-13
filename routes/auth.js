@@ -55,11 +55,12 @@ module.exports = function (router, passport) {
     res.json({ message: 'sign out success' });
   });
 
-  router.get('/selectseries', function (req, res) {
+  router.put('/selectseries', function (req, res) {
+    var lineData;
     var dateArr1 = [];
     var dataArr1 = [];
-    var dateArr2 = [];
-    var dataArr2 = [];
+    // var dateArr2 = [];
+    // var dataArr2 = [];
     var createValArray = function (arr1, arr2) {
       var valArray = [];
       var kvPair = {};
@@ -73,41 +74,53 @@ module.exports = function (router, passport) {
       return valArray;
     };
 
-    Survey.findOne({ owner: req.body.username, }, 'features', function (err, survey) {
+    Survey.findOne({ owner: req.user.local.username, }, function (err, survey) {
       if (err) {
         res.status(500).send('internal server error - try refreshing the page');
       } else if (survey == null) {
         res.status(401).send('survey responses for user not found');
       } else if (survey) {
         var features = survey.features;
-        for (f in features) {
-          if (features[f].name == req.body.f1) {
-            console.log(features[f].name);
-            dateArr1 = features[f].dates;
-            dataArr1 = features[f].data;
-          } else if (features[f].name == req.body.f2) {
-            console.log(features[f].name);
-            dateArr2 = features[f].dates;
-            dataArr2 = features[f].data;
+        for (var i = 0; i < features.length; i++) {
+          var f = features[i];
+          if (f._id.toString() === req.body.id) {
+            dateArr1 = f.data.map(function (el) {return parseInt(el); });
+            dataArr1 = f.data.map(function (el) {return parseInt(el); });
+            console.log(dataArr1);
           }
+
+          // else if (features[f].name == req.body.f2) {
+          //   console.log(features[f].name);
+          //   dateArr2 = features[f].dates;
+          //   dataArr2 = features[f].data;
+          // }
         }
 
-        var lineData = [
-          {
+        var lineData = {
             name: 'series1',
-            values: createValueArray(dateArr1, dataArr1),
+            values: createValArray(dateArr1, dataArr1),
             strokeWidth: 3,
             strokeDashArray: '5,5',
-          },
-          {
-            name: 'series2',
-            values: createValueArray(dateArr2, dataArr2),
-          },
-        ];
+          };
+
+          console.log(lineData.values);
+
+        res.json({ data: lineData });
+
+        // var lineData = [
+        //   {
+        //     name: 'series1',
+        //     values: createValArray(dateArr1, dataArr1),
+        //     strokeWidth: 3,
+        //     strokeDashArray: '5,5',
+        //   },
+        //   {
+        //     name: 'series2',
+        //     values: createValArray(dateArr2, dataArr2),
+        //   },
+        // ];
       }
     });
-
-    res.json({ lineData: lineData });
   });
 
   router.put('/addsurveyquestion', function (req, res) {

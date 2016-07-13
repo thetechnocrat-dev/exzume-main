@@ -10,8 +10,8 @@ module.exports = {
     });
   },
 
-  retrievedData: function () {
-    ApiUtil.fetchData(this.receivedData);
+  retrievedData: function (params) {
+    ApiUtil.fetchData(params, this.receivedData);
   },
 
   receiveSurveyQuestion: function (surveyQuestion) {
