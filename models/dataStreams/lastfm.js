@@ -1,9 +1,11 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var FitbitSchema = new Schema({
-  owner: { type: String, unique: true },
-  profileId: { type: String, unique: true },
+var LastFMSchema = new Schema({
+  owner: String,
+  username: String,
+  key: String,
+  // profileId: String,
   accessToken: String,
   refreshToken: String,
   features: [{
@@ -14,4 +16,4 @@ var FitbitSchema = new Schema({
   ],
 }, { autoIndex: false });
 
-module.exports = mongoose.model('Fitbit', FitbitSchema);
+module.exports = mongoose.model('LastFM', LastFMSchema);

@@ -1,11 +1,12 @@
 var FitbitStrategy = require('passport-fitbit-oauth2').FitbitOAuth2Strategy;
 var Fitbit = require('../../../models/dataStreams/fitbit');
+var config = require('../../config');
 
 module.exports = function (passport) {
   passport.use(new FitbitStrategy({
-      clientID:     '227TQM',
-      clientSecret: 'd44c4411eec72933ccd86d7efe8ea12d',
-      callbackURL: '/auth/fitbit/callback/',
+      clientID: config.fitbit.clientID,
+      clientSecret: config.fitbit.clientSecret,
+      callbackURL: config.fitbit.callbackURL,
       passReqToCallback: true,
     },
     function (req, accessToken, refreshToken, profile, done) {
@@ -27,4 +28,6 @@ module.exports = function (passport) {
         };
       });
     }));
+
+    // add disconnect fitbit stream
 };

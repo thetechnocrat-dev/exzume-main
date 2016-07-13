@@ -6,17 +6,17 @@ try {
 }
 
 module.exports = {
-  db: process.env.MONGODB_URI || dev['db'],
-	secretSecret: process.env.SESSION_SECRET || dev['sessionSecret'],
+  db: process.env.MONGODB_URI || dev.db,
+	secretSecret: process.env.SESSION_SECRET || dev.sessionSecret,
   fitbit: {
-    clientID: '227TQM',
-    clientSecret: 'd44c4411eec72933ccd86d7efe8ea12d',
-    callbackURL: 'http://localhost:3000/auth/fitbit/callback/',
+    clientID: process.env.FITBIT_ID || dev.fitbit.clientID,
+    clientSecret: process.env.FITBIT_SECRET || dev.fitbit.clientSecret,
+    callbackURL: process.env.FITBIT_URL || dev.fitbit.callbackURL,
   },
   lastfm: {
-    clientID: 'd92bbfbcd24fdfd9b30f342cfe704e2d',
-    clientSecret: 'a3c44d2356aba4e6f5257c9240e47ed8',
-    callbackURL: 'http://localhost:3000/auth/lastfm/callback'
+    clientID: process.env.LASTFM_ID || dev.lastfm.clientID,
+    clientSecret: process.env.LASTFM_SECRET || dev.lastfm.clientSecret,
+    callbackURL: process.env.LASTFM_URL || dev.lastfm.callbackURL,
   },
 
 };

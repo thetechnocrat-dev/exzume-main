@@ -3,11 +3,12 @@ var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt');
 var Survey = require('./dataStreams/survey');
 var Fitbit = require('./dataStreams/fitbit');
+var LastFM = require('./dataStreams/lastfm');
 
 var UserSchema = new Schema({
   local: {
-    username: String,
-    password: String,
+    username: { type: String, unique: true, required: true },
+    password: { type: String, required: true },
     email: String,
   },
   formURL: { type: String, default: 'none' },
@@ -18,8 +19,9 @@ var UserSchema = new Schema({
       liked: Boolean,
     },
   ],
-  fitbit: { type: mongoose.Schema.Types.ObjectId, ref: 'Fitbit' },
   survey: { type: mongoose.Schema.Types.ObjectId, ref: 'Survey' },
+  fitbit: { type: mongoose.Schema.Types.ObjectId, ref: 'Fitbit' },
+  lastfm: { type: mongoose.Schema.Types.ObjectId, ref: 'LastFM' },
 }, { autoIndex: false });
 
 UserSchema.methods.generateHash = function (password) {
