@@ -6,8 +6,8 @@ var Fitbit = require('./dataStreams/fitbit');
 
 var UserSchema = new Schema({
   local: {
-    username: String,
-    password: String,
+    username: { type: String, unique: true, required: true },
+    password: { type: String, required: true },
     email: String,
   },
   formURL: { type: String, default: 'none' },
