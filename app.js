@@ -9,8 +9,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 // setup configurations
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 var config = require('./config/config');
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+console.log('currently in ' + process.env.NODE_ENV + ' mode');
 
 if (process.env.NODE_ENV === 'development') {
   app.use(logger('dev'));

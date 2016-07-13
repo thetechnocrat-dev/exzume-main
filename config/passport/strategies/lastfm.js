@@ -2,7 +2,7 @@ var LastFMStrategy = require('passport-lastfm');
 // var Fitbit = require('../../../models/dataStreams/lastfm');
 
 module.exports = function (passport) {
-  // passport.use(new LastFmStrategy({
+  // passport.use(new LastFMStrategy({
   //   'api_key': process.env.LASTFM_KEY,
   //   'secret': process.env.LASTFM_SECRET,
   //   'callbackURL': cb_url + '/auth/lastfm/callback'
