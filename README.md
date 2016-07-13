@@ -5,25 +5,25 @@ $ webpack --watch
 $ node ./bin/www
 
 # RESTful Architecture (Internal / Client-Facing)
-- 'GET'     /auth/:username                   -- show user object as JSON
+- `GET`     /auth/:username                   -- show user object as JSON
 
-- 'GET'     /auth/insights                    -- show all user's insights
-- 'GET'     /auth/insights/:insight-id        -- show insight
-- 'PUT'     /auth/insights/:insight-id        -- update insight (star/unstar)
-- 'DELETE'  /auth/insights/:insight-id        -- delete insight
-- 'POST'    /auth/insights/:insight-id        -- create insight (based on data collection tool)
+- `GET`     /auth/insights                    -- show all user's insights
+- `GET`     /auth/insights/:insight-id        -- show insight
+- `PUT`     /auth/insights/:insight-id        -- update insight (star/unstar)
+- `DELETE`  /auth/insights/:insight-id        -- delete insight
+- `POST`    /auth/insights/:insight-id        -- create insight (based on data collection tool)
 
-- 'GET'     /auth/features                    -- show all user's features as JSON
-- 'GET'     /auth/features/:feature-id        -- show feature (db popularity, etc.)
-- 'PUT'     /auth/features/:feature-id        -- add user to users array or edit user array
-- 'POST'    /auth/features/:feature-id        -- create feature
+- `GET`     /auth/features                    -- show all user's features as JSON
+- `GET`     /auth/features/:feature-id        -- show feature (db popularity, etc.)
+- `PUT`     /auth/features/:feature-id        -- add user to users array or edit user array
+- `POST`    /auth/features/:feature-id        -- create feature
 
-- 'GET'     /auth/:datastream                 -- request auth resource (returns user credentials)
-- 'GET'     /auth/:datastream/callbackURL     -- redirect user to dashboard
-- 'GET'     /auth/:datastream/:feature-id     -- get user's datastream's feature document
-- 'PUT'     /auth/:datastream/:feature-id     -- add data to feature document
+- `GET`     /auth/:datastream                 -- request auth resource (returns user credentials)
+- `GET`     /auth/:datastream/callbackURL     -- redirect user to dashboard
+- `GET`     /auth/:datastream/:feature-id     -- get user's datastream's feature document
+- `PUT`     /auth/:datastream/:feature-id     -- add data to feature document
 
-- 'GET'     /auth/plot?feat1=:feature-id?feat2=:???     -- plot features over time
+- `GET`     /auth/plot?feat1=:feature-id?feat2=:???     -- plot features over time
 
 # Account Info - for signing up for api dev accounts
 
