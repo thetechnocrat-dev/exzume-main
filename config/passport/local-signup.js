@@ -24,19 +24,16 @@ module.exports = function (passport) {
 
           // make the users default survey data stream
           var newSurvey = new Survey();
-
           newSurvey.owner = username;
-
           newSurvey.save(function (err) {
             if (err) {throw err;}
           });
 
           var newUser = new User();
-
           newUser.local.username = username;
           newUser.local.password = newUser.generateHash(password);
           newUser.local.email = req.body.email;
-          newUser.dataStreams.push(newSurvey.id);
+          newUser.survey = newSurvey;
 
           newUser.save(function (err) {
             if (err) {

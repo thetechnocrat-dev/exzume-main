@@ -1,5 +1,5 @@
 var FitbitStrategy = require('passport-fitbit-oauth2').FitbitOAuth2Strategy;
-var Fitbit = require('../../models/dataStreams/fitbit');
+var Fitbit = require('../../../models/dataStreams/fitbit');
 
 module.exports = function (passport) {
   passport.use(new FitbitStrategy({
@@ -19,7 +19,7 @@ module.exports = function (passport) {
         if (err) {
           done(err, user);
         } else {
-          user.dataStreams.push(fitbit.id);
+          user.fitbit = fitbit;
           user.save(function (err) {
             console.log('here');
             done(err, user);

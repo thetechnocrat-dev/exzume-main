@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt');
+var Survey = require('./dataStreams/survey');
+var Fitbit = require('./dataStreams/fitbit');
 
 var UserSchema = new Schema({
   local: {
@@ -16,11 +18,8 @@ var UserSchema = new Schema({
       liked: Boolean,
     },
   ],
-  dataStreams: [{
-      type: Schema.Types.ObjectId,
-      ref: String,
-    },
-  ],
+  fitbit: { type: mongoose.Schema.Types.ObjectId, ref: 'Fitbit' },
+  survey: { type: mongoose.Schema.Types.ObjectId, ref: 'Survey' },
 }, { autoIndex: false });
 
 UserSchema.methods.generateHash = function (password) {
