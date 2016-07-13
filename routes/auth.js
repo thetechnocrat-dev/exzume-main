@@ -111,8 +111,7 @@ module.exports = function (router, passport) {
   });
 
   router.put('/addsurveyquestion', function (req, res) {
-    console.log(req.body);
-    Survey.findOne({ 'owner': req.body.owner }, function (err, survey) {
+    Survey.findOne({ owner: req.body.owner }, function (err, survey) {
       if (err) {
         res.status(500).send('internal server error - try refreshing the page');
       } else if (survey == null) {
@@ -147,7 +146,6 @@ module.exports = function (router, passport) {
       } else if (survey) {
         var surveyQuestions = survey.features.map(function (element) {
           var currentObj = {};
-          console.log(element);
           currentObj.id = element._id;
           currentObj.prompt = element.prompt;
           currentObj.format = element.format;
@@ -160,7 +158,27 @@ module.exports = function (router, passport) {
   });
 
   router.put('/submitsurveyanswer', function (req, res) {
-    console.log(res.body);
+    console.log(req.body);
+    var objectId = mongoose.Types.ObjectId(req.body.objectId);
+    console.log('onjid', objectId);
+    console.log('user', req.user.local.username);
+
+    var conditions = { owner: req.user.local.username, 'features._id': objectId };
+    var update = { $push:
+      { 'features.$.data': req.body.answer, 'features.$.dates': req.body.date, },
+    };
+    var options = { multi: true };
+
+    Survey.update(conditions, update, options,
+      function (err, numAffected) {
+        if (err) {
+          res.status(500).json({ message: 'internal server error - try refreshing the page' });
+        }
+
+        console.log('numAff', numAffected);
+
+        res.json({ message: 'survey feature push success' });
+      });
   });
 
   router.get('/*', function (req, res) {

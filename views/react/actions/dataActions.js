@@ -37,7 +37,7 @@ module.exports = {
   },
 
   submitSurveyAnswer: function (params, success, error) {
-    ApitUtil.submitSurveyAnswer(params, success, error);
+    ApiUtil.submitSurveyAnswer(params, success, error);
   },
 
 };

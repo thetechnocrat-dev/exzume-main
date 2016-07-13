@@ -244,12 +244,14 @@ module.exports = {
   },
 
   submitSurveyAnswer: function (params, success, error) {
+    console.log(params);
     $.ajax({
       type: 'PUT',
       url: '/auth/submitsurveyanswer',
+      data: params,
       success:
         function (respData) {
-          successCallback(respData);
+          success(respData);
           console.log('ajax submit survey answer success');
         },
 

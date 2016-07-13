@@ -1,28 +1,27 @@
 var React = require('react');
 var DataActions = require('../../actions/dataActions');
+var LinkedStateMixin = require('react-addons-linked-state-mixin');
 
-// not working look into react custom link state mixins
 var AgreementScale = React.createClass({
+  mixins: [LinkedStateMixin],
+
   propTypes: {
-    key: React.PropTypes.number,
     objectId: React.PropTypes.string,
     prompt: React.PropTypes.string.isRequired,
   },
 
   getInitialState: function () {
-    // to make answer statue unique for each question
-    var answer = 'answer' + this.props.key;
+    var answer = 'answer' + this.props.objectId; // to make answer state unique for each question
     var initialState = { prompt: this.props.prompt, objectId: this.props.objectId };
     initialState[answer] = '';
     return initialState;
   },
 
-  componentDidMount: function () {
-    console.log(this.props.key);
-  },
-
   submitAnswer: function () {
-    var params = this.state;
+    var answer = 'answer' + this.props.objectId;
+    var params = {
+      objectId: this.props.objectId, answer: parseInt(this.state[answer]), date: Date.now(),
+    };
     DataActions.submitSurveyAnswer(params, this.error, this.success);
   },
 
@@ -42,7 +41,7 @@ var AgreementScale = React.createClass({
             format="text"
             name={this.state.prompt}
             placeholder="enter a number 1 thru 7"
-            valueLink={_this.linkState('answer' + this.props.key)}
+            valueLink={this.linkState('answer' + this.props.objectId)}
           />
           <div
             className="ui green button"

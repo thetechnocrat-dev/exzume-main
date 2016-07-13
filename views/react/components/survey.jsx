@@ -83,11 +83,11 @@ var Survey = React.createClass({
     return DataStore.getSurveyQuestions().map(function (question, idx) {
       if (question.format === 'agreement scale') {
         return (
-          <AgreementScale key={idx} prompt={question.prompt} objectId={'444'} />
+          <AgreementScale key={idx} prompt={question.prompt} objectId={question.id} />
         );
       } else if (question.format === 'text') {
         return (
-          <TextQuestion key={idx} prompt={question.prompt} objectId={'444'} />
+          <TextQuestion key={idx} prompt={question.prompt} objectId={question.id} />
         );
       }
     });
