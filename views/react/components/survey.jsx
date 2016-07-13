@@ -5,6 +5,8 @@ var DataStore = require('../stores/dataStore');
 var DataActions = require('../actions/dataActions');
 
 // components
+var TextQuestion = require('./form/TextQuestion');
+var AgreementScale = require('./form/AgreementScale');
 
 var Survey = React.createClass({
   mixins: [LinkedStateMixin],
@@ -52,6 +54,10 @@ var Survey = React.createClass({
 
   },
 
+  submitAnswer: function () {
+
+  },
+
   clickAngleIcon: function () {
     DataActions.retrieveSurveyQuestions();
     this.setState({ shouldShowContent: !this.state.shouldShowContent });
@@ -77,22 +83,11 @@ var Survey = React.createClass({
     return DataStore.getSurveyQuestions().map(function (question, idx) {
       if (question.format === 'agreement scale') {
         return (
-          <div key={idx} className="field">
-            <label>{question.prompt}</label>
-            <p>agreement scale not implemented yet</p>
-          </div>
+          <AgreementScale key={idx} prompt={question.prompt} objectId={'444'} />
         );
       } else if (question.format === 'text') {
         return (
-          <div key={idx} className="field">
-            <label>{question.prompt}</label>
-            <input
-              format="text"
-              name={question.prompt}
-              placeholder=""
-              valueLink={_this.linkState(question.prompt)}
-              ></input>
-          </div>
+          <TextQuestion key={idx} prompt={question.prompt} objectId={'444'} />
         );
       }
     });
@@ -134,13 +129,6 @@ var Survey = React.createClass({
         <div className="ui container">
           <form className="ui form">
             {this.makeSurveyQuestions()}
-            <div
-              className="ui disabled green button"
-              style={submitButtonStyle}
-              onClick={this.submitAddQuestion}
-            >
-              Submit
-            </div>
           </form>
           <h3 className="left aligned header">Add Question</h3>
           <form className="ui form">

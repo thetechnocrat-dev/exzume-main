@@ -36,4 +36,8 @@ module.exports = {
     ApiUtil.fetchSurveyQuestions(this.receiveSurveyQuestions);
   },
 
+  submitSurveyAnswer: function (params, success, error) {
+    ApitUtil.submitSurveyAnswer(params, success, error);
+  },
+
 };

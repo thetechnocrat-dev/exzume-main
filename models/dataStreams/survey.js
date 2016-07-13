@@ -21,6 +21,7 @@ if (mongoose.models.Survey) {
 }
 
 module.exports = Survey;
+
 // module.exports = mongoose.model('Survey', SurveySchema);
 
 // question types:

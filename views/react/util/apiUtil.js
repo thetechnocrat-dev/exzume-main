@@ -243,4 +243,21 @@ module.exports = {
     });
   },
 
+  submitSurveyAnswer: function (params, success, error) {
+    $.ajax({
+      type: 'PUT',
+      url: '/auth/submitsurveyanswer',
+      success:
+        function (respData) {
+          successCallback(respData);
+          console.log('ajax submit survey answer success');
+        },
+
+      error:
+        function (respError) {
+          console.log('ajax get survey question error', respError);
+        },
+    });
+  },
+
 };

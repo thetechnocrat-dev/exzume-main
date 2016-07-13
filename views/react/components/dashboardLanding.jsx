@@ -42,7 +42,6 @@ var DashboardLanding = React.createClass({
           <h1 className="ui header">Your Insights</h1>
           <InsightIndex />
           <h1 className="ui header">Data Exploration Tool</h1>
-          <p>Choose any two features to correlate.</p>
           <DataExpTool />
           <h1 className="ui header">Your Data Visualizations</h1>
           <DataVisIndex user={SessionStore.currentUser()} />

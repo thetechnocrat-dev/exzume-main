@@ -2,7 +2,6 @@ var User = require('../models/user');
 var Fitbit = require('../models/dataStreams/fitbit');
 var Survey = require('../models/dataStreams/survey.js');
 var mongoose = require('mongoose');
-// var passport = require('passport');
 
 module.exports = function (router, passport) {
   // makes sure a user is logged in
@@ -42,7 +41,7 @@ module.exports = function (router, passport) {
   router.get('/fitbit',
     passport.authenticate('fitbit', { scope: ['activity', 'heartrate', 'location',
                                               'nutrition', 'profile', 'settings',
-                                              'sleep', 'social', 'weight', ] })
+                                              'sleep', 'social', 'weight'] })
   );
 
   router.get('/fitbit/callback', passport.authenticate('fitbit', {
@@ -148,6 +147,8 @@ module.exports = function (router, passport) {
       } else if (survey) {
         var surveyQuestions = survey.features.map(function (element) {
           var currentObj = {};
+          console.log(element);
+          currentObj.id = element._id;
           currentObj.prompt = element.prompt;
           currentObj.format = element.format;
           return currentObj;
@@ -156,6 +157,10 @@ module.exports = function (router, passport) {
         res.json({ surveyQuestions: surveyQuestions });
       }
     });
+  });
+
+  router.put('/submitsurveyanswer', function (req, res) {
+    console.log(res.body);
   });
 
   router.get('/*', function (req, res) {
