@@ -2,6 +2,7 @@ var User = require('../models/user');
 var Insight = require('../models/insight');
 var Fitbit = require('../models/dataStreams/fitbit');
 var Survey = require('../models/dataStreams/survey.js');
+var Feature = require('../models/features.js');
 var mongoose = require('mongoose');
 
 module.exports = function (router, passport) {
@@ -17,22 +18,12 @@ module.exports = function (router, passport) {
     }
   );
 
-  // router.param('username', function (req, res, next, username) {
-  //   User.findOne({ 'local.username': username }, function (err, user) {
-  //     if (err) {
-  //       return next(err);
-  //     } else if (user) {
-  //       req.user = user;
-  //       return next();
-  //     } else {
-  //       console.log('failed to load user');
-  //       res.end();
-  //     }
-  //   });
-  // });
+  router.get('/session', function (req, res) {
+    res.json(req.user);
+  });
 
   router.get('/insights', function (req, res) {
-    Insight.find({ owner: req.user._id }, function (err, insights) {
+    Insight.find({ ownerId: req.user._id }, function (err, insights) {
       if (err) res.send(err);
       res.json(insights);
     });
@@ -48,7 +39,6 @@ module.exports = function (router, passport) {
     .put(function (req, res) {
       Insight.findOne({ _id: req.params.insightId }, function (err, insight) {
         if (insight) {
-          console.log(req.body);
           insight.message = req.body.message;
           insight.liked = req.body.liked;
           insight.save(function (err, insight) {
@@ -59,10 +49,9 @@ module.exports = function (router, passport) {
       });
     })
     .post(function (req, res) {
-      console.log(req.params.insightId);
       var newInsight = new Insight();
       newInsight.message = req.body.message;
-      newInsight.owner = ObjectId(req.body.owner);
+      newInsight.ownerId = mongoose.Types.ObjectId(req.body.ownerId);
       newInsight.save(function (err, newInsight) {
         if (err) res.send(err);
         res.json(newInsight);
@@ -75,9 +64,31 @@ module.exports = function (router, passport) {
       });
     });
 
-  router.get('/session', function (req, res) {
-    res.json(req.user);
+  router.get('/features', function (req, res) {
+    Feature.find({ owner: req.user._id }, function (err, features) {
+      if (err) res.send(err);
+      res.json(features);
+    });
   });
+
+  router.route('/features/:featureId')
+    .get(function (req, res) {
+      Feature.findOne({ _id: req.params.featureId }, function (err, feature) {
+        if (err) res.send(err);
+        if (feature) res.json(feature);
+      });
+    })
+    .put(function (req, res) {
+      Feature.findOne({ _id: req.params.featureId }, function (err, feature) {
+        if (feature) {
+          feature.users.push(req.user._id);
+          feature.save(function (err, feature) {
+            if (err) res.send(err);
+            if (feature) res.json(feature);
+          });
+        }
+      });
+    });
 
   router.get('/fitbit',
     passport.authenticate('fitbit', { scope: ['activity', 'heartrate', 'location',
