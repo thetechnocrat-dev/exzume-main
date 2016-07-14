@@ -4,14 +4,14 @@ var config = require('../../config');
 
 module.exports = function (passport) {
   passport.use(new LastFMStrategy({
-    clientID: config.lastfm.clientID,
+    apiKey: config.lastfm.apiKey,
     clientSecret: config.lastfm.clientSecret,
     callbackURL: config.lastfm.callbackURL,
   }, function (req, sessionKey, done) {
     // Find/Update user's lastfm session
     var user = req.user;
     var lastfm = new LastFM();
-    lastfm.owner = user.local.username;
+    lastfm.ownerId = user._id;
     lastfm.username = sessionKey.username;
     lastfm.key = sessionKey.key;
     lastfm.save(function (err) {

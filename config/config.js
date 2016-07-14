@@ -14,7 +14,7 @@ module.exports = {
     callbackURL: process.env.FITBIT_URL || dev.fitbit.callbackURL,
   },
   lastfm: {
-    clientID: process.env.LASTFM_ID || dev.lastfm.clientID,
+    clientID: process.env.LASTFM_ID || dev.lastfm.clientID,               // API Key
     clientSecret: process.env.LASTFM_SECRET || dev.lastfm.clientSecret,
     callbackURL: process.env.LASTFM_URL || dev.lastfm.callbackURL,
   },

@@ -1,8 +1,9 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var User = require('../user');
 
 var FitbitSchema = new Schema({
-  owner: { type: String, unique: true },
+  ownerId: { type: Schema.Types.ObjectId, ref: 'User' },
   profileId: { type: String, unique: true },
   accessToken: String,
   refreshToken: String,
