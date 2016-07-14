@@ -5,8 +5,8 @@ var DataStore = require('../stores/dataStore');
 var DataActions = require('../actions/dataActions');
 
 // components
-var TextQuestion = require('./form/TextQuestion');
-var AgreementScale = require('./form/AgreementScale');
+var TextQuestion = require('./form/textQuestion');
+var AgreementScale = require('./form/agreementScale');
 
 var Survey = React.createClass({
   mixins: [LinkedStateMixin],
