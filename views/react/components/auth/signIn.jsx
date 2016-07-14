@@ -1,6 +1,7 @@
 var React = require('react');
 var SessionActions = require('../../actions/sessionActions');
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
+var FastFlux = require('../../util/fastFlux/actions');
 var History = require('react-router').History;
 
 var SignIn = React.createClass({
@@ -20,14 +21,20 @@ var SignIn = React.createClass({
     } else if (this.state.password === '') {
       this.setState({ errors: 'password required' });
     } else {
-      var signInParams = {
+      var signInBody = {
         username: this.state.username,
         password: this.state.password,
       };
 
       // will remain in loading state until AJAX callback changes state
       this.setState({ loading: true });
-      SessionActions.signIn(signInParams, this.successCallback, this.errorCallback);
+      FastFlux.webCycle('post', '/signin', {
+        body: signInBody,
+        success: this.successCallback,
+        error: this.errorCallback,
+      });
+
+      // SessionActions.signIn(signInBody, this.successCallback, this.errorCallback);
     }
   },
 

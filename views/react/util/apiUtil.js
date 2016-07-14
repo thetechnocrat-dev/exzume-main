@@ -1,44 +1,4 @@
 module.exports = {
-  signUp: function (params, successCallback, errorCallback) {
-    $.ajax({
-      type: 'POST',
-      url: '/signup',
-      data: params,
-      dataType: 'json',
-      success:
-        function (respData) {
-          successCallback();
-          console.log('ajax sign up success', respData);
-        },
-
-      error:
-        function (respError) {
-          errorCallback(respError.responseText);
-          console.log('ajax sign up error', respError);
-        },
-    });
-  },
-
-  signIn: function (params, successCallback, errorCallback) {
-    $.ajax({
-      type: 'POST',
-      url: '/signin',
-      data: params,
-      dataType: 'json',
-      success:
-        function (respData) {
-          successCallback();
-          console.log('ajax sign in success', respData);
-        },
-
-      error:
-        function (respError) {
-          errorCallback(respError.responseText);
-          console.log('ajax sign in error', respData);
-        },
-    });
-  },
-
   signOut: function (actionCallback, successCallback) {
     $.ajax({
       type: 'GET',
