@@ -11,7 +11,7 @@ module.exports = function (passport) {
     // Find/Update user's lastfm session
     var user = req.user;
     var lastfm = new LastFM();
-    lastfm.owner = user.local.username;
+    lastfm.ownerId = user._id;
     lastfm.username = sessionKey.username;
     lastfm.key = sessionKey.key;
     lastfm.save(function (err) {

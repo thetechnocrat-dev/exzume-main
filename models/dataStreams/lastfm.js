@@ -1,13 +1,11 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var User = require('../user');
 
 var LastFMSchema = new Schema({
-  owner: String,
+  ownerId: { type: Schema.Types.ObjectId, ref: 'User' },
   username: String,
   key: String,
-  // profileId: String,
-  accessToken: String,
-  refreshToken: String,
   features: [{
       name: String,
       dates: [Date],

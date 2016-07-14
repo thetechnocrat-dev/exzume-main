@@ -8,8 +8,8 @@ module.exports = {
     callbackURL: '/auth/datastreams/fitbit/callback/',
   },
   lastfm: {
-    clientID: 'd92bbfbcd24fdfd9b30f342cfe704e2d',
-    clientSecret: 'a3c44d2356aba4e6f5257c9240e47ed8',
-    callbackURL: 'http://localhost:3000/auth/lastfm/callback',
+    clientID: 'efe65c99aaf387249c3cf8ca16e6b884',
+    clientSecret: '78bff7ac8ce66ea1c5f1f43017dd9b21',
+    callbackURL: 'http://localhost:3000/auth/datastreams/lastfm/callback',
   },
 };
