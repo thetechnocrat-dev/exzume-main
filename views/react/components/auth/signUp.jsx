@@ -1,6 +1,6 @@
 var React = require('react');
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
-var SessionActions = require('../../actions/sessionActions');
+var FastFlux = require('../../util/fastFlux/actions');
 var History = require('react-router').History;
 
 var Signup = React.createClass({
@@ -33,7 +33,7 @@ var Signup = React.createClass({
 
       // will remain in loading state until AJAX callback changes state
       this.setState({ loading: true });
-      SessionActions.fluxWebCycle('post', '/signup', {
+      FastFlux.webCycle('post', '/signup', {
         body: signUpBody,
         success: this.successCallback,
         error: this.errorCallback,
@@ -45,9 +45,8 @@ var Signup = React.createClass({
     this.history.push('/dashboard');
   },
 
-  errorCallback: function (errorMessage) {
-    this.setState({ loading: false });
-    this.setState({ errors: errorMessage });
+  errorCallback: function (error) {
+    this.setState({ loading: false, errors: error.responseText });
   },
 
   makeErrors: function () {
