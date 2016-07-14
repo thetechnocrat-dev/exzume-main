@@ -25,7 +25,7 @@ var Signup = React.createClass({
     } else if (this.state.email === '') {
       this.setState({ errors: 'email is required' });
     } else {
-      var signUpParams = {
+      var signUpBody = {
         username: this.state.username,
         password: this.state.password,
         email: this.state.email,
@@ -33,7 +33,11 @@ var Signup = React.createClass({
 
       // will remain in loading state until AJAX callback changes state
       this.setState({ loading: true });
-      SessionActions.signUp(signUpParams, this.successCallback, this.errorCallback);
+      SessionActions.fluxWebCycle('post', '/signup', {
+        body: signUpBody,
+        success: this.successCallback,
+        error: this.errorCallback,
+      });
     }
   },
 
