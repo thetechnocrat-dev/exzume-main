@@ -28,7 +28,9 @@ $ node ./bin/www
 email: exzume.app@gmail.com
 pw   : knowthyself42!
 
-current accounts
+lastfm:
+username -- exzume
+pw -- knowthyself42!
 
 fitbit: https://dev.fitbit.com/apps/details/227TQM
 lastFM:

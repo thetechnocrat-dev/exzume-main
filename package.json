@@ -43,7 +43,8 @@
     "react-sticky": "^5.0.4",
     "scroll-into-view": "^1.6.0",
     "semantic-ui": "^2.2",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "webpack": "^1.13.1"
   },
   "devDependencies": {
     "webpack": "^1.13.1"
