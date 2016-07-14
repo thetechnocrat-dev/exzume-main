@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt');
+var Insight = require('./insight');
 var Survey = require('./dataStreams/survey');
 var Fitbit = require('./dataStreams/fitbit');
 var LastFM = require('./dataStreams/lastfm');
@@ -13,12 +14,7 @@ var UserSchema = new Schema({
   },
   formURL: { type: String, default: 'none' },
   vis: [{ url: String }],
-  insights: [{
-      message: String,
-      date: { type: Date, default: Date.now },
-      liked: Boolean,
-    },
-  ],
+  insights: [{ type: Schema.Types.ObjectId, ref: 'Insight' }],
   survey: { type: Schema.Types.ObjectId, ref: 'Survey' },
   fitbit: { type: Schema.Types.ObjectId, ref: 'Fitbit' },
   lastfm: { type: Schema.Types.ObjectId, ref: 'LastFM' },

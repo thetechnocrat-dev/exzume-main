@@ -77,7 +77,7 @@ module.exports = {
   starInsight: function (params, successCallback, errorCallback) {
     $.ajax({
       type: 'PUT',
-      url: '/auth/starinsight',
+      url: '/auth/insights/' + params.insightId,
       data: params,
       success:
         function (resp) {

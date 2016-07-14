@@ -1,4 +1,5 @@
 var User = require('../models/user');
+var Insight = require('../models/insight');
 var Fitbit = require('../models/dataStreams/fitbit');
 var Survey = require('../models/dataStreams/survey.js');
 var mongoose = require('mongoose');
@@ -16,23 +17,63 @@ module.exports = function (router, passport) {
     }
   );
 
-  router.put('/starinsight', function (req, res) {
-    var objectId = mongoose.Types.ObjectId(req.body.insightId);
-    var conditions = { 'local.username': req.body.username, 'insights._id': objectId };
-    var update = { $set: { 'insights.$.liked': req.body.isLiked } };
-    var options = { multi: false };
+  // router.param('username', function (req, res, next, username) {
+  //   User.findOne({ 'local.username': username }, function (err, user) {
+  //     if (err) {
+  //       return next(err);
+  //     } else if (user) {
+  //       req.user = user;
+  //       return next();
+  //     } else {
+  //       console.log('failed to load user');
+  //       res.end();
+  //     }
+  //   });
+  // });
 
-    // db.foo.update({"array.value" : 22}, {"$set" : {"array.$.text" : "blah"}})
-    User.update(conditions, update, options,
-      function (err, numAffected) {
-        if (err) {
-          res.status(500).json({ message: 'internal server error - try refreshing the page' });
-        }
-
-        res.json({ message: 'insight star success' });
-      }
-    );
+  router.get('/insights', function (req, res) {
+    Insight.find({ owner: req.user._id }, function (err, insights) {
+      if (err) res.send(err);
+      res.json(insights);
+    });
   });
+
+  router.route('/insights/:insightId')
+    .get(function (req, res) {
+      Insight.findOne({ _id: req.params.insightId }, function (err, insight) {
+        if (err) res.send(err);
+        if (insight) res.json(insight);
+      });
+    })
+    .put(function (req, res) {
+      Insight.findOne({ _id: req.params.insightId }, function (err, insight) {
+        if (insight) {
+          console.log(req.body);
+          insight.message = req.body.message;
+          insight.liked = req.body.liked;
+          insight.save(function (err, insight) {
+            if (err) res.send(err);
+            if (insight) res.json(insight);
+          });
+        }
+      });
+    })
+    .post(function (req, res) {
+      console.log(req.params.insightId);
+      var newInsight = new Insight();
+      newInsight.message = req.body.message;
+      newInsight.owner = ObjectId(req.body.owner);
+      newInsight.save(function (err, newInsight) {
+        if (err) res.send(err);
+        res.json(newInsight);
+      });
+    })
+    .delete(function (req, res) {
+      Insight.remove({ _id: req.params.insightId }, function (err, insight) {
+        if (err) res.send(err);
+        if (insight) res.json(insight);
+      });
+    });
 
   router.get('/session', function (req, res) {
     res.json(req.user);
