@@ -6,8 +6,6 @@ var LastFMSchema = new Schema({
   ownerId: { type: Schema.Types.ObjectId, ref: 'User' },
   username: String,
   key: String,
-  accessToken: String,
-  refreshToken: String,
   features: [{
       name: String,
       dates: [Date],

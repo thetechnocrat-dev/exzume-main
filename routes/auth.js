@@ -90,7 +90,7 @@ module.exports = function (router, passport) {
       });
     });
 
-  router.get('/datastreams/:datastream', function (req) {
+  router.get('/datastreams/:datastream', function (req, res) {
       var options = {};
       if (req.params.datastream == 'fitbit') {
         options = { scope: ['activity', 'heartrate', 'location',
@@ -98,15 +98,15 @@ module.exports = function (router, passport) {
                             'sleep', 'social', 'weight'], };
       }
 
-      passport.authenticate(req.params.datastream, options)(req);
+      passport.authenticate(req.params.datastream, options)(req, res);
     }
   );
 
-  router.get('/datastreams/:datastream/callback', function (req) {
+  router.get('/datastreams/:datastream/callback', function (req, res) {
       passport.authenticate(req.params.datastream, {
         successRedirect: '/#/dashboard?=',
         failureRedirect: '/',
-      })(req);
+      })(req, res);
     }
   );
 

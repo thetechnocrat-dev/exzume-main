@@ -22,6 +22,7 @@ module.exports = function (passport) {
         } else {
           user.fitbit = fitbit;
           user.save(function (err) {
+            console.log('user saved with fitbit stream');
             done(err, user);
           });
         };

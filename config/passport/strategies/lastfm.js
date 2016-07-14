@@ -4,7 +4,7 @@ var config = require('../../config');
 
 module.exports = function (passport) {
   passport.use(new LastFMStrategy({
-    apiKey: config.lastfm.apiKey,
+    clientID: config.lastfm.clientID,
     clientSecret: config.lastfm.clientSecret,
     callbackURL: config.lastfm.callbackURL,
   }, function (req, sessionKey, done) {
