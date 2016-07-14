@@ -5,7 +5,7 @@ module.exports = {
   fitbit: {
     clientID: '227TQM',
     clientSecret: 'd44c4411eec72933ccd86d7efe8ea12d',
-    callbackURL: '/auth/fitbit/callback/',
+    callbackURL: '/auth/datastreams/fitbit/callback/',
   },
   lastfm: {
     clientID: 'd92bbfbcd24fdfd9b30f342cfe704e2d',

@@ -2,7 +2,7 @@ var User = require('../models/user');
 var Insight = require('../models/insight');
 var Fitbit = require('../models/dataStreams/fitbit');
 var Survey = require('../models/dataStreams/survey.js');
-var Feature = require('../models/features.js');
+var Feature = require('../models/feature.js');
 var mongoose = require('mongoose');
 
 module.exports = function (router, passport) {
@@ -90,17 +90,25 @@ module.exports = function (router, passport) {
       });
     });
 
-  router.get('/fitbit',
-    passport.authenticate('fitbit', { scope: ['activity', 'heartrate', 'location',
-                                              'nutrition', 'profile', 'settings',
-                                              'sleep', 'social', 'weight'] })
+  router.get('/datastreams/:datastream', function (req, res) {
+      var options = {};
+      if (req.params.datastream == 'fitbit') {
+        options = { scope: ['activity', 'heartrate', 'location',
+                            'nutrition', 'profile', 'settings',
+                            'sleep', 'social', 'weight'], };
+      }
+
+      passport.authenticate(req.params.datastream, options)(req, res);
+    }
   );
 
-  router.get('/fitbit/callback', passport.authenticate('fitbit', {
+  router.get('/datastreams/:datastream/callback', function (req, res) {
+      passport.authenticate(req.params.datastream, {
         successRedirect: '/#/dashboard?=',
         failureRedirect: '/',
-      }
-  ));
+      })(req, res);
+    }
+  );
 
   router.get('/signout', function (req, res) {
     req.logout();

@@ -1,12 +1,10 @@
-# Exzume
+git # Exzume
 To run, make sure mongoDB is running and then navigate to directory and type in command line:
 $ npm install
 $ webpack --watch
 $ node ./bin/www
 
 # RESTful Architecture (Internal / Client-Facing)
-- `GET`     /auth/:username                   -- show user object as JSON
-
 - `GET`     /auth/insights                    -- show all user's insights
 - `GET`     /auth/insights/:insight-id        -- show insight
 - `PUT`     /auth/insights/:insight-id        -- update insight (star/unstar)
@@ -16,12 +14,12 @@ $ node ./bin/www
 - `GET`     /auth/features                    -- show all user's features as JSON
 - `GET`     /auth/features/:feature-id        -- show feature (db popularity, etc.)
 - `PUT`     /auth/features/:feature-id        -- add user to users array or edit user array
-- `POST`    /auth/features/:feature-id        -- create feature
+- `POST`    /auth/features/:feature-id        -- create feature* (validation later?)
 
-- `GET`     /auth/:datastream                 -- request auth resource (returns user credentials)
-- `GET`     /auth/:datastream/callbackURL     -- redirect user to dashboard
-- `GET`     /auth/:datastream/:feature-id     -- get user's datastream's feature document
-- `PUT`     /auth/:datastream/:feature-id     -- add data to feature document
+- `GET`     /auth/datastreams/:datastream               -- request auth resource (returns user credentials)
+- `GET`     /auth/datastreams/:datastream/callback      -- redirect user to dashboard
+- `GET`     /auth/datastreams/:datastream/:feature-id   -- get user's datastream's feature document
+- `PUT`     /auth/datastreams/:datastream/:feature-id   -- add data to feature document
 
 - `GET`     /auth/plot?feat1=:feature-id?feat2=:???     -- plot features over time
 

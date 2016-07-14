@@ -22,7 +22,6 @@ module.exports = function (passport) {
         } else {
           user.fitbit = fitbit;
           user.save(function (err) {
-            console.log('here');
             done(err, user);
           });
         };

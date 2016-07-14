@@ -25,8 +25,8 @@ var DataStreamIndex = React.createClass({
                 <i className="large plus white icon"></i>
               </button>
               <div className="menu">
-                <a className="item" href='/auth/fitbit'>Fitbit</a>
-                <a className="item" href='/auth/lastfm'>LastFM</a>
+                <a className="item" href='/auth/datastreams/fitbit'}>Fitbit</a>
+                <a className="item" href='/auth/datastreams/lastfm'>LastFM</a>
               </div>
             </div>
           </div>
