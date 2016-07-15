@@ -14,18 +14,10 @@ module.exports = {
     ApiUtil.fetchSession(this.receiveSession);
   },
 
-  signIn: function (params, successCallback, errorCallback) {
-    ApiUtil.signIn(params, successCallback, errorCallback);
-  },
-
   destroySession: function () {
     Dispatcher.dispatch({
       actionType: SessionConstants.SESSION_DESTROYED,
     });
-  },
-
-  signOut: function (successCallback) {
-    ApiUtil.signOut(this.destroySession, successCallback);
   },
 
   addFormUrl: function (params, successCallback, errorCallback) {

@@ -1,22 +1,4 @@
 module.exports = {
-  signOut: function (actionCallback, successCallback) {
-    $.ajax({
-      type: 'GET',
-      url: '/auth/signout',
-      success:
-        function () {
-          actionCallback();
-          successCallback();
-          console.log('ajax sign out success');
-        },
-
-      error:
-        function () {
-          console.log('ajax sign out error');
-        },
-    });
-  },
-
   fetchSession: function (successCallback) {
     $.ajax({
       type: 'GET',

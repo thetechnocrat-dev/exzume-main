@@ -1,7 +1,9 @@
 var React = require('react');
 var History = require('react-router').History;
 var SessionActions = require('../actions/sessionActions');
+var FastFlux = require('../util/fastFlux/fastFlux');
 var SessionStore = require('../stores/sessionStore');
+var SessionConstants = require('../constants/sessionConstants');
 
 var Navbar = React.createClass({
   mixins: [History],
@@ -42,7 +44,11 @@ var Navbar = React.createClass({
   },
 
   clickSignout: function () {
-    SessionActions.signOut(this.successCallback);
+    FastFlux.webCycle('get', '/auth/signout', {
+      success: this.successCallback,
+      shouldReceive: true,
+      type: SessionConstants.SESSION_DESTROYED,
+    });
   },
 
   successCallback: function () {

@@ -4,6 +4,7 @@ var SessionStore = require('../stores/sessionStore');
 var SessionActions = require('../actions/sessionActions');
 var Scroll = require('react-scroll');
 var SessionActions = require('../actions/sessionActions');
+var FastFlux = require('../util/fastFlux/fastFlux');
 var SessionStore = require('../stores/sessionStore');
 
 // components
@@ -86,7 +87,11 @@ var Splash = React.createClass({
   },
 
   clickSignOut: function () {
-    SessionActions.signOut(this.successCallback);
+    FastFlux.webCycle('get', '/auth/signout', {
+      success: this.successCallback,
+      shouldReceive: true,
+      type: SessionConstants.SESSION_DESTROYED,
+    });
   },
 
   successCallback: function () {

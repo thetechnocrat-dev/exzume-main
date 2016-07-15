@@ -1,7 +1,7 @@
 var React = require('react');
 var SessionActions = require('../../actions/sessionActions');
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
-var FastFlux = require('../../util/fastFlux/actions');
+var FastFlux = require('../../util/fastFlux/fastFlux');
 var History = require('react-router').History;
 
 var SignIn = React.createClass({
@@ -33,8 +33,6 @@ var SignIn = React.createClass({
         success: this.successCallback,
         error: this.errorCallback,
       });
-
-      // SessionActions.signIn(signInBody, this.successCallback, this.errorCallback);
     }
   },
 
