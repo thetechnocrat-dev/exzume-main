@@ -1,6 +1,6 @@
 var React = require('react');
 var SessionStore = require('../stores/sessionStore');
-var Navbar = require('./navbar');
+var Navbar = require('./partials/navbar');
 var History = require('react-router').History;
 
 var Profile = React.createClass({

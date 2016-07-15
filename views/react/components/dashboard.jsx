@@ -1,7 +1,7 @@
 var React = require('react');
 
 // Components
-var Navbar = require('./navbar');
+var Navbar = require('./partials/navbar');
 var ProfilePanel = require('./dashboard/profilePanel');
 
 var Dashboard = React.createClass({
@@ -12,7 +12,7 @@ var Dashboard = React.createClass({
       <div className="ui container">
         <Navbar />
         <ProfilePanel />
-        <
+
         {this.props.children}
 
       </div>

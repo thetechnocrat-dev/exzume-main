@@ -5,7 +5,7 @@ var FastFlux = require('../util/fast-flux-react/fastFlux');
 var SessionStore = require('../stores/sessionStore');
 
 // components
-var Footer = require('./footer');
+var Footer = require('./partials/footer');
 
 var Splash = React.createClass({
   mixins: [History],

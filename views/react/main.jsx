@@ -9,7 +9,6 @@ var IndexRoute = require('react-router').IndexRoute;
 var App = require('./components/app');
 var Dashboard = require('./components/dashboard');
 var Splash = require('./components/splash');
-var About = require('./components/about');
 var SignIn = require('./components/auth/signIn');
 var SignUp = require('./components/auth/signUp');
 var Admin = require('./components/admin/admin');
@@ -21,12 +20,10 @@ var routes = (
   <Route component={App} path='/'>
     <IndexRoute component={Splash} ></IndexRoute>
     <Route component={Admin} path='/admin' ></Route>
-    <Route component={About} path='/about' ></Route>
     <Route component={SignIn} path='/signin' ></Route>
     <Route component={SignUp} path='/signup' ></Route>
     <Route component={Dashboard} path='/dashboard' >
       <IndexRoute component={DashboardLanding} ></IndexRoute>
-      <Route component={Profile} path='/profile' ></Route>
       <Route component={DataStreamDetail} path='/formdetail'></Route>
     </Route>
   </Route>
