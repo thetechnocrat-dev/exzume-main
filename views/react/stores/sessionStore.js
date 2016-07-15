@@ -5,6 +5,8 @@ var SessionStore = new Store(Dispatcher);
 var _currentUser = {};
 
 SessionStore.resetSessionStore = function (user) {
+  console.log(user.token);
+
   _currentUser = user;
 },
 

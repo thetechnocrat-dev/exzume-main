@@ -46,10 +46,8 @@ var navbar = React.createClass({
   },
 
   render: function () {
-    var navPadding = { paddingBottom: '3%' };
     return (
       <div className='ui inverted large top fixed menu'>
-        <div className='ui inverted large top menu' style={navPadding} />
         <div className="ui container">
           <LeftNavbarButton label="Exzume" navigation="/" />
           <LeftNavbarButton label="Explore" navigation="/" />

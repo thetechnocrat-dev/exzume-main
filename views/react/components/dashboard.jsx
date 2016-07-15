@@ -11,13 +11,15 @@ var Dashboard = React.createClass({
   render: function () {
 
     return (
-      <div className="ui container">
+      <div>
         <Navbar />
+        <div className="ui container">
 
           <ProfilePanel />
           <ZumePanel />
 
-        {this.props.children}
+          {this.props.children}
+        </div>
         <Footer />
       </div>
     );
