@@ -3,6 +3,8 @@ var React = require('react');
 // Components
 var Navbar = require('./partials/navbar');
 var ProfilePanel = require('./dashboard/profilePanel');
+var ZumePanel = require('./dashboard/zumePanel');
+var Footer = require('./partials/footer');
 
 var Dashboard = React.createClass({
 
@@ -11,10 +13,12 @@ var Dashboard = React.createClass({
     return (
       <div className="ui container">
         <Navbar />
-        <ProfilePanel />
+
+          <ProfilePanel />
+          <ZumePanel />
 
         {this.props.children}
-
+        <Footer />
       </div>
     );
   },

@@ -5,11 +5,11 @@ var ProfilePanel = React.createClass({
 
   render: function () {
     return (
-      <div>
-
+      <div class="ui internally celled grid">
+      
       </div>
     );
-  }
+  },
 
 });
 
