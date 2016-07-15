@@ -4,7 +4,7 @@ var SessionStore = require('../stores/sessionStore');
 var SessionActions = require('../actions/sessionActions');
 var Scroll = require('react-scroll');
 var SessionActions = require('../actions/sessionActions');
-var FastFlux = require('../util/fastFlux/fastFlux');
+var FastFlux = require('../util/fast-flux-react/fastFlux');
 var SessionStore = require('../stores/sessionStore');
 
 // components

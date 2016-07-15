@@ -1,21 +1,4 @@
 module.exports = {
-  fetchSession: function (successCallback) {
-    $.ajax({
-      type: 'GET',
-      url: '/auth/session',
-      success:
-        function (respData) {
-          successCallback(respData);
-          console.log('ajax session success');
-        },
-
-      error:
-        function (respError) {
-          console.log('ajax session error', respError);
-        },
-    });
-  },
-
   starInsight: function (params, successCallback, errorCallback) {
     $.ajax({
       type: 'PUT',
@@ -31,63 +14,6 @@ module.exports = {
         function (resp) {
           errorCallback();
           console.log('ajax star insight error', resp);
-        },
-    });
-  },
-
-  addFormUrl: function (params, successCallback, errorCallback) {
-    $.ajax({
-      type: 'PUT',
-      url: '/admin/addform',
-      data: params,
-      success:
-        function (respData) {
-          successCallback(respData);
-          console.log('ajax add user form URL success', respData);
-        },
-
-      error:
-        function (respError) {
-          errorCallback(respError.responseText);
-          console.log('ajax add user form URL error', respError);
-        },
-    });
-  },
-
-  addInsight: function (params, successCallback, errorCallback) {
-    $.ajax({
-      type: 'PUT',
-      url: '/admin/addinsight',
-      data: params,
-      success:
-        function (respData) {
-          successCallback(respData);
-          console.log('ajax add user insight success', respData);
-        },
-
-      error:
-        function (respError) {
-          errorCallback(respError.responseText);
-          console.log('ajax add user insight error', respError);
-        },
-    });
-  },
-
-  addVisUrl: function (params, successCallback, errorCallback) {
-    $.ajax({
-      type: 'PUT',
-      url: '/admin/addvis',
-      data: params,
-      success:
-        function (respData) {
-          successCallback(respData);
-          console.log('ajax add vis URL success', respData);
-        },
-
-      error:
-        function (respError) {
-          errorCallback(respError.responseText);
-          console.log('ajax add vis URL error', respError);
         },
     });
   },
@@ -125,25 +51,6 @@ module.exports = {
         function (respError) {
           errorCallback(respError.responseText);
           console.log('ajax select series error', respError);
-        },
-    });
-  },
-
-  addFitbitData: function (params, successCallback, errorCallback) {
-    $.ajax({
-      type: 'PUT',
-      url: '/admin/addfitbitdata',
-      data: params,
-      success:
-        function (respData) {
-          successCallback(respData);
-          console.log('ajax add fitbit data success', respData);
-        },
-
-      error:
-        function (respError) {
-          errorCallback(respError.responseText);
-          console.log('ajax add fitbit data error', respError);
         },
     });
   },

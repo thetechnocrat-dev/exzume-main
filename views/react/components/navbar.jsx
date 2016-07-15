@@ -1,7 +1,7 @@
 var React = require('react');
 var History = require('react-router').History;
 var SessionActions = require('../actions/sessionActions');
-var FastFlux = require('../util/fastFlux/fastFlux');
+var FastFlux = require('../util/fast-flux-react/fastFlux');
 var SessionStore = require('../stores/sessionStore');
 var SessionConstants = require('../constants/sessionConstants');
 

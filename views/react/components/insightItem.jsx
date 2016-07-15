@@ -1,6 +1,6 @@
 var React = require('react');
 var SessionActions = require('../actions/sessionActions');
-var FastFlux = require('../util/fastFlux/fastFlux');
+var FastFlux = require('../util/fast-flux-react/fastFlux');
 var SessionConstants = require('../constants/sessionConstants');
 
 var InsightItem = React.createClass({

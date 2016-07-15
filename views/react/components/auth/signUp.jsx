@@ -1,6 +1,6 @@
 var React = require('react');
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
-var FastFlux = require('../../util/fastFlux/fastFlux');
+var FastFlux = require('../../util/fast-flux-react/fastFlux');
 var History = require('react-router').History;
 
 var Signup = React.createClass({
