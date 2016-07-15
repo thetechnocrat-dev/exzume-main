@@ -1,9 +1,6 @@
 var React = require('react');
 var History = require('react-router').History;
-var SessionStore = require('../stores/sessionStore');
-var SessionActions = require('../actions/sessionActions');
 var Scroll = require('react-scroll');
-var SessionActions = require('../actions/sessionActions');
 var FastFlux = require('../util/fast-flux-react/fastFlux');
 var SessionStore = require('../stores/sessionStore');
 
@@ -131,7 +128,7 @@ var Splash = React.createClass({
     );
   },
 
-  getStickNavBarClassName: function () {
+  getStickyNavBarClassName: function () {
     if (this.state.shouldShowStickyNav) {
       return 'ui large top fixed menu';
     } else {
@@ -169,7 +166,7 @@ var Splash = React.createClass({
     var homeClassName;
     var aboutClassName;
     var contactClassName;
-    var navBarClassName = this.getStickNavBarClassName();
+    var navBarClassName = this.getStickyNavBarClassName();
 
     if (this.state.activeNavBarItem === 'home') {
       homeClassName = 'active item';

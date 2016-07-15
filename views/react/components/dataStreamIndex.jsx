@@ -1,6 +1,4 @@
 var React = require('react');
-var SessionActions = require('../actions/sessionActions');
-var SessionStore = require('../stores/sessionStore');
 
 // components
 var DataStreamItem = require('./dataStreamItem');

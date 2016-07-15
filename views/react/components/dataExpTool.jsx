@@ -3,6 +3,7 @@ var rd3 = require('rd3');
 var DataActions = require('../actions/dataActions');
 var LineChart = rd3.LineChart;
 var DataStore = require('../stores/dataStore');
+var FastFlux = require('../util/fast-flux-react/fastFlux');
 
 var DataExpTool = React.createClass({
   getInitialState: function () {
@@ -15,6 +16,7 @@ var DataExpTool = React.createClass({
 
   componentDidMount: function () {
     this.dataToken = DataStore.addListener(this._onChange);
+
     DataActions.retrieveSurveyQuestions();
   },
 

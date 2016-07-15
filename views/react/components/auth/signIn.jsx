@@ -1,5 +1,4 @@
 var React = require('react');
-var SessionActions = require('../../actions/sessionActions');
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var FastFlux = require('../../util/fast-flux-react/fastFlux');
 var History = require('react-router').History;

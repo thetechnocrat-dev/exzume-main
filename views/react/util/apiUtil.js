@@ -1,23 +1,4 @@
 module.exports = {
-  starInsight: function (params, successCallback, errorCallback) {
-    $.ajax({
-      type: 'PUT',
-      url: '/auth/insights/' + params.insightId,
-      data: params,
-      success:
-        function (resp) {
-          successCallback(resp);
-          console.log('ajax star insight success', resp);
-        },
-
-      error:
-        function (resp) {
-          errorCallback();
-          console.log('ajax star insight error', resp);
-        },
-    });
-  },
-
   addFitbit: function (successCallback, errorCallback) {
     $.ajax({
       type: 'GET',

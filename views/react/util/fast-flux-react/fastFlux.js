@@ -1,3 +1,17 @@
+// docs
+// require at top of component you want to use
+// ex/ var FastFlux = require('../util/fast-flux-react/fastFlux')
+// then do FastFlux.webCycle(method, url, options)
+//    method: the HTTP method you want to use all lowercase ('put', 'post', or 'get')
+//    url: the back end route you want to hit
+//    options: a hash of different options which are defined below
+//        success: function    (front end successCallback)
+//        error: function      (front end errorCallback)
+//        shouldReceive
+
+
+
+
 var Dispatcher = require('../../dispatcher/dispatcher');
 
 var ActionUtil = {

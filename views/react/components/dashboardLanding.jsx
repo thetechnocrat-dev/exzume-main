@@ -1,7 +1,6 @@
 var React = require('react');
 var History = require('react-router').History;
 var SessionStore = require('../stores/sessionStore');
-var DataActions = require('../actions/dataActions');
 
 //components
 var Survey = require('./survey');

@@ -1,5 +1,4 @@
 var React = require('react');
-var SessionActions = require('../actions/sessionActions');
 var FastFlux = require('../util/fast-flux-react/fastFlux');
 
 var InsightItem = React.createClass({
@@ -12,16 +11,20 @@ var InsightItem = React.createClass({
     var toggledLike = !(this.state.isLiked);
     this.setState({ isLiked: toggledLike });
 
-    var params = {
+    var insightBody = {
       username: this.props.username,
       insightId: this.props.id,
       isLiked: toggledLike,
     };
 
-    SessionActions.starInsight(params, this.successCallback, this.errorCallback);
+    FastFlux.webCycle('put', '/auth/insights/', {
+      body: insightBody,
+      success: this.success,
+      error: this.error,
+    });
   },
 
-  successCallback: function (resp) {
+  success: function (resp) {
 
     // resets session store with updated user object that has correct staring of insights
     FastFlux.webCycle('get', '/auth/session', {
@@ -30,10 +33,9 @@ var InsightItem = React.createClass({
     });
   },
 
-  errorCallback: function (resp) {
+  error: function (resp) {
     // revert isLiked state since it was not changed on server
     this.setState({ isLiked: !this.state.isLiked });
-    console.log('ajax insight star error', resp);
   },
 
   makeIcon: function () {
