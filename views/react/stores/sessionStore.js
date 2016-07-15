@@ -35,7 +35,7 @@ SessionStore.getInsights = function (startIndex, size) {
 SessionStore.__onDispatch = function (payload) {
   switch (payload.actionType) {
     case SessionConstants.SESSION_RECEIVED:
-      this.resetSessionStore(payload.user);
+      this.resetSessionStore(payload.data);
       this.__emitChange();
       break;
     case SessionConstants.SESSION_DESTROYED:
