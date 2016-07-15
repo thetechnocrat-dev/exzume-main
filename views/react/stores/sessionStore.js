@@ -1,6 +1,5 @@
 var Dispatcher = require('../dispatcher/dispatcher');
 var Store = require('flux/utils').Store;
-var SessionConstants = require('../constants/sessionConstants');
 
 var SessionStore = new Store(Dispatcher);
 var _currentUser = {};
@@ -34,11 +33,11 @@ SessionStore.getInsights = function (startIndex, size) {
 
 SessionStore.__onDispatch = function (payload) {
   switch (payload.actionType) {
-    case SessionConstants.SESSION_RECEIVED:
+    case 'SESSION_RECEIVED':
       this.resetSessionStore(payload.data);
       this.__emitChange();
       break;
-    case SessionConstants.SESSION_DESTROYED:
+    case 'SESSION_DESTROYED':
       this.resetSessionStore({});
       this.__emitChange();
       break;

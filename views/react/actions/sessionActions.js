@@ -1,5 +1,4 @@
 var Dispatcher = require('../dispatcher/dispatcher');
-var SessionConstants = require('../constants/sessionConstants');
 var ApiUtil = require('../util/apiUtil');
 
 module.exports = {

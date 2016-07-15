@@ -1,6 +1,5 @@
 var Dispatcher = require('../dispatcher/dispatcher');
 var Store = require('flux/utils').Store;
-var DataConstants = require('../constants/dataConstants');
 
 var DataStore = new Store(Dispatcher);
 var _seriesData = [];
@@ -28,15 +27,15 @@ DataStore.addSurveyQuestion = function (surveyQuestion) {
 
 DataStore.__onDispatch = function (payload) {
   switch (payload.actionType) {
-    case DataConstants.DATA_RECEIVED:
+    case 'DATA_RECEIVED':
       this.resetSeriesData(payload.lineData.data);
       this.__emitChange();
       break;
-    case DataConstants.SURVEY_QUESTIONS_RECEIVED:
+    case 'SURVEY_QUESTIONS_RECEIVED':
       this.resetSurveyQuestions(payload.data.surveyQuestions);
       this.__emitChange();
       break;
-    case DataConstants.SURVEY_QUESTION_RECEIVED:
+    case 'SURVEY_QUESTION_RECEIVED':
       this.addSurveyQuestion(payload.data.feature);
       this.__emitChange();
       break;

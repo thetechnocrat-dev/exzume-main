@@ -3,7 +3,6 @@ var History = require('react-router').History;
 var SessionActions = require('../actions/sessionActions');
 var FastFlux = require('../util/fast-flux-react/fastFlux');
 var SessionStore = require('../stores/sessionStore');
-var SessionConstants = require('../constants/sessionConstants');
 
 var Navbar = React.createClass({
   mixins: [History],
@@ -27,7 +26,7 @@ var Navbar = React.createClass({
     if (!SessionStore.isSignedIn()) {
       FastFlux.webCycle('get', '/auth/session', {
         shouldReceive: true,
-        type: SessionConstants.SESSION_RECEIVED,
+        type: 'SESSION_RECEIVED',
       });
     } else {
       this.setState({ currentUser: SessionStore.currentUser().local.username });
@@ -50,7 +49,7 @@ var Navbar = React.createClass({
     FastFlux.webCycle('get', '/auth/signout', {
       success: this.successCallback,
       shouldReceive: true,
-      type: SessionConstants.SESSION_DESTROYED,
+      type: 'SESSION_DESTROYED',
     });
   },
 

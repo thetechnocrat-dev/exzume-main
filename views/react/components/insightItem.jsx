@@ -1,7 +1,6 @@
 var React = require('react');
 var SessionActions = require('../actions/sessionActions');
 var FastFlux = require('../util/fast-flux-react/fastFlux');
-var SessionConstants = require('../constants/sessionConstants');
 
 var InsightItem = React.createClass({
   getInitialState: function () {
@@ -27,7 +26,7 @@ var InsightItem = React.createClass({
     // resets session store with updated user object that has correct staring of insights
     FastFlux.webCycle('get', '/auth/session', {
       shouldReceive: true,
-      type: SessionConstants.SESSION_RECEIVED,
+      type: 'SESSION_RECEIVED',
     });
   },
 

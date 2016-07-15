@@ -1,11 +1,10 @@
 var Dispatcher = require('../dispatcher/dispatcher');
-var DataConstants = require('../constants/dataConstants');
 var ApiUtil = require('../util/apiUtil');
 
 module.exports = {
   receivedData: function (lineData) {
     Dispatcher.dispatch({
-      actionType: DataConstants.DATA_RECEIVED,
+      actionType: 'DATA_RECEIVED',
       lineData: lineData,
     });
   },
@@ -16,7 +15,7 @@ module.exports = {
 
   receiveSurveyQuestion: function (surveyQuestion) {
     Dispatcher.dispatch({
-      actionType: DataConstants.SURVEY_QUESTION_RECEIVED,
+      actionType: 'SURVEY_QUESTION_RECEIVED',
       data: surveyQuestion,
     });
   },
@@ -27,7 +26,7 @@ module.exports = {
 
   receiveSurveyQuestions: function (surveyQuestions) {
     Dispatcher.dispatch({
-      actionType: DataConstants.SURVEY_QUESTIONS_RECEIVED,
+      actionType: 'SURVEY_QUESTIONS_RECEIVED',
       data: surveyQuestions,
     });
   },
