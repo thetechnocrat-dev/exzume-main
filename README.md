@@ -34,10 +34,10 @@ pw -- knowthyself42!
 
 fitbit: https://dev.fitbit.com/apps/details/227TQM
 lastFM:
-- Application name exzume
-- API key	d92bbfbcd24fdfd9b30f342cfe704e2d
-- Shared secret	a3c44d2356aba4e6f5257c9240e47ed8
-- Registered to	frealism
+Application name	exzume-development
+API key	efe65c99aaf387249c3cf8ca16e6b884
+Shared secret	78bff7ac8ce66ea1c5f1f43017dd9b21
+Registered to	exzume
 Application name	exzume-staging
 API key	6165e89160ea80b699cb473f41028be6
 Shared secret	48a32fc7b2e9d3c40dd5a69f235c48c5

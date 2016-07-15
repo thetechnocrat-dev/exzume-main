@@ -1,9 +1,12 @@
 var User = require('../models/user');
 var Insight = require('../models/insight');
 var Fitbit = require('../models/dataStreams/fitbit');
-var Survey = require('../models/dataStreams/survey.js');
-var Feature = require('../models/feature.js');
+var Survey = require('../models/dataStreams/survey');
+var Feature = require('../models/feature');
+var config = require('../config/config');
 var mongoose = require('mongoose');
+var axios = require('axios');
+var moment = require('moment');
 
 module.exports = function (router, passport) {
   // makes sure a user is logged in
@@ -104,9 +107,56 @@ module.exports = function (router, passport) {
 
   router.get('/datastreams/:datastream/callback', function (req, res) {
       passport.authenticate(req.params.datastream, {
-        successRedirect: '/#/dashboard?=',
+        successRedirect: '/#/dashboard?=', // redirect to grab from API and redirect
         failureRedirect: '/',
       })(req, res);
+    }
+  );
+
+  router.get('/datastreams/:datastream/grab', function (req, res) {
+      var date = moment().format('YYYY-MM-DD');
+      var refreshToken = function (fitbit) {
+        axios({
+          method: 'POST',
+          url: 'https://api.fitbit.com/oauth2/token',
+          headers: {
+            'Authorization': 'Basic ' + new Buffer(config.fitbit.clientID + ':' + config.fitbit.clientSecret).toString('base64'),
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: {
+            grant_type: 'refresh_token',
+            refresh_token: fitbit.refreshToken,
+          },
+        }).then(function (res) {
+          console.log('redirecting user to the authentication flow...');
+          res.redirect('/datastreams/:datastream');
+        }).catch(function (error) { console.log(error); });
+      };
+
+      Fitbit.findOne({ 'ownerId': mongoose.Types.ObjectId(req.user._id) }, function (err, fitbit) {
+        if (err) {
+          res.status(500).send('internal server error - try refreshing the page');
+        } else if (fitbit == null) {
+          res.status(401).send('fitbit datastream not found');
+        } else if (fitbit) {
+          console.log(fitbit);
+          axios({
+            method: 'GET',
+            url: 'https://api.fitbit.com/1/user/-/activities/date/' + date + '.json',
+            headers: { 'Authorization': 'Bearer ' + fitbit.accessToken },
+          }).then(function (response) {
+              if (res.statusCode == 401) {
+                console.log('access token expired, refresh that shit');
+                refreshToken(fitbit);
+                res.redirect('/datastreams/:datastream/grab');
+              }
+
+              console.log('here is requested data: ', response);
+            }).catch(function (error) { console.log(error); });
+        }
+      });
+
+
     }
   );
 
