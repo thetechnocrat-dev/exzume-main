@@ -18,7 +18,7 @@ module.exports = function (router, passport) {
           }
         });
 
-        res.json({ message: 'sign in success' });
+        res.json(user);
       } else {
         res.status(401).send(info.signinMessage);
       };
@@ -36,7 +36,7 @@ module.exports = function (router, passport) {
           }
         });
 
-        res.json({ message: 'sign up success' });
+        res.json(user);
       } else {
         res.status(401).send(info.errorMessage);
       }

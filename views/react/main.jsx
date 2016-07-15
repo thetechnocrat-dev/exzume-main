@@ -15,6 +15,7 @@ var Admin = require('./components/admin/admin');
 var Profile = require('./components/profile');
 var DataStreamDetail = require('./components/dataStreamDetail');
 var DashboardLanding = require('./components/dashboardLanding');
+var Profile = require('./components/profile');
 
 var routes = (
   <Route component={App} path='/'>
@@ -25,6 +26,7 @@ var routes = (
     <Route component={Dashboard} path='/dashboard' >
       <IndexRoute component={DashboardLanding} ></IndexRoute>
       <Route component={DataStreamDetail} path='/formdetail'></Route>
+      <Route component={Profile} path='/profile'></Route>
     </Route>
   </Route>
 );
