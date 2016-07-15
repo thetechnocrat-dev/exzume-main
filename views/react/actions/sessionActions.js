@@ -3,23 +3,6 @@ var SessionConstants = require('../constants/sessionConstants');
 var ApiUtil = require('../util/apiUtil');
 
 module.exports = {
-  receiveSession: function (userData) {
-    Dispatcher.dispatch({
-      actionType: SessionConstants.SESSION_RECEIVED,
-      user: userData,
-    });
-  },
-
-  retrieveSession: function () {
-    ApiUtil.fetchSession(this.receiveSession);
-  },
-
-  destroySession: function () {
-    Dispatcher.dispatch({
-      actionType: SessionConstants.SESSION_DESTROYED,
-    });
-  },
-
   addFormUrl: function (params, successCallback, errorCallback) {
     ApiUtil.addFormUrl(params, successCallback, errorCallback);
   },

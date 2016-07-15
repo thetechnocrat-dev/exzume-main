@@ -1,5 +1,7 @@
 var React = require('react');
 var SessionActions = require('../actions/sessionActions');
+var FastFlux = require('../util/fastFlux/fastFlux');
+var SessionConstants = require('../constants/sessionConstants');
 
 var InsightItem = React.createClass({
   getInitialState: function () {
@@ -10,7 +12,6 @@ var InsightItem = React.createClass({
     // optimistically changes star color
     var toggledLike = !(this.state.isLiked);
     this.setState({ isLiked: toggledLike });
-    console.log(this.props.id, this.props.username);
 
     var params = {
       username: this.props.username,
@@ -22,11 +23,12 @@ var InsightItem = React.createClass({
   },
 
   successCallback: function (resp) {
-    console.log('ajax insight star success', resp);
 
     // resets session store with updated user object that has correct staring of insights
-    // yes if our db and stores were organized better there would be better ways to do this
-    SessionActions.retrieveSession();
+    FastFlux.webCycle('get', '/auth/session', {
+      shouldReceive: true,
+      type: SessionConstants.SESSION_RECEIVED,
+    });
   },
 
   errorCallback: function (resp) {

@@ -8,7 +8,6 @@ var FastFlux = require('../util/fastFlux/fastFlux');
 var SessionStore = require('../stores/sessionStore');
 
 // components
-var SideNavbar = require('./sideNavbar');
 var Footer = require('./footer');
 
 var Splash = React.createClass({
@@ -29,7 +28,10 @@ var Splash = React.createClass({
 
     // check for active session if there is not already an active session
     if (!SessionStore.isSignedIn()) {
-      SessionActions.retrieveSession();
+      FastFlux.webCycle('get', '/auth/session', {
+        shouldReceive: true,
+        type: SessionConstants.SESSION_RECEIVED,
+      });
     };
   },
 
@@ -120,9 +122,6 @@ var Splash = React.createClass({
     return (
       <div className="ui container">
         <div className="ui large secondary inverted pointing menu">
-          {/*<a className="toc item">
-            <i className="sidebar icon"></i>
-          </a>*/}
           <a className="active item" onClick={this.clickHome}>Home</a>
           <a className="item" onClick={this.clickAbout}>About</a>
           <a className="item" onClick={this.clickContact}>Contact</a>
@@ -207,8 +206,6 @@ var Splash = React.createClass({
     return (
       <div>
         {this.makeStickyNavbar()}
-
-        <SideNavbar />
 
         <div className="pusher">
           <div className="ui inverted vertical masthead center aligned segment" style={mastheadStyle}>

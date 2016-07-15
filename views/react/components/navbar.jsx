@@ -25,7 +25,10 @@ var Navbar = React.createClass({
 
     // check for active session if there is not already an active session
     if (!SessionStore.isSignedIn()) {
-      SessionActions.retrieveSession();
+      FastFlux.webCycle('get', '/auth/session', {
+        shouldReceive: true,
+        type: SessionConstants.SESSION_RECEIVED,
+      });
     } else {
       this.setState({ currentUser: SessionStore.currentUser().local.username });
     }
