@@ -1,5 +1,8 @@
 var React = require('react');
 
+// components
+var FeaturePanel = require('./featurePanel');
+
 var features = [
   { name: 'productivity',
     dataStreams: ['exzume manual', 'rescue time'],
@@ -33,9 +36,9 @@ var Connect = React.createClass({
   },
 
   makeFeatures: function () {
-    return this.features.map(function (feature, idx) {
+    return this.state.features.map(function (feature, idx) {
       return (
-        <featurePanel key={idx} name={feature.name} dataStreams={feature.dataStreams} />
+        <FeaturePanel key={idx} name={feature.name} dataStreams={feature.dataStreams} />
       );
     });
   },
@@ -43,10 +46,7 @@ var Connect = React.createClass({
   render: function () {
     return (
       <div className="ui doubling four column grid container">
-        <div class="column"></div>
-        <div class="column"></div>
-        <div class="column"></div>
-        <div class="column"></div>
+        {this.makeFeatures()}
       </div>
     );
   },

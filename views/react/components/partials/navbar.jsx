@@ -11,9 +11,9 @@ var navbar = React.createClass({
 
   getInitialState: function () {
     if (SessionStore.isSignedIn()) {
-      return { username: SessionStore.currentUsername() };
+      return { username: SessionStore.currentUsername(), viewPortWidth: window.innerWidth };
     } else {
-      return { username: '' };
+      return { username: '', viewPortWidth: window.innerWidth };
     }
   },
 
@@ -45,14 +45,23 @@ var navbar = React.createClass({
     });
   },
 
+  // for making navbar non sticky for mobile
+  // makeNavbarClassName: function () {
+  //   if (true) {
+  //
+  //   }
+  // },
+
   render: function () {
     return (
-      <div className='ui inverted large top fixed menu'>
-        <div className="ui container">
-          <LeftNavbarButton label="Exzume" navigation="/" />
-          <LeftNavbarButton label="Dashboard" navigation="/dashboard" />
-          <LeftNavbarButton label="Explore" navigation="/" />
-          <LeftNavbarButton label="Connect" navigation="/" />
+      <div>
+        <div className="ui large top menu"></div>
+        <div className="ui inverted large top fixed menu">
+          <div className="ui container">
+            <LeftNavbarButton label="Exzume" navigation="/" />
+            <LeftNavbarButton label="Dashboard" navigation="/dashboard" />
+            <LeftNavbarButton label="Explore" navigation="/" />
+            <LeftNavbarButton label="Connect" navigation="/dashboard/connect" />
             <div className="right menu">
               <div className="ui simple dropdown item">
                 {this.state.username}
@@ -63,6 +72,7 @@ var navbar = React.createClass({
                 </div>
               </div>
             </div>
+          </div>
         </div>
       </div>
     );
