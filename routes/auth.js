@@ -126,7 +126,6 @@ module.exports = function (router, passport) {
           params: {
             'grant_type': 'refresh_token',
             'refresh_token': fitbit.refreshToken,
-            'response_type': 'code',
           },
         }).then(function (res) {
           console.log('redirecting user to the authentication flow...');
@@ -145,16 +144,15 @@ module.exports = function (router, passport) {
             method: 'GET',
             url: 'https://api.fitbit.com/1/user/-/activities/date/' + date + '.json',
             headers: { 'Authorization': 'Bearer ' + fitbit.accessToken },
-          }).then(function (res) {
+          }).then(function (response) {
               console.log('made it to response');
-              console.log('here is requested data: ', res);
+              res.json(response.data);
             }).catch(function (error) {
               if (error.status == 401) {
                 console.log('access token expired, refresh that shit');
                 refreshToken(fitbit);
               }
               console.log(error.data.errors);
-              // console.log(error);
             });
         }
       });
