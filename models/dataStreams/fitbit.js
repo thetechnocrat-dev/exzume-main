@@ -9,6 +9,7 @@ var FitbitSchema = new Schema({
   refreshToken: String,
   features: [{
       name: String,
+      featureId: Schema.Types.ObjectId,
       dates: [Date],
       data: [],
     },

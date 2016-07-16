@@ -36,7 +36,7 @@ var DataStreamIndex = React.createClass({
     if (this.state.user.fitbit) {
       streams.push({
         streamName: 'fitbit',
-        streamImage: '../../../../public/images/fitbit.png',
+        streamImage: '/images/fitbit.png',
         streamDataURL: '/auth/datastreams/fitbit/grab',
       });
     };
