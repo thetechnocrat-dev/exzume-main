@@ -5,14 +5,14 @@ var ZumePanel = React.createClass({
 
   render: function () {
     return (
-      <div class="row">
-        <div class="three wide column">
+      <div className="row">
+        <div className="three wide column">
           <img></img>
         </div>
-        <div class="ten wide column">
+        <div className="ten wide column">
           <p></p>
         </div>
-        <div class="three wide column">
+        <div className="three wide column">
           <img></img>
         </div>
       </div>

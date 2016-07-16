@@ -50,6 +50,7 @@ var navbar = React.createClass({
       <div className='ui inverted large top fixed menu'>
         <div className="ui container">
           <LeftNavbarButton label="Exzume" navigation="/" />
+          <LeftNavbarButton label="Dashboard" navigation="/dashboard" />
           <LeftNavbarButton label="Explore" navigation="/" />
           <LeftNavbarButton label="Connect" navigation="/" />
             <div className="right menu">
