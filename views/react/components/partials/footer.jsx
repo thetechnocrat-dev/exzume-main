@@ -24,7 +24,7 @@ var footer = React.createClass({
   },
 
   render: function () {
-    var containerStyle = { width: '100vw', backgroundColor: 'black' };
+    var containerStyle = { width: '100vw', backgroundColor: 'black', marginTop: '2%' };
     return (
       <div style={containerStyle}>
         <div className="ui inverted vertical footer segment">
