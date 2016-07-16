@@ -29,8 +29,8 @@ var ProfileCard = React.createClass({
   },
 
   render: function () {
-    var statisticRightPadding = { paddingRight: '7%' };
-    var statisticLeftPadding = { paddingLeft: '7%' };
+    var statisticRightPadding = { paddingRight: '10%' };
+    var statisticLeftPadding = { paddingLeft: '10%' };
 
     return (
       <div className="four wide column">

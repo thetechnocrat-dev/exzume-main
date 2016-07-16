@@ -123,14 +123,15 @@ module.exports = function (router, passport) {
             'Authorization': 'Basic ' + new Buffer(config.fitbit.clientID + ':' + config.fitbit.clientSecret).toString('base64'),
             'Content-Type': 'application/x-www-form-urlencoded',
           },
-          body: {
-            grant_type: 'refresh_token',
-            refresh_token: fitbit.refreshToken,
+          params: {
+            'grant_type': 'refresh_token',
+            'refresh_token': fitbit.refreshToken,
+            'response_type': 'code',
           },
         }).then(function (res) {
           console.log('redirecting user to the authentication flow...');
           res.redirect('/datastreams/:datastream');
-        }).catch(function (error) { console.log(error); });
+        }).catch(function (error) { console.log(error); console.log(error.data.errors); });
       };
 
       Fitbit.findOne({ 'ownerId': mongoose.Types.ObjectId(req.user._id) }, function (err, fitbit) {
@@ -144,17 +145,17 @@ module.exports = function (router, passport) {
             method: 'GET',
             url: 'https://api.fitbit.com/1/user/-/activities/date/' + date + '.json',
             headers: { 'Authorization': 'Bearer ' + fitbit.accessToken },
-          }).then(function (response) {
-            console.log('made it to response');
-              console.log(response.data);
-              if (res.statusCode == 401) {
+          }).then(function (res) {
+              console.log('made it to response');
+              console.log('here is requested data: ', res);
+            }).catch(function (error) {
+              if (error.status == 401) {
                 console.log('access token expired, refresh that shit');
                 refreshToken(fitbit);
-                res.redirect('/datastreams/:datastream/grab');
               }
-
-              console.log('here is requested data: ', response);
-            }).catch(function (error) { console.log(error); });
+              console.log(error.data.errors);
+              // console.log(error);
+            });
         }
       });
 

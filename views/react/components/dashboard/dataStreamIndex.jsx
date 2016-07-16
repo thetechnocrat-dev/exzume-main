@@ -65,16 +65,16 @@ var DataStreamIndex = React.createClass({
             {this.makeDataStreamItems()}
           </div>
           <div className="row">
-          <div className="ui simple dropdown">
-            <button className="ui green icon button">
-              <i className="big plus white icon"></i>
-            </button>
-            <div className="menu">
-              <a className="item" href='/auth/datastreams/fitbit'>Fitbit</a>
-              <a className="item" href='/auth/datastreams/lastfm'>LastFM</a>
+            <div className="ui simple dropdown">
+              <button className="ui green icon button">
+                <i className="big plus white icon"></i>
+              </button>
+              <div className="menu">
+                <a className="item" href='/auth/datastreams/fitbit'>Fitbit</a>
+                <a className="item" href='/auth/datastreams/lastfm'>LastFM</a>
+              </div>
             </div>
           </div>
-        </div>
         </div>
       </div>
     );
