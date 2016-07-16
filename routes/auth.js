@@ -145,6 +145,8 @@ module.exports = function (router, passport) {
             url: 'https://api.fitbit.com/1/user/-/activities/date/' + date + '.json',
             headers: { 'Authorization': 'Bearer ' + fitbit.accessToken },
           }).then(function (response) {
+            console.log('made it to response');
+              console.log(response.data);
               if (res.statusCode == 401) {
                 console.log('access token expired, refresh that shit');
                 refreshToken(fitbit);
