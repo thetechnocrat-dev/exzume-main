@@ -5,16 +5,21 @@ var FastFlux = require('../../util/fast-flux-react/fastFlux');
 
 // components
 var LeftNavbarButton = require('./leftNavbarButton');
+var MEDIA_PIXEL_CUTOFF = 700;
 
 var navbar = React.createClass({
   mixins: [History],
 
   getInitialState: function () {
+    var initialState = { viewPortWidth: window.innerWidth };
+
     if (SessionStore.isSignedIn()) {
-      return { username: SessionStore.currentUsername(), viewPortWidth: window.innerWidth };
+      initialState.username = SessionStore.currentUsername();
     } else {
-      return { username: '', viewPortWidth: window.innerWidth };
+      initialState.username = '';
     }
+
+    return initialState;
   },
 
   _onChange: function () {
@@ -26,11 +31,17 @@ var navbar = React.createClass({
   },
 
   componentDidMount: function () {
+    window.addEventListener('resize', this.handleResize);
     this.sessionToken = SessionStore.addListener(this._onChange);
   },
 
   componentWillUnmount: function () {
     this.sessionToken.remove();
+    window.removeEventListener('resize', this.handleResize);
+  },
+
+  handleResize: function () {
+    this.setState({ viewPortWidth: window.innerWidth });
   },
 
   clickProfile: function () {
@@ -46,17 +57,28 @@ var navbar = React.createClass({
   },
 
   // for making navbar non sticky for mobile
-  // makeNavbarClassName: function () {
-  //   if (true) {
-  //
-  //   }
-  // },
+  makeNavbarClassName: function () {
+    if (this.state.viewPortWidth <= MEDIA_PIXEL_CUTOFF) {
+      return 'ui inverted large top menu';
+    } else {
+      return 'ui inverted large top fixed menu';
+    }
+  },
+
+  // needed because you cannot add padding to a sticky element
+  // so you make a ghost navbar behind it
+  makeNavbarPadding: function () {
+    if (this.state.viewPortWidth > MEDIA_PIXEL_CUTOFF) {
+      return <div className="ui large top menu"></div>;
+    }
+  },
 
   render: function () {
+    var navbarStyle = { marginBottom: '2%' };
     return (
       <div>
-        <div className="ui large top menu"></div>
-        <div className="ui inverted large top fixed menu">
+        {this.makeNavbarPadding()}
+        <div className={this.makeNavbarClassName()} style={navbarStyle}>
           <div className="ui container">
             <LeftNavbarButton label="Exzume" navigation="/" />
             <LeftNavbarButton label="Dashboard" navigation="/dashboard" />
