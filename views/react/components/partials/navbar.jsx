@@ -78,7 +78,7 @@ var navbar = React.createClass({
     return (
       <div>
         {this.makeNavbarPadding()}
-        <div className={this.makeNavbarClassName()} style={navbarStyle}>
+        <div className={this.makeNavbarClassName()} style={navbarStyle} >
           <div className="ui container">
             <LeftNavbarButton label="Exzume" navigation="/" />
             <LeftNavbarButton label="Dashboard" navigation="/dashboard" />

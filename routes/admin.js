@@ -1,10 +1,47 @@
 var User = require('../models/user');
 var Fitbit = require('../models/dataStreams/fitbit');
 var Survey = require('../models/dataStreams/survey');
+var Feature = require('../models/feature');
 var mongoose = require('mongoose');
 var child_process = require('child_process');
 
 module.exports = function (router, passport) {
+
+  router.route('/features/:featureId')
+    .get(function (req, res) {
+      Feature.findOne({ _id: req.params.featureId }, function (err, feature) {
+        if (err) res.send(err);
+        if (feature) res.json(feature);
+      });
+    })
+    .put(function (req, res) {
+      Feature.findOne({ _id: req.params.featureId }, function (err, feature) {
+        if (feature) {
+          if (req.body.name) feature.name = req.body.name;
+          if (req.body.user) feature.users.push(req.body.name);
+          if (req.body.dataStream) feature.dataStreams.push(req.body.datastream);
+          if (req.body.category) feature.category.push(req.body.category);
+          feature.save(function (err, feature) {
+            if (err) res.send(err);
+            if (feature) res.json(feature);
+          });
+        }
+      });
+    })
+    .post(function (req, res) {
+      var newFeature = new Feature();
+      newFeature.name = req.body.name;
+      newFeature.save(function (err, newFeature) {
+        if (err) res.send(err);
+        res.json(newFeature);
+      });
+    })
+    .delete(function (req, res) {
+      Feature.remove({ _id: req.params.featureId }, function (err, insight) {
+        if (err) res.send(err);
+        if (insight) res.json(insight);
+      });
+    });
 
   router.put('/addform', function (req, res) {
     User.findOne({ 'local.username': req.body.username }, function (err, user) {
