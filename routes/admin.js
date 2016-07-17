@@ -7,6 +7,16 @@ var child_process = require('child_process');
 
 module.exports = function (router, passport) {
 
+  router.get('/features', function (req, res) {
+    Feature.find({}), function (err, features) {
+      if (err) {
+        res.send(err);
+      } else {
+        res.json(features);
+      }
+    };
+  });
+
   router.route('/features/:featureId')
     .get(function (req, res) {
       Feature.findOne({ _id: req.params.featureId }, function (err, feature) {
@@ -18,7 +28,6 @@ module.exports = function (router, passport) {
       Feature.findOne({ _id: req.params.featureId }, function (err, feature) {
         if (feature) {
           if (req.body.name) feature.name = req.body.name;
-          if (req.body.user) feature.users.push(req.body.name);
           if (req.body.dataStream) feature.dataStreams.push(req.body.datastream);
           if (req.body.category) feature.category.push(req.body.category);
           feature.save(function (err, feature) {
@@ -37,9 +46,9 @@ module.exports = function (router, passport) {
       });
     })
     .delete(function (req, res) {
-      Feature.remove({ _id: req.params.featureId }, function (err, insight) {
+      Feature.remove({ _id: req.params.featureId }, function (err, feature) {
         if (err) res.send(err);
-        if (insight) res.json(insight);
+        if (feature) res.json(feature);
       });
     });
 
