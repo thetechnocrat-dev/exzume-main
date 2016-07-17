@@ -63,6 +63,16 @@ var Admin = React.createClass({
 
       <div className="ui horizontal divider">or</div>
 
+      <TextForm
+        header="Add data stream to feature"
+        labels={ ['dataStream'] }
+        submitUrl="/admin/features/"
+        method="put"
+        paramLabel="feature id"
+      />
+
+      <div className="ui horizontal divider">or</div>
+
         <div className="ui green button" onClick={this.clickHome}>Go Home</div>
       </div>
     );
