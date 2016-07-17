@@ -46,10 +46,12 @@ var Admin = React.createClass({
 
         <TextForm
           header="Add feature to database"
-          labels={ ['username', 'formUrl'] }
-          postUrl="/admin/features/new"
+          labels={ ['name'] }
+          postUrl="/admin/features/create"
           method="post"
         />
+
+      <div className="ui horizontal divider">or</div>
 
         <div className="ui green button" onClick={this.clickHome}>Go Home</div>
       </div>

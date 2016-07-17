@@ -45,7 +45,7 @@ var textForm = React.createClass({
   },
 
   success: function (respData) {
-    this.setState({ messages: respData.message, isLoading: false });
+    this.setState({ messages: JSON.stringify(respData), isLoading: false });
   },
 
   error: function (respError) {
