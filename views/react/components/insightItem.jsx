@@ -28,8 +28,8 @@ var InsightItem = React.createClass({
 
     // resets session store with updated user object that has correct staring of insights
     FastFlux.webCycle('get', '/auth/session', {
-      shouldReceive: true,
-      type: 'SESSION_RECEIVED',
+      shouldStoreReceive: true,
+      storeActionType: 'SESSION_RECEIVED',
     });
   },
 

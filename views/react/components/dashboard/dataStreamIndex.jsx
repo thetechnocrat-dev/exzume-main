@@ -41,9 +41,10 @@ var DataStreamIndex = React.createClass({
       });
     };
 
-    return streams.map(function (stream) {
+    return streams.map(function (stream, idx) {
       return (
         <DataStreamItem
+          key={idx}
           streamName={stream.streamName}
           streamImage={stream.streamImage}
           streamDataURL={stream.streamDataURL}

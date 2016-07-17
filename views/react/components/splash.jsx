@@ -26,8 +26,8 @@ var Splash = React.createClass({
     // check for active session if there is not already an active session
     if (!SessionStore.isSignedIn()) {
       FastFlux.webCycle('get', '/auth/session', {
-        shouldReceive: true,
-        type: 'SESSION_RECEIVED',
+        shouldStoreReceive: true,
+        storeActionType: 'SESSION_RECEIVED',
       });
     };
   },
@@ -88,8 +88,8 @@ var Splash = React.createClass({
   clickSignOut: function () {
     FastFlux.webCycle('get', '/auth/signout', {
       success: this.successCallback,
-      shouldReceive: true,
-      type: 'SESSION_DESTROYED',
+      shouldStoreReceive: true,
+      storeActionType: 'SESSION_DESTROYED',
     });
   },
 

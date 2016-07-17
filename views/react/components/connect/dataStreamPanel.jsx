@@ -1,5 +1,5 @@
 var React = require('react');
-var SessionStore = require('../../stores/SessionStore');
+var SessionStore = require('../../stores/sessionStore');
 var allDataStreams = require('./AllDataStreams');
 
 var DataStream = React.createClass({

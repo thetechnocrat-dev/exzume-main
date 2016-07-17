@@ -20,7 +20,7 @@ var Admin = React.createClass({
         <TextForm
           header="Add form url to User"
           labels={ ['username', 'formUrl'] }
-          postUrl="/admin/addform"
+          submitUrl="/admin/addform"
           method="put"
         />
 
@@ -29,7 +29,7 @@ var Admin = React.createClass({
         <TextForm
           header="Add Insight to User (needs updated to match new back end)"
           labels={ ['username', 'insightMessage'] }
-          postUrl="/admin/addinsight"
+          submitUrl="/admin/addinsight"
           method="put"
         />
 
@@ -38,7 +38,7 @@ var Admin = React.createClass({
         <TextForm
           header="Add Visualization to User"
           labels={ ['username', 'visLink'] }
-          postUrl="/admin/addvis"
+          submitUrl="/admin/addvis"
           method="put"
         />
 
@@ -47,18 +47,19 @@ var Admin = React.createClass({
         <TextForm
           header="Add feature to database"
           labels={ ['name'] }
-          postUrl="/admin/features/create"
+          submitUrl="/admin/features/create"
           method="post"
         />
 
       <div className="ui horizontal divider">or</div>
 
-        <TextForm
-          header="Add category to feature in database"
-          labels={ ['name', 'category'] }
-          postUrl="/admin/features/create"
-          method="post"
-        />
+      <TextForm
+        header="Add category to feature"
+        labels={ ['category'] }
+        submitUrl="/admin/features/"
+        method="put"
+        paramLabel="feature id or name"
+      />
 
       <div className="ui horizontal divider">or</div>
 

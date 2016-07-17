@@ -42,7 +42,14 @@ var textForm = React.createClass({
       formBody[label] = this.state[label];
     }
 
-    FastFlux.webCycle(this.props.method, this.props.submitUrl, {
+    var submitUrl = this.props.submitUrl;
+
+    // add paramter to route if needed
+    if (this.props.paramLabel) {
+      submitUrl += this.state.paramLabel;
+    }
+
+    FastFlux.webCycle(this.props.method, submitUrl, {
       body: formBody,
       success: this.success,
       error: this.error,
@@ -96,23 +103,20 @@ var textForm = React.createClass({
   },
 
   makeParamField: function () {
-<<<<<<< Updated upstream
+    var _this = this;
     if (this.props.paramLabel) {
       return (
         <div className="field">
-          <label>{this.state.paramLabel}</label>
+          <label>{this.props.paramLabel}</label>
           <input
             type="text"
-            name={this.state.paramLabel}
+            name={this.props.paramLabel}
             placeholder=""
-            valueLink={_this.linkState(this.state.paramLabel)}
+            valueLink={_this.linkState(this.props.paramLabel)}
           ></input>
         </div>
       );
     }
-=======
-
->>>>>>> Stashed changes
   },
 
   makeSubmitButton: function () {

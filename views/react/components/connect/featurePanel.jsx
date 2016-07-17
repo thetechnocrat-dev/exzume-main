@@ -17,8 +17,8 @@ var FeaturePanel = React.createClass({
   componentDidMount: function () {
     this.featureToken = FeatureStore.addListener(this._onChange);
     FastFlux.webCycle('get', '/features', {
-      shouldReceive: true,
-      type: 'FEATURES_RECEIVED',
+      shouldStoreReceive: true,
+      storeActionType: 'FEATURES_RECEIVED',
     });
   },
 

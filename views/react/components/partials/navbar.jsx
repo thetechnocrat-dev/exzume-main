@@ -51,8 +51,8 @@ var navbar = React.createClass({
   clickSignout: function () {
     FastFlux.webCycle('get', '/auth/signout', {
       success: this.successCallback,
-      shouldReceive: true,
-      type: 'SESSION_DESTROYED',
+      shouldStoreReceive: true,
+      storeActionType: 'SESSION_DESTROYED',
     });
   },
 

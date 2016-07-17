@@ -31,8 +31,8 @@ var SignIn = React.createClass({
         body: signInBody,
         success: this.successCallback,
         error: this.errorCallback,
-        shouldReceive: true,
-        type: 'SESSION_RECEIVED',
+        shouldStoreReceive: true,
+        storeActionType: 'SESSION_RECEIVED',
       });
     }
   },

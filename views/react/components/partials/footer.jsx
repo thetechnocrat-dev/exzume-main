@@ -13,8 +13,8 @@ var footer = React.createClass({
     // check for active session if there is not already an active session
     if (!SessionStore.isSignedIn()) {
       FastFlux.webCycle('get', '/auth/session', {
-        shouldReceive: true,
-        type: 'SESSION_RECEIVED',
+        shouldStoreReceive: true,
+        storeActionType: 'SESSION_RECEIVED',
       });
     };
   },
