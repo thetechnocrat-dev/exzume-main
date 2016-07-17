@@ -46,9 +46,10 @@ var textForm = React.createClass({
 
     // add paramter to route if needed
     if (this.props.paramLabel) {
-      submitUrl += this.state.paramLabel;
+      submitUrl += this.state[this.props.paramLabel];
     }
-
+    console.log(submitUrl);
+    console.log(this.state);
     FastFlux.webCycle(this.props.method, submitUrl, {
       body: formBody,
       success: this.success,

@@ -15,18 +15,23 @@ module.exports = function (router, passport) {
       });
     })
     .put(function (req, res) {
-      Feature.findOne({ $or: [{ _id: req.params.featureId },
-                              { name: req.body.name }] }, function (err, feature) {
-        if (feature) {
-          if (req.body.name) feature.name = req.body.name;
-          if (req.body.dataStream) feature.dataStreams.push(req.body.dataStream);
-          if (req.body.category) feature.categories.push(req.body.category);
-          feature.save(function (err, feature) {
-            if (err) res.send(err);
-            if (feature) res.json(feature);
-          });
-        }
-      });
+      console.log('here', req.body, req.params.featureId);
+      Feature.findOne({ _id: req.params.featureId }, function (err, feature) {
+          if (feature) {
+            if (req.body.name) feature.name = req.body.name;
+            if (req.body.dataStream) feature.dataStreams.push(req.body.dataStream);
+            if (req.body.category) feature.categories.push(req.body.category);
+            feature.save(function (err, feature) {
+              if (err) {
+                res.send(err);
+              } else if (feature) {
+                res.json(feature);
+              } else {
+                res.status(401).send('feature not found');
+              }
+            });
+          }
+        });
     })
     .post(function (req, res) {
       var newFeature = new Feature();

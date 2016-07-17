@@ -58,7 +58,7 @@ var Admin = React.createClass({
         labels={ ['category'] }
         submitUrl="/admin/features/"
         method="put"
-        paramLabel="feature id or name"
+        paramLabel="feature id"
       />
 
       <div className="ui horizontal divider">or</div>
