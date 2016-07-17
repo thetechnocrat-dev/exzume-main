@@ -3,7 +3,7 @@ var PropTypes = React.PropTypes;
 var FastFlux = require('../../util/fast-flux-react/fastFlux');
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
 
-var textForm = React.createClass({
+var TextForm = React.createClass({
   mixins: [LinkedStateMixin],
 
   propTypes: {
@@ -27,7 +27,7 @@ var textForm = React.createClass({
   clickSubmit: function (event) {
     event.preventDefault();
 
-    // clear messages or erros from last submit and set loading to true
+    // clear messages or errors from last submit and set loading to true
     this.setState({ errors: '', messages: '', isLoading: true });
 
     var formBody = {};
@@ -62,7 +62,7 @@ var textForm = React.createClass({
     }
   },
 
-  makeMessagess: function () {
+  makeMessages: function () {
     if (this.state.messages === '') {
       return <div />;
     } else {
@@ -118,10 +118,8 @@ var textForm = React.createClass({
       <form className="ui form">
         <h2 className="ui header">{this.props.header}</h2>
         {this.makeErrors()}
-        {this.makeMessagess()}
-
+        {this.makeMessages()}
         {this.makeTextFields()}
-
         {this.makeSubmitButton()}
     </form>
     );
@@ -129,4 +127,4 @@ var textForm = React.createClass({
 
 });
 
-module.exports = textForm;
+module.exports = TextForm;

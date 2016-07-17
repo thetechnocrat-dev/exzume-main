@@ -6,7 +6,7 @@ var FeatureSchema = new Schema({
   name: String,
   users: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   dataStreams: [String], // references name of datastream collection
-  category: [String],
+  categories: [String],
 }, { autoIndex: false });
 
 module.exports = mongoose.model('Feature', FeatureSchema);

@@ -24,9 +24,9 @@
 var Dispatcher = require('../../dispatcher/dispatcher');
 
 var ActionUtil = {
-  receiveData: function (data, type) {
+  receiveData: function (data, storeActionType) {
     Dispatcher.dispatch({
-      actionType: type,
+      actionType: storeActionType,
       data: data,
     });
   },
@@ -38,18 +38,15 @@ var ApiUtil = {
       type: 'GET',
       url: url,
       success:
-      function (resp) {
-        console.log('get ' + url + ' sucess');
-
-        if (options.success) options.success(resp);
-        if (options.shouldReceive) ActionUtil.receiveData(resp, options.type);
-      },
+        function (resp) {
+          options.success(resp, 'get', url);
+          if (options.shouldReceive) ActionUtil.receiveData(resp, options.storeActionType);
+        },
 
       error:
-      function (resp) {
-        console.log('get ' + url + ' error', resp);
-        if (options.error) options.error(resp);
-      },
+        function (resp) {
+          options.error(resp, 'get', url);
+        },
     });
   },
 
@@ -60,17 +57,15 @@ var ApiUtil = {
       data: body,
       dataType: 'json',
       success:
-      function (resp) {
-        console.log('post ' + url + ' success');
-        if (options.success) options.success(resp);
-        if (options.shouldReceive) ActionUtil.receiveData(resp, options.type);
-      },
+        function (resp) {
+          options.success(resp, 'post', url);
+          if (options.shouldReceive) ActionUtil.receiveData(resp, options.storeActionType);
+        },
 
       error:
-      function (resp) {
-        console.log('post ' + url + ' error', resp);
-        if (options.error) options.error(resp);
-      },
+        function (resp) {
+          options.error(resp, 'post', url);
+        },
     });
   },
 
@@ -81,17 +76,32 @@ var ApiUtil = {
       data: body,
       dataType: 'json',
       success:
-      function (resp) {
-        console.log('put ' + url + ' success');
-        if (options.success) options.success(resp);
-        if (options.shouldReceive) ActionUtil.receiveData(resp, options.type);
-      },
+        function (resp) {
+          options.success(resp, 'put', url);
+          if (options.shouldReceive) ActionUtil.receiveData(resp, options.storeActionType);
+        },
+
+      error:
+        function (resp) {
+          options.error(resp, 'put', url);
+        },
     });
   },
 };
 
+var successDefault = function (resp, method, url) {
+  console.log(method + ' ' + url + ' success');
+};
+
+var errorDefault = function (resp, method, url) {
+  console.log(method + ' ' + url + ' error', resp);
+};
+
 module.exports = {
   webCycle: function (method, url, options) {
+    options.shouldReceive = options.shouldReceive || false;
+    options.success = options.success || successDefault;
+    options.error = options.error || errorDefault;
     if (method === 'post' || method === 'put') {
       ApiUtil[method](url, options.body, options);
     } else {

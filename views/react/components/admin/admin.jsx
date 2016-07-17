@@ -53,6 +53,15 @@ var Admin = React.createClass({
 
       <div className="ui horizontal divider">or</div>
 
+        <TextForm
+          header="Add category to feature in database"
+          labels={ ['name', 'category'] }
+          postUrl="/admin/features/create"
+          method="post"
+        />
+
+      <div className="ui horizontal divider">or</div>
+
         <div className="ui green button" onClick={this.clickHome}>Go Home</div>
       </div>
     );
