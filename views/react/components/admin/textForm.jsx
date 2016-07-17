@@ -3,14 +3,15 @@ var PropTypes = React.PropTypes;
 var FastFlux = require('../../util/fast-flux-react/fastFlux');
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
 
-var TextForm = React.createClass({
+var textForm = React.createClass({
   mixins: [LinkedStateMixin],
 
   propTypes: {
     header: React.PropTypes.string.isRequired,
     labels: React.PropTypes.array.isRequired,
-    postUrl: React.PropTypes.string.isRequired,
+    submitUrl: React.PropTypes.string.isRequired,
     method: React.PropTypes.string.isRequired,
+    paramLabel: React.PropTypes.string,
   },
 
   getInitialState: function () {
@@ -21,13 +22,17 @@ var TextForm = React.createClass({
       initialState[label] = '';
     }
 
+    // only needed for paramertized back end routes
+    var paramLabel = this.props.paramLabel;
+    if (paramLabel) initialState[paramLabel] = '';
+
     return initialState;
   },
 
   clickSubmit: function (event) {
     event.preventDefault();
 
-    // clear messages or errors from last submit and set loading to true
+    // clear messages or erros from last submit and set loading to true
     this.setState({ errors: '', messages: '', isLoading: true });
 
     var formBody = {};
@@ -37,7 +42,7 @@ var TextForm = React.createClass({
       formBody[label] = this.state[label];
     }
 
-    FastFlux.webCycle(this.props.method, this.props.postUrl, {
+    FastFlux.webCycle(this.props.method, this.props.submitUrl, {
       body: formBody,
       success: this.success,
       error: this.error,
@@ -62,7 +67,7 @@ var TextForm = React.createClass({
     }
   },
 
-  makeMessages: function () {
+  makeMessagess: function () {
     if (this.state.messages === '') {
       return <div />;
     } else {
@@ -88,6 +93,22 @@ var TextForm = React.createClass({
         </div>
       );
     }));
+  },
+
+  makeParamField: function () {
+    if (this.props.paramLabel) {
+      return (
+        <div className="field">
+          <label>{this.state.paramLabel}</label>
+          <input
+            type="text"
+            name={this.state.paramLabel}
+            placeholder=""
+            valueLink={_this.linkState(this.state.paramLabel)}
+          ></input>
+        </div>
+      );
+    }
   },
 
   makeSubmitButton: function () {
@@ -118,7 +139,9 @@ var TextForm = React.createClass({
       <form className="ui form">
         <h2 className="ui header">{this.props.header}</h2>
         {this.makeErrors()}
-        {this.makeMessages()}
+        {this.makeMessagess()}
+
+        {this.makeParamField()}
         {this.makeTextFields()}
         {this.makeSubmitButton()}
     </form>
@@ -127,4 +150,4 @@ var TextForm = React.createClass({
 
 });
 
-module.exports = TextForm;
+module.exports = textForm;
