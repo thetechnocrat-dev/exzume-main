@@ -1,45 +1,43 @@
 var React = require('react');
-var Style = require('../../util/style');
+var FeatureStore = require('../../stores/featureStore');
+var FastFlux = require('../../util/fast-flux-react/fastFlux');
+
+// components
+var FeatureItem = require('./featureItem');
 
 var FeaturePanel = React.createClass({
-  propTypes: {
-    name: React.PropTypes.string.isRequired,
-    dataStreams: React.PropTypes.array.isRequired,
-  },
-
   getInitialState: function () {
-    return { backgroundColor: Style.lightBackground };
+    return { features: FeatureStore.features() };
   },
 
-  makeDataStreams: function () {
-    var dataStreams = '';
-    this.props.dataStreams.forEach(function (dataStream, idx) {
+  _onChange: function () {
+    this.setState({ features: FeatureStore.features() });
+  },
+
+  componentDidMount: function () {
+    this.featureToken = FeatureStore.addListener(this._onChange);
+    FastFlux.webCycle('get', '/features', {
+      shouldReceive: true,
+      type: 'FEATURES_RECEIVED',
+    });
+  },
+
+  componentWillUnmount: function () {
+    this.featureToken.remove();
+  },
+
+  makeFeatures: function () {
+    return this.state.features.map(function (feature, idx) {
       return (
-        dataStreams += dataStream
+        <FeatureItem key={idx} name={feature.name} dataStreams={feature.dataStreams} />
       );
     });
   },
 
-  handleMouseEnter: function () {
-    this.setState({ backgroundColor: Style.lightBackgroundHover });
-  },
-
-  handleMouseLeave: function () {
-    this.setState({ backgroundColor: Style.lightBackground });
-  },
-
   render: function () {
-    var cardStyle = { backgroundColor: this.state.backgroundColor, cursor: 'pointer' };
     return (
-      <div className="column">
-        <div className="ui cards">
-          <div className="card" onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave} style={cardStyle}>
-            <div className="content">
-              <div className="header">{this.props.name}</div>
-              <div className="description">{this.props.dataStreams.toString()}</div>
-            </div>
-          </div>
-        </div>
+      <div className="ui doubling four column grid container">
+        {this.makeFeatures()}
       </div>
     );
   },

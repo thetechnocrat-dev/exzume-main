@@ -1,10 +1,18 @@
-var User = require('../models/user'); // don't need?
+var User = require('../models/user');
+var Feature = require('../models/feature');
 var mongoose = require('mongoose');
 
 module.exports = function (router, passport) {
 
   router.get('/', function (req, res) {
     res.render('main', { title: 'Exzume' });
+  });
+
+  router.get('/features', function (req, res) {
+    Feature.find({}, function (err, features) {
+      if (err) res.send(err);
+      if (features) res.json(features);
+    });
   });
 
   router.post('/signin', function (req, res) {

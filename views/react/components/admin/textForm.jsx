@@ -96,6 +96,7 @@ var textForm = React.createClass({
   },
 
   makeParamField: function () {
+<<<<<<< Updated upstream
     if (this.props.paramLabel) {
       return (
         <div className="field">
@@ -109,6 +110,9 @@ var textForm = React.createClass({
         </div>
       );
     }
+=======
+
+>>>>>>> Stashed changes
   },
 
   makeSubmitButton: function () {

@@ -7,13 +7,6 @@ var child_process = require('child_process');
 
 module.exports = function (router, passport) {
 
-  router.get('/features', function (req, res) {
-    Feature.find({}, function (err, features) {
-      if (err) res.send(err);
-      if (features) res.json(features);
-    });
-  });
-
   router.route('/features/:featureId')
     .get(function (req, res) {
       Feature.findOne({ _id: req.params.featureId }, function (err, feature) {
