@@ -15,9 +15,9 @@ var DataStream = React.createClass({
   getUsersDataStreams: function () {
     var user = SessionStore.currentUser();
     var userDataStreams = [];
-    if (user.survey) userDataStreams.push('exzume');
-    if (user.fitbit) userDataStreams.push('fitbit');
-    if (user.lastfm) userDataStreams.push('lastfm');
+    if (user.datastreams.survey) userDataStreams.push('exzume');
+    if (user.datastreams.fitbit) userDataStreams.push('fitbit');
+    if (user.datastreams.lastfm) userDataStreams.push('lastfm');
 
     return userDataStreams;
   },

@@ -1,6 +1,5 @@
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('../../models/user');
-var Survey = require('../../models/dataStreams/survey');
 
 module.exports = function (passport) {
   passport.use('local-signup', new LocalStrategy({
@@ -20,20 +19,12 @@ module.exports = function (passport) {
             return done(null, false, { errorMessage: 'username already exists' });
           }
 
-          // not already signed in
-
-          // make the users default survey data stream
-          var newSurvey = new Survey();
-          newSurvey.owner = username;
-          newSurvey.save(function (err) {
-            if (err) {throw err;}
-          });
-
           var newUser = new User();
           newUser.local.username = username;
           newUser.local.password = newUser.generateHash(password);
           newUser.local.email = req.body.email;
-          newUser.survey = newSurvey;
+          // make the users default survey data stream
+          newUser.datastreams.survey = { features: [] };
 
           newUser.save(function (err) {
             if (err) {

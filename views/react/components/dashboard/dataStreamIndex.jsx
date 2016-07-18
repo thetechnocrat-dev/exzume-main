@@ -11,7 +11,10 @@ var DataStreamIndex = React.createClass({
     if (SessionStore.isSignedIn()) {
       return { user: SessionStore.currentUser() };
     } else {
-      return { user: { local: { username: '' } } };
+      return { user: {
+        local: { username: '' },
+        datastreams: {},
+      } };
     }
   },
 
@@ -33,7 +36,7 @@ var DataStreamIndex = React.createClass({
 
   makeDataStreamItems: function () {
     var streams = [];
-    if (this.state.user.fitbit) {
+    if (this.state.user.datastreams.fitbit) {
       streams.push({
         streamName: 'fitbit',
         streamImage: '/images/fitbit.png',

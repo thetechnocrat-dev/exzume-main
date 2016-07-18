@@ -45,7 +45,7 @@ var navbar = React.createClass({
   },
 
   clickProfile: function () {
-    this.history.push('/profile');
+    this.history.push('/dashboard');
   },
 
   clickSignout: function () {
@@ -82,7 +82,7 @@ var navbar = React.createClass({
           <div className="ui container">
             <LeftNavbarButton label="Exzume" navigation="/" />
             <LeftNavbarButton label="Dashboard" navigation="/dashboard" />
-            <LeftNavbarButton label="Explore" navigation="/" />
+            <LeftNavbarButton label="Explore" navigation="/dashboard/explore" />
             <LeftNavbarButton label="Connect" navigation="/dashboard/connect" />
             <div className="right menu">
               <div className="ui simple dropdown item">

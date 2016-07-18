@@ -1,7 +1,4 @@
 var User = require('../models/user');
-var Insight = require('../models/insight');
-var Fitbit = require('../models/dataStreams/fitbit');
-var Survey = require('../models/dataStreams/survey');
 var Feature = require('../models/feature');
 var config = require('../config/config');
 var mongoose = require('mongoose');
@@ -25,47 +22,47 @@ module.exports = function (router, passport) {
     res.json(req.user);
   });
 
-  router.get('/insights', function (req, res) {
-    Insight.find({ ownerId: req.user._id }, function (err, insights) {
-      if (err) res.send(err);
-      res.json(insights);
-    });
-  });
-
-  router.route('/insights/:insightId')
-    .get(function (req, res) {
-      Insight.findOne({ _id: req.params.insightId }, function (err, insight) {
-        if (err) res.send(err);
-        if (insight) res.json(insight);
-      });
-    })
-    .put(function (req, res) {
-      Insight.findOne({ _id: req.params.insightId }, function (err, insight) {
-        if (insight) {
-          insight.message = req.body.message;
-          insight.liked = req.body.liked;
-          insight.save(function (err, insight) {
-            if (err) res.send(err);
-            if (insight) res.json(insight);
-          });
-        }
-      });
-    })
-    .post(function (req, res) {
-      var newInsight = new Insight();
-      newInsight.message = req.body.message;
-      newInsight.ownerId = mongoose.Types.ObjectId(req.body.ownerId);
-      newInsight.save(function (err, newInsight) {
-        if (err) res.send(err);
-        res.json(newInsight);
-      });
-    })
-    .delete(function (req, res) {
-      Insight.remove({ _id: req.params.insightId }, function (err, insight) {
-        if (err) res.send(err);
-        if (insight) res.json(insight);
-      });
-    });
+  // router.get('/insights', function (req, res) {
+  //   Insight.find({ ownerId: req.user._id }, function (err, insights) {
+  //     if (err) res.send(err);
+  //     res.json(insights);
+  //   });
+  // });
+  //
+  // router.route('/insights/:insightId')
+  //   .get(function (req, res) {
+  //     Insight.findOne({ _id: req.params.insightId }, function (err, insight) {
+  //       if (err) res.send(err);
+  //       if (insight) res.json(insight);
+  //     });
+  //   })
+  //   .put(function (req, res) {
+  //     Insight.findOne({ _id: req.params.insightId }, function (err, insight) {
+  //       if (insight) {
+  //         insight.message = req.body.message;
+  //         insight.liked = req.body.liked;
+  //         insight.save(function (err, insight) {
+  //           if (err) res.send(err);
+  //           if (insight) res.json(insight);
+  //         });
+  //       }
+  //     });
+  //   })
+  //   .post(function (req, res) {
+  //     var newInsight = new Insight();
+  //     newInsight.message = req.body.message;
+  //     newInsight.ownerId = mongoose.Types.ObjectId(req.body.ownerId);
+  //     newInsight.save(function (err, newInsight) {
+  //       if (err) res.send(err);
+  //       res.json(newInsight);
+  //     });
+  //   })
+  //   .delete(function (req, res) {
+  //     Insight.remove({ _id: req.params.insightId }, function (err, insight) {
+  //       if (err) res.send(err);
+  //       if (insight) res.json(insight);
+  //     });
+  //   });
 
   router.get('/features', function (req, res) {
     Feature.find({ owner: req.user._id }, function (err, features) {
@@ -115,6 +112,7 @@ module.exports = function (router, passport) {
 
   router.get('/datastreams/:datastream/grab', function (req, res) {
       var date = moment().format('YYYY-MM-DD');
+      var fitbit = req.user.datastreams.fitbit;
       var refreshToken = function (fitbit) {
         axios({
           method: 'POST',
@@ -130,179 +128,33 @@ module.exports = function (router, passport) {
         }).then(function (res) {
           console.log('redirecting user to the authentication flow...');
           res.redirect('/datastreams/:datastream');
-        }).catch(function (error) { console.log(error); console.log(error.data.errors); });
+        }).catch(function (error) {
+          console.log(error);
+          console.log(error.data.errors);
+        });
       };
 
-      Fitbit.findOne({ 'ownerId': mongoose.Types.ObjectId(req.user._id) }, function (err, fitbit) {
-        if (err) {
-          res.status(500).send('internal server error - try refreshing the page');
-        } else if (fitbit == null) {
-          res.status(401).send('fitbit datastream not found');
-        } else if (fitbit) {
-          console.log(fitbit);
-          axios({
-            method: 'GET',
-            url: 'https://api.fitbit.com/1/user/-/activities/date/' + date + '.json',
-            headers: { 'Authorization': 'Bearer ' + fitbit.accessToken },
-          }).then(function (response) {
-              console.log('made it to response');
-              res.json(response.data);
-            }).catch(function (error) {
-              if (error.status == 401) {
-                console.log('access token expired, refresh that shit');
-                refreshToken(fitbit);
-              }
-              console.log(error.data.errors);
-            });
-        }
-      });
+      axios({
+        method: 'GET',
+        url: 'https://api.fitbit.com/1/user/-/activities/date/' + date + '.json',
+        headers: { 'Authorization': 'Bearer ' + fitbit.accessToken },
+      }).then(function (response) {
+          console.log('made it to response');
+          res.json(response.data);
+        }).catch(function (error) {
+          if (error.status == 401) {
+            console.log('access token expired, refresh that shit');
+            refreshToken(fitbit);
+          }
 
-
+          console.log(error.data.errors);
+        });
     }
   );
 
   router.get('/signout', function (req, res) {
     req.logout();
     res.json({ message: 'sign out success' });
-  });
-
-  router.put('/selectseries', function (req, res) {
-    var lineData;
-    var dateArr1 = [];
-    var dataArr1 = [];
-    // var dateArr2 = [];
-    // var dataArr2 = [];
-    var createValArray = function (arr1, arr2) {
-      var valArray = [];
-      var kvPair = {};
-      for (var i = 0; i < arr1.length; i++) {
-        kvPair = {};
-        kvPair.x = arr1[i];
-        kvPair.y = arr2[i];
-        valArray.push(kvPair);
-      }
-
-      return valArray;
-    };
-
-    Survey.findOne({ owner: req.user.local.username, }, function (err, survey) {
-      if (err) {
-        res.status(500).send('internal server error - try refreshing the page');
-      } else if (survey == null) {
-        res.status(401).send('survey responses for user not found');
-      } else if (survey) {
-        var features = survey.features;
-        for (var i = 0; i < features.length; i++) {
-          var f = features[i];
-          if (f._id.toString() === req.body.id) {
-            dateArr1 = f.data.map(function (el) {return parseInt(el); });
-            dataArr1 = f.data.map(function (el) {return parseInt(el); });
-            console.log(dataArr1);
-          }
-
-          // else if (features[f].name == req.body.f2) {
-          //   console.log(features[f].name);
-          //   dateArr2 = features[f].dates;
-          //   dataArr2 = features[f].data;
-          // }
-        }
-
-        var lineData = {
-            name: 'series1',
-            values: createValArray(dateArr1, dataArr1),
-            strokeWidth: 3,
-            strokeDashArray: '5,5',
-          };
-
-          console.log(lineData.values);
-
-        res.json({ data: lineData });
-
-        // var lineData = [
-        //   {
-        //     name: 'series1',
-        //     values: createValArray(dateArr1, dataArr1),
-        //     strokeWidth: 3,
-        //     strokeDashArray: '5,5',
-        //   },
-        //   {
-        //     name: 'series2',
-        //     values: createValArray(dateArr2, dataArr2),
-        //   },
-        // ];
-      }
-    });
-  });
-
-  router.put('/addsurveyquestion', function (req, res) {
-    Survey.findOne({ owner: req.body.owner }, function (err, survey) {
-      if (err) {
-        res.status(500).send('internal server error - try refreshing the page');
-      } else if (survey == null) {
-        res.status(401).send('survey responses for user not found');
-      } else if (survey) {
-        var newFeature = {
-          prompt: req.body.prompt,
-          format: req.body.format,
-          dates: [],
-          data: [],
-        };
-
-        survey.features.push(newFeature);
-
-        survey.save(function (err) {
-          if (err) {res.send(err); }
-
-          res.json({ feature: newFeature });
-        });
-      }
-    });
-  });
-
-  router.get('/surveyquestions', function (req, res) {
-    var owner = req.user.local.username;
-
-    Survey.findOne({ owner: owner }, function (err, survey) {
-      if (err) {
-        res.status(500).send('internal server error - try refreshing the page');
-      } else if (survey == null) {
-        res.status(401).send('survey responses for user not found');
-      } else if (survey) {
-        var surveyQuestions = survey.features.map(function (element) {
-          var currentObj = {};
-          currentObj.id = element._id;
-          currentObj.prompt = element.prompt;
-          currentObj.format = element.format;
-          return currentObj;
-        });
-
-        res.json({ surveyQuestions: surveyQuestions });
-      }
-    });
-  });
-
-  router.put('/submitsurveyanswer', function (req, res) {
-    console.log(req.body);
-    var objectId = mongoose.Types.ObjectId(req.body.objectId);
-    console.log('onjid', objectId);
-    console.log('user', req.user.local.username);
-
-    var conditions = { owner: req.user.local.username, 'features._id': objectId };
-    var update = { $push:
-      { 'features.$.data': req.body.answer, 'features.$.dates': req.body.date, },
-    };
-    var options = { multi: true };
-
-    Survey.update(conditions, update, options,
-      function (err, numAffected) {
-        if (err) {
-          res.status(500).json({ message: 'internal server error - try refreshing the page' });
-        }
-
-        console.log('numAff', numAffected);
-
-        res.json({ message: 'survey feature push success' });
-      });
   });
 
   router.get('/*', function (req, res) {

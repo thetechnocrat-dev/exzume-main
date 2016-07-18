@@ -1,5 +1,4 @@
 var FitbitStrategy = require('passport-fitbit-oauth2').FitbitOAuth2Strategy;
-var Fitbit = require('../../../models/dataStreams/fitbit');
 var config = require('../../config');
 
 module.exports = function (passport) {
@@ -11,20 +10,13 @@ module.exports = function (passport) {
     },
     function (req, accessToken, refreshToken, profile, done) {
       var user = req.user;
-      var fitbit = new Fitbit();
-      fitbit.ownerId = user._id;
-      fitbit.profileId = profile.id;
-      fitbit.accessToken = accessToken;
-      fitbit.refreshToken = refreshToken;
-      fitbit.save(function (err) {
-        if (err) {
-          done(err, user);
-        } else {
-          user.fitbit = fitbit;
-          user.save(function (err) {
-            done(err, user);
-          });
-        };
+      user.datastreams.fitbit.ownerId = user._id;
+      user.datastreams.fitbit.profileId = profile.id;
+      user.datastreams.fitbit.accessToken = accessToken;
+      user.datastreams.fitbit.refreshToken = refreshToken;
+      user.save(function (err) {
+        console.log('user saved with fit stream');
+        done(err, user);
       });
     }));
 

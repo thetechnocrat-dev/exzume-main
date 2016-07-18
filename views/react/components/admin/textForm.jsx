@@ -22,7 +22,7 @@ var textForm = React.createClass({
       initialState[label] = '';
     }
 
-    // only needed for paramertized back end routes
+    // only needed for paramaterized back end routes
     var paramLabel = this.props.paramLabel;
     if (paramLabel) initialState[paramLabel] = '';
 
@@ -74,7 +74,7 @@ var textForm = React.createClass({
     }
   },
 
-  makeMessagess: function () {
+  makeMessages: function () {
     if (this.state.messages === '') {
       return <div />;
     } else {
@@ -147,7 +147,7 @@ var textForm = React.createClass({
       <form className="ui form">
         <h2 className="ui header">{this.props.header}</h2>
         {this.makeErrors()}
-        {this.makeMessagess()}
+        {this.makeMessages()}
 
         {this.makeParamField()}
         {this.makeTextFields()}
