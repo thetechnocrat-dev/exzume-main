@@ -12,6 +12,7 @@ module.exports = function (passport) {
     user.datastreams.lastfm.ownerId = user._id;
     user.datastreams.lastfm.username = sessionKey.username;
     user.datastreams.lastfm.key = sessionKey.key;
+    user.datastreams.lastfm.isConnected = true;
     user.save(function (err) {
       console.log('user saved with lastfm stream');
       done(err, user);

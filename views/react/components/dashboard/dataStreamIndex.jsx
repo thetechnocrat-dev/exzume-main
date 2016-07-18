@@ -10,12 +10,9 @@ var DataStreamIndex = React.createClass({
   getInitialState: function () {
     if (SessionStore.isSignedIn()) {
       return { user: SessionStore.currentUser() };
-    } else {
-      return { user: {
-        local: { username: '' },
-        datastreams: {},
-      } };
     }
+
+    return { user: {} };
   },
 
   _onChange: function () {
@@ -36,12 +33,14 @@ var DataStreamIndex = React.createClass({
 
   makeDataStreamItems: function () {
     var streams = [];
-    if (this.state.user.datastreams.fitbit) {
-      streams.push({
-        streamName: 'fitbit',
-        streamImage: '/images/fitbit.png',
-        streamDataURL: '/auth/datastreams/fitbit/grab',
-      });
+    if (SessionStore.isSignedIn()) {
+      if (this.state.user.datastreams.fitbit.isConnected) {
+        streams.push({
+          streamName: 'fitbit',
+          streamImage: '/images/fitbit.png',
+          streamDataURL: '/auth/datastreams/fitbit/grab',
+        });
+      }
     };
 
     return streams.map(function (stream, idx) {

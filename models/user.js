@@ -19,6 +19,7 @@ var UserSchema = new Schema({
   ],
   datastreams: {
     survey: {
+      isConnected: { type: Boolean, default: true },
       features: [{
           featureId: Schema.Types.ObjectId,
           prompt: String,
@@ -32,6 +33,7 @@ var UserSchema = new Schema({
       profileId: { type: String, unique: true },
       accessToken: String,
       refreshToken: String,
+      isConnected: { type: Boolean, default: false },
       features: [{
           name: String,
           featureId: Schema.Types.ObjectId,
@@ -43,6 +45,7 @@ var UserSchema = new Schema({
     lastfm: {
       username: String,
       key: String,
+      isConnected: { type: Boolean, default: false },
       features: [{
           name: String,
           featureId: Schema.Types.ObjectId,

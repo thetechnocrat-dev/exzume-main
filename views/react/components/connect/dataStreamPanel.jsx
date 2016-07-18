@@ -1,11 +1,11 @@
 var React = require('react');
 var SessionStore = require('../../stores/sessionStore');
-var allDataStreams = require('./AllDataStreams');
+var allDataStreams = require('./allDataStreams');
 
 var DataStream = React.createClass({
   getInitialState: function () {
     // if statement is for incase there is a refresh and page needs a second to get session
-    if (SessionStore.currentUser()) {
+    if (SessionStore.isSignedIn()) {
       return { userDataStreams: this.getUsersDataStreams() };
     } else {
       return { userDataStreams: [] };
@@ -15,9 +15,9 @@ var DataStream = React.createClass({
   getUsersDataStreams: function () {
     var user = SessionStore.currentUser();
     var userDataStreams = [];
-    if (user.datastreams.survey) userDataStreams.push('exzume');
-    if (user.datastreams.fitbit) userDataStreams.push('fitbit');
-    if (user.datastreams.lastfm) userDataStreams.push('lastfm');
+    if (user.datastreams.survey.isConnected) userDataStreams.push('exzume');
+    if (user.datastreams.fitbit.isConnected) userDataStreams.push('fitbit');
+    if (user.datastreams.lastfm.isConnected) userDataStreams.push('lastfm');
 
     return userDataStreams;
   },
@@ -50,7 +50,6 @@ var DataStream = React.createClass({
   },
 
   render: function () {
-
     return (
       <div>
         <h3 className="ui header">Your Data Streams</h3>

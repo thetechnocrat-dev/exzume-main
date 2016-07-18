@@ -23,8 +23,6 @@ module.exports = function (passport) {
           newUser.local.username = username;
           newUser.local.password = newUser.generateHash(password);
           newUser.local.email = req.body.email;
-          // make the users default survey data stream
-          newUser.datastreams.survey = { features: [] };
 
           newUser.save(function (err) {
             if (err) {
