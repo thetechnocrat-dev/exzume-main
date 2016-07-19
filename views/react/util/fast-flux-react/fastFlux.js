@@ -85,4 +85,8 @@ module.exports = {
       ApiUtil[method](url, options);
     }
   },
+
+  cycle: function (storeActionType, data) {
+    ActionUtil.receiveData(data, storeActionType);
+  },
 };
