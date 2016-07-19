@@ -6,6 +6,10 @@ var FastFlux = require('../../util/fast-flux-react/fastFlux');
 var FeatureItem = require('./featureItem');
 
 var FeaturePanel = React.createClass({
+  propTypes: {
+    user: React.PropTypes.object,
+  },
+
   getInitialState: function () {
     return { features: FeatureStore.features() };
   },
