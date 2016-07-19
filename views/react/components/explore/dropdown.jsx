@@ -9,32 +9,31 @@ var Dropdown = React.createClass({
   getUserFeatures: function () {
     var datastreams = this.props.user.datastreams;
     var userFeatureList = [];
+    var arr = [];
 
-    for (var datastream in datastreams) {
-      if (!datastreams.hasOwnProperty(datastream)) {
-        console.log('hi');
-        continue;
-      }
-
-      if (datastream.features) {
-        userFeatureList.push(datastream.features.filter(function (feature) {
+    for (datastream in datastreams) {
+      if (datastreams[datastream].features.length != 0) {
+        arr = datastreams[datastream].features.filter(function (feature) {
           return feature.dates.length > 0;
-        }));
+        });
+
+        for (a in arr) {
+          userFeatureList.push(arr[a]);
+        }
       }
     }
 
-    console.log(userFeatureList);
     return userFeatureList;
   },
 
   makeDropdownItems: function () {
     var dropdownItems = this.getUserFeatures();
-    console.log(dropdownItems);
     return dropdownItems.map(function (dropdownItem, idx) {
+      console.log(dropdownItem);
       return (
           <DropdownItem
             key={idx}
-            featureName={dropdownItem.name}
+            name={dropdownItem.name}
             dates={dropdownItem.dates}
             data={dropdownItem.data}
           />
