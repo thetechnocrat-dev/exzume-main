@@ -182,7 +182,10 @@ module.exports = function (router, passport) {
             },
           }, function (err, results) {
             if (err) res.send(err);
-            else res.json(results);
+            else {
+              console.log(results);
+              res.redirect('/#/dashboard?=');
+            }
           });
         }).catch(function (error) {
           if (error.status == 401) {
