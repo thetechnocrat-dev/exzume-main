@@ -13,7 +13,7 @@ var FeatureItem = React.createClass({
   },
 
   getInitialState: function () {
-    console.log(this.props);
+    // console.log(this.props);
     // changes color based on if it is already user active
     return this.setColors();
   },
