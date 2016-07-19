@@ -22,7 +22,6 @@ var UserSchema = new Schema({
       isConnected: { type: Boolean, default: true },
       features: [{
           name: String,
-          featureId: Schema.Types.ObjectId,
           prompt: String,
           format: String, // see notes below for accepted formats
           dates: [Date],
@@ -37,7 +36,6 @@ var UserSchema = new Schema({
       isConnected: { type: Boolean, default: false },
       features: [{
           name: String,
-          featureId: Schema.Types.ObjectId,
           dates: [Date],
           data: [],
         },
@@ -49,7 +47,6 @@ var UserSchema = new Schema({
       isConnected: { type: Boolean, default: false },
       features: [{
           name: String,
-          featureId: Schema.Types.ObjectId,
           dates: [Date],
           data: [],
         },

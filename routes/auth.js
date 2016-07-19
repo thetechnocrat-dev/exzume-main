@@ -102,26 +102,7 @@ module.exports = function (router, passport) {
       var date = moment().format('YYYY-MM-DD');
       var user = req.user;
       var fitbit = user.datastreams.fitbit;
-      var refreshToken = function (fitbit) {
-        axios({
-          method: 'POST',
-          url: 'https://api.fitbit.com/oauth2/token',
-          headers: {
-            'Authorization': 'Basic ' + new Buffer(config.fitbit.clientID + ':' + config.fitbit.clientSecret).toString('base64'),
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          params: {
-            'grant_type': 'refresh_token',
-            'refresh_token': fitbit.refreshToken,
-          },
-        }).then(function (res) {
-          console.log('redirecting user to the authentication flow...');
-          res.redirect('/datastreams/:datastream');
-        }).catch(function (error) {
-          console.log(error);
-          console.log(error.data.errors);
-        });
-      };
+      var stream = req.params.datastream;
 
       // function to add user to feature users array
       var addUserToFeature = function (featureName, callback) {
@@ -140,10 +121,14 @@ module.exports = function (router, passport) {
 
       var initUserFeatureArr = function (featureName, callback) {
         // initialize user features array with given feature name
-        fitbit.features.push({
-          name: featureName,
-          // featureId:??
-        });
+        // check if user features array already has name with featureName**
+        // for (f in fitbit.features) {
+        //   if (f.name == featureName) callback(null, user);
+        //   else {
+        //
+        //   }
+        // }
+        fitbit.features.push({ name: featureName });
         user.save(function (err, user) {
           if (err) console.log('problem saving user: ', err);
           if (user) console.log('user was saved: ', user);
@@ -159,6 +144,7 @@ module.exports = function (router, passport) {
             thisFeatureIndex = i;
           }
         };
+
         var thisFeature = fitbit.features[thisFeatureIndex];
         console.log(currentDate);
         console.log(newData);
@@ -170,6 +156,7 @@ module.exports = function (router, passport) {
           thisFeature.dates.push(currentDate);
           thisFeature.data.push(newData);
         }
+
         callback(null, thisFeature);
       };
 
@@ -200,7 +187,8 @@ module.exports = function (router, passport) {
         }).catch(function (error) {
           if (error.status == 401) {
             console.log('access token expired, refresh that shit');
-            refreshToken(fitbit);
+            console.log('redirecting user to the authentication flow...');
+            res.redirect('/auth/datastreams/fitbit');
           }
 
           console.log(error.data.errors);

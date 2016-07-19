@@ -3,7 +3,6 @@ var SessionStore = require('../../stores/sessionStore');
 
 // Components
 var FeaturePanel = require('./featurePanel');
-var DataStreamPanel = require('./dataStreamPanel');
 
 var Connect = React.createClass({
   getInitialState: function () {

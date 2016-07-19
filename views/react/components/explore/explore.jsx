@@ -6,13 +6,13 @@ var Dropdown = require('./dropdown');
 
 var Explore = React.createClass({
 
-  render: function() {
+  render: function () {
     return (
       <div>
         <Dropdown />
       </div>
     );
-  }
+  },
 
 });
 
