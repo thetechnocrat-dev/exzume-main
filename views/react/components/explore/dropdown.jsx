@@ -10,14 +10,20 @@ var Dropdown = React.createClass({
     var datastreams = this.props.user.datastreams;
     var userFeatureList = [];
 
-    for (datastream in datastreams) {
+    for (var datastream in datastreams) {
+      if (!datastreams.hasOwnProperty(datastream)) {
+        console.log('hi');
+        continue;
+      }
+
       if (datastream.features) {
-        userFeatureList = datastream.features.filter(function (feature) {
+        userFeatureList.push(datastream.features.filter(function (feature) {
           return feature.dates.length > 0;
-        });
+        }));
       }
     }
 
+    console.log(userFeatureList);
     return userFeatureList;
   },
 

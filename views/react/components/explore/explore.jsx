@@ -9,9 +9,21 @@ var Explore = React.createClass({
   getInitialState: function () {
     if (SessionStore.isSignedIn()) {
       return { user: SessionStore.currentUser() };
+    } else {
+      return { user: null };
     }
+  },
 
-    return { user: null };
+  _onChange: function () {
+    this.setState({ user: SessionStore.currentUser() });
+  },
+
+  componentDidMount: function () {
+    this.sessionToken = SessionStore.addListener(this._onChange);
+  },
+
+  componentWillUnmount: function () {
+    this.sessionToken.remove();
   },
 
   makeContent: function () {

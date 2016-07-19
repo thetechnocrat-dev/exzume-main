@@ -157,7 +157,11 @@ module.exports = function (router, passport) {
           thisFeature.data.push(newData);
         }
 
-        callback(null, thisFeature);
+        user.save(function (err, user) {
+          if (err) console.log('problem saving user: ', err);
+          if (user) console.log('user was saved: ', user);
+          callback(null, user);
+        });
       };
 
       axios({
@@ -184,6 +188,8 @@ module.exports = function (router, passport) {
             if (err) res.send(err);
             else {
               console.log(results);
+              console.log(results.three.datastreams.fitbit.dates);
+              console.log(results.three.datastreams.fitbit.data);
               res.redirect('/#/dashboard?=');
             }
           });
