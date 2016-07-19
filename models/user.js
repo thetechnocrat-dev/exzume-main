@@ -21,6 +21,7 @@ var UserSchema = new Schema({
     survey: {
       isConnected: { type: Boolean, default: true },
       features: [{
+          name: String,
           featureId: Schema.Types.ObjectId,
           prompt: String,
           format: String, // see notes below for accepted formats
