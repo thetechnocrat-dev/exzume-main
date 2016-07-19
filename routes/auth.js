@@ -170,6 +170,7 @@ module.exports = function (router, passport) {
           thisFeature.dates.push(currentDate);
           thisFeature.data.push(newData);
         }
+
         callback(null, thisFeature);
       };
 
