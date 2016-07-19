@@ -148,7 +148,6 @@ module.exports = function (router, passport) {
         var thisFeature = fitbit.features[thisFeatureIndex];
         console.log(currentDate);
         console.log(newData);
-
         if (thisFeature.dates[thisFeature.dates.length] == currentDate &&
             thisFeature.data[thisFeature.data.length] < newData) {
           thisFeature.data[thisFeature.data.length] = newData;
@@ -170,6 +169,7 @@ module.exports = function (router, passport) {
         headers: { 'Authorization': 'Bearer ' + fitbit.accessToken },
       }).then(function (response) {
           console.log('made it to response');
+
           // res.json(response.data);
           console.log(response.data.summary.steps);
           async.series({
@@ -213,7 +213,6 @@ module.exports = function (router, passport) {
   router.get('/*', function (req, res) {
     res.redirect('/');
   });
-
 };
 
 // user.vis.push({ url: req.body.link });
@@ -249,7 +248,6 @@ module.exports = function (router, passport) {
 //   if (err) throw err;
 //   console.log('survey successfully saved');
 // });
-
 // if (survey.features[0].name === req.body.xVar &&
             //     survey.features[1].name === req.body.yVar) {
             //       // spawn data analysis child process if import succeeds

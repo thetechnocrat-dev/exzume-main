@@ -8,9 +8,12 @@ var FeatureItem = React.createClass({
   propTypes: {
     feature: React.PropTypes.object.isRequired,
     activeStreams: React.PropTypes.array,
+    connectedStreams: React.PropTypes.array,
+    availableStreams: React.PropTypes.array,
   },
 
   getInitialState: function () {
+    console.log(this.props);
     // changes color based on if it is already user active
     return this.setColors();
   },
@@ -23,26 +26,42 @@ var FeatureItem = React.createClass({
     }
   },
 
-  makeDataStreamButtons: function () {
+  makeActiveButtons: function () {
     var _this = this;
-    return this.props.feature.dataStreams.map(function (dataStream, idx) {
-      if (_this.props.activeStreams.includes(dataStream)) {
-        return (
-          <DataStreamButton
-            key={idx}
-            dataStream={dataStream}
-            isActive={true}
-          />
-        );
-      } else {
-        return (
-          <DataStreamButton
-            key={idx}
-            dataStream={dataStream}
-            isActive={false}
-          />
-        );
-      }
+    return this.props.activeStreams.map(function (dataStream, idx) {
+      return (
+        <DataStreamButton
+          key={idx}
+          streamName={dataStream}
+          type="active"
+        />
+      );
+    });
+  },
+
+  makeConnectedButtons: function () {
+    var _this = this;
+    return this.props.connectedStreams.map(function (dataStream, idx) {
+      return (
+        <DataStreamButton
+          key={idx}
+          streamName={dataStream}
+          type="connected"
+        />
+      );
+    });
+  },
+
+  makeAvailibleButtons: function () {
+    var _this = this;
+    return this.props.availableStreams.map(function (dataStream, idx) {
+      return (
+        <DataStreamButton
+          key={idx}
+          streamName={dataStream}
+          type="available"
+        />
+      );
     });
   },
 
@@ -67,7 +86,9 @@ var FeatureItem = React.createClass({
             <div className="content">
               <div className="header">{this.props.feature.name}</div>
               <div className="description">
-                {this.makeDataStreamButtons()}
+                {this.makeActiveButtons()}
+                {this.makeConnectedButtons()}
+                {this.makeAvailibleButtons()}
               </div>
             </div>
           </div>

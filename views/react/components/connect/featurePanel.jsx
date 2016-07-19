@@ -13,14 +13,12 @@ var FeaturePanel = React.createClass({
   getInitialState: function () {
     return {
       features: FeatureStore.features(),
-      userActiveFeatures: this.userActiveFeatures(),
-      userActiveStreams: this.userActiveStreams(),
     };
   },
 
   _onChange: function () {
     this.setState({
-      features: FeatureStore.features(), userActiveFeatures: this.userActiveFeatures(),
+      features: FeatureStore.features(),
     });
   },
 
@@ -36,12 +34,12 @@ var FeaturePanel = React.createClass({
     this.featureToken.remove();
   },
 
-  userActiveDataStream: function () {
+  userActiveStreams: function () {
     var dataStreams = this.props.user.datastreams;
     var userActiveStreams = [];
-    for (dataStream in dataStreams) {
-      if (dataStream.isConnected) {
-        userActiveStreams.push(dataStream.name);
+    for (key in dataStreams) {
+      if (dataStreams[key].isConnected) {
+        userActiveStreams.push(key);
       }
     }
 
@@ -66,15 +64,42 @@ var FeaturePanel = React.createClass({
     return userActiveFeatures;
   },
 
+  categorizeStreams: function (feature, userActiveStreams, userActiveFeatures) {
+    var activeStreams = [];
+    var connectedStreams = [];
+    var availableStreams = [];
+    for (var i = 0; i < feature.dataStreams.length; i++) {
+      if (userActiveFeatures[feature.name] && userActiveFeatures[feature.name].includes(feature.dataStreams[i])) {
+        activeStreams.push(feature.dataStreams[i]);
+      } else if (userActiveStreams.includes(feature.dataStreams[i])) {
+        connectedStreams.push(feature.dataStreams[i]);
+      } else
+        availableStreams.push(feature.dataStreams[i]);
+    }
+
+    return {
+      activeStreams: activeStreams,
+      connectedStreams: connectedStreams,
+      availableStreams: availableStreams,
+    };
+
+  },
+
   makeFeatures: function () {
+    var userActiveFeatures = this.userActiveFeatures();
+    var userActiveStreams = this.userActiveStreams();
     var _this = this;
     return this.state.features.map(function (feature, idx) {
-      var activeStreams = _this.state.userActiveFeatures[feature.name] || [];
+      var categorizedStreams = _this.categorizeStreams(
+        feature, userActiveStreams, userActiveFeatures
+      );
       return (
         <FeatureItem
           key={idx}
           feature={feature}
-          activeStreams={activeStreams}
+          activeStreams={categorizedStreams.activeStreams}
+          connectedStreams={categorizedStreams.connectedStreams}
+          availableStreams={categorizedStreams.availableStreams}
         />
       );
     });
