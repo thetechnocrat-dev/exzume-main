@@ -4,6 +4,7 @@ var config = require('../config/config');
 var mongoose = require('mongoose');
 var axios = require('axios');
 var moment = require('moment');
+var async = require('async');
 
 module.exports = function (router, passport) {
   // makes sure a user is logged in
@@ -64,20 +65,7 @@ module.exports = function (router, passport) {
   //     });
   //   });
 
-  router.get('/features', function (req, res) {
-    Feature.find({ owner: req.user._id }, function (err, features) {
-      if (err) res.send(err);
-      res.json(features);
-    });
-  });
-
   router.route('/features/:featureId')
-    .get(function (req, res) {
-      Feature.findOne({ _id: req.params.featureId }, function (err, feature) {
-        if (err) res.send(err);
-        if (feature) res.json(feature);
-      });
-    })
     .put(function (req, res) {
       Feature.findOne({ _id: req.params.featureId }, function (err, feature) {
         if (feature) {
@@ -112,7 +100,8 @@ module.exports = function (router, passport) {
 
   router.get('/datastreams/:datastream/grab', function (req, res) {
       var date = moment().format('YYYY-MM-DD');
-      var fitbit = req.user.datastreams.fitbit;
+      var user = req.user;
+      var fitbit = user.datastreams.fitbit;
       var refreshToken = function (fitbit) {
         axios({
           method: 'POST',
@@ -134,13 +123,80 @@ module.exports = function (router, passport) {
         });
       };
 
+      // function to add user to feature users array
+      var addUserToFeature = function (featureName, callback) {
+        Feature.findOne({ name: featureName }, function (err, feature) {
+          if (err) res.send(err);
+          if (feature) {
+            feature.users.push(user._id);
+            feature.save(function (err, feature) {
+              if (err) console.log('problem saving feature: ', err);
+              if (feature) console.log('this feature was saved: ', feature);
+              callback(null, feature);
+            });
+          };
+        });
+      };
+
+      var initUserFeatureArr = function (featureName, callback) {
+        // initialize user features array with given feature name
+        fitbit.features.push({
+          name: featureName,
+          // featureId:??
+        });
+        user.save(function (err, user) {
+          if (err) console.log('problem saving user: ', err);
+          if (user) console.log('user was saved: ', user);
+          callback(null, user);
+        });
+      };
+
+      // function to add current data as object to user.datastream.features array
+      var addDataToUser = function (featureName, currentDate, newData, callback) {
+        var thisFeatureIndex;
+        for (var i = 0; i < fitbit.features.length; i++) {
+          if (fitbit.features[i].name == featureName) {
+            thisFeatureIndex = i;
+          }
+        };
+        var thisFeature = fitbit.features[thisFeatureIndex];
+        console.log(currentDate);
+        console.log(newData);
+
+        if (thisFeature.dates[thisFeature.dates.length] == currentDate &&
+            thisFeature.data[thisFeature.data.length] < newData) {
+          thisFeature.data[thisFeature.data.length] = newData;
+        } else {
+          thisFeature.dates.push(currentDate);
+          thisFeature.data.push(newData);
+        }
+        callback(null, thisFeature);
+      };
+
       axios({
         method: 'GET',
         url: 'https://api.fitbit.com/1/user/-/activities/date/' + date + '.json',
         headers: { 'Authorization': 'Bearer ' + fitbit.accessToken },
       }).then(function (response) {
           console.log('made it to response');
-          res.json(response.data);
+          // res.json(response.data);
+          console.log(response.data.summary.steps);
+          async.series({
+            one: function (callback) {
+              addUserToFeature('steps', callback);
+            },
+
+            two: function (callback) {
+              initUserFeatureArr('steps', callback);
+            },
+
+            three: function (callback) {
+              addDataToUser('steps', date, response.data.summary.steps, callback);
+            },
+          }, function (err, results) {
+            if (err) res.send(err);
+            else res.json(results);
+          });
         }).catch(function (error) {
           if (error.status == 401) {
             console.log('access token expired, refresh that shit');

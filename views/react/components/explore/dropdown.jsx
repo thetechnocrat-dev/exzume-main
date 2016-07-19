@@ -5,7 +5,7 @@ var PropTypes = React.PropTypes;
 var Option = require('./option');
 var Dropdown = React.createClass({
 
-  render: function() {
+  render: function () {
     return (
       <div class="ui compact menu">
         <div class="ui simple dropdown item">
@@ -17,7 +17,7 @@ var Dropdown = React.createClass({
         </div>
       </div>
     );
-  }
+  },
 
 });
 
