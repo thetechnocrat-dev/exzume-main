@@ -6,9 +6,8 @@ var DataStreamButton = require('./DataStreamButton');
 
 var FeatureItem = React.createClass({
   propTypes: {
-    name: React.PropTypes.string.isRequired,
-    dataStreams: React.PropTypes.array.isRequired,
-    userActiveStream: React.PropTypes.string,
+    feature: React.PropTypes.object.isRequired,
+    activeStreams: React.PropTypes.array,
   },
 
   getInitialState: function () {
@@ -17,7 +16,7 @@ var FeatureItem = React.createClass({
   },
 
   setColors: function () {
-    if (this.props.userActiveStream) {
+    if (this.props.activeStreams.length > 0) {
       return { backgroundColor: Style.lightGreen, hoverColor: Style.lightGreenHover };
     } else {
       return { backgroundColor: Style.lightBackground, hoverColor: Style.lightBackgroundHover };
@@ -25,10 +24,9 @@ var FeatureItem = React.createClass({
   },
 
   makeDataStreamButtons: function () {
-    var dataStreams = this.props.dataStreams;
     var _this = this;
-    return dataStreams.map(function (dataStream, idx) {
-      if (_this.props.userActiveStream === dataStream) {
+    return this.props.feature.dataStreams.map(function (dataStream, idx) {
+      if (_this.props.activeStreams.includes(dataStream)) {
         return (
           <DataStreamButton
             key={idx}
@@ -67,7 +65,7 @@ var FeatureItem = React.createClass({
             style={cardStyle}
           >
             <div className="content">
-              <div className="header">{this.props.name}</div>
+              <div className="header">{this.props.feature.name}</div>
               <div className="description">
                 {this.makeDataStreamButtons()}
               </div>

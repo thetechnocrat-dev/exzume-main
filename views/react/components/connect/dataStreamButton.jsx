@@ -10,17 +10,19 @@ var DataStreamButton = React.createClass({
   makeButton: function () {
     if (this.props.isActive) {
       return (
-        <button className="ui green labeled mini icon button">
+        <button className="ui green disabled labeled mini icon button">
           <i className="check icon"></i>
           {this.props.dataStream}
         </button>
       );
     } else {
       return (
-        <button className="ui green labeled mini icon button">
-          <i className="plus icon"></i>
-          {this.props.dataStream}
-        </button>
+        <a href={'/auth/datastreams/' + this.props.dataStream}>
+          <button className="ui yellow labeled mini icon button">
+            <i className="plus icon"></i>
+            {this.props.dataStream}
+          </button>
+        </a>
       );
     }
 

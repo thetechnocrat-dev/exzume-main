@@ -34,9 +34,6 @@ var Connect = React.createClass({
     if (user) {
       return (
         <div>
-          <h2 className="ui header">Data Streams</h2>
-          <DataStreamPanel user={user} />
-          <h2 className="ui header">Features</h2>
           <FeaturePanel user={user} />
         </div>
       );
