@@ -63,7 +63,7 @@ require('./routes/auth')(auth, passport);
 app.use('/auth', auth);
 
 var admin = express.Router();
-require('./routes/admin')(admin, passport);
+require('./routes/admin')(admin);
 app.use('/admin', admin);
 
 var acme = express.Router();

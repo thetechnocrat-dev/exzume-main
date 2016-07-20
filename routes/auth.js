@@ -65,6 +65,31 @@ module.exports = function (router, passport) {
   //     });
   //   });
 
+  router.route('/userfeatures/:datastream/:feature')
+    .post(function (req, res) {
+      Feature.findOne({ name: req.params.feature }, function (err, feature) {
+        if (err) {
+          res.send(err);
+        } else if (feature) {
+          var userFeature = {
+            name: feature.name,
+            prompt: feature.options.prompt,
+            format: feature.options.format,
+          };
+          req.user.datastreams.survey.features.push(userFeature);
+          req.user.save(function (err, user) {
+            if (err) {
+              res.send(err);
+            } else if (user) {
+              feature.users.push(req.user._id);
+              feature.save();
+              res.json(user);
+            }
+          });
+        }
+      });
+    });
+
   router.route('/features/:featureId')
     .put(function (req, res) {
       Feature.findOne({ _id: req.params.featureId }, function (err, feature) {
@@ -80,7 +105,7 @@ module.exports = function (router, passport) {
 
   router.get('/datastreams/:datastream', function (req, res) {
       var options = {};
-      if (req.params.datastream == 'fitbit') {
+if (req.params.datastream == 'fitbit') {
         options = { scope: ['activity', 'heartrate', 'location',
                             'nutrition', 'profile', 'settings',
                             'sleep', 'social', 'weight'], };
@@ -99,6 +124,8 @@ module.exports = function (router, passport) {
   );
 
   router.get('/datastreams/:datastream/grab', function (req, res) {
+
+    if (req.params.datastream == 'fitbit') {
       var date = moment().format('YYYY-MM-DD');
       var user = req.user;
       var fitbit = user.datastreams.fitbit;
@@ -149,25 +176,25 @@ module.exports = function (router, passport) {
         console.log(currentDate);
         console.log(newData);
         if (thisFeature.dates[thisFeature.dates.length] == currentDate &&
-            thisFeature.data[thisFeature.data.length] < newData) {
-          thisFeature.data[thisFeature.data.length] = newData;
-        } else {
-          thisFeature.dates.push(currentDate);
-          thisFeature.data.push(newData);
-        }
+          thisFeature.data[thisFeature.data.length] < newData) {
+            thisFeature.data[thisFeature.data.length] = newData;
+          } else {
+            thisFeature.dates.push(currentDate);
+            thisFeature.data.push(newData);
+          }
 
-        user.save(function (err, user) {
-          if (err) console.log('problem saving user: ', err);
-          if (user) console.log('user was saved: ', user);
-          callback(null, user);
-        });
-      };
+          user.save(function (err, user) {
+            if (err) console.log('problem saving user: ', err);
+            if (user) console.log('user was saved: ', user);
+            callback(null, user);
+          });
+        };
 
-      axios({
-        method: 'GET',
-        url: 'https://api.fitbit.com/1/user/-/activities/date/' + date + '.json',
-        headers: { 'Authorization': 'Bearer ' + fitbit.accessToken },
-      }).then(function (response) {
+        axios({
+          method: 'GET',
+          url: 'https://api.fitbit.com/1/user/-/activities/date/' + date + '.json',
+          headers: { 'Authorization': 'Bearer ' + fitbit.accessToken },
+        }).then(function (response) {
           console.log('made it to response');
 
           // res.json(response.data);
@@ -202,6 +229,8 @@ module.exports = function (router, passport) {
 
           console.log(error.data.errors);
         });
+
+    }
     }
   );
 

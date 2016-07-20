@@ -2,8 +2,9 @@ var User = require('../models/user');
 var Feature = require('../models/feature');
 var mongoose = require('mongoose');
 var child_process = require('child_process');
+var seedDB = require('../config/seedDB');
 
-module.exports = function (router, passport) {
+module.exports = function (router) {
 
   router.route('/features/:featureId')
     .get(function (req, res) {
@@ -65,6 +66,10 @@ module.exports = function (router, passport) {
         });
       }
     });
+  });
+
+  router.get('/db/seed', function (req, res) {
+    seedDB(req, res);
   });
 
   // router.put('/addvis', function (req, res) {
