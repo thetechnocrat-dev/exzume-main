@@ -2,7 +2,7 @@ var Dispatcher = require('../dispatcher/dispatcher');
 var Store = require('flux/utils').Store;
 
 var GraphStore = new Store(Dispatcher);
-var _currentFeatures = {};
+var _currentFeatures = [];
 
 GraphStore.resetGraphStore = function (currentFeatures) {
   _currentFeatures = currentFeatures;

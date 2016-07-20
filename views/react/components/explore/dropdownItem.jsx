@@ -4,11 +4,16 @@ var FastFlux = require('../../util/fast-flux-react/fastFlux');
 
 var DropdownItem = React.createClass({
   onClick: function () {
-    var data = {
-      dates: this.props.dates,
-      data: this.props.data,
-    };
-    FastFlux.cycle('FEATURE_RECEIVED', data);
+    var featureData = [];
+    var dates = this.props.dates;
+    var data = this.props.data;
+    var name = this.props.name;
+    for (var i = 0; i < dates.length; i++) {
+      featureData.push({ x: dates[i], y: data[i] });
+    }
+    console.log(featureData);
+
+    FastFlux.cycle('FEATURE_RECEIVED', featureData);
   },
 
   render: function () {
