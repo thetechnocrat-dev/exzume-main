@@ -18,6 +18,7 @@ var ExploreGraph = React.createClass({
   },
 
   componentWillUnmount: function () {
+    GraphStore.resetGraphStore([]);
     this.graphToken.remove();
   },
 
@@ -54,7 +55,7 @@ var ExploreGraph = React.createClass({
       <div>
         Here's your data:
         {JSON.stringify(this.state.currentFeatures)}
-        <div class="ui container">
+        <div className="ui container">
           {this.makeGraph()}
         </div>
       </div>
