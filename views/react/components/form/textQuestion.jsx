@@ -1,15 +1,17 @@
 var React = require('react');
+var LinkedStateMixin = require('react-addons-linked-state-mixin');
 
 // not working look into react custom link state mixins
 var TextQuestion = React.createClass({
+  mixins: [LinkedStateMixin],
+
   propTypes: {
-    objectId: React.PropTypes.string,
     prompt: React.PropTypes.string.isRequired,
   },
 
   getInitialState: function () {
     return (
-      { prompt: this.props.prompt, objectId: this.props.objectId, answer: '', }
+      { prompt: this.props.prompt, answer: '', }
     );
   },
 
@@ -25,7 +27,7 @@ var TextQuestion = React.createClass({
             format="text"
             name={this.state.prompt}
             placeholder=""
-            valueLink={_this.linkState('answer')}
+            valueLink={this.linkState('answer')}
           />
           <div
             className="ui green button"

@@ -87,6 +87,18 @@ module.exports = function (router, passport) {
             }
           });
         }
+      })
+      .put(function (req, res) {
+        var userFeature = req.user.datastreams[req.params.datastream][req.params.feature];
+        userFeature.data.push(req.body.data);
+        userFeature.dates.push(req.body.date);
+        req.user.save(function (err, user) {
+          if (err) {
+            res.send(err);
+          } else {
+            res.json(user);
+          }
+        });
       });
     });
 
@@ -105,11 +117,11 @@ module.exports = function (router, passport) {
 
   router.get('/datastreams/:datastream', function (req, res) {
       var options = {};
-if (req.params.datastream == 'fitbit') {
-        options = { scope: ['activity', 'heartrate', 'location',
-                            'nutrition', 'profile', 'settings',
-                            'sleep', 'social', 'weight'], };
-      }
+      if (req.params.datastream == 'fitbit') {
+              options = { scope: ['activity', 'heartrate', 'location',
+                                  'nutrition', 'profile', 'settings',
+                                  'sleep', 'social', 'weight'], };
+            }
 
       passport.authenticate(req.params.datastream, options)(req, res);
     }

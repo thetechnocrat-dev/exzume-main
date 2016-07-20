@@ -33,6 +33,7 @@ var FeatureItem = React.createClass({
         <DataStreamButton
           key={idx}
           streamName={dataStream}
+          featureName={_this.props.feature.name}
           type="active"
         />
       );
@@ -46,6 +47,7 @@ var FeatureItem = React.createClass({
         <DataStreamButton
           key={idx}
           streamName={dataStream}
+          featureName={_this.props.feature.name}
           type="connected"
         />
       );
@@ -59,6 +61,7 @@ var FeatureItem = React.createClass({
         <DataStreamButton
           key={idx}
           streamName={dataStream}
+          featureName={_this.props.feature.name}
           type="available"
         />
       );

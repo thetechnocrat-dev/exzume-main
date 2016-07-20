@@ -1,5 +1,4 @@
 var React = require('react');
-var DataActions = require('../../actions/dataActions');
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
 
 var AgreementScale = React.createClass({
@@ -15,14 +14,6 @@ var AgreementScale = React.createClass({
     var initialState = { prompt: this.props.prompt, objectId: this.props.objectId };
     initialState[answer] = '';
     return initialState;
-  },
-
-  submitAnswer: function () {
-    var answer = 'answer' + this.props.objectId;
-    var params = {
-      objectId: this.props.objectId, answer: parseInt(this.state[answer]), date: Date.now(),
-    };
-    DataActions.submitSurveyAnswer(params, this.error, this.success);
   },
 
   error: function () {
@@ -45,7 +36,6 @@ var AgreementScale = React.createClass({
           />
           <div
             className="ui green button"
-            onClick={this.submitAnswer}
           >
             Submit
           </div>
