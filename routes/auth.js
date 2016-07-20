@@ -65,6 +65,31 @@ module.exports = function (router, passport) {
   //     });
   //   });
 
+  router.route('/userfeatures/:datastream/:feature')
+    .post(function (req, res) {
+      Feature.findOne({ name: req.params.feature }, function (err, feature) {
+        if (err) {
+          res.send(err);
+        } else if (feature) {
+          var userFeature = {
+            name: feature.name,
+            prompt: feature.options.prompt,
+            format: feature.options.format,
+          };
+          req.user.datastreams.survey.features.push(userFeature);
+          req.user.save(function (err, user) {
+            if (err) {
+              res.send(err);
+            } else if (user) {
+              feature.users.push(req.user._id);
+              feature.save();
+              res.json(user);
+            }
+          });
+        }
+      });
+    });
+
   router.route('/features/:featureId')
     .put(function (req, res) {
       Feature.findOne({ _id: req.params.featureId }, function (err, feature) {
@@ -80,9 +105,7 @@ module.exports = function (router, passport) {
 
   router.get('/datastreams/:datastream', function (req, res) {
       var options = {};
-      if (req.params.datastream == 'survey') {
-
-      } else if (req.params.datastream == 'fitbit') {
+if (req.params.datastream == 'fitbit') {
         options = { scope: ['activity', 'heartrate', 'location',
                             'nutrition', 'profile', 'settings',
                             'sleep', 'social', 'weight'], };

@@ -23,6 +23,8 @@ $ node ./bin/www
 
 - `GET`     /auth/plot?feat1=:feature-id?feat2=:???     -- plot features over time
 
+- `POST`     /auth/userfeatures/:datastream/:feature    -- push user feature into user datastream
+
 # Account Info - for signing up for api dev accounts
 
 email: exzume.app@gmail.com

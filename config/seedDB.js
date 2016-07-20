@@ -15,17 +15,29 @@ module.exports = function (req, res) {
       users: [],
       dataStreams: ['survey'],
       categories: ['health', 'productivity'],
+      options: {
+        prompt: 'How many cups of coffee did you drink?',
+        format: 'numericalQuestion',
+      },
     },
     {
       name: 'General Productivity',
       users: [],
       dataStreams: ['survey'],
       categories: ['productivity'],
+      options: {
+        prompt: 'I was productive today',
+        format: 'agreementScale',
+      },
     },
     {
       name: 'Life Satisfaction',
       users: [],
       dataStreams: ['survey'],
+      options: {
+        prompt: 'Overall, I am satisfied with how I did today.',
+        format: 'agreementScale',
+      },
     },
     ], function (err, docs) {
     if (err) {
