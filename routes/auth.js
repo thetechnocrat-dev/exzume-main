@@ -87,18 +87,25 @@ module.exports = function (router, passport) {
             }
           });
         }
-      })
-      .put(function (req, res) {
-        var userFeature = req.user.datastreams[req.params.datastream][req.params.feature];
-        userFeature.data.push(req.body.data);
-        userFeature.dates.push(req.body.date);
-        req.user.save(function (err, user) {
-          if (err) {
-            res.send(err);
-          } else {
-            res.json(user);
-          }
-        });
+      });
+    })
+    .put(function (req, res) {
+      var userFeatures = req.user.datastreams[req.params.datastream].features;
+      var userFeature;
+      for (var i = 0; i < userFeatures.length; i++) {
+        if (userFeatures[i].name == req.params.feature) {
+          userFeature = userFeatures[i];
+        }
+      }
+
+      userFeature.data.push(req.body.data);
+      userFeature.dates.push((new Date()).toJSON());
+      req.user.save(function (err, user) {
+        if (err) {
+          res.send(err);
+        } else {
+          res.json(user);
+        }
       });
     });
 
