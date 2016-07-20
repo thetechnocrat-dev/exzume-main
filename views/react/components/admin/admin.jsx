@@ -4,6 +4,7 @@ var History = require('react-router').History;
 
 // components
 var TextForm = require('./textForm');
+var ButtonAction = require('./ButtonAction');
 
 var Admin = React.createClass({
   mixins: [LinkedStateMixin, History],
@@ -51,27 +52,35 @@ var Admin = React.createClass({
           method="post"
         />
 
-      <div className="ui horizontal divider">or</div>
+        <div className="ui horizontal divider">or</div>
 
-      <TextForm
-        header="Add category to feature"
-        labels={ ['category'] }
-        submitUrl="/admin/features/"
-        method="put"
-        paramLabel="feature id"
-      />
+        <TextForm
+          header="Add category to feature"
+          labels={ ['category'] }
+          submitUrl="/admin/features/"
+          method="put"
+          paramLabel="feature id"
+        />
 
-      <div className="ui horizontal divider">or</div>
+        <div className="ui horizontal divider">or</div>
 
-      <TextForm
-        header="Add data stream to feature"
-        labels={ ['dataStream'] }
-        submitUrl="/admin/features/"
-        method="put"
-        paramLabel="feature id"
-      />
+        <TextForm
+          header="Add data stream to feature"
+          labels={ ['dataStream'] }
+          submitUrl="/admin/features/"
+          method="put"
+          paramLabel="feature id"
+        />
 
-      <div className="ui horizontal divider">or</div>
+        <div className="ui horizontal divider">or</div>
+
+        <ButtonAction
+          label="Seed DB"
+          method="get"
+          submitUrl="/admin/db/seed"
+        />
+
+        <div className="ui horizontal divider">or</div>
 
         <div className="ui green button" onClick={this.clickHome}>Go Home</div>
       </div>

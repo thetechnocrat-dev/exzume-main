@@ -18,9 +18,9 @@ var DataStreamButton = React.createClass({
       );
     } else if (this.props.type === 'connected') {
       return (
-        <a href={'/auth/datastreams/' + this.props.streamName + '/grab'}>
-          <button className="ui yellow labeled mini icon button" style={style}>
-            <i className="exchange icon"></i>
+        <a href={'/auth/datastreams/' + this.props.streamName + '/grab'} style={style}>
+          <button className="ui yellow labeled mini icon button" >
+            <i className="refresh icon"></i>
             {this.props.streamName}
           </button>
         </a>
