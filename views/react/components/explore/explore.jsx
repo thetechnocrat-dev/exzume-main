@@ -4,6 +4,8 @@ var SessionStore = require('../../stores/sessionStore');
 
 // Components
 var Dropdown = require('./dropdown');
+var ExploreGraph = require('./exploreGraph');
+
 var Explore = React.createClass({
   getInitialState: function () {
     if (SessionStore.isSignedIn()) {
@@ -31,6 +33,7 @@ var Explore = React.createClass({
       return (
         <div>
           <Dropdown user={user} />
+          <ExploreGraph user={user} />
         </div>
       );
     }

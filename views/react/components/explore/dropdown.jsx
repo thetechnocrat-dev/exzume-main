@@ -1,5 +1,7 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
+var FastFlux = require('../../util/fast-flux-react/fastFlux');
+var GraphStore = require('../../stores/graphStore');
 
 // Components
 var DropdownItem = require('./dropdownItem');
