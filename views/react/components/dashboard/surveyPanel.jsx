@@ -22,7 +22,7 @@ var SurveyPanel = React.createClass({
       } else if (question.format === 'agreementScale') {
         return (
           <div className="column" key={idx}>
-            <AgreementScale objectId={44} prompt={question.prompt} />
+            <AgreementScale featureName={question.name} prompt={question.prompt} />
           </div>
         );
       }

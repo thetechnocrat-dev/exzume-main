@@ -98,7 +98,7 @@ module.exports = function (router, passport) {
         }
       }
 
-      userFeature.data.push(req.body.data);
+      userFeature.data.push(parseInt(req.body.data));
       userFeature.dates.push((new Date()).toJSON());
       req.user.save(function (err, user) {
         if (err) {

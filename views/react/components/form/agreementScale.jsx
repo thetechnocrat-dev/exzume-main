@@ -1,44 +1,54 @@
 var React = require('react');
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
+var FastFlux = require('../../util/fast-flux-react/fastFlux');
 
 var AgreementScale = React.createClass({
   mixins: [LinkedStateMixin],
 
   propTypes: {
-    objectId: React.PropTypes.string,
     prompt: React.PropTypes.string.isRequired,
+    featureName: React.PropTypes.string.isRequired,
   },
 
   getInitialState: function () {
-    var answer = 'answer' + this.props.objectId; // to make answer state unique for each question
-    var initialState = { prompt: this.props.prompt, objectId: this.props.objectId };
-    initialState[answer] = '';
-    return initialState;
+    return { answer: '' };
   },
 
-  error: function () {
-
+  clickSubmit: function () {
+    var url = '/auth/userfeatures/survey/' + this.props.featureName;
+    FastFlux.webCycle('put', url, {
+      success: this.success,
+      error: this.error,
+      shouldStoreReceive: true,
+      storeActionType: 'SESSION_RECEIVED',
+      body: { data: this.state.answer },
+    });
   },
 
-  success: function () {
+  success: function (resp) {
+    console.log(resp);
+  },
 
+  error: function (respError) {
+    console.log(respError.respText);
   },
 
   render: function () {
     return (
       <div className="field">
-        <label>{this.state.prompt}</label>
+        <label>{this.props.prompt}</label>
           <input
             format="text"
-            name={this.state.prompt}
+            name={this.props.prompt}
             placeholder="enter a number 1 thru 7"
-            valueLink={this.linkState('answer' + this.props.objectId)}
+            valueLink={this.linkState('answer')}
           />
-          <div
+        <button
+            onClick={this.clickSubmit}
             className="ui green button"
           >
             Submit
-          </div>
+          </button>
       </div>
     );
   },
