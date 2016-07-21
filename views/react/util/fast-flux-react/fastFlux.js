@@ -76,6 +76,7 @@ var errorDefault = function (resp, method, url) {
 
 module.exports = {
   webCycle: function (method, url, options) {
+    options = options || {};
     options.shouldStoreReceive = options.shouldStoreReceive || false;
     options.success = options.success || successDefault;
     options.error = options.error || errorDefault;

@@ -10,13 +10,18 @@ var DataStreamButton = React.createClass({
   },
 
   clickAddUserFeature: function () {
-    var url = '/auth/userfeatures/' + this.props.streamName + '/' + this.props.featureName;
-    FastFlux.webCycle('post', url, {
-      success: this.addUserFeatureSuccess,
-      error: this.addUserFeatureError,
-      shouldStoreReceive: true,
-      storeActionType: 'SESSION_RECEIVED',
-    });
+    if (this.props.streamName == 'survey') {
+      var url = '/auth/userfeatures/' + this.props.streamName + '/' + this.props.featureName;
+      FastFlux.webCycle('post', url, {
+        success: this.addUserFeatureSuccess,
+        error: this.addUserFeatureError,
+        shouldStoreReceive: true,
+        storeActionType: 'SESSION_RECEIVED',
+      });
+    } else if (this.props.streamName == 'fitbit') {
+      var url = 'auth/datastreams/fitbit/grab';
+      FastFlux.webCycle('get', url);
+    }
   },
 
   addUserFeatureSuccess: function (resp) {
