@@ -16,7 +16,7 @@ module.exports = function (passport) {
       user.datastreams.fitbit.refreshToken = refreshToken;
       user.datastreams.fitbit.isConnected = true;
       user.save(function (err) {
-        console.log('user saved with fit stream');
+        console.log('user saved with fitbit stream');
         done(err, user);
       });
     }));
