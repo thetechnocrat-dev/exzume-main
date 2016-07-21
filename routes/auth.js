@@ -65,6 +65,19 @@ module.exports = function (router, passport) {
   //     });
   //   });
 
+  router.route('/zumes/:zumeId')
+    .post(function (req, res) {
+      req.user.zumes.push(req.body);
+      req.user.save(function (err, user) {
+        if (err) {
+          res.send(err);
+        } else if (user) {
+          res.json(user);
+        }
+      }
+    );
+  });
+
   router.route('/userfeatures/:datastream/:feature')
     .post(function (req, res) {
       Feature.findOne({ name: req.params.feature }, function (err, feature) {

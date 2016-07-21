@@ -39,7 +39,7 @@ var Dashboard = React.createClass({
       return (
         <div className="ui container">
           <ProfilePanel />
-          <ZumePanel />
+          <ZumePanel user={user} />
           <SurveyPanel user={user} />
         </div>
       );

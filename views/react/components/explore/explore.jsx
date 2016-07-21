@@ -27,6 +27,17 @@ var Explore = React.createClass({
     this.sessionToken.remove();
   },
 
+  clickPinZume: function () {
+    data = { dataStream: '', feature: '' };
+
+    FastFlux.webCycle('post', '/auth/zumes/create', {
+      shouldStoreReceive: true,
+      storeActionType: 'SESSION_RECEIVED',
+      body: zumePanel,
+    });
+
+  },
+
   makeContent: function () {
     var user = this.state.user;
     if (user) {
@@ -34,6 +45,7 @@ var Explore = React.createClass({
         <div>
           <Dropdown user={user} />
           <ExploreGraph user={user} />
+          <button className="ui green button" onClick={this.clickPinZume}>Pin Zume</button>
         </div>
       );
     }

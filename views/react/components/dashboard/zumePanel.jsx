@@ -1,20 +1,18 @@
 var React = require('react');
-var PropTypes = React.PropTypes;
+var FastFlux = require('../../util/fast-flux-react/fastFlux');
 
 var ZumePanel = React.createClass({
+  propTypes: {
+    user: React.PropTypes.object.isRequired,
+  },
+
+  makeZumes: function () {
+    var zumes = this.props.user.zumes;
+  },
 
   render: function () {
     return (
-      <div className="row">
-        <div className="three wide column">
-          <img></img>
-        </div>
-        <div className="ten wide column">
-          <p></p>
-        </div>
-        <div className="three wide column">
-          <img></img>
-        </div>
+      <div>
       </div>
     );
   },
