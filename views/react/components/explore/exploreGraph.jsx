@@ -42,9 +42,15 @@ var ExploreGraph = React.createClass({
             width: 500,
             height: 400
           }}
-          title="Steps vs. Time"
+          title="Steps vs. Day"
           yAxisLabel="Steps"
           xAxisLabel="Date"
+          xAccessor={
+            function (d) {
+              return new Date(d.x);
+            }
+          }
+          xAxisTickInterval={{unit: 'day', interval: 1}}
           gridHorizontal={true}
         />
       );

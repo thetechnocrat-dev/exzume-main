@@ -9,7 +9,7 @@ var DropdownItem = React.createClass({
     var data = this.props.data;
     var name = this.props.name;
     for (var i = 0; i < dates.length; i++) {
-      featureData.push({ x: dates[i], y: data[i] });
+      featureData.push({ x: (new Date(dates[i])).getTime(), y: data[i] });
     }
     console.log(featureData);
 
