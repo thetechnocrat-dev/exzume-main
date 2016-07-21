@@ -1,6 +1,7 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
 var GraphStore = require('../../stores/graphStore');
+var d3 = require('d3');
 var rd3 = require('rd3');
 var LineChart = rd3.LineChart;
 
