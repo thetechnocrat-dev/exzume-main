@@ -5,7 +5,7 @@ module.exports = function (req, res) {
   console.log('seeding...');
   Feature.insertMany([
     {
-      name: 'Steps',
+      name: 'steps',
       users: [],
       dataStreams: ['fitbit'],
       categories: ['fitness'],

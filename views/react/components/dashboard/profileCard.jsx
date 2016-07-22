@@ -3,29 +3,9 @@ var PropTypes = React.PropTypes;
 var SessionStore = require('../../stores/sessionStore');
 
 var ProfileCard = React.createClass({
-
-  getInitialState: function () {
-    if (SessionStore.isSignedIn()) {
-      return { user: SessionStore.currentUser() };
-    } else {
-      return { user: { local: { username: '' } } };
-    }
-  },
-
-  _onChange: function () {
-    if (SessionStore.isSignedIn()) {
-      this.setState({ user: SessionStore.currentUser() });
-    } else {
-      this.history.push('/');
-    }
-  },
-
-  componentDidMount: function () {
-    this.sessionToken = SessionStore.addListener(this._onChange);
-  },
-
-  componentWillUnmount: function () {
-    this.sessionToken.remove();
+  propTypes: {
+    user: React.PropTypes.object.isRequired,
+    userFeatures: React.PropTypes.array.isRequired,
   },
 
   render: function () {
@@ -36,7 +16,7 @@ var ProfileCard = React.createClass({
       <div className="four wide column">
         <h1 className="ui center aligned icon header">
           <i className="circular big user icon"></i>
-          {this.state.user.local.username}
+          {this.props.user.local.username}
         </h1>
         <div className="ui center aligned grid container">
           <div className="two column row">
@@ -44,7 +24,7 @@ var ProfileCard = React.createClass({
               <div className="one wide column" style={statisticRightPadding}>
                 <div className="statistic">
                   <div className="value">
-                    15
+                    {this.props.userFeatures.length}
                   </div>
                   <div className="label">
                     Features
@@ -54,7 +34,7 @@ var ProfileCard = React.createClass({
               <div className="one wide column" style={statisticLeftPadding}>
                 <div className="statistic">
                   <div className="value">
-                    7
+                    {this.props.user.zumes.length}
                   </div>
                   <div className="label">
                     Zumes
