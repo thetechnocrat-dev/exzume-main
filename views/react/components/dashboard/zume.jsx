@@ -35,11 +35,10 @@ var Zume = React.createClass({
 
   makeSeriesData: function (userFeature) {
     var seriesData = [];
-    var dates = userFeature.dates || [];
     var data = userFeature.data || [];
-    var name = userFeature.name || '';
-    for (var i = 0; i < dates.length; i++) {
-      seriesData.push({ x: (new Date(dates[i])).getTime(), y: data[i] });
+    for (var i = 0; i < data.length; i++) {
+      seriesData.push({ x: data[i].dateTime,
+                         y: data[i].value, });
     }
 
     return seriesData;

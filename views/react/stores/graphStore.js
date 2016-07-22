@@ -11,9 +11,9 @@ GraphStore.resetGraphStore = function (currentFeatures) {
 GraphStore.getSeriesData = function () {
   var seriesData = [];
   var data = _currentFeatures.data || [];
-  for (var i = 0; i < this.props.data.length; i++) {
-    featureData.push({ x: this.props.data[i].dateTime,
-                       y: this.props.data[i].value });
+  for (var i = 0; i < data.length; i++) {
+    seriesData.push({ x: data[i].dateTime,
+                       y: data[i].value });
   }
 
   return seriesData;
