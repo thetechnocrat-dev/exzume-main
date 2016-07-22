@@ -20,6 +20,23 @@ SessionStore.currentUsername = function () {
   return _currentUser.local.username;
 },
 
+SessionStore.getUserFeatures = function () {
+  var dataStreams = _currentUser.datastreams;
+  var userActiveFeatures = [];
+  for (dataStream in dataStreams) {
+    for (var i = 0; i < dataStreams[dataStream].features.length; i++) {
+      var userFeature = dataStreams[dataStream].features[i];
+      if (userActiveFeatures[userFeature.name]) {
+        userActiveFeatures[userFeature.name].push(dataStream);
+      } else {
+        userActiveFeatures[userFeature.name] = [dataStream];
+      }
+    }
+  }
+
+  return userActiveFeatures;
+},
+
 SessionStore.getInsights = function (startIndex, size) {
   var insights = _currentUser.insights;
   if (startIndex >= insights.length) {

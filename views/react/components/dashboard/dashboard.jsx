@@ -33,11 +33,12 @@ var Dashboard = React.createClass({
 
   makeContent: function () {
     var user = this.state.user;
+
     // only render content if there is a session
     if (user) {
       return (
         <div className="ui container">
-          <ProfilePanel />
+          <ProfilePanel user={user} userFeatures={SessionStore.getUserFeatures()}/>
           <ZumePanel user={user} />
           <SurveyPanel user={user} />
         </div>
