@@ -112,8 +112,10 @@ module.exports = function (router, passport) {
         }
       }
 
-      userFeature.data.push(parseInt(req.body.data));
-      userFeature.dates.push((new Date()).toJSON());
+      userFeature.data.push({
+        dateTime: moment().format('YYYY-MM-DD'),
+        value: parseInt(req.body.data),
+      });
       req.user.save(function (err, user) {
         if (err) {
           res.send(err);
@@ -227,7 +229,6 @@ module.exports = function (router, passport) {
 
       // get fitbit data
       if (currentStreamName == 'fitbit') {
-        // var date = moment().format('YYYY-MM-DD');
         var fitbit = currentStream;
 
         axios({
@@ -266,6 +267,57 @@ module.exports = function (router, passport) {
           }
 
           console.log(error.data.errors);
+        });
+      }
+
+      // get lastfm data
+      if (currentStreamName == 'lastfm') {
+        var date = moment().format('YYYY-MM-DD'); // get current date
+        const dateTime = new Date(date).getTime(); // unix timestamp of that date
+        const timeStamp = Math.floor(dateTime / 1000);
+
+        axios.get(apiURLs.lastfm.rootURL, {
+          params: {
+            method: 'user.getrecenttracks',
+            from: timeStamp,
+            user: user.datastreams.lastfm.username,
+            api_key: config.lastfm.clientID,
+            format: 'json',
+          },
+        }).then(function (response) {
+          console.log('made it to response');
+          console.log(response.data.recenttracks['@attr'].total);
+
+          async.series({
+            one: function (callback) {
+              addUserToFeature('dailyTracks', callback);
+            },
+
+            two: function (callback) {
+              initUserFeatureArr('dailyTracks', callback);
+            },
+
+            three: function (callback) {
+              addDataToUser('dailyTracks', [{
+                dateTime: date,
+                value: response.data.recenttracks['@attr'].total,
+              }], callback);
+            },
+          }, function (err, results) {
+            if (err) res.send(err);
+            else {
+              console.log(results);
+              res.redirect('/#/dashboard?=');
+            }
+          });
+        }).catch(function (error) {
+          if (error.status == 401) {
+            console.log('access token expired, refresh that shit');
+            console.log('redirecting user to the authentication flow...');
+            res.redirect('/auth/datastreams/lastfm');
+          }
+
+          console.log(error);
         });
       }
     }
