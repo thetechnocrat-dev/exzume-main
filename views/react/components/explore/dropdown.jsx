@@ -1,5 +1,4 @@
 var React = require('react');
-var PropTypes = React.PropTypes;
 var FastFlux = require('../../util/fast-flux-react/fastFlux');
 var GraphStore = require('../../stores/graphStore');
 
@@ -7,6 +6,9 @@ var GraphStore = require('../../stores/graphStore');
 var DropdownItem = require('./dropdownItem');
 
 var Dropdown = React.createClass({
+  propTypes: {
+    user: React.PropTypes.object.isRequired,
+  },
 
   getUserFeatures: function () {
     var datastreams = this.props.user.datastreams;
@@ -29,15 +31,13 @@ var Dropdown = React.createClass({
   },
 
   makeDropdownItems: function () {
-    var dropdownItems = this.getUserFeatures();
-    return dropdownItems.map(function (dropdownItem, idx) {
-      console.log(dropdownItem);
+    var userFeatures = this.getUserFeatures();
+    return userFeatures.map(function (userFeature, idx) {
+      console.log(userFeature);
       return (
           <DropdownItem
             key={idx}
-            name={dropdownItem.name}
-            dates={dropdownItem.dates}
-            data={dropdownItem.data}
+            userFeature={userFeature}
           />
         );
     });

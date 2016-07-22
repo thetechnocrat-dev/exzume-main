@@ -10,9 +10,7 @@ var UserSchema = new Schema({
   },
   formURL: { type: String, default: 'none' },
   zumes: [
-    { dataStream: String,
-      feature: String,
-    },
+    { featureName: String },
   ],
   insights: [
     {

@@ -33,7 +33,6 @@ var Dashboard = React.createClass({
 
   makeContent: function () {
     var user = this.state.user;
-
     // only render content if there is a session
     if (user) {
       return (

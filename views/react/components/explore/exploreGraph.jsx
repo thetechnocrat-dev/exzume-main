@@ -1,5 +1,4 @@
 var React = require('react');
-var PropTypes = React.PropTypes;
 var GraphStore = require('../../stores/graphStore');
 var d3 = require('d3');
 var rd3 = require('rd3');
@@ -7,11 +6,11 @@ var LineChart = rd3.LineChart;
 
 var ExploreGraph = React.createClass({
   getInitialState: function () {
-    return { currentFeatures: GraphStore.getCurrentFeatures() };
+    return { currentFeatures: GraphStore.getSeriesData() };
   },
 
   _onChange: function () {
-    this.setState({ currentFeatures: GraphStore.getCurrentFeatures() });
+    this.setState({ currentFeatures: GraphStore.getSeriesData() });
   },
 
   componentDidMount: function () {
@@ -24,9 +23,7 @@ var ExploreGraph = React.createClass({
   },
 
   makeGraph: function () {
-    console.log(this.state.currentFeatures);
-    console.log(Array.isArray(this.state.currentFeatures));
-    if (this.state.currentFeatures.length > 0) {
+    if (GraphStore.hasFeature()) {
       return (
         <LineChart
           legend={true}

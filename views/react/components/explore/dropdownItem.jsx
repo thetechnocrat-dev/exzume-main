@@ -1,24 +1,18 @@
 var React = require('react');
-var PropTypes = React.PropTypes;
 var FastFlux = require('../../util/fast-flux-react/fastFlux');
 
 var DropdownItem = React.createClass({
-  onClick: function () {
-    var featureData = [];
-    var dates = this.props.dates;
-    var data = this.props.data;
-    var name = this.props.name;
-    for (var i = 0; i < dates.length; i++) {
-      featureData.push({ x: (new Date(dates[i])).getTime(), y: data[i] });
-    }
-    console.log(featureData);
+  propTypes: {
+    userFeature: React.PropTypes.object.isRequired,
+  },
 
-    FastFlux.cycle('FEATURE_RECEIVED', featureData);
+  clickItem: function () {
+    FastFlux.cycle('FEATURE_RECEIVED', this.props.userFeature);
   },
 
   render: function () {
     return (
-      <div className="item" onClick={this.onClick}>{this.props.name}</div>
+      <div className="item" onClick={this.clickItem}>{this.props.userFeature.name}</div>
     );
   },
 

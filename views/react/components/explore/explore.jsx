@@ -1,6 +1,8 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
 var SessionStore = require('../../stores/sessionStore');
+var FastFlux = require('../../util/fast-flux-react/fastFlux');
+var GraphStore = require('../../stores/graphStore');
 
 // Components
 var Dropdown = require('./dropdown');
@@ -28,12 +30,14 @@ var Explore = React.createClass({
   },
 
   clickPinZume: function () {
-    data = { dataStream: '', feature: '' };
+    var currentFeature = GraphStore.getCurrentFeatures();
+    var data = { featureName: currentFeature.name };
+    debugger;
 
     FastFlux.webCycle('post', '/auth/zumes/create', {
       shouldStoreReceive: true,
       storeActionType: 'SESSION_RECEIVED',
-      body: zumePanel,
+      body: data,
     });
 
   },
