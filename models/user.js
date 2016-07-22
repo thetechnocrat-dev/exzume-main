@@ -9,7 +9,9 @@ var UserSchema = new Schema({
     email: String,
   },
   formURL: { type: String, default: 'none' },
-  vis: [{ url: String }],
+  zumes: [
+    { featureName: String },
+  ],
   insights: [
     {
       message: String,
