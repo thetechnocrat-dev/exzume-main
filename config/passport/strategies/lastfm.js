@@ -10,7 +10,8 @@ module.exports = function (passport) {
     // Find/Update user's lastfm session
     var user = req.user;
     user.datastreams.lastfm.ownerId = user._id;
-    user.datastreams.lastfm.username = sessionKey.username;
+    user.datastreams.lastfm.username = sessionKey.name;
+    console.log('in lastfm passport, username: ', sessionKey.name);
     user.datastreams.lastfm.key = sessionKey.key;
     user.datastreams.lastfm.isConnected = true;
     user.save(function (err) {

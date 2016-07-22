@@ -41,6 +41,14 @@ var DataStreamIndex = React.createClass({
           streamDataURL: '/auth/datastreams/fitbit/grab',
         });
       }
+
+      if (this.state.user.datastreams.lastfm.isConnected) {
+        streams.push({
+          streamName: 'lastfm',
+          streamImage: '/images/last-fm.svg',
+          streamDataURL: '/auth/datastreams/lastfm/grab',
+        });
+      }
     };
 
     return streams.map(function (stream, idx) {

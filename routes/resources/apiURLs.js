@@ -5,6 +5,5 @@ module.exports = {
   },
   lastfm: {
     rootURL: 'http://ws.audioscrobbler.com/2.0/',
-    getRecentTracksURL: '?method=user.getrecenttracks&user=rj&api_key=YOUR_API_KEY&format=json'
   },
 };
