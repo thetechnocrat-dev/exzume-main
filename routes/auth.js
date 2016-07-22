@@ -190,7 +190,8 @@ module.exports = function (router, passport) {
       };
 
       // function to add current data as object to user.datastream.features array
-      var addDataToUser = function (featureName, currentDate, newData, callback) {
+      var addDataToUser = function (featureName, newData, callback) {
+        // find proper feature index within users datastream object
         var thisFeatureIndex;
         for (var i = 0; i < currentStream.features.length; i++) {
           if (currentStream.features[i].name == featureName) {
@@ -199,15 +200,10 @@ module.exports = function (router, passport) {
         };
 
         var thisFeature = currentStream.features[thisFeatureIndex];
-        console.log(currentDate);
-        console.log(newData);
-        if (thisFeature.dates[thisFeature.dates.length] == currentDate &&
-            thisFeature.data[thisFeature.data.length] < newData) {
-          thisFeature.data[thisFeature.data.length] = newData;
-        } else {
-          thisFeature.dates.push(currentDate);
-          thisFeature.data.push(newData);
-        }
+        console.log(JSON.stringify(newData));
+        for (var i = 0; i < newData.length; i++) {
+          thisFeature.data.push(newData[i]);
+        };
 
         user.save(function (err, user) {
           if (err) console.log('problem saving user: ', err);
@@ -216,19 +212,20 @@ module.exports = function (router, passport) {
         });
       };
 
+      // get fitbit data
       if (currentStreamName == 'fitbit') {
-        var date = moment().format('YYYY-MM-DD');
+        // var date = moment().format('YYYY-MM-DD');
         var fitbit = currentStream;
 
         axios({
           method: 'GET',
-          url: 'https://api.fitbit.com/1/user/-/activities/date/' + date + '.json',
+          url: 'https://api.fitbit.com/1/user/-/activities/steps/date/today/1w.json',
           headers: { 'Authorization': 'Bearer ' + fitbit.accessToken },
         }).then(function (response) {
           console.log('made it to response');
 
-          // res.json(response.data);
-          console.log(response.data.summary.steps);
+          // res.json(response.data['activities-steps']);
+          // console.log(response.data.summary.steps);
           async.series({
             one: function (callback) {
               addUserToFeature('steps', callback);
@@ -239,14 +236,12 @@ module.exports = function (router, passport) {
             },
 
             three: function (callback) {
-              addDataToUser('steps', date, response.data.summary.steps, callback);
+              addDataToUser('steps', response.data['activities-steps'], callback);
             },
           }, function (err, results) {
             if (err) res.send(err);
             else {
               console.log(results);
-              // console.log(results.three.datastreams.fitbit.dates);
-              // console.log(results.three.datastreams.fitbit.data);
               res.redirect('/#/dashboard?=');
             }
           });
@@ -272,29 +267,3 @@ module.exports = function (router, passport) {
     res.redirect('/');
   });
 };
-
-// if (survey.features[0].name === req.body.xVar &&
-            //     survey.features[1].name === req.body.yVar) {
-            //       // spawn data analysis child process if import succeeds
-            //   var spawn = child_process.spawn;
-            //   var py = spawn('python', ['./crunch.py']);
-            //   dataString = '';
-            //   data = survey.features[0].data;
-            //   // data2 = survey.features[1].data;
-            //   console.log(JSON.stringify(data));
-            //   // console.log(JSON.stringify(data2));
-            //   py.stdin.write(JSON.stringify(data));
-            //   // py.stdin.write(JSON.stringify(data2));
-            //   py.stdin.end();
-            //   py.stdout.on('data', function(data){
-            //     dataString += data.toString();
-            //   });
-            //   py.stdout.on('end', function(){
-            //     console.log('Sum of numbers = ', dataString);
-            //   });
-              //
-              // user.vis.push?(function (err) {
-              //   if (err) { res.send(err); }
-              //
-                // res.json({ message: 'correlation successfully made' });
-              // });

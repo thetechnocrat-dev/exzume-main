@@ -16,7 +16,7 @@ var Dropdown = React.createClass({
     for (datastream in datastreams) {
       if (datastreams[datastream].features.length != 0) {
         arr = datastreams[datastream].features.filter(function (feature) {
-          return feature.dates.length > 0;
+          return feature.data.length > 0;
         });
 
         for (a in arr) {
@@ -36,7 +36,6 @@ var Dropdown = React.createClass({
           <DropdownItem
             key={idx}
             name={dropdownItem.name}
-            dates={dropdownItem.dates}
             data={dropdownItem.data}
           />
         );

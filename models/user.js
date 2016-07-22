@@ -36,7 +36,6 @@ var UserSchema = new Schema({
       isConnected: { type: Boolean, default: false },
       features: [{
           name: String,
-          dates: [Date],
           data: [],
         },
       ],
