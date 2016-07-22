@@ -18,7 +18,7 @@ var Dropdown = React.createClass({
     for (datastream in datastreams) {
       if (datastreams[datastream].features.length != 0) {
         arr = datastreams[datastream].features.filter(function (feature) {
-          return feature.dates.length > 0;
+          return feature.data.length > 0;
         });
 
         for (a in arr) {

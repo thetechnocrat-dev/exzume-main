@@ -10,11 +10,10 @@ GraphStore.resetGraphStore = function (currentFeatures) {
 
 GraphStore.getSeriesData = function () {
   var seriesData = [];
-  var dates = _currentFeatures.dates || [];
   var data = _currentFeatures.data || [];
-  var name = _currentFeatures.name || '';
-  for (var i = 0; i < dates.length; i++) {
-    seriesData.push({ x: (new Date(dates[i])).getTime(), y: data[i] });
+  for (var i = 0; i < this.props.data.length; i++) {
+    featureData.push({ x: this.props.data[i].dateTime,
+                       y: this.props.data[i].value });
   }
 
   return seriesData;

@@ -9,9 +9,7 @@ var UserSchema = new Schema({
     email: String,
   },
   formURL: { type: String, default: 'none' },
-  zumes: [
-    { featureName: String },
-  ],
+  vis: [{ url: String }],
   insights: [
     {
       message: String,
@@ -38,7 +36,6 @@ var UserSchema = new Schema({
       isConnected: { type: Boolean, default: false },
       features: [{
           name: String,
-          dates: [Date],
           data: [],
         },
       ],

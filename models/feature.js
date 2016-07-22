@@ -4,7 +4,7 @@ var User = require('./user');
 
 var FeatureSchema = new Schema({
   name: String,
-  users: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  users: [String], // array of usernames
   dataStreams: [String], // references name of datastream collection
   categories: [String],
   options: {},
