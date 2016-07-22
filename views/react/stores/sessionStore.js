@@ -23,14 +23,10 @@ SessionStore.currentUsername = function () {
 SessionStore.getUserFeatures = function () {
   var dataStreams = _currentUser.datastreams;
   var userActiveFeatures = [];
+
   for (dataStream in dataStreams) {
     for (var i = 0; i < dataStreams[dataStream].features.length; i++) {
-      var userFeature = dataStreams[dataStream].features[i];
-      if (userActiveFeatures[userFeature.name]) {
-        userActiveFeatures[userFeature.name].push(dataStream);
-      } else {
-        userActiveFeatures[userFeature.name] = [dataStream];
-      }
+      userActiveFeatures.push(dataStreams[dataStream].features[i]);
     }
   }
 

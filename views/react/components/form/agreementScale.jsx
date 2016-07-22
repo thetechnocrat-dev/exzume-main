@@ -21,7 +21,7 @@ var AgreementScale = React.createClass({
       error: this.error,
       shouldStoreReceive: true,
       storeActionType: 'SESSION_RECEIVED',
-      body: { data: this.state.answer },
+      body: { data: parseInt(this.state.answer) },
     });
   },
 

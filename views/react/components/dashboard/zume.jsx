@@ -58,10 +58,10 @@ var Zume = React.createClass({
           x: 0,
           y: 0,
           width: 500,
-          height: 400
+          height: 400,
         }}
-        title="Steps vs. Day"
-        yAxisLabel="Steps"
+        title={this.props.zume.featureName + ' vs. Day'}
+        yAxisLabel={this.props.zume.featureName}
         xAxisLabel="Date"
         xAccessor={
           function (d) {

@@ -13,13 +13,17 @@ var ZumePanel = React.createClass({
     var zumes = this.props.user.zumes;
     var _this = this;
     return zumes.map(function (zume, idx) {
-      return <Zume key={idx} zume={zume} user={_this.props.user} />;
+      return (
+        <div className="column" key={idx}>
+          <Zume key={idx} zume={zume} user={_this.props.user} />
+        </div>
+      );
     });
   },
 
   render: function () {
     return (
-      <div>
+      <div className="ui two column stackable grid">
         {this.makeZumes()}
       </div>
     );

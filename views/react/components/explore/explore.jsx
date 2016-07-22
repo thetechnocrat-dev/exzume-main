@@ -32,7 +32,6 @@ var Explore = React.createClass({
   clickPinZume: function () {
     var currentFeature = GraphStore.getCurrentFeatures();
     var data = { featureName: currentFeature.name };
-    debugger;
 
     FastFlux.webCycle('post', '/auth/zumes/create', {
       shouldStoreReceive: true,
