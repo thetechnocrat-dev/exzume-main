@@ -38,7 +38,11 @@ var Dashboard = React.createClass({
     if (user) {
       return (
         <div className="ui container">
-          <ProfilePanel user={user} userFeatures={SessionStore.getUserFeatures()}/>
+          <ProfilePanel
+            user={user}
+            userFeatures={SessionStore.getUserFeatures()}
+            userStreams={SessionStore.getUserStreams()}
+          />
           <ZumePanel user={user} />
           <SurveyPanel user={user} />
         </div>

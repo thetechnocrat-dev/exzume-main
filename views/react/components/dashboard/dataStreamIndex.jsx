@@ -1,67 +1,68 @@
 var React = require('react');
-// var PropTypes = React.PropTypes;
 var SessionStore = require('../../stores/sessionStore');
+var History = require('react-router').History;
 
 // Components
 var DataStreamItem = require('./dataStreamItem');
 
 var DataStreamIndex = React.createClass({
+  mixins: [History],
+
+  propTypes: {
+    user: React.PropTypes.object.isRequired,
+    userStreams: React.PropTypes.array.isRequired,
+  },
 
   getInitialState: function () {
-    if (SessionStore.isSignedIn()) {
-      return { user: SessionStore.currentUser() };
-    }
-
-    return { user: {} };
-  },
-
-  _onChange: function () {
-    if (SessionStore.isSignedIn()) {
-      this.setState({ user: SessionStore.currentUser() });
+    // render add data stream button if only manual survey is connected otherwise show streams
+    if (this.props.userStreams.length == 1) {
+      return { headerMessage: 'No devices or apps connected.' };
     } else {
-      this.history.push('/');
+      return { headerMessage: 'Click an icon to sync your data.' };
     }
   },
 
-  componentDidMount: function () {
-    this.sessionToken = SessionStore.addListener(this._onChange);
-  },
-
-  componentWillUnmount: function () {
-    this.sessionToken.remove();
+  clickConnect: function () {
+    this.history.push('/dashboard/connect');
   },
 
   makeDataStreamItems: function () {
     var streams = [];
-    if (SessionStore.isSignedIn()) {
-      if (this.state.user.datastreams.fitbit.isConnected) {
-        streams.push({
-          streamName: 'fitbit',
-          streamImage: '/images/fitbit.png',
-          streamDataURL: '/auth/datastreams/fitbit/grab',
-        });
-      }
+    if (this.props.user.datastreams.fitbit.isConnected) {
+      streams.push({
+        streamName: 'fitbit',
+        streamImage: '/images/fitbit.png',
+        streamDataURL: '/auth/datastreams/fitbit/grab',
+      });
+    }
 
-      if (this.state.user.datastreams.lastfm.isConnected) {
-        streams.push({
-          streamName: 'lastfm',
-          streamImage: '/images/last-fm.svg',
-          streamDataURL: '/auth/datastreams/lastfm/grab',
-        });
-      }
-    };
+    if (this.props.user.datastreams.lastfm.isConnected) {
+      streams.push({
+        streamName: 'lastfm',
+        streamImage: '/images/last-fm.svg',
+        streamDataURL: '/auth/datastreams/lastfm/grab',
+      });
+    }
 
-    return streams.map(function (stream, idx) {
+    // render connect option if no connected data streams
+    if (streams.length == 0) {
       return (
-        <DataStreamItem
-          key={idx}
-          streamName={stream.streamName}
-          streamImage={stream.streamImage}
-          streamDataURL={stream.streamDataURL}
-        />
+        <button className="ui yellow button" onClick={this.clickConnect}>
+          Go Connect Devices
+        </button>
       );
-    });
-
+    } else {
+      return streams.map(function (stream, idx) {
+        return (
+          <DataStreamItem
+            key={idx}
+            streamName={stream.streamName}
+            streamImage={stream.streamImage}
+            streamDataURL={stream.streamDataURL}
+          />
+        );
+      });
+    }
   },
 
   render: function () {
@@ -70,21 +71,9 @@ var DataStreamIndex = React.createClass({
       <div className="twelve wide column">
         <div className="ui center aligned text container">
           <h1 className="ui header">Your Data Streams</h1>
-          <p className="ui header">Click an icon to sync again.</p>
-          <i className="big refresh icon"></i>
+          <p className="ui header">{this.state.headerMessage}</p>
           <div className="row">
             {this.makeDataStreamItems()}
-          </div>
-          <div className="row">
-            <div className="ui simple dropdown">
-              <button className="ui green icon button">
-                <i className="big plus white icon"></i>
-              </button>
-              <div className="menu">
-                <a className="item" href='/auth/datastreams/fitbit'>Fitbit</a>
-                <a className="item" href='/auth/datastreams/lastfm'>LastFM</a>
-              </div>
-            </div>
           </div>
         </div>
       </div>

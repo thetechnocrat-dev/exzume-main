@@ -33,6 +33,18 @@ SessionStore.getUserFeatures = function () {
   return userActiveFeatures;
 },
 
+SessionStore.getUserStreams = function () {
+  var userActiveStreams = [];
+
+  for (key in _currentUser.datastreams) {
+    if (_currentUser.datastreams[key].isConnected) {
+      userActiveStreams.push(_currentUser.datastreams[key]);
+    }
+  }
+
+  return userActiveStreams;
+},
+
 SessionStore.getInsights = function (startIndex, size) {
   var insights = _currentUser.insights;
   if (startIndex >= insights.length) {
