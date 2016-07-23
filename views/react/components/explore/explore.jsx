@@ -48,7 +48,13 @@ var Explore = React.createClass({
         <div>
           <Dropdown user={user} />
           <ExploreGraph user={user} />
-          <button className="ui green button" onClick={this.clickPinZume}>Pin Zume</button>
+          <div className="ui grid">
+            <div className="four column row">
+              <div className="right floated column">
+                <button className="ui green button" onClick={this.clickPinZume}>Pin Zume</button>
+              </div>
+            </div>
+          </div>
         </div>
       );
     }
