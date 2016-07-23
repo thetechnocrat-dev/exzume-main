@@ -11,7 +11,7 @@ var AgreementScale = React.createClass({
   },
 
   getInitialState: function () {
-    return { answer: '' };
+    return { answer: '', isLoading: false };
   },
 
   clickSubmit: function () {
@@ -26,11 +26,32 @@ var AgreementScale = React.createClass({
   },
 
   success: function (resp) {
-    console.log(resp);
+    this.setState({ answer: '', isLoading: 'false' });
   },
 
   error: function (respError) {
     console.log(respError.respText);
+  },
+
+  makeSubmitButton: function () {
+    if (this.state.isLoading) {
+      return (
+        <button
+          className="ui disabled loading green button"
+        >
+            Submit
+        </button>
+      );
+    } else {
+      return (
+        <button
+          onClick={this.clickSubmit}
+          className="ui green button"
+        >
+            Submit
+        </button>
+      );
+    }
   },
 
   render: function () {
@@ -48,7 +69,7 @@ var AgreementScale = React.createClass({
             className="ui green button"
           >
             Submit
-          </button>
+        </button>
       </div>
     );
   },

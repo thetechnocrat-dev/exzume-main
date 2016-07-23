@@ -11,16 +11,6 @@ module.exports = function (req, res) {
       categories: ['fitness'],
     },
     {
-      name: 'Caffeine',
-      users: [],
-      dataStreams: ['survey'],
-      categories: ['health', 'productivity'],
-      options: {
-        prompt: 'How many cups of coffee did you drink?',
-        format: 'textQuestion',
-      },
-    },
-    {
       name: 'General Productivity',
       users: [],
       dataStreams: ['survey'],
