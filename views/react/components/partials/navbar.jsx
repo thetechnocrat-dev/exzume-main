@@ -81,9 +81,9 @@ var navbar = React.createClass({
         <div className={this.makeNavbarClassName()} style={navbarStyle} >
           <div className="ui container">
             <LeftNavbarButton label="Exzume" navigation="/" />
-            <LeftNavbarButton label="Dashboard" navigation="/dashboard" />
-            <LeftNavbarButton label="Explore" navigation="/dashboard/explore" />
-            <LeftNavbarButton label="Connect" navigation="/dashboard/connect" />
+            <LeftNavbarButton label="Dashboard" navigation="/dashboard" browserLoc="_"/>
+            <LeftNavbarButton label="Explore" navigation="/dashboard/explore" browserLoc="explore" />
+            <LeftNavbarButton label="Connect" navigation="/dashboard/connect" browserLoc="connect" />
             <div className="right menu">
               <div className="ui simple dropdown item">
                 {this.state.username}
