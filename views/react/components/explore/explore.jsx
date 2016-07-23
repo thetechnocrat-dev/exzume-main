@@ -11,9 +11,9 @@ var ExploreGraph = require('./exploreGraph');
 var Explore = React.createClass({
   getInitialState: function () {
     if (SessionStore.isSignedIn()) {
-      return { user: SessionStore.currentUser() };
+      return { user: SessionStore.currentUser(), successMessage: false };
     } else {
-      return { user: null };
+      return { user: null, successMessage: false };
     }
   },
 
@@ -32,20 +32,50 @@ var Explore = React.createClass({
 
   componentWillUnmount: function () {
     this.sessionToken.remove();
-    GraphStore.resetGraphStore([]);
+    GraphStore.resetGraphStore({});
     this.graphToken.remove();
   },
 
+  makePinZumeButton: function () {
+    if (GraphStore.hasCurrentFeature()) {
+      return (<button className="ui green button" data-tooltip="Pin this zume to your dashboard!" onClick={this.clickPinZume}>Pin Zume</button>);
+    } else {
+      return (<button className="ui disabled button" data-tooltip="Select a feature first!">Pin Zume</button>);
+    }
+  },
+
   clickPinZume: function () {
-    var currentFeature = GraphStore.getCurrentFeatures();
+    var currentFeature = GraphStore.getCurrentFeature();
     var data = { featureName: currentFeature.name };
 
     FastFlux.webCycle('post', '/auth/zumes/create', {
+      success: this.successCallback,
       shouldStoreReceive: true,
       storeActionType: 'SESSION_RECEIVED',
       body: data,
     });
 
+  },
+
+  successCallback: function () {
+    console.log(this.state.successMessage);
+    this.state.successMessage = true;
+    console.log(this.state.successMessage);
+  },
+
+
+  makeSuccessMessage: function () {
+    if (this.state.successMessage) {
+      return (
+        <div className="ui success message">
+          <i className="close icon"></i>
+          <div className="header">
+            Zume successfully pinned.
+          </div>
+          <p>Check it out on your Dashboard!</p>
+        </div>
+      );
+    }
   },
 
   makeContent: function () {
@@ -62,7 +92,8 @@ var Explore = React.createClass({
           <div className="ui grid">
             <div className="four column row">
               <div className="right floated column">
-                <button className="ui green button" data-tooltip="Pin this zume to your dashboard!" onClick={this.clickPinZume}>Pin Zume</button>
+                {this.makePinZumeButton()}
+                {this.makeSuccessMessage()}
               </div>
             </div>
           </div>

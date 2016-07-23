@@ -4,8 +4,8 @@ var Store = require('flux/utils').Store;
 var GraphStore = new Store(Dispatcher);
 var _currentFeature = {};
 
-GraphStore.resetGraphStore = function (currentFeatures) {
-  _currentFeature = currentFeatures;
+GraphStore.resetGraphStore = function (currentFeature) {
+  _currentFeature = currentFeature;
 },
 
 GraphStore.getSeriesData = function () {
@@ -18,7 +18,7 @@ GraphStore.getSeriesData = function () {
   return seriesData;
 },
 
-GraphStore.hasFeature = function () {
+GraphStore.hasCurrentFeature = function () {
   if (_currentFeature.name) {
     return true;
   } else {

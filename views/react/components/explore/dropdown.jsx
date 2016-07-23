@@ -33,7 +33,6 @@ var Dropdown = React.createClass({
   makeDropdownItems: function () {
     var userFeatures = this.getUserFeatures();
     return userFeatures.map(function (userFeature, idx) {
-      console.log(userFeature);
       return (
           <DropdownItem
             key={idx}
