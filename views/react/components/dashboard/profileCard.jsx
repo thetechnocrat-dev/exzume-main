@@ -9,7 +9,6 @@ var ProfileCard = React.createClass({
   },
 
   render: function () {
-    console.log(this.props);
     var statisticRightPadding = { paddingRight: '7%' };
     var statisticLeftPadding = { paddingLeft: '7%' };
 

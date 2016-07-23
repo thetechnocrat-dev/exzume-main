@@ -17,16 +17,23 @@ var Explore = React.createClass({
     }
   },
 
-  _onChange: function () {
+  _onChangeSession: function () {
     this.setState({ user: SessionStore.currentUser() });
   },
 
+  _onChangeGraph: function () {
+    this.setState({ seriesData: GraphStore.getSeriesData() });
+  },
+
   componentDidMount: function () {
-    this.sessionToken = SessionStore.addListener(this._onChange);
+    this.sessionToken = SessionStore.addListener(this._onChangeSession);
+    this.graphToken = GraphStore.addListener(this._onChangeGraph);
   },
 
   componentWillUnmount: function () {
     this.sessionToken.remove();
+    GraphStore.resetGraphStore([]);
+    this.graphToken.remove();
   },
 
   clickPinZume: function () {
@@ -47,7 +54,11 @@ var Explore = React.createClass({
       return (
         <div>
           <Dropdown user={user} />
-          <ExploreGraph user={user} />
+          <ExploreGraph
+            user={user}
+            seriesData={GraphStore.getSeriesData()}
+            currentFeature={GraphStore.getCurrentFeature()}
+          />
           <div className="ui grid">
             <div className="four column row">
               <div className="right floated column">

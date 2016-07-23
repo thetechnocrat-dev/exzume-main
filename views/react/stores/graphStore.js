@@ -2,33 +2,32 @@ var Dispatcher = require('../dispatcher/dispatcher');
 var Store = require('flux/utils').Store;
 
 var GraphStore = new Store(Dispatcher);
-var _currentFeatures = {};
+var _currentFeature = {};
 
 GraphStore.resetGraphStore = function (currentFeatures) {
-  _currentFeatures = currentFeatures;
+  _currentFeature = currentFeatures;
 },
 
 GraphStore.getSeriesData = function () {
   var seriesData = [];
-  var data = _currentFeatures.data || [];
+  var data = _currentFeature.data || [];
   for (var i = 0; i < data.length; i++) {
-    seriesData.push({ x: data[i].dateTime,
-                       y: data[i].value });
+    seriesData.push({ x: data[i].dateTime, y: data[i].value });
   }
 
   return seriesData;
 },
 
 GraphStore.hasFeature = function () {
-  if (_currentFeatures.name) {
+  if (_currentFeature.name) {
     return true;
   } else {
     return false;
   }
 },
 
-GraphStore.getCurrentFeatures = function () {
-  return _currentFeatures;
+GraphStore.getCurrentFeature = function () {
+  return _currentFeature;
 },
 
 GraphStore.__onDispatch = function (payload) {
