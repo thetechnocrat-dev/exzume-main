@@ -1,4 +1,4 @@
-// object with API resources URLs
+// object with API resources base URLs
 module.exports = {
   fitbit: {
     rootURL: 'https://api.fitbit.com/1/user/-/',

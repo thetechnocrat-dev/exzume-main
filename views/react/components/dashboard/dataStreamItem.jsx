@@ -5,9 +5,8 @@ var DataStreamItem = React.createClass({
   // mixins: [History],
 
   render: function () {
-
     return (
-      <div className="column">
+      <div className="ui segment">
         <a className="ui small image" href={this.props.streamDataURL}>
           <img src={this.props.streamImage}/>
         </a>

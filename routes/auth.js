@@ -217,7 +217,13 @@ module.exports = function (router, passport) {
         var thisFeature = currentStream.features[thisFeatureIndex];
         console.log(JSON.stringify(newData));
         for (var i = 0; i < newData.length; i++) {
-          thisFeature.data.push(newData[i]);
+          // naive edge case check:
+          // if recently synced data 'dateTime' value matches last dateTime in store
+          // overwrite
+          // if (thisFeature.data[thisFeature.data.length].dateTime == newData[i].dateTime)
+          //   thisFeature.data[thisFeature.data.length] = newData[i];
+          // else
+            thisFeature.data.push(newData[i]);
         };
 
         user.save(function (err, user) {
@@ -229,12 +235,10 @@ module.exports = function (router, passport) {
 
       // get fitbit data
       if (currentStreamName == 'fitbit') {
-        var fitbit = currentStream;
-
         axios({
           method: 'GET',
-          url: 'https://api.fitbit.com/1/user/-/activities/steps/date/today/1w.json',
-          headers: { 'Authorization': 'Bearer ' + fitbit.accessToken },
+          url: 'https://api.fitbit.com/1/user/-/activities/steps/date/today/1m.json',
+          headers: { 'Authorization': 'Bearer ' + currentStream.accessToken },
         }).then(function (response) {
           console.log('made it to response');
 
@@ -272,21 +276,28 @@ module.exports = function (router, passport) {
 
       // get lastfm data
       if (currentStreamName == 'lastfm') {
-        var date = moment().format('YYYY-MM-DD'); // get current date
-        const dateTime = new Date(date).getTime(); // unix timestamp of that date
-        const timeStamp = Math.floor(dateTime / 1000);
+        // var mostRecentDate = lastfm.features['dailyTracks'].dateTime;
+        // console.log('here is the current date: ', currentDate);
+        var dateToday = moment().format('YYYY-MM-DD'); // get current date
+        const dateTimeToday = new Date(dateToday).getTime(); // unix timestamp of that date
+        const timeStampToday = Math.floor(dateTimeToday / 1000);
 
         axios.get(apiURLs.lastfm.rootURL, {
           params: {
             method: 'user.getrecenttracks',
-            from: timeStamp,
-            user: user.datastreams.lastfm.username,
+            from: timeStampToday,
+            user: currentStream.username,
             api_key: config.lastfm.clientID,
             format: 'json',
           },
         }).then(function (response) {
           console.log('made it to response');
           console.log(response.data.recenttracks['@attr'].total);
+          // here are my initial efforts to understand lastfm recenttracks
+          // for (var i = 0; i < response.data.recenttracks.track.length; i++) {
+          //   if (response.data.recenttracks.track[i].date != null)
+          //     console.log(response.data.recenttracks.track[i].date.uts);
+          // }
 
           async.series({
             one: function (callback) {
@@ -299,7 +310,7 @@ module.exports = function (router, passport) {
 
             three: function (callback) {
               addDataToUser('dailyTracks', [{
-                dateTime: date,
+                dateTime: dateToday,
                 value: response.data.recenttracks['@attr'].total,
               }], callback);
             },

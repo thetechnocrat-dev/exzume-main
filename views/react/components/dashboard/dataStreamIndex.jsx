@@ -73,7 +73,9 @@ var DataStreamIndex = React.createClass({
           <h1 className="ui header">Your Data Streams</h1>
           <p className="ui header">{this.state.headerMessage}</p>
           <div className="row">
-            {this.makeDataStreamItems()}
+            <div className="ui horizontal segments">
+              {this.makeDataStreamItems()}
+            </div>
           </div>
         </div>
       </div>
