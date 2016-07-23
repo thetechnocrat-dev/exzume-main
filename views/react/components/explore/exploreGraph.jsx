@@ -31,12 +31,12 @@ var ExploreGraph = React.createClass({
           values: values,
         }]}
         width='100%'
-        height={400}
+        height={600}
         viewBoxObject={{
           x: 0,
           y: 0,
-          width: 500,
-          height: 400
+          width: 700,
+          height: 600
         }}
         title={title}
         yAxisLabel={dataName}
@@ -47,6 +47,7 @@ var ExploreGraph = React.createClass({
           }
         }
         xAxisTickInterval={{unit: 'day', interval: 1}}
+        domain={{y: [0,]}}
         gridHorizontal={true}
         />
     );

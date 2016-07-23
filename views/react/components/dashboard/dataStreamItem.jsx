@@ -1,8 +1,16 @@
 var React = require('react');
-// var History = require('react-router').History;
 
 var DataStreamItem = React.createClass({
-  // mixins: [History],
+  // getInitialState: function () {
+  //   var initialState = { isLoading: false };
+  //   return initialState;
+  // },
+  //
+  // clickSync: function (event) {
+  //   event.preventDefault();
+  //
+  //
+  // }
 
   render: function () {
     return (
