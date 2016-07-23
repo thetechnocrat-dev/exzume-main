@@ -6,8 +6,7 @@ var AgreementScale = React.createClass({
   mixins: [LinkedStateMixin],
 
   propTypes: {
-    prompt: React.PropTypes.string.isRequired,
-    featureName: React.PropTypes.string.isRequired,
+    surveyFeature: React.PropTypes.object.isRequired,
   },
 
   getInitialState: function () {
@@ -15,7 +14,7 @@ var AgreementScale = React.createClass({
   },
 
   clickSubmit: function () {
-    var url = '/auth/userfeatures/survey/' + this.props.featureName;
+    var url = '/auth/userfeatures/survey/' + this.props.surveyFeature.name;
     FastFlux.webCycle('put', url, {
       success: this.success,
       error: this.error,
@@ -54,26 +53,35 @@ var AgreementScale = React.createClass({
     }
   },
 
+  makeLastAnswered: function () {
+    // if statement that handles case if user has never answered question
+    if (this.props.surveyFeature.data.length === 0) {
+      return <div>You have not answered this question yet</div>;
+    } else {
+      return <div>{'Last answered: ' + this.props.surveyFeature.data.slice(-1)[0].dateTime}</div>;
+    }
+  },
+
   render: function () {
     var inputStyle = { marginTop: '2.5%', marginBottom: '2.5%' };
     return (
-      <div className="column">
-        <div className="ui cards">
-          <div className="card">
-            <div className="content">
-              <div className="field">
-                <label>{this.props.prompt}</label>
-                <br />
-                  <input
-                    style={inputStyle}
-                    format="text"
-                    name={this.props.prompt}
-                    placeholder="enter a number 1 thru 7"
-                    valueLink={this.linkState('answer')}
-                  />
-                <br />
-                {this.makeSubmitButton()}
-              </div>
+      <div className="ui cards">
+        <div className="card">
+          <div className="content">
+            <div className="field">
+              <label>{this.props.surveyFeature.prompt}</label>
+              <br />
+                <input
+                  style={inputStyle}
+                  format="text"
+                  name={this.props.surveyFeature.prompt}
+                  placeholder="enter a number 1 thru 7"
+                  valueLink={this.linkState('answer')}
+                />
+              <br />
+              {this.makeSubmitButton()}
+              <br />
+              {this.makeLastAnswered()}
             </div>
           </div>
         </div>

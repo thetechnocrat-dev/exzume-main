@@ -10,19 +10,19 @@ var SurveyPanel = React.createClass({
   },
 
   makeSurveyQuestions: function () {
-    var questions = this.props.user.datastreams.survey.features;
+    var surveyFeatures = this.props.user.datastreams.survey.features;
 
-    return questions.map(function (question, idx) {
-      if (question.format === 'textQuestion') {
+    return surveyFeatures.map(function (surveyFeature, idx) {
+      if (surveyFeature.format === 'textQuestion') {
         return (
           <div className="column" key={idx}>
-            <TextQuestion prompt={question.prompt} />
+            <TextQuestion prompt={surveyFeature.prompt} />
           </div>
         );
-      } else if (question.format === 'agreementScale') {
+      } else if (surveyFeature.format === 'agreementScale') {
         return (
           <div className="column" key={idx}>
-            <AgreementScale featureName={question.name} prompt={question.prompt} />
+            <AgreementScale surveyFeature={surveyFeature} />
           </div>
         );
       }
