@@ -55,21 +55,28 @@ var AgreementScale = React.createClass({
   },
 
   render: function () {
+    var inputStyle = { marginTop: '2.5%', marginBottom: '2.5%' };
     return (
-      <div className="field">
-        <label>{this.props.prompt}</label>
-          <input
-            format="text"
-            name={this.props.prompt}
-            placeholder="enter a number 1 thru 7"
-            valueLink={this.linkState('answer')}
-          />
-        <button
-            onClick={this.clickSubmit}
-            className="ui green button"
-          >
-            Submit
-        </button>
+      <div className="column">
+        <div className="ui cards">
+          <div className="card">
+            <div className="content">
+              <div className="field">
+                <label>{this.props.prompt}</label>
+                <br />
+                  <input
+                    style={inputStyle}
+                    format="text"
+                    name={this.props.prompt}
+                    placeholder="enter a number 1 thru 7"
+                    valueLink={this.linkState('answer')}
+                  />
+                <br />
+                {this.makeSubmitButton()}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   },
