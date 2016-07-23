@@ -2,6 +2,7 @@ var React = require('react');
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var FastFlux = require('../../util/fast-flux-react/fastFlux');
 var History = require('react-router').History;
+var Style = require('../../util/style');
 
 var Signup = React.createClass({
   mixins: [LinkedStateMixin, History],
@@ -61,13 +62,13 @@ var Signup = React.createClass({
     if (this.state.loading) {
       return (
         <div
-          className="ui teal disabled loading button"
+          className="ui green disabled loading button"
           type="submit">Submit
         </div>
       );
     } else {
       return (
-        <div className="ui teal button" type="submit" onClick={this.handleSubmit}>Submit</div>
+        <div className="ui green button" type="submit" onClick={this.handleSubmit}>Submit</div>
       );
     }
   },
@@ -82,7 +83,7 @@ var Signup = React.createClass({
 
   render: function () {
     var containerStyle = { margin: '10%' };
-    var linkStyle = { cursor: 'pointer', color: '#008080' };
+    var linkStyle = { cursor: 'pointer', color: Style.green };
 
     return (
       <div className="ui container" style={containerStyle}>

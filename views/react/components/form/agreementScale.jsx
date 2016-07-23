@@ -25,7 +25,7 @@ var AgreementScale = React.createClass({
   },
 
   success: function (resp) {
-    this.setState({ answer: '', isLoading: 'false' });
+    this.setState({ answer: '', isLoading: false });
   },
 
   error: function (respError) {

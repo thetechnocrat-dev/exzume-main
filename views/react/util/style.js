@@ -3,4 +3,5 @@ module.exports = {
   lightBackgroundHover: '#D9EEF2',
   lightGreen: '#D2F9ED',
   lightGreenHover: '#a5f3da',
+  green: '#1FCC99',
 };
