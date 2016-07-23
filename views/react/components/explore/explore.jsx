@@ -62,7 +62,7 @@ var Explore = React.createClass({
           <div className="ui grid">
             <div className="four column row">
               <div className="right floated column">
-                <button className="ui green button" onClick={this.clickPinZume}>Pin Zume</button>
+                <button className="ui green button" data-tooltip="Pin this zume to your dashboard!" onClick={this.clickPinZume}>Pin Zume</button>
               </div>
             </div>
           </div>
