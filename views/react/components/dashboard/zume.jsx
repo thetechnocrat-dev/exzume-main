@@ -38,7 +38,7 @@ var Zume = React.createClass({
     var data = userFeature.data || [];
     for (var i = 0; i < data.length; i++) {
       seriesData.push({ x: data[i].dateTime,
-                         y: data[i].value, });
+                         y: parseInt(data[i].value), });
     }
 
     return seriesData;
@@ -68,7 +68,7 @@ var Zume = React.createClass({
             return new Date(d.x);
           }
         }
-        xAxisTickInterval={{unit: 'day', interval: 1}}
+        xAxisTickInterval={{unit: 'day', interval: 5}}
         gridHorizontal={true}
       />
     );

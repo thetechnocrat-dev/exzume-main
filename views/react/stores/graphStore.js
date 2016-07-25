@@ -12,7 +12,7 @@ GraphStore.getSeriesData = function () {
   var seriesData = [];
   var data = _currentFeature.data || [];
   for (var i = 0; i < data.length; i++) {
-    seriesData.push({ x: data[i].dateTime, y: data[i].value });
+    seriesData.push({ x: data[i].dateTime, y: parseInt(data[i].value) });
   }
 
   return seriesData;

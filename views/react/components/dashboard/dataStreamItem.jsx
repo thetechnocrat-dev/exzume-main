@@ -14,11 +14,9 @@ var DataStreamItem = React.createClass({
 
   render: function () {
     return (
-      <div className="ui segment">
-        <a className="ui small image" href={this.props.streamDataURL}>
-          <img src={this.props.streamImage}/>
-        </a>
-      </div>
+      <a className="ui small image" href={this.props.streamDataURL}>
+        <img src={this.props.streamImage}/>
+      </a>
     );
   },
 
