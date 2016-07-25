@@ -46,7 +46,7 @@ var ExploreGraph = React.createClass({
             return new Date(d.x);
           }
         }
-        xAxisTickInterval={{unit: 'day', interval: 3}}
+        xAxisTickInterval={{unit: 'day', interval: 1}}
         domain={{y: [0,]}}
         gridHorizontal={true}
         />

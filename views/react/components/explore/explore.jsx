@@ -58,9 +58,7 @@ var Explore = React.createClass({
   },
 
   successCallback: function () {
-    console.log(this.state.successMessage);
     this.state.successMessage = true;
-    console.log(this.state.successMessage);
   },
 
 

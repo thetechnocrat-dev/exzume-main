@@ -5,7 +5,7 @@ module.exports = function (req, res) {
   console.log('seeding...');
   Feature.insertMany([
     {
-      name: 'steps',
+      name: 'Steps',
       users: [],
       dataStreams: ['fitbit'],
       categories: ['fitness'],
@@ -28,6 +28,12 @@ module.exports = function (req, res) {
         prompt: 'Overall, I am satisfied with how I did today.',
         format: 'agreementScale',
       },
+    },
+    {
+      name: 'Tracks Played',
+      users: [],
+      dataStreams: ['lastfm'],
+      categories: ['music'],
     },
     ], function (err, docs) {
     if (err) {
