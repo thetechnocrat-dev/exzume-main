@@ -6,6 +6,7 @@ var axios = require('axios');
 var moment = require('moment');
 var async = require('async');
 var apiURLs = require('./resources/apiURLs');
+var dataStreamAPIs = require('../controllers/dataStreamAPIs/dataStreamAPIs.js');
 
 module.exports = function (router, passport) {
   // makes sure a user is logged in
@@ -19,7 +20,7 @@ module.exports = function (router, passport) {
       }
     }
   );
-
+	
   router.get('/session', function (req, res) {
     res.json(req.user);
   });
@@ -79,6 +80,7 @@ module.exports = function (router, passport) {
     );
   });
 
+	// only used for survey dataStream
   router.route('/userfeatures/:datastream/:feature')
     .post(function (req, res) {
       Feature.findOne({ name: req.params.feature }, function (err, feature) {
@@ -139,6 +141,7 @@ module.exports = function (router, passport) {
     });
 
   router.get('/datastreams/:datastream', function (req, res) {
+			dataStreamAPIs[req.params.datastream].connect();
       var options = {};
       if (req.params.datastream == 'fitbit') {
         options = { scope: ['activity', 'heartrate', 'location',
@@ -159,6 +162,7 @@ module.exports = function (router, passport) {
   );
 
   router.get('/datastreams/:datastream/grab', function (req, res) {
+			dataStreamAPI[req.params.datastream].sync();
       var user = req.user;
       var currentStreamName = req.params.datastream;
       var currentStream = user.datastreams[currentStreamName];
