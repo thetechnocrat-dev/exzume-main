@@ -227,7 +227,7 @@ module.exports = function (router, passport) {
           // if (thisFeature.data[thisFeature.data.length].dateTime == newData[i].dateTime)
           //   thisFeature.data[thisFeature.data.length] = newData[i];
           // else
-            thisFeature.data.push(newData[i]);
+          thisFeature.data.push(newData[i]);
         };
 
         user.save(function (err, user) {
@@ -241,7 +241,7 @@ module.exports = function (router, passport) {
       if (currentStreamName == 'fitbit') {
         axios({
           method: 'GET',
-          url: 'https://api.fitbit.com/1/user/-/activities/steps/date/today/1m.json',
+          url: 'https://api.fitbit.com/1/user/-/activities/steps/date/today/1w.json',
           headers: { 'Authorization': 'Bearer ' + currentStream.accessToken },
         }).then(function (response) {
           console.log('made it to response');
@@ -250,15 +250,15 @@ module.exports = function (router, passport) {
           // console.log(response.data.summary.steps);
           async.series({
             one: function (callback) {
-              addUserToFeature('steps', callback);
+              addUserToFeature('Steps', callback);
             },
 
             two: function (callback) {
-              initUserFeatureArr('steps', callback);
+              initUserFeatureArr('Steps', callback);
             },
 
             three: function (callback) {
-              addDataToUser('steps', response.data['activities-steps'], callback);
+              addDataToUser('Steps', response.data['activities-steps'], callback);
             },
           }, function (err, results) {
             if (err) res.send(err);
@@ -280,43 +280,69 @@ module.exports = function (router, passport) {
 
       // get lastfm data
       if (currentStreamName == 'lastfm') {
-        // var mostRecentDate = lastfm.features['dailyTracks'].dateTime;
-        // console.log('here is the current date: ', currentDate);
-        var dateToday = moment().format('YYYY-MM-DD'); // get current date
+        var dateToday = moment().format('YYYY-MM-DD');
         const dateTimeToday = new Date(dateToday).getTime(); // unix timestamp of that date
-        const timeStampToday = Math.floor(dateTimeToday / 1000);
+        const timeStampTwoDaysAgo = Math.floor(dateTimeToday / 1000) - 86400 * 2; // in unix seconds
+        const addDay = 86400; // seconds in day
 
         axios.get(apiURLs.lastfm.rootURL, {
           params: {
             method: 'user.getrecenttracks',
-            from: timeStampToday,
+            from: timeStampTwoDaysAgo,
+            limit: 200,
             user: currentStream.username,
             api_key: config.lastfm.clientID,
             format: 'json',
           },
         }).then(function (response) {
           console.log('made it to response');
-          console.log(response.data.recenttracks['@attr'].total);
-          // here are my initial efforts to understand lastfm recenttracks
-          // for (var i = 0; i < response.data.recenttracks.track.length; i++) {
-          //   if (response.data.recenttracks.track[i].date != null)
-          //     console.log(response.data.recenttracks.track[i].date.uts);
-          // }
+          // console.log(response.data.recenttracks.track.length);
+          // console.log(response.data.recenttracks.track[0]);
+          // console.log(response.data.recenttracks.track[response.data.recenttracks.track.length-1]);
+
+          // function to create new day data object
+          var newDayData = function (date, val) {
+            var obj = {
+              dateTime: date,
+              value: val,
+            };
+            return obj;
+          };
+
+          // initialize newData array
+          var newData = [newDayData(moment(timeStampTwoDaysAgo * 1000).format('YYYY-MM-DD'), 0)];
+          var last = timeStampTwoDaysAgo;
+
+          // store tracks played by day as counts in newData object
+          for (var i = response.data.recenttracks.track.length - 1; i >= 0; i--) {
+            var currentDay = newData[newData.length - 1];
+
+            // do not include now playing track
+            if (response.data.recenttracks.track[i].date != null) {
+              var timeThisTrack = response.data.recenttracks.track[i].date.uts;
+
+              if (timeThisTrack > last) {
+                if (timeThisTrack <= last + addDay) {
+                  currentDay.value++;
+                } else {
+                  last = last + addDay;
+                  newData.push(newDayData(moment(last * 1000).format('YYYY-MM-DD'), 1));
+                }
+              }
+            }
+          }
 
           async.series({
             one: function (callback) {
-              addUserToFeature('dailyTracks', callback);
+              addUserToFeature('Tracks Played', callback);
             },
 
             two: function (callback) {
-              initUserFeatureArr('dailyTracks', callback);
+              initUserFeatureArr('Tracks Played', callback);
             },
 
             three: function (callback) {
-              addDataToUser('dailyTracks', [{
-                dateTime: dateToday,
-                value: response.data.recenttracks['@attr'].total,
-              }], callback);
+              addDataToUser('Tracks Played', newData, callback);
             },
           }, function (err, results) {
             if (err) res.send(err);
