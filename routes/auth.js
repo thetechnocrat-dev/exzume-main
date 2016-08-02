@@ -162,7 +162,6 @@ module.exports = function (router, passport) {
   );
 
   router.get('/datastreams/:datastream/grab', function (req, res) {
-			dataStreamAPI[req.params.datastream].sync();
       var user = req.user;
       var currentStreamName = req.params.datastream;
       var currentStream = user.datastreams[currentStreamName];
