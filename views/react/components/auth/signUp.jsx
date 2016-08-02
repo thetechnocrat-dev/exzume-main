@@ -82,7 +82,7 @@ var Signup = React.createClass({
   },
 
   render: function () {
-    var containerStyle = { margin: '10%' };
+    var containerStyle = { backgroundColor: 'white' };
     var linkStyle = { cursor: 'pointer', color: Style.green };
 
     return (

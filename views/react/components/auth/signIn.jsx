@@ -8,18 +8,18 @@ var SignIn = React.createClass({
   mixins: [LinkedStateMixin, History],
 
   getInitialState: function () {
-    return { errors: '', username: '', password: '', loading: false };
+    return { errors: [], username: '', password: '', loading: false };
   },
 
   handleSubmit: function (event) {
     event.preventDefault();
+    var errors = [];
 
-    this.setState({ errors: '' });
+    if (this.state.username === '') errors.push('username required');
+    if (this.state.password === '') errors.push('password required');
 
-    if (this.state.username === '') {
-      this.setState({ errors: 'username required' });
-    } else if (this.state.password === '') {
-      this.setState({ errors: 'password required' });
+    if (errors.length > 0) {
+      this.setState({ errors: errors });
     } else {
       var signInBody = {
         username: this.state.username,
@@ -38,9 +38,9 @@ var SignIn = React.createClass({
     }
   },
 
-  errorCallback: function (errorMessage) {
+  errorCallback: function (resp) {
     this.setState({ loading: false });
-    this.setState({ errors: errorMessage });
+    this.setState({ errors: [resp.responseText] });
   },
 
   successCallback: function () {
@@ -48,9 +48,16 @@ var SignIn = React.createClass({
   },
 
   makeErrors: function () {
-    if (this.state.errors !== '') {
+    if (this.state.errors.length > 0) {
       return (
-        <div className="ui red message">{this.state.errors}</div>
+        <div className="ui error message">
+          <ul className="list">
+            {this.state.errors.map(function (error, idx) {
+              return <li key={idx}>{error}</li>;
+            }
+          )}
+          </ul>
+        </div>
       );
     }
   },
@@ -59,13 +66,13 @@ var SignIn = React.createClass({
     if (this.state.loading) {
       return (
         <div
-          className="ui green disabled loading button"
-          type="submit">Submit
+          className="ui green disabled loading fluid large button"
+          type="submit">Sign In
         </div>
       );
     } else {
       return (
-        <div className="ui green button" type="submit" onClick={this.handleSubmit}>Submit</div>
+        <div className="ui green fluid large button" type="submit" onClick={this.handleSubmit}>Sign In</div>
       );
     }
   },
@@ -79,40 +86,59 @@ var SignIn = React.createClass({
   },
 
   render: function () {
-    var containerStyle = { margin: '10%' };
+    var containerStyle = { marginTop: '20%' };
     var linkStyle = { cursor: 'pointer', color: Style.green };
+    var formStyle = { backgroundColor: 'white' };
+    var columnStyle = { maxWidth: '450px', width: '100%' };
 
     return (
-      <div className="ui container" style={containerStyle}>
-        <form className="ui form">
-          <h2 className="ui header">Sign In</h2>
+      <div className="ui middle aligned center aligned grid" style={containerStyle}>
+				<div className="column" style={columnStyle}>
+          <h2 className="ui green header">Sign in to your account</h2>
+          <form className="ui large form" style={formStyle}>
+            <div className="ui stacked segment">
+
+              <div className="field">
+                <div className="ui left icon input">
+                    <i className="user icon" />
+                    <input
+                      type="text"
+                      name="username"
+                      placeholder="Username"
+                      valueLink={this.linkState('username')}
+                    />
+                </div>
+              </div>
+
+              <div className="field">
+                <div className="ui left icon input">
+                  <i className="lock icon" />
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    valueLink={this.linkState('password')}
+                  />
+                </div>
+              </div>
+
+              {this.makeSubmitButton()}
+            </div>
+          </form>
+
           {this.makeErrors()}
-          <div className="required field">
-            <label>username</label>
-            <input
-              type="text"
-              name="username"
-              placeholder=""
-              valueLink={this.linkState('username')}
-            ></input>
+
+          <div className="ui message">
+            New to us? Then request beta access on the &nbsp;
+            <a
+              style={linkStyle}
+              onClick={this.clickHomeLink}
+            >
+              Home Page
+            </a>
           </div>
-
-          <div className="required field">
-            <label>password</label>
-            <input
-              type="password"
-              name="password"
-              placeholder=""
-              valueLink={this.linkState('password')}
-            ></input>
-          </div>
-
-          <p>Don't have an account? Then go back to the <a style={linkStyle} onClick={this.clickHomeLink}>Home Page</a> and request beta access!
-          </p>
-
-          {this.makeSubmitButton()}
-        </form>
-      </div>
+				</div>
+			</div>
     );
   },
 
