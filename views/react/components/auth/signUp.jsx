@@ -46,7 +46,7 @@ var Signup = React.createClass({
   },
 
   errorCallback: function (error) {
-    this.setState({ loading: false, errors: error.responseText });
+    this.setState({ loading: false, errors: [error.responseText] });
   },
 
   makeErrors: function () {
