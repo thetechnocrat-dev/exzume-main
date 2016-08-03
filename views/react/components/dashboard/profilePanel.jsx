@@ -2,7 +2,7 @@ var React = require('react');
 
 // Components
 var ProfileCard = require('./profileCard');
-var DataStreamIndex = require('./DataStreamIndex');
+var DataStreamIndex = require('./dataStreamIndex');
 
 var ProfilePanel = React.createClass({
   propTypes: {
