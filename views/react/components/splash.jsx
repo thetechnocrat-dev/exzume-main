@@ -260,7 +260,7 @@ var Splash = React.createClass({
           <div className="ui vertical stripe segment">
             <div className="ui text container">
               <h3 className="ui header">Why We Made Exzume</h3>
-              <p>We wanted a</p>
+              <p>We believe that people can better use their data to improve their decisions. However, integrating and analyzing data from different apps and devices is difficult - we wanted a tool to make it easy.</p>
             </div>
           </div>
 
