@@ -4,7 +4,7 @@ var History = require('react-router').History;
 
 // components
 var TextForm = require('./textForm');
-var ButtonAction = require('./ButtonAction');
+var ButtonAction = require('./buttonAction');
 
 var Admin = React.createClass({
   mixins: [LinkedStateMixin, History],
