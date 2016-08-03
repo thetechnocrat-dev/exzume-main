@@ -38,13 +38,12 @@ var SignIn = React.createClass({
     }
   },
 
-  errorCallback: function (resp) {
-    this.setState({ loading: false });
-    this.setState({ errors: [resp.responseText] });
-  },
-
   successCallback: function () {
     this.history.push('/dashboard');
+  },
+
+  errorCallback: function (error) {
+    this.setState({ loading: false, errors: [error.responseText] });
   },
 
   makeErrors: function () {
@@ -72,7 +71,13 @@ var SignIn = React.createClass({
       );
     } else {
       return (
-        <div className="ui green fluid large button" type="submit" onClick={this.handleSubmit}>Sign In</div>
+        <div
+          className="ui green fluid large button"
+          type="submit"
+          onClick={this.handleSubmit}
+        >
+          Sign In
+        </div>
       );
     }
   },

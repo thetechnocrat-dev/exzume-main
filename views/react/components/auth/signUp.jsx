@@ -9,22 +9,21 @@ var Signup = React.createClass({
 
   getInitialState: function () {
     return (
-      { errors: '', username: '', password: '', email: '', confirmPassword: '', loading: false }
+      { errors: [], username: '', password: '', email: '', confirmPassword: '', loading: false }
     );
   },
 
   handleSubmit: function (event) {
     event.preventDefault();
-    this.setState({ errors: '' });
+    var errors = [];
 
-    if (this.state.password != this.state.confirmPassword) {
-      this.setState({ errors: 'passwords do not match' });
-    } else if (this.state.username === '') {
-      this.setState({ errors: 'username is required' });
-    } else if (this.state.password === '') {
-      this.setState({ errors: 'password is required' });
-    } else if (this.state.email === '') {
-      this.setState({ errors: 'email is required' });
+    if (this.state.password != this.state.confirmPassword) errors.push('passwords do not match');
+    if (this.state.username === '') errors.push('username is required');
+    if (this.state.password === '') errors.push('password is required');
+    if (this.state.email === '') errors.push('email is required');
+
+    if (errors.length > 0) {
+      this.setState({ errors: errors });
     } else {
       var signUpBody = {
         username: this.state.username,
@@ -51,9 +50,16 @@ var Signup = React.createClass({
   },
 
   makeErrors: function () {
-    if (this.state.errors !== '') {
+    if (this.state.errors.length > 0) {
       return (
-        <div className="ui red message">{this.state.errors}</div>
+        <div className="ui error message">
+          <ul className="list">
+            {this.state.errors.map(function (error, idx) {
+              return <li key={idx}>{error}</li>;
+            }
+          )}
+          </ul>
+        </div>
       );
     }
   },
@@ -62,13 +68,19 @@ var Signup = React.createClass({
     if (this.state.loading) {
       return (
         <div
-          className="ui green disabled loading button"
-          type="submit">Submit
+          className="ui green disabled loading fluid large button"
+          type="submit">Sign Up
         </div>
       );
     } else {
       return (
-        <div className="ui green button" type="submit" onClick={this.handleSubmit}>Submit</div>
+        <div
+          className="ui green fluid large button"
+          type="submit"
+          onClick={this.handleSubmit}
+        >
+          Sign Up
+        </div>
       );
     }
   },
@@ -82,63 +94,83 @@ var Signup = React.createClass({
   },
 
   render: function () {
-    var containerStyle = { backgroundColor: 'white' };
+    var containerStyle = { marginTop: '20%' };
     var linkStyle = { cursor: 'pointer', color: Style.green };
+    var formStyle = { backgroundColor: 'white' };
+    var columnStyle = { maxWidth: '450px', width: '100%' };
 
     return (
-      <div className="ui container" style={containerStyle}>
-        <form className="ui form">
-          <h2 className="ui header">Sign Up</h2>
+      <div className="ui middle aligned center aligned grid" style={containerStyle}>
+				<div className="column" style={columnStyle}>
+          <h2 className="ui green header">Create your account</h2>
+          <form className="ui large form" style={formStyle}>
+            <div className="ui stacked segment">
+
+              <div className="field">
+                <div className="ui left icon input">
+                    <i className="user icon" />
+                    <input
+                      type="text"
+                      name="username"
+                      placeholder="Username"
+                      valueLink={this.linkState('username')}
+                    />
+                </div>
+              </div>
+
+              <div className="field">
+                <div className="ui left icon input">
+                    <i className="browser icon" />
+                    <input
+                      type="text"
+                      name="email"
+                      placeholder="Email"
+                      valueLink={this.linkState('email')}
+                    />
+                </div>
+              </div>
+
+              <div className="field">
+                <div className="ui left icon input">
+                  <i className="lock icon" />
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    valueLink={this.linkState('password')}
+                  />
+                </div>
+              </div>
+
+              <div className="field">
+                <div className="ui left icon input">
+                  <i className="lock icon" />
+                  <input
+                    type="password"
+                    name="confirm password"
+                    placeholder="Confirm password"
+                    valueLink={this.linkState('confirmPassword')}
+                  />
+                </div>
+              </div>
+
+              {this.makeSubmitButton()}
+            </div>
+          </form>
+
           {this.makeErrors()}
 
-          <div className="required field">
-            <label>username</label>
-            <input
-              type="text"
-              name="username"
-              placeholder=""
-              valueLink={this.linkState('username')}
-            ></input>
+          <div className="ui message">
+            Already have an account? Then &nbsp;
+            <a
+              style={linkStyle}
+              onClick={this.clickSignInLink}
+            >
+              Sign In
+            </a>
           </div>
-
-          <div className="required field">
-            <label>email</label>
-            <input
-              type="text"
-              name="email"
-              placeholder=""
-              valueLink={this.linkState('email')}
-            ></input>
-          </div>
-
-          <div className="required field">
-            <label>password</label>
-            <input
-              type="password"
-              name="password"
-              placeholder=""
-              valueLink={this.linkState('password')}
-            ></input>
-          </div>
-
-          <div className="required field">
-            <label>confirm password</label>
-            <input
-              type="password"
-              name="confirm password"
-              placeholder=""
-              valueLink={this.linkState('confirmPassword')}
-            ></input>
-          </div>
-
-          <p>Already have an account? Then use
-            the <a style={linkStyle} onClick={this.clickSignInLink}>Sign In</a> form
-            or go back to the <a style={linkStyle} onClick={this.clickHomeLink}>Home Page</a>.
-          </p>
-
-          {this.makeSubmitButton()}
-        </form>
-      </div>
+				</div>
+			</div>
     );
   },
 
