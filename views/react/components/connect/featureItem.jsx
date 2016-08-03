@@ -2,7 +2,7 @@ var React = require('react');
 var Style = require('../../util/style');
 
 // components
-var DataStreamButton = require('./DataStreamButton');
+var DataStreamButton = require('./dataStreamButton');
 
 var FeatureItem = React.createClass({
   propTypes: {
