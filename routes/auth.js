@@ -20,7 +20,7 @@ module.exports = function (router, passport) {
       }
     }
   );
-	
+
   router.get('/session', function (req, res) {
     res.json(req.user);
   });
@@ -76,11 +76,10 @@ module.exports = function (router, passport) {
         } else if (user) {
           res.json(user);
         }
-      }
-    );
-  });
+      });
+    });
 
-	// only used for survey dataStream
+  // only used for survey dataStream
   router.route('/userfeatures/:datastream/:feature')
     .post(function (req, res) {
       Feature.findOne({ name: req.params.feature }, function (err, feature) {
@@ -141,15 +140,7 @@ module.exports = function (router, passport) {
     });
 
   router.get('/datastreams/:datastream', function (req, res) {
-			dataStreamAPIs[req.params.datastream].connect();
-      var options = {};
-      if (req.params.datastream == 'fitbit') {
-        options = { scope: ['activity', 'heartrate', 'location',
-                            'nutrition', 'profile', 'settings',
-                            'sleep', 'social', 'weight'], };
-      }
-
-      passport.authenticate(req.params.datastream, options)(req, res);
+      dataStreamAPIs[req.params.datastream].connect(passport)(req, res);
     }
   );
 
@@ -241,7 +232,7 @@ module.exports = function (router, passport) {
         axios({
           method: 'GET',
           url: 'https://api.fitbit.com/1/user/-/activities/steps/date/today/1w.json',
-          headers: { 'Authorization': 'Bearer ' + currentStream.accessToken },
+          headers: { Authorization: 'Bearer ' + currentStream.accessToken },
         }).then(function (response) {
           console.log('made it to response');
 
@@ -295,9 +286,6 @@ module.exports = function (router, passport) {
           },
         }).then(function (response) {
           console.log('made it to response');
-          // console.log(response.data.recenttracks.track.length);
-          // console.log(response.data.recenttracks.track[0]);
-          // console.log(response.data.recenttracks.track[response.data.recenttracks.track.length-1]);
 
           // function to create new day data object
           var newDayData = function (date, val) {

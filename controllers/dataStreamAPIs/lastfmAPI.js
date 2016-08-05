@@ -1,6 +1,9 @@
 var lastfmAPI = {
-	connect: function () { console.log('lastfm connect function')  },
-	sync: function () { console.log('lastfm sync function') },
+  connect: function (passport) {
+    return passport.authenticate('lastfm');
+  },
+
+  sync: function () { console.log('lastfm sync function'); },
 };
 
 module.exports = lastfmAPI;
