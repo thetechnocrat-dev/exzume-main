@@ -3,10 +3,10 @@ var Feature = require('../models/feature');
 var config = require('../config/config');
 var mongoose = require('mongoose');
 var axios = require('axios');
-var moment = require('moment');
 var async = require('async');
 var apiURLs = require('./resources/apiURLs');
-var dataStreamAPIs = require('../controllers/dataStreamAPIs/dataStreamAPIs.js');
+var dataStreamAPIs = require('../controllers/dataStreamAPIs/dataStreamAPIs');
+var Util = require('../controllers/dataStreamAPIs/util');
 
 module.exports = function (router, passport) {
   // makes sure a user is logged in
@@ -157,196 +157,14 @@ module.exports = function (router, passport) {
       var currentStreamName = req.params.datastream;
       var currentStream = user.datastreams[currentStreamName];
 
-      // function to add user to feature users array
-      var addUserToFeature = function (featureName, callback) {
-        Feature.findOne({ name: featureName }, function (err, feature) {
-          if (err) res.send(err);
-          if (feature) {
-            if (feature.users.includes(user.local.username)) {
-              console.log('user already included in feature users array');
-              callback(null, feature);
-            } else {
-              feature.users.push(user.local.username);
-              feature.save(function (err, feature) {
-                if (err) console.log('problem saving feature: ', err);
-                if (feature) console.log('this feature was saved: ', feature);
-                callback(null, feature);
-              });
-            }
-          };
-        });
-      };
-
-      // function to initialize user features array with given feature name
-      var initUserFeatureArr = function (featureName, callback) {
-        // flag to check if user features array already has name with featureName
-        var featureExists = false;
-        for (feature in currentStream.features) {
-          if (currentStream.features[feature].name == featureName) featureExists = true;
-        }
-
-        if (featureExists) {
-          console.log('user datastreams feature array already contains feature');
-          callback(null, user);
-        } else {
-          currentStream.features.push({ name: featureName });
-          user.save(function (err, user) {
-            if (err) console.log('problem saving user: ', err);
-            if (user) console.log('user was saved: ', user);
-            callback(null, user);
-          });
-        }
-      };
-
-      // function to add current data as object to user.datastream.features array
-      var addDataToUser = function (featureName, newData, callback) {
-        // find proper feature index within users datastream object
-        var thisFeatureIndex;
-        for (var i = 0; i < currentStream.features.length; i++) {
-          if (currentStream.features[i].name == featureName) {
-            thisFeatureIndex = i;
-          }
-        };
-
-        var thisFeature = currentStream.features[thisFeatureIndex];
-        console.log(JSON.stringify(newData));
-        for (var i = 0; i < newData.length; i++) {
-          // naive edge case check:
-          // if recently synced data 'dateTime' value matches last dateTime in store
-          // overwrite
-          // if (thisFeature.data[thisFeature.data.length].dateTime == newData[i].dateTime)
-          //   thisFeature.data[thisFeature.data.length] = newData[i];
-          // else
-          thisFeature.data.push(newData[i]);
-        };
-
-        user.save(function (err, user) {
-          if (err) console.log('problem saving user: ', err);
-          if (user) console.log('user was saved: ', user);
-          callback(null, user);
-        });
-      };
-
       // get fitbit data
       if (currentStreamName == 'fitbit') {
-        axios({
-          method: 'GET',
-          url: 'https://api.fitbit.com/1/user/-/activities/steps/date/today/1w.json',
-          headers: { Authorization: 'Bearer ' + currentStream.accessToken },
-        }).then(function (response) {
-          console.log('made it to response');
-
-          // res.json(response.data['activities-steps']);
-          // console.log(response.data.summary.steps);
-          async.series({
-            one: function (callback) {
-              addUserToFeature('Steps', callback);
-            },
-
-            two: function (callback) {
-              initUserFeatureArr('Steps', callback);
-            },
-
-            three: function (callback) {
-              addDataToUser('Steps', response.data['activities-steps'], callback);
-            },
-          }, function (err, results) {
-            if (err) res.send(err);
-            else {
-              console.log(results);
-              res.redirect('/#/dashboard?=');
-            }
-          });
-        }).catch(function (error) {
-          if (error.status == 401) {
-            console.log('access token expired, refresh that shit');
-            console.log('redirecting user to the authentication flow...');
-            res.redirect('/auth/datastreams/fitbit');
-          }
-
-          console.log(error.data.errors);
-        });
+        dataStreamAPIs.fitbit.sync(res, user);
       }
 
       // get lastfm data
       if (currentStreamName == 'lastfm') {
-        var dateToday = moment().format('YYYY-MM-DD');
-        const dateTimeToday = new Date(dateToday).getTime(); // unix timestamp of that date
-        const timeStampTwoDaysAgo = Math.floor(dateTimeToday / 1000) - 86400 * 2; // in unix seconds
-        const addDay = 86400; // seconds in day
-
-        axios.get(apiURLs.lastfm.rootURL, {
-          params: {
-            method: 'user.getrecenttracks',
-            from: timeStampTwoDaysAgo,
-            limit: 200,
-            user: currentStream.username,
-            api_key: config.lastfm.clientID,
-            format: 'json',
-          },
-        }).then(function (response) {
-          console.log('made it to response');
-
-          // function to create new day data object
-          var newDayData = function (date, val) {
-            var obj = {
-              dateTime: date,
-              value: val,
-            };
-            return obj;
-          };
-
-          // initialize newData array
-          var newData = [newDayData(moment(timeStampTwoDaysAgo * 1000).format('YYYY-MM-DD'), 0)];
-          var last = timeStampTwoDaysAgo;
-
-          // store tracks played by day as counts in newData object
-          for (var i = response.data.recenttracks.track.length - 1; i >= 0; i--) {
-            var currentDay = newData[newData.length - 1];
-
-            // do not include now playing track
-            if (response.data.recenttracks.track[i].date != null) {
-              var timeThisTrack = response.data.recenttracks.track[i].date.uts;
-
-              if (timeThisTrack > last) {
-                if (timeThisTrack <= last + addDay) {
-                  currentDay.value++;
-                } else {
-                  last = last + addDay;
-                  newData.push(newDayData(moment(last * 1000).format('YYYY-MM-DD'), 1));
-                }
-              }
-            }
-          }
-
-          async.series({
-            one: function (callback) {
-              addUserToFeature('Tracks Played', callback);
-            },
-
-            two: function (callback) {
-              initUserFeatureArr('Tracks Played', callback);
-            },
-
-            three: function (callback) {
-              addDataToUser('Tracks Played', newData, callback);
-            },
-          }, function (err, results) {
-            if (err) res.send(err);
-            else {
-              console.log(results);
-              res.redirect('/#/dashboard?=');
-            }
-          });
-        }).catch(function (error) {
-          if (error.status == 401) {
-            console.log('access token expired, refresh that shit');
-            console.log('redirecting user to the authentication flow...');
-            res.redirect('/auth/datastreams/lastfm');
-          }
-
-          console.log(error);
-        });
+        dataStreamAPIs.lastfm.sync(res, user);
       }
     }
   );
