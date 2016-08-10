@@ -1,4 +1,4 @@
-var Util = require('./util');
+var util = require('./util');
 var axios = require('axios');
 var async = require('async');
 
@@ -16,6 +16,9 @@ var fitbitAPI = {
 
   sync: function (res, user) {
     var currentStream = user.datastreams.fitbit;
+
+    // hardcoded because only one feaute per API stream currently
+    var startDate = util.findStartDate(currentStream.features[0].data);
     axios({
       method: 'GET',
       url: 'https://api.fitbit.com/1/user/-/activities/steps/date/today/1w.json',
@@ -24,20 +27,19 @@ var fitbitAPI = {
 
       async.series({
         one: function (callback) {
-          Util.addUserToFeature(user.local.username, 'Steps', callback);
+          util.addUserToFeature(user.local.username, 'Steps', callback);
         },
 
         two: function (callback) {
-          Util.initUserFeatureArr(user, 'Steps', 'fitbit', callback);
+          util.initUserFeatureArr(user, 'Steps', 'fitbit', callback);
         },
 
         three: function (callback) {
-          Util.addDataToUser(user, 'Steps', 'fitbit',  response.data['activities-steps'], callback);
+          util.addDataToUser(user, 'Steps', 'fitbit',  response.data['activities-steps'], callback);
         },
       }, function (err, results) {
         if (err) res.send(err);
         else {
-          console.log(results);
           res.redirect('/#/dashboard?=');
         }
       });

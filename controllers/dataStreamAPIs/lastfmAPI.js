@@ -1,10 +1,8 @@
 var moment = require('moment');
 var axios = require('axios');
-var async = require('async');
 var apiURLs = require('../../routes/resources/apiURLs');
 var config = require('../../config/config');
-
-var Util = require('./util');
+var util = require('./util');
 
 var lastfmAPI = {
   connect: function (passport) {
@@ -12,7 +10,6 @@ var lastfmAPI = {
   },
 
   sync: function (res, user) {
-    console.log('refactored lastfm sync');
     var currentStream = user.datastreams.lastfm;
     var dateToday = moment().format('YYYY-MM-DD');
     const dateTimeToday = new Date(dateToday).getTime(); // unix timestamp of that date
@@ -28,7 +25,7 @@ var lastfmAPI = {
         api_key: config.lastfm.clientID,
         format: 'json',
       },
-    }).then(function (response) {
+    }).then(function (streamRes) {
       console.log('made it to response');
 
       // function to create new day data object
@@ -45,12 +42,12 @@ var lastfmAPI = {
       var last = timeStampTwoDaysAgo;
 
       // store tracks played by day as counts in newData object
-      for (var i = response.data.recenttracks.track.length - 1; i >= 0; i--) {
+      for (var i = streamRes.data.recenttracks.track.length - 1; i >= 0; i--) {
         var currentDay = newData[newData.length - 1];
 
         // do not include now playing track
-        if (response.data.recenttracks.track[i].date != null) {
-          var timeThisTrack = response.data.recenttracks.track[i].date.uts;
+        if (streamRes.data.recenttracks.track[i].date != null) {
+          var timeThisTrack = streamRes.data.recenttracks.track[i].date.uts;
 
           if (timeThisTrack > last) {
             if (timeThisTrack <= last + addDay) {
@@ -63,24 +60,8 @@ var lastfmAPI = {
         }
       }
 
-      async.series({
-        one: function (callback) {
-          Util.addUserToFeature(user.local.username, 'Tracks Played', callback);
-        },
+      util.syncStepFlow(res, streamRes, user, 'Tracks Played', 'lastfm', newData);
 
-        two: function (callback) {
-          Util.initUserFeatureArr(user, 'Tracks Played', 'lastfm', callback);
-        },
-
-        three: function (callback) {
-          Util.addDataToUser(user, 'Tracks Played', 'lastfm', newData, callback);
-        },
-      }, function (err, results) {
-        if (err) res.send(err);
-        else {
-          res.redirect('/#/dashboard?=');
-        }
-      });
     }).catch(function (error) {
       if (error.status == 401) {
         console.log('access token expired, refresh that shit');

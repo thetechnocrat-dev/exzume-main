@@ -1,12 +1,7 @@
 var User = require('../models/user');
 var Feature = require('../models/feature');
-var config = require('../config/config');
 var mongoose = require('mongoose');
-var axios = require('axios');
-var async = require('async');
-var apiURLs = require('./resources/apiURLs');
 var dataStreamAPIs = require('../controllers/dataStreamAPIs/dataStreamAPIs');
-var Util = require('../controllers/dataStreamAPIs/util');
 
 module.exports = function (router, passport) {
   // makes sure a user is logged in
@@ -154,18 +149,7 @@ module.exports = function (router, passport) {
 
   router.get('/datastreams/:datastream/grab', function (req, res) {
       var user = req.user;
-      var currentStreamName = req.params.datastream;
-      var currentStream = user.datastreams[currentStreamName];
-
-      // get fitbit data
-      if (currentStreamName == 'fitbit') {
-        dataStreamAPIs.fitbit.sync(res, user);
-      }
-
-      // get lastfm data
-      if (currentStreamName == 'lastfm') {
-        dataStreamAPIs.lastfm.sync(res, user);
-      }
+      dataStreamAPIs[req.params.datastream].sync(res, user);
     }
   );
 

@@ -21,5 +21,4 @@ module.exports = function (passport) {
       });
     }));
 
-    // add disconnect fitbit stream
 };
