@@ -3,56 +3,91 @@ var async = require('async');
 
 // non exported helper functions
 helper = {
-  // function to add user to feature users array, callback is part of async series
-  addUserToFeature: function (userName, featureName, callback) {
+  // function to add user to feature users array
+  addUserToFeature: function (userName, featureName, initSyncDone) {
     Feature.findOne({ name: featureName }, function (err, feature) {
       if (err) {
-        callback(err, null);
+        console.log(err);
       } else if (feature.users.includes(userName)) {
         console.log('user already included in feature users array');
-        callback(null, feature);
       } else {
         feature.users.push(userName);
         feature.save(function (err, feature) {
           if (err) {
             console.log('error saving feature: ', err);
-            callback(err, null);
           } else if (feature) {
-            callback(null, feature);
+            console.log('user added to ' + featureName + ' feature');
           }
         });
       }
     });
   },
 
-  // function to initialize user feature arrau with given featureName
-  initUserFeatureArr: function (user, featureName, streamName, callback) {
+  // if userFeature array doesn't it exist it will init it and return max,
+  // else it returns the date to sync from
+  handleUserFeatureArr: function (user, featureName, streamName, initSyncDone, options) {
+    var options = typeof options !== 'undefined' ? options : {};
+    var blankFlag = options.blankFlag || null;
+
+    console.log('handle user feature array');
     var currentStream = user.datastreams[streamName];
 
     // check if user already has initialized userFeature
     var featureExists = false;
-    for (feature in currentStream.features) {
-      if (currentStream.features[feature].name == featureName) featureExists = true;
+    var timeSeries;
+    for (var i = 0; i < currentStream.features.length; i++) {
+      if (currentStream.features[i].name == featureName) {
+        featureExists = true;
+        timeSeries = currentStream.features[i].data;
+      }
     }
 
     if (featureExists) {
-      console.log('user dataStreams features array already contains feature');
-      callback(null, user);
+      // returns start data for API's to sync from
+      if (timeSeries.length === 0) {
+        initSyncDone(null, 'max');
+        return;
+      }
+
+      // find the latest non-blank entry
+      var revTimeSeries = timeSeries.slice(0).reverse();
+      for (var i = 0; i < timeSeries.length; i++) {
+        var dateTime = revTimeSeries[i].dateTime;
+        var value = revTimeSeries[i].value;
+        if (value != blankFlag) {
+          initSyncDone(null, dateTime);
+          return;
+        }
+      };
+
+      // handles case of all blank flags
+      initSyncDone(null, timeSeries[0].dateTime);
     } else {
       currentStream.features.push({ name: featureName });
       user.save(function (err, user) {
         if (err) {
-          console.log('error saving user: ', err);
-          callback(err, null);
+          initSyncDone(err, null);
         } else if (user) {
-          callback(null, user);
+          initSyncDone(null, 'max');
         }
       });
     }
   },
 
+};
+
+// exported util functions
+util = {
+  // checks to see if user needs added to feature and if user feature array is initialized
+  // returns date that sync should start from or 'max' if first time syncing
+  initSync: function (user, featureName, streamName, initSyncDone) {
+    var options = { blankFlag: '0' };
+    helper.handleUserFeatureArr(user, featureName, streamName, initSyncDone, options);
+    helper.addUserToFeature(user.local.username, featureName);
+  },
+
   // function to add current data as object to user.datastreams.features array
-  addDataToUser: function (user, featureName, streamName, newData, callback) {
+  addDataToUser: function (user, featureName, streamName, newData, done) {
     var currentStream = user.datastreams[streamName];
 
     // find proper feature index within users datastream object
@@ -63,66 +98,27 @@ helper = {
       }
     };
 
+    // re-update overlap data
     var thisFeature = currentStream.features[thisFeatureIndex];
-    for (var i = 0; i < newData.length; i++) {
-      thisFeature.data.push(newData[i]);
+    var j = 0;
+    for (var i = 0; i < thisFeature.data.length && j < newData.length; i++) {
+      if (thisFeature.data[i].dateTime === newData[j].dateTime) {
+        thisFeature[i] = newData[j];
+        j++;
+      }
+    }
+
+    for (; j < newData.length; j++) {
+      thisFeature.data.push(newData[j]);
     };
 
     user.save(function (err, user) {
       if (err) {
-        console.log('error saving user', err);
-        callback(err, null);
+        done(err, null, null);
       } else if (user) {
-        callback(null, user);
+        done(null, user, null);
       }
     });
-  },
-
-};
-
-// exported util functions
-util = {
-  // basic flow of initilizing a user feature and/or adding data to a user feature
-  syncStepFlow: function (res, streamRes, user, featureName, streamName, newData) {
-    console.log('in refactored step');
-    async.series({
-      one: function (callback) {
-        helper.addUserToFeature(user.local.username, featureName, callback);
-      },
-
-      two: function (callback) {
-        helper.initUserFeatureArr(user, featureName, streamName, callback);
-      },
-
-      three: function (callback) {
-        helper.addDataToUser(user, featureName, streamName, newData, callback);
-      },
-    }, function (err, results) {
-      if (err) res.send(err);
-      else {
-        res.redirect('/#/dashboard?=');
-      }
-    });
-  },
-
-  // returns start data for API's to sync from
-  findStartDate: function (timeSeries, blankFlag) {
-    // if time series is empty flag to return the max amount of data possible
-    if (timeSeries.length === 0) return ('max');
-
-    // find the latest non-blank entry
-    var revTimeSeries = timeSeries.slice(0).reverse();
-    for (var i = 0; i < timeSeries.length; i++) {
-      var dateTime = revTimeSeries[i].dateTime;
-      var value = revTimeSeries[i].value;
-
-      if (value !== blankFlag) {
-        return dateTime;
-      }
-    };
-
-    // handles case of all blank flags
-    return timeSeries[0].dateTime;
   },
 
 };
