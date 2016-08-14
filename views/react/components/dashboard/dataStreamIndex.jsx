@@ -32,7 +32,6 @@ var DataStreamIndex = React.createClass({
       streams.push({
         streamName: 'fitbit',
         streamImage: '/images/fitbit.png',
-        streamDataURL: '/auth/datastreams/fitbit/grab',
       });
     }
 
@@ -40,7 +39,6 @@ var DataStreamIndex = React.createClass({
       streams.push({
         streamName: 'lastfm',
         streamImage: '/images/last-fm.svg',
-        streamDataURL: '/auth/datastreams/lastfm/grab',
       });
     }
 
@@ -58,7 +56,6 @@ var DataStreamIndex = React.createClass({
             key={idx}
             streamName={stream.streamName}
             streamImage={stream.streamImage}
-            streamDataURL={stream.streamDataURL}
           />
         );
       });

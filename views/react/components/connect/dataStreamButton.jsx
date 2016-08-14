@@ -20,7 +20,12 @@ var DataStreamButton = React.createClass({
       });
     } else if (this.props.streamName == 'fitbit') {
       var url = 'auth/datastreams/fitbit/grab';
-      FastFlux.webCycle('get', url);
+      FastFlux.webCycle('get', url, {
+        success: this.addUserFeatureSuccess,
+        error: this.addUserFeatureError,
+        shouldStoreReceive: true,
+        storeActionType: 'SESSION_RECEIVED',
+      });
     }
   },
 
