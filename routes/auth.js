@@ -148,7 +148,6 @@ module.exports = function (router, passport) {
   );
 
   router.get('/datastreams/:datastream/grab', function (req, res) {
-      console.log('grab auth route');
       var user = req.user;
 
       var done = function (error, updatedUser, shouldRedirect) {

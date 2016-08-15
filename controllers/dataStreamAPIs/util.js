@@ -1,5 +1,4 @@
 Feature = require('../../models/feature');
-var async = require('async');
 
 // non exported helper functions
 helper = {
@@ -108,6 +107,7 @@ util = {
       }
     }
 
+    // push remaining data
     for (; j < newData.length; j++) {
       thisFeature.data.push(newData[j]);
     };
@@ -124,3 +124,4 @@ util = {
 };
 
 module.exports = util;
+

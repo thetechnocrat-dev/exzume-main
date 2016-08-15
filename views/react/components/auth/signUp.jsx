@@ -94,14 +94,14 @@ var Signup = React.createClass({
   },
 
   render: function () {
-    var containerStyle = { marginTop: '20%' };
+    var containerStyle = { paddingTop: '15%' };
     var linkStyle = { cursor: 'pointer', color: Style.green };
     var formStyle = { backgroundColor: 'white' };
     var columnStyle = { maxWidth: '450px', width: '100%' };
 
     return (
       <div className="ui middle aligned center aligned grid" style={containerStyle}>
-				<div className="column" style={columnStyle}>
+	  	<div className="column" style={columnStyle}>
           <h2 className="ui green header">Create your account</h2>
           <form className="ui large form" style={formStyle}>
             <div className="ui stacked segment">

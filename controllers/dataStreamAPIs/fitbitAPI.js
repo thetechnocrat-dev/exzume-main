@@ -1,6 +1,5 @@
 var util = require('./util');
 var axios = require('axios');
-var async = require('async');
 var fitbitHelper = require('./fitbitHelper');
 
 var fitbitAPI = {

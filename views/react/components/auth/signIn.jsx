@@ -91,7 +91,7 @@ var SignIn = React.createClass({
   },
 
   render: function () {
-    var containerStyle = { marginTop: '20%' };
+    var containerStyle = { paddingTop: '15%' };
     var linkStyle = { cursor: 'pointer', color: Style.green };
     var formStyle = { backgroundColor: 'white' };
     var columnStyle = { maxWidth: '450px', width: '100%' };

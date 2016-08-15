@@ -33,6 +33,7 @@
     "passport-fitbit-oauth2": "^1.0.1",
     "passport-lastfm": "^1.0.1",
     "passport-local": "^1.0.0",
+    "passport-rescuetime": "^0.2.0",
     "rd3": "^0.6.5",
     "react": "^0.14.8",
     "react-addons-linked-state-mixin": "^0.14.4-alpha.2",

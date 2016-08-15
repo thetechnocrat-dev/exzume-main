@@ -51,6 +51,17 @@ var UserSchema = new Schema({
         },
       ],
     },
+    rescueTime: {
+      accessToken: String,
+      refreshToken: String,
+      isConnected: { type: Boolean, default: false },
+      features: [{
+          name: String,
+          data: [],
+        },
+      ],
+    },
+
   },
 }, { autoIndex: false });
 
