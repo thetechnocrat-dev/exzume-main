@@ -77,6 +77,15 @@ module.exports = function (router, passport) {
   // only used for survey dataStream
   router.route('/userfeatures/:datastream/:feature')
     .post(function (req, res) {
+      // prevents double adding of user survey feature
+      var userSurveyFeatures = req.user.datastreams.survey.features;
+      for (var i = 0; i < userSurveyFeatures.length; i++) {
+        if (userSurveyFeatures[i].name == req.params.feature) {
+          res.status(409).send('user already has ' +  req.params.feature + ' survey feature');
+          return;
+        }
+      }
+
       Feature.findOne({ name: req.params.feature }, function (err, feature) {
         if (err) {
           res.send(err);
