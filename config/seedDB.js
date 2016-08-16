@@ -35,33 +35,33 @@ module.exports = function (req, res) {
       dataStreams: ['lastfm'],
       categories: ['music'],
     },
-		{
-			name: 'Control',
-			users: [],
-			dataStreams: ['survey'],
-			options: {
-				prompt: 'I felt in control of my day.',
-				format: 'agreementScale',
-			},
-		},
-		{
-			name: 'Productivity',
-			users: [],
-			dataStreams: ['survey'],
-			options: {
-				prompt: 'I was productive today.',
-				format: 'agreementScale',
-			},
-		},
-		{
-			name: 'Stress',
-			users: [],
-			dataStreams: ['survey'],
-			options: {
-				prompt: 'I experienced a lot of stress today.',
-				format: 'agreementScale',
-			},
-		},
+    {
+      name: 'Control',
+      users: [],
+      dataStreams: ['survey'],
+      options: {
+        prompt: 'I felt in control of my day.',
+        format: 'agreementScale',
+      },
+    },
+    {
+      name: 'Productivity',
+      users: [],
+      dataStreams: ['survey'],
+      options: {
+        prompt: 'I was productive today.',
+        format: 'agreementScale',
+      },
+    },
+    {
+      name: 'Stress',
+      users: [],
+      dataStreams: ['survey'],
+      options: {
+        prompt: 'I experienced a lot of stress today.',
+        format: 'agreementScale',
+      },
+    },
     ], function (err, docs) {
     if (err) {
       res.json(err);
