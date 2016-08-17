@@ -15,6 +15,8 @@ module.exports = function (passport) {
     user.datastreams.rescueTime.refreshToken = refreshToken;
     user.datastreams.rescueTime.isConnected = true;
     user.save(function (err) {
+      console.log('rescuetime user save callback');
+      console.log(err);
       done(err, user);
     });
   }));
