@@ -144,6 +144,7 @@ module.exports = function (router, passport) {
     });
 
   router.get('/datastreams/:datastream', function (req, res) {
+      console.log('auth connect ' + req.params.datastream);
       dataStreamAPIs[req.params.datastream].connect(passport)(req, res);
     }
   );

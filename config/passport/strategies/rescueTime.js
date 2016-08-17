@@ -10,6 +10,10 @@ module.exports = function (passport) {
     passReqToCallback: true,
   },
   function (req, accessToken, refreshToken, profile, done) {
+    console.log('rescuetime strat callback');
+    console.log(accessToken);
+    console.log(refreshToken);
+    console.log(done);
     var user = req.user;
     user.datastreams.rescueTime.accessToken = accessToken;
     user.datastreams.rescueTime.refreshToken = refreshToken;
