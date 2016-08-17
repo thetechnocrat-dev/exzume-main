@@ -150,6 +150,7 @@ module.exports = function (router, passport) {
   );
 
   router.get('/datastreams/:datastream/callback', function (req, res) {
+      console.log(req.params.datatstream + ' callback route');
       passport.authenticate(req.params.datastream, {
         successRedirect: '/#/dashboard?=', // redirect to grab from API and redirect
         failureRedirect: '/',
