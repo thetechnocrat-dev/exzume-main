@@ -62,6 +62,12 @@ module.exports = function (req, res) {
         format: 'agreementScale',
       },
     },
+    {
+      name: 'Internet Time',
+      users: [],
+      dataStreams: ['rescueTime'],
+      categories: ['productivity'],
+    },
     ], function (err, docs) {
     if (err) {
       res.json(err);
