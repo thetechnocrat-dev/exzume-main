@@ -20,7 +20,8 @@ module.exports = {
   },
   rescueTime: {
     clientID: process.env.RESCUE_TIME_ID || dev.rescueTime.clientID,
-    clientSecret: process.env.RESCUETIME_ID || dev.rescueTime.clientID,   callbackURL: process.env.RESCUE_TIME_URL || dev.rescueTime.callbackURL,
+    clientSecret: process.env.RESCUETIME_ID || dev.rescueTime.clientID,
+    callbackURL: process.env.RESCUE_TIME_URL || dev.rescueTime.callbackURL,
   },
 
 };
