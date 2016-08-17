@@ -1,7 +1,7 @@
 var rescueTimeAPI = {
   connect: function (passport) {
     console.log('rescuetime api');
-    return passport.authenticate('rescuetime');
+    return passport.authenticate('oauth2');
   },
 
 };
