@@ -10,6 +10,7 @@ module.exports = function (passport) {
   },
 
   function (accessToken, refreshToken, profile, done) {
+    console.log('rescuetime strat callback---------');
     console.log(accessToken);
     console.log(refreshToken);
     console.log(done);
