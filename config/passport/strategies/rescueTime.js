@@ -5,12 +5,10 @@ module.exports = function (passport) {
   console.log('constructor rescuetime');
   console.log(RescueTimeStrategy);
   passport.use(new RescueTimeStrategy({
-    //authorizationURL: 'https://www.rescuetime.com/oauth/authorize?client_id=2900e583f575ac611f1ffd83827ee0995f5b462f159fe42288f12e847e6b430a',
     clientID: config.rescueTime.clientID,
     clientSecret: config.rescueTime.clientSecret,
     callbackURL: config.rescueTime.callbackURL,
-    //tokenURL: 'https://www.rescuetime.com/oauth/authorize?client_id=2900e583f575ac611f1ffd83827ee0995f5b462f159fe42288f12e847e6b430a&redirect_uri=YOUR_CALLBACK_URL&response_type=code&scope=YOUR_SCOPES',
-    scope: 'time_data',
+    scope: ['time_data', 'category_data', 'productivity_data'],
     passReqToCallback: true,
   },
 
