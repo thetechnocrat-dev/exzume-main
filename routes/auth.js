@@ -143,14 +143,16 @@ module.exports = function (router, passport) {
       });
     });
 
-  router.get('/datastreams/:datastream', function (req, res) {
+  router.get('/datastreams/:datastream', function (req, res, next) {
       console.log('auth connect ' + req.params.datastream);
-      dataStreamAPIs[req.params.datastream].connect(passport)(req, res);
+      console.log(next);
+      dataStreamAPIs[req.params.datastream].connect(passport)(req, res, next);
     }
   );
 
-  router.get('/datastreams/:datastream/callback', function (req, res) {
+  router.get('/datastreams/:datastream/callback', function (req, res, next) {
       console.log(req.params);
+      console.log(next);
       if (req.params.datastream == 'rescuetime') {
         req.params.datastream = 'oauth2';
       }
@@ -160,7 +162,7 @@ module.exports = function (router, passport) {
       passport.authenticate(req.params.datastream, {
         successRedirect: '/#/dashboard?=', // redirect to grab from API and redirect
         failureRedirect: '/',
-      })(req, res);
+      })(req, res, next);
     }
   );
 
