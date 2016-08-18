@@ -153,12 +153,7 @@ module.exports = function (router, passport) {
   router.get('/datastreams/:datastream/callback', function (req, res, next) {
       console.log(req.params);
       console.log(next);
-      if (req.params.datastream == 'rescuetime') {
-        req.params.datastream = 'oauth2';
-      }
-
       console.log(req.params.datastream + ' callback route');
-      console.log(passport.authenticate);
       passport.authenticate(req.params.datastream, {
         successRedirect: '/#/dashboard?=', // redirect to grab from API and redirect
         failureRedirect: '/',
