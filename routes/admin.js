@@ -1,7 +1,7 @@
 var User = require('../models/user');
 var Feature = require('../models/feature');
 var mongoose = require('mongoose');
-var child_process = require('child_process');
+var childProcess = require('child_process');
 var seedDB = require('../config/seedDB');
 
 module.exports = function (router) {
@@ -69,7 +69,15 @@ module.exports = function (router) {
   });
 
   router.get('/db/seed', function (req, res) {
-    seedDB(req, res);
+    var done = function (err, object) {
+      if (err) {
+        res.send(err);
+      } else {
+        res.json(object);
+      }
+    };
+
+    seedDB(done);
   });
 
   // router.put('/addvis', function (req, res) {

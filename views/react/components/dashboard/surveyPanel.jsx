@@ -11,6 +11,7 @@ var SurveyPanel = React.createClass({
 
   makeSurveyQuestions: function () {
     var surveyFeatures = this.props.user.datastreams.survey.features;
+    console.log(surveyFeatures);
 
     return surveyFeatures.map(function (surveyFeature, idx) {
       if (surveyFeature.format === 'textQuestion') {

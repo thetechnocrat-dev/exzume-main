@@ -25,7 +25,7 @@ var UserSchema = new Schema({
       features: [{
           name: String,
           prompt: String,
-          format: String, // see notes below for accepted formats
+          format: { type: String, enum: ['agreementScale'] },
           data: [],
         },
       ],
@@ -78,3 +78,4 @@ UserSchema.methods.validPassword = function (password) {
 UserSchema.set('toJSON', { getters: true, virtuals: true });
 
 module.exports = mongoose.model('User', UserSchema);
+

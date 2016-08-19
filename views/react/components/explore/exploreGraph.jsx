@@ -26,17 +26,21 @@ var ExploreGraph = React.createClass({
     return (
       <LineChart
         legend={true}
-        data={[{
-          name: dataName,
-          values: values,
-        }]}
+        data={
+          [
+            {
+              name: dataName,
+              values: values,
+            },
+          ]
+        }
         width='100%'
         height={700}
         viewBoxObject={{
           x: 0,
           y: 0,
           width: 700,
-          height: 700
+          height: 700,
         }}
         title={title}
         yAxisLabel={dataName}
@@ -46,8 +50,8 @@ var ExploreGraph = React.createClass({
             return new Date(d.x);
           }
         }
-        xAxisTickInterval={{unit: 'day', interval: 1}}
-        domain={{y: [0,]}}
+        xAxisTickInterval={{ unit: 'day', interval: 1 }}
+        domain={{ y: [0] }}
         gridHorizontal={true}
         />
     );

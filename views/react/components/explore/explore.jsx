@@ -38,9 +38,19 @@ var Explore = React.createClass({
 
   makePinZumeButton: function () {
     if (GraphStore.hasCurrentFeature()) {
-      return (<button className="ui green button" data-tooltip="Pin this zume to your dashboard!" onClick={this.clickPinZume}>Pin Zume</button>);
+      return (
+        <button
+          className="ui green button"
+          data-tooltip="Pin this zume to your dashboard!"
+          onClick={this.clickPinZume}>Pin Zume
+        </button>
+      );
     } else {
-      return (<button className="ui disabled button" data-tooltip="Select a feature first!">Pin Zume</button>);
+      return (
+        <button className="ui disabled button">
+          Pin Zume
+        </button>
+      );
     }
   },
 
@@ -49,7 +59,7 @@ var Explore = React.createClass({
     var data = { featureName: currentFeature.name };
 
     FastFlux.webCycle('post', '/auth/zumes/create', {
-      success: this.successCallback,
+      success: this.success,
       shouldStoreReceive: true,
       storeActionType: 'SESSION_RECEIVED',
       body: data,
@@ -57,10 +67,9 @@ var Explore = React.createClass({
 
   },
 
-  successCallback: function () {
+  success: function () {
     this.state.successMessage = true;
   },
-
 
   makeSuccessMessage: function () {
     if (this.state.successMessage) {

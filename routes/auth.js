@@ -2,6 +2,7 @@ var User = require('../models/user');
 var Feature = require('../models/feature');
 var mongoose = require('mongoose');
 var dataStreamAPIs = require('../controllers/dataStreamAPIs/dataStreamAPIs');
+var moment = require('moment');
 
 module.exports = function (router, passport) {
   // makes sure a user is logged in
@@ -121,8 +122,10 @@ module.exports = function (router, passport) {
         dateTime: moment().format('YYYY-MM-DD'),
         value: parseInt(req.body.data),
       });
+
       req.user.save(function (err, user) {
         if (err) {
+          console.log(err);
           res.send(err);
         } else {
           res.json(user);
