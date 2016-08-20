@@ -10,11 +10,19 @@ var ExploreGraph = require('./exploreGraph');
 
 var Explore = React.createClass({
   getInitialState: function () {
+    var initState = ({
+      viewPortWidth: window.innerWidth,
+      viewPortHeight: window.innerHeight,
+      successMessage: false,
+    });
+
     if (SessionStore.isSignedIn()) {
-      return { user: SessionStore.currentUser(), successMessage: false };
+      initState.user = SessionStore.currentUser();
     } else {
-      return { user: null, successMessage: false };
+      initState.user = null;
     }
+
+    return initState;
   },
 
   _onChangeSession: function () {
@@ -28,12 +36,20 @@ var Explore = React.createClass({
   componentDidMount: function () {
     this.sessionToken = SessionStore.addListener(this._onChangeSession);
     this.graphToken = GraphStore.addListener(this._onChangeGraph);
+    window.addEventListener('resize', this.handleResize);
   },
 
   componentWillUnmount: function () {
     this.sessionToken.remove();
     GraphStore.resetGraphStore({});
     this.graphToken.remove();
+    window.removeEventListener('resize', this.handleResize);
+  },
+
+  handleResize: function () {
+    var viewPortHeight = window.innerHeight;
+    var viewPortWidth = window.innerWidth;
+    this.setState({ viewPortHeight: viewPortHeight, viewPortWidth: viewPortWidth });
   },
 
   makePinZumeButton: function () {
@@ -85,8 +101,28 @@ var Explore = React.createClass({
     }
   },
 
+  calcGraphWidth: function () {
+    // cutoffs are used to match semantic UI's container size
+    var LARGE_MONITOR = 1200;
+    var SMALL_MONITOR = 992;
+    var TABLET = 768;
+
+    if (this.state.viewPortWidth > LARGE_MONITOR) {
+      return 1127;
+    } else if (this.state.viewPortWidth > SMALL_MONITOR) {
+      return 933;
+    } else if (this.state.viewPortWidth > TABLET) {
+      return 723;
+    } else {
+      return this.state.viewPortWidth;
+    }
+  },
+
   makeContent: function () {
     var user = this.state.user;
+    var graphHeight = this.state.viewPortHeight * 0.75;
+    var graphWidth = this.calcGraphWidth();
+
     if (user) {
       return (
         <div>
@@ -95,6 +131,8 @@ var Explore = React.createClass({
             user={user}
             seriesData={GraphStore.getSeriesData()}
             currentFeature={GraphStore.getCurrentFeature()}
+            width={graphWidth}
+            height={graphHeight}
           />
           <div className="ui grid">
             <div className="four column row">

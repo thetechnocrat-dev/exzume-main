@@ -9,6 +9,8 @@ var ExploreGraph = React.createClass({
     user: React.PropTypes.object.isRequired,
     seriesData: React.PropTypes.array.isRequired,
     currentFeature: React.PropTypes.object.isRequired,
+    width: React.PropTypes.number.isRequired,
+    height: React.PropTypes.number.isRequired,
   },
 
   makeGraph: function () {
@@ -35,12 +37,12 @@ var ExploreGraph = React.createClass({
           ]
         }
         width='100%'
-        height={700}
+        height={this.props.height}
         viewBoxObject={{
           x: 0,
           y: 0,
-          width: 700,
-          height: 700,
+          width: this.props.width,
+          height: this.props.height,
         }}
         title={title}
         yAxisLabel={dataName}
@@ -60,8 +62,6 @@ var ExploreGraph = React.createClass({
   render: function () {
     return (
       <div>
-        Here's your data:
-        {JSON.stringify(this.props.seriesData)}
         <div className="ui container">
           {this.makeGraph()}
         </div>

@@ -104,7 +104,7 @@ var Signup = React.createClass({
 	  	<div className="column" style={columnStyle}>
           <h2 className="ui green header">Create your account</h2>
           <form className="ui large form" style={formStyle}>
-            <div className="ui stacked segment">
+            <div className="ui raised segment">
 
               <div className="field">
                 <div className="ui left icon input">
