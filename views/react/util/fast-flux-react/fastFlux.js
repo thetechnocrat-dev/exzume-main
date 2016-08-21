@@ -1,4 +1,5 @@
 var Dispatcher = require('../../dispatcher/dispatcher');
+jQuery.ajaxSettings.traditional = true;
 
 var ActionUtil = {
   receiveData: function (data, storeActionType) {

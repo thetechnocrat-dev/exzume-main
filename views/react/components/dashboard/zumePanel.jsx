@@ -22,6 +22,7 @@ var ZumePanel = React.createClass({
   },
 
   render: function () {
+    console.log(this.props);
     return (
       <div className="ui two column stackable grid">
         {this.makeZumes()}

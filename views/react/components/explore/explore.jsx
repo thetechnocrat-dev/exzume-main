@@ -7,6 +7,7 @@ var GraphStore = require('../../stores/graphStore');
 // Components
 var Dropdown = require('./dropdown');
 var ExploreGraph = require('./exploreGraph');
+var SelectFeaturePanel = require('./selectFeaturePanel');
 
 var Explore = React.createClass({
   getInitialState: function () {
@@ -53,11 +54,10 @@ var Explore = React.createClass({
   },
 
   makePinZumeButton: function () {
-    if (GraphStore.hasCurrentFeature()) {
+    if (GraphStore.hasSelectedFeature()) {
       return (
         <button
           className="ui green button"
-          data-tooltip="Pin this zume to your dashboard!"
           onClick={this.clickPinZume}>Pin Zume
         </button>
       );
@@ -71,8 +71,11 @@ var Explore = React.createClass({
   },
 
   clickPinZume: function () {
-    var currentFeature = GraphStore.getCurrentFeature();
-    var data = { featureName: currentFeature.name };
+    var selectedFeatures = GraphStore.getSelectedFeatures().map(function (feature) {
+      return feature.name;
+    });
+
+    var data = { featureNames: selectedFeatures };
 
     FastFlux.webCycle('post', '/auth/zumes/create', {
       success: this.success,
@@ -118,19 +121,35 @@ var Explore = React.createClass({
     }
   },
 
+  getSelectableFeatures: function () {
+    var userFeatures = SessionStore.getUserFeatures();
+    var selectedFeatures = GraphStore.getSelectedFeatures();
+
+    return userFeatures.filter(function (feature) {
+      for (var i = 0; i < selectedFeatures.length; i++) {
+        if (selectedFeatures[i].name === feature.name) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+  },
+
   makeContent: function () {
     var user = this.state.user;
-    var graphHeight = this.state.viewPortHeight * 0.75;
+    var graphHeight = this.state.viewPortHeight * 0.7;
     var graphWidth = this.calcGraphWidth();
 
     if (user) {
       return (
         <div>
-          <Dropdown user={user} />
+          <SelectFeaturePanel
+            selectableFeatures={this.getSelectableFeatures()}
+            selectedFeatures={GraphStore.getSelectedFeatures()}
+          />
           <ExploreGraph
-            user={user}
             seriesData={GraphStore.getSeriesData()}
-            currentFeature={GraphStore.getCurrentFeature()}
             width={graphWidth}
             height={graphHeight}
           />

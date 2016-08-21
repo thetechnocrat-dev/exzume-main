@@ -6,36 +6,22 @@ var LineChart = rd3.LineChart;
 
 var ExploreGraph = React.createClass({
   propTypes: {
-    user: React.PropTypes.object.isRequired,
     seriesData: React.PropTypes.array.isRequired,
-    currentFeature: React.PropTypes.object.isRequired,
     width: React.PropTypes.number.isRequired,
     height: React.PropTypes.number.isRequired,
   },
 
   makeGraph: function () {
-    // if there is a feature render with its info, otherwise render with blank info
-    if (this.props.currentFeature.name) {
-      var dataName = this.props.currentFeature.name;
-      var values = this.props.seriesData;
-      var title = this.props.currentFeature.name + ' vs. Day';
+    if (this.props.seriesData.length === 0) {
+      var seriesData = [{ name: 'nothing selected', values: [{ x: '2016-07-16', y: '0' }] }];
     } else {
-      var dataName = 'nothing selected';
-      var values = [{ x: '2016-07-16', y: '0' }];
-      var title = 'Select a Feature to Begin Exploring Your Data';
+      var seriesData = this.props.seriesData;
     }
 
     return (
       <LineChart
         legend={true}
-        data={
-          [
-            {
-              name: dataName,
-              values: values,
-            },
-          ]
-        }
+        data={seriesData}
         width='100%'
         height={this.props.height}
         viewBoxObject={{
@@ -44,8 +30,7 @@ var ExploreGraph = React.createClass({
           width: this.props.width,
           height: this.props.height,
         }}
-        title={title}
-        yAxisLabel={dataName}
+        yAxisLabel="Value"
         xAxisLabel="Date"
         xAccessor={
           function (d) {
@@ -55,7 +40,8 @@ var ExploreGraph = React.createClass({
         xAxisTickInterval={{ unit: 'day', interval: 1 }}
         domain={{ y: [0] }}
         gridHorizontal={true}
-        />
+        colors={d3.scale.category10()}
+      />
     );
   },
 
@@ -72,3 +58,4 @@ var ExploreGraph = React.createClass({
 });
 
 module.exports = ExploreGraph;
+

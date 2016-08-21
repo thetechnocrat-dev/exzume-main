@@ -10,48 +10,55 @@ var Zume = React.createClass({
   },
 
   getInitialState: function () {
-    var graphFeature = this.findUserFeatureFromUser(this.props.user);
+    var graphFeature = this.findUserFeaturesFromUser(this.props.user);
     var seriesData = this.makeSeriesData(graphFeature);
     return { seriesData: seriesData };
   },
 
   componentWillReceiveProps: function (newProps) {
-    var graphFeature = this.findUserFeatureFromUser(newProps.user);
-    var seriesData = this.makeSeriesData(graphFeature);
+    var graphFeatures = this.findUserFeatureFromUser(newProps.user);
+    var seriesData = this.makeSeriesData(graphFeatures);
 
     this.setState({ seriesData: seriesData });
   },
 
-  findUserFeatureFromUser: function (user) {
+  findUserFeaturesFromUser: function (user) {
+    var graphFeatures = [];
     var dataStreams = user.datastreams;
     for (key in dataStreams) {
       for (var i = 0; i < dataStreams[key].features.length; i++) {
-        if (dataStreams[key].features[i].name == this.props.zume.featureName) {
-          return dataStreams[key].features[i];
+        if (this.props.zume.featureNames.includes(dataStreams[key].features[i].name)) {
+          graphFeatures.push(dataStreams[key].features[i]);
         }
       }
     }
+
+    return graphFeatures;
   },
 
-  makeSeriesData: function (userFeature) {
+  makeSeriesData: function (userFeatures) {
     var seriesData = [];
-    var data = userFeature.data || [];
-    for (var i = 0; i < data.length; i++) {
-      seriesData.push({ x: data[i].dateTime,
-                        y: parseInt(data[i].value), });
+    for (var i = 0; i < userFeatures.length; i++) {
+      var feature = userFeatures[i];
+      var series = {};
+      series.name = feature.name;
+      series.values = [];
+      for (var j = 0; j < feature.data.length; j++) {
+        series.values.push({ x: feature.data[j].dateTime, y: parseInt(feature.data[j].value) });
+      }
+
+      seriesData.push(series);
     }
 
     return seriesData;
   },
 
   makeGraph: function () {
+    console.log(this.props);
     return (
       <LineChart
         legend={true}
-        data={[{
-          name: 'series 1',
-          values: this.state.seriesData,
-        }]}
+        data={this.state.seriesData}
         width='100%'
         height={400}
         viewBoxObject={{
@@ -60,7 +67,6 @@ var Zume = React.createClass({
           width: 500,
           height: 400,
         }}
-        title={this.props.zume.featureName + ' vs. Day'}
         yAxisLabel={this.props.zume.featureName}
         xAxisLabel="Date"
         xAccessor={
@@ -68,8 +74,9 @@ var Zume = React.createClass({
             return new Date(d.x);
           }
         }
-        xAxisTickInterval={{unit: 'day', interval: 1}}
+        xAxisTickInterval={{ unit: 'day', interval: 1 }}
         gridHorizontal={true}
+        colors={d3.scale.category10()}
       />
     );
   },
