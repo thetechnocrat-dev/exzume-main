@@ -1,5 +1,4 @@
 var React = require('react');
-var PropTypes = React.PropTypes;
 var SessionStore = require('../../stores/sessionStore');
 var FastFlux = require('../../util/fast-flux-react/fastFlux');
 var GraphStore = require('../../stores/graphStore');
@@ -8,6 +7,7 @@ var GraphStore = require('../../stores/graphStore');
 var Dropdown = require('./dropdown');
 var ExploreGraph = require('./exploreGraph');
 var SelectFeaturePanel = require('./selectFeaturePanel');
+var TimeMenu = require('./timeMenu');
 
 var Explore = React.createClass({
   getInitialState: function () {
@@ -155,6 +155,9 @@ var Explore = React.createClass({
           />
           <div className="ui grid">
             <div className="four column row">
+              <div className="column">
+                <TimeMenu isDisabled={!GraphStore.hasSelectedFeature()} />
+              </div>
               <div className="right floated column">
                 {this.makePinZumeButton()}
                 {this.makeSuccessMessage()}

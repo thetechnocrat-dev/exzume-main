@@ -1,11 +1,14 @@
 var Dispatcher = require('../dispatcher/dispatcher');
 var Store = require('flux/utils').Store;
+var moment = require('moment');
 
 var GraphStore = new Store(Dispatcher);
 var _selectedFeatures = [];
+var _filters = { dateBound: 'Max' };
 
 GraphStore.resetGraphStore = function () {
   _selectedFeatures = [];
+  _filters = { dateBound: 'Max' };
 },
 
 GraphStore.addFeature = function (feature) {
@@ -21,7 +24,22 @@ GraphStore.removeFeature = function (feature) {
   }
 },
 
+GraphStore.addFilter = function (filter) {
+  _filters[filter.key] = filter.value;
+},
+
 GraphStore.getSeriesData = function () {
+  var today = moment(new Date());
+  var withinBounds =  function (date, dateBound) {
+    if (dateBound === 'Max') {
+      return true;
+    } else if (dateBound === 'Month') {
+      return 31 >= moment.duration(today.diff(moment(date))).asDays();
+    } else if (dateBound === 'Week') {
+      return 7 >= moment.duration(today.diff(moment(date))).asDays();
+    }
+  };
+
   var seriesData = [];
   for (var i = 0; i < _selectedFeatures.length; i++) {
     var feature = _selectedFeatures[i];
@@ -29,7 +47,9 @@ GraphStore.getSeriesData = function () {
     series.name = feature.name;
     series.values = [];
     for (var j = 0; j < feature.data.length; j++) {
-      series.values.push({ x: feature.data[j].dateTime, y: parseInt(feature.data[j].value) });
+      if (withinBounds(feature.data[j].dateTime, _filters.dateBound)) {
+        series.values.push({ x: feature.data[j].dateTime, y: parseInt(feature.data[j].value) });
+      }
     }
 
     seriesData.push(series);
@@ -54,6 +74,10 @@ GraphStore.__onDispatch = function (payload) {
       break;
     case 'FEATURE_REMOVED':
       this.removeFeature(payload.data);
+      this.__emitChange();
+      break;
+    case 'FILTER_RECEIVED':
+      this.addFilter(payload.data);
       this.__emitChange();
       break;
   }

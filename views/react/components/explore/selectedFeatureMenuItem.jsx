@@ -11,7 +11,7 @@ var SelectedFeatureMenuItem = React.createClass({
   },
 
   render: function () {
-    style = { margin: '2% 2% 0 0' };
+    style = { margin: '1% 2% 0 0' };
     return (
       <div className="ui green label" style={style}>
         {this.props.feature.name}

@@ -29,12 +29,14 @@ var features = [
       format: 'agreementScale',
     },
   },
-  {
-    name: 'Tracks Played',
-    users: ['Watts42'],
-    dataStreams: ['lastfm'],
-    categories: ['music'],
-  },
+
+  // {
+  //   name: 'Tracks Played',
+  //   users: ['Watts42'],
+  //   dataStreams: ['lastfm'],
+  //   categories: ['music'],
+  // },
+
   {
     name: 'Control',
     users: ['Watts42'],
