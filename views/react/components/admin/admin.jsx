@@ -99,7 +99,7 @@ var Admin = React.createClass({
 
         <div className="ui horizontal divider">or</div>
 
-        <a href={'https://www.rescuetime.com/api/oauth/overview_data?access_token=74fcc1d3c631b51f9bb1fe8e312e72ea79ee145ee6481525ef92bb6880f6894d'} >
+        <a href={'https://www.rescuetime.com/api/oauth/overview_data?key=74fcc1d3c631b51f9bb1fe8e312e72ea79ee145ee6481525ef92bb6880f6894d'} >
           <button className="ui labeled mini icon button">
             <i className="plus icon"></i>
             rescut json test 
