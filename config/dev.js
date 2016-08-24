@@ -2,6 +2,9 @@
 module.exports = {
   db: 'mongodb://localhost/exzume-main',
   sessionSecret: 'knowThyself',
+  sendgrid: {
+    apiKey: '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',
+  },
   fitbit: {
     clientID: '227TQM',
     clientSecret: 'd44c4411eec72933ccd86d7efe8ea12d',

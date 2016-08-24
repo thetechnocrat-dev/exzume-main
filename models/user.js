@@ -7,6 +7,11 @@ var UserSchema = new Schema({
     username: { type: String, unique: true, required: true },
     password: { type: String, required: true },
     email: String,
+    confirmEmail: {
+      isConfirmed: { type: Boolean, default: false },
+      token: String,
+      expires: Date,
+    },
   },
   formURL: { type: String, default: 'none' },
   zumes: [

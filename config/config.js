@@ -8,6 +8,9 @@ try {
 module.exports = {
   db: process.env.MONGODB_URI || dev.db,
   secretSecret: process.env.SESSION_SECRET || dev.sessionSecret,
+  sendgrid: {
+    apiKey: process.env.SENDGRID_API_KEY || dev.sendgrid.apiKey,
+  },
   fitbit: {
     clientID: process.env.FITBIT_ID || dev.fitbit.clientID,
     clientSecret: process.env.FITBIT_SECRET || dev.fitbit.clientSecret,

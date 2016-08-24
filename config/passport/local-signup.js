@@ -1,5 +1,7 @@
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('../../models/user');
+var crypto = require('crypto');
+var email = require('../../util/email');
 
 module.exports = function (passport) {
   passport.use('local-signup', new LocalStrategy({
@@ -23,6 +25,9 @@ module.exports = function (passport) {
           newUser.local.username = username;
           newUser.local.password = newUser.generateHash(password);
           newUser.local.email = req.body.email;
+          newUser.local.confirmEmail.token = crypto.randomBytes(64).toString('hex');
+          var EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 3; // 3 days
+          newUser.local.confirmEmail.expires = new Date(Date.now() + EXPIRATION_TIME);
 
           newUser.save(function (err) {
             if (err) {
@@ -30,6 +35,9 @@ module.exports = function (passport) {
               throw err; // should we do something better here? probably -_-
             }
 
+            var subject = 'Welcome to Exzume!';
+
+            email.send(req.body.email, subject, email.welcomeMessage);
             console.log('local-signup - user registration successful');
             return done(null, newUser);
           });

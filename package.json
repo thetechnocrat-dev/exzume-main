@@ -45,6 +45,7 @@
     "react-sticky": "^5.0.4",
     "scroll-into-view": "^1.6.0",
     "semantic-ui": "^2.2",
+    "sendgrid": "^4.0.1",
     "serve-favicon": "~2.3.0",
     "webpack": "^1.13.1"
   },
