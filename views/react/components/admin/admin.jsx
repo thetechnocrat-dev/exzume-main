@@ -5,7 +5,7 @@ var History = require('react-router').History;
 // components
 var TextForm = require('./textForm');
 var ButtonAction = require('./buttonAction');
-var UrlTester = require('./urlTester.jsx');
+var UrlTester = require('./urlTester');
 
 var Admin = React.createClass({
   mixins: [LinkedStateMixin, History],
@@ -91,10 +91,12 @@ var Admin = React.createClass({
 
         <div className="ui horizontal divider">or</div>
 
-        <a href={'https://www.rescuetime.com/oauth/authorize/?response_type=code&redirect_uri=https%3A%2F%2Fwww.exzume.com%2Fauth%2Fdatastreams%2Frescuetime%2Fcallback&scope=time_data%20category_data%20productivity_data&client_id=2900e583f575ac611f1ffd83827ee0995f5b462f159fe42288f12e847e6b430a'} >
-          <button className="ui labeled mini icon button">
-            <i className="plus icon"></i>
-            rescut time test
+        <a href={'https://www.rescuetime.com/oauth/authorize/?response_type=code&redirect_uri' +
+          '=https%3A%2F%2Fwww.exzume.com%2Fauth%2Fdatastreams%2Frescuetime%2Fcallback&scope' +
+            '=time_data%20category_data%20productivity_data&client_id=2900e583f575ac611f1ffd' +
+            '83827ee0995f5b462f159fe42288f12e847e6b430a'} >
+          <button className="ui green  button">
+            rescue time test
           </button>
         </a>
 
