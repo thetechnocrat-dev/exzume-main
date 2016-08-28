@@ -4,4 +4,5 @@ module.exports = {
   lightGreen: '#D2F9ED',
   lightGreenHover: '#a5f3da',
   green: '#1FCC99',
+  yellow: '#FFC219',
 };

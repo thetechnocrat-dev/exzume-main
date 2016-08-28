@@ -1,5 +1,6 @@
 var User = require('../models/user');
 var Feature = require('../models/feature');
+var App = require('../models/app');
 var mongoose = require('mongoose');
 
 module.exports = function (router, passport) {
@@ -12,6 +13,13 @@ module.exports = function (router, passport) {
     Feature.find({}, function (err, features) {
       if (err) res.send(err);
       if (features) res.json(features);
+    });
+  });
+
+  router.get('/apps', function (req, res) {
+    App.find({}, function (err, apps) {
+      if (err) res.send(err);
+      if (apps) res.json(apps);
     });
   });
 
@@ -52,3 +60,4 @@ module.exports = function (router, passport) {
   });
 
 };
+

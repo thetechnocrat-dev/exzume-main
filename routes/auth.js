@@ -173,6 +173,7 @@ module.exports = function (router, passport) {
       var user = req.user;
 
       var done = function (error, updatedUser, shouldRedirect) {
+        console.log('done');
         if (error) res.send(error);
         else if (updatedUser) res.json(updatedUser);
         else if (shouldRedirect) res.redirect('/auth/datastreams/' + req.params.datastream);

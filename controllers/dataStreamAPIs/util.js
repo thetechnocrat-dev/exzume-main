@@ -82,7 +82,8 @@ util = {
   initSync: function (user, featureName, streamName, initSyncDone) {
     var options = { blankFlag: '0' };
     helper.handleUserFeatureArr(user, featureName, streamName, initSyncDone, options);
-    helper.addUserToFeature(user.local.username, featureName);
+
+    // helper.addUserToFeature(user.local.username, featureName);
   },
 
   // function to add current data as object to user.datastreams.features array
