@@ -87,14 +87,18 @@ var Explore = React.createClass({
   },
 
   success: function () {
-    this.state.successMessage = true;
+    this.setState({ successMessage: true });
+  },
+
+  closeMessage: function () {
+    this.setState({ successMessage: false });
   },
 
   makeSuccessMessage: function () {
     if (this.state.successMessage) {
       return (
         <div className="ui success message">
-          <i className="close icon"></i>
+          <i className="close icon" onClick={this.closeMessage} />
           <div className="header">
             Zume successfully pinned.
           </div>

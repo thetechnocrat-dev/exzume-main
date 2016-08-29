@@ -18,6 +18,20 @@ var ExploreGraph = React.createClass({
       var seriesData = this.props.seriesData;
     }
 
+    var maxLength = 0;
+    for (var i = 0; i < seriesData.length; i++) {
+      if (seriesData[0].values.length > maxLength) { maxLength = seriesData[0].values.length; }
+    }
+
+    var unit;
+    if (maxLength >= 70) {
+      unit = 'month';
+    } else if (maxLength >= 21) {
+      unit = 'week';
+    } else {
+      unit = 'day';
+    }
+
     return (
       <LineChart
         legend={true}
@@ -37,7 +51,7 @@ var ExploreGraph = React.createClass({
             return new Date(d.x);
           }
         }
-        xAxisTickInterval={{ unit: 'day', interval: 1 }}
+        xAxisTickInterval={{ unit: unit, interval: 1 }}
         domain={{ y: [0] }}
         gridHorizontal={true}
         colors={d3.scale.category10()}

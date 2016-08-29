@@ -4,11 +4,11 @@ var moment = require('moment');
 
 var GraphStore = new Store(Dispatcher);
 var _selectedFeatures = [];
-var _filters = { dateBound: 'Max' };
+var _filters = { dateBound: 'Week' };
 
 GraphStore.resetGraphStore = function () {
   _selectedFeatures = [];
-  _filters = { dateBound: 'Max' };
+  _filters = { dateBound: 'Week' };
 },
 
 GraphStore.addFeature = function (feature) {
