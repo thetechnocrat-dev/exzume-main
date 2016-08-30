@@ -46,7 +46,7 @@ var AppItem = React.createClass({
               <div className="row" style={{ paddingTop: '0' }}>
                 <ConnectButton
                   isConnected={this.props.isConnected}
-                  openUrl={'https://www.fitbit.com/'}
+                  openUrl={this.props.app.openUrl}
                   connectUrl={'/auth/datastreams/' + this.props.app.name.toLowerCase()}
                 />
               </div>

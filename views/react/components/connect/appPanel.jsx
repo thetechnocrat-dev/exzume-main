@@ -51,11 +51,13 @@ var AppPanel = React.createClass({
     var _this = this;
     return this.state.apps.map(function (app, idx) {
       return (
-        <AppItem
-          key={idx}
-          app={app}
-          isConnected={userConnectedApps.includes(app.name.toLowerCase())}
-        />
+        <div className='column'>
+          <AppItem
+            key={idx}
+            app={app}
+            isConnected={userConnectedApps.includes(app.name.toLowerCase())}
+          />
+        </div>
       );
     });
   },

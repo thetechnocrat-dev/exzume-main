@@ -19,7 +19,7 @@ var Rating = React.createClass({
       if (i <= cutoff) {
         classNames.push('disabled yellow star icon');
       } else if (i - cutoff >= 0.5) {
-        classNames.push('disabled star half empty icon');
+        classNames.push('disabled yellow star half empty icon');
       } else {
         classNames.push('disabled empty star icon');
       };
@@ -29,7 +29,7 @@ var Rating = React.createClass({
   },
 
   makeStars: function (classNames) {
-    var starStyle = { marginRight: 0, cursor: 'default' };
+    var starStyle = { marginRight: 0, marginLeft: 0, padding: 0, width: '1em', cursor: 'default' };
     return classNames.map(function (className, i) {
       return <i className={className} key={i} style={starStyle} />;
     });
