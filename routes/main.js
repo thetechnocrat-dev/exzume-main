@@ -59,5 +59,28 @@ module.exports = function (router, passport) {
     })(req, res);
   });
 
-};
+  router.get('/confirm/:username/:token', function (req, res) {
+    User.findOne({ 'local.username': req.params.username }, function (err, user) {
+      if (err) {
+        res.status(404).send(err);
+      } else if (user) {
+        if (!user.local.confirmEmail.isConfirmed) {
+          if (user.local.confirmEmail.token == req.params.token) {
+            user.local.confirmEmail.isConfirmed = true;
+          }
 
+          user.save(function (err) {
+            if (err) {
+              res.status(500).json({ message: 'internal server error' });
+            } else {
+              res.json({ message: 'user saved successfully' });
+            }
+          });
+        } else {
+          res.json({ message: 'account already confirmed' });
+        }
+      }
+    });
+  });
+
+};

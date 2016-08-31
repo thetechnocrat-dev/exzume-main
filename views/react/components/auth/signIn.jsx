@@ -62,9 +62,12 @@ var SignIn = React.createClass({
   },
 
   makeSubmitButton: function () {
+    var buttonStyle = { marginBottom: '2.5%' };
+
     if (this.state.loading) {
       return (
         <div
+          style={buttonStyle}
           className="ui green disabled loading fluid large button"
           type="submit">Sign In
         </div>
@@ -72,6 +75,7 @@ var SignIn = React.createClass({
     } else {
       return (
         <div
+          style={buttonStyle}
           className="ui green fluid large button"
           type="submit"
           onClick={this.handleSubmit}
@@ -84,6 +88,10 @@ var SignIn = React.createClass({
 
   clickHomeLink: function () {
     this.history.push('/');
+  },
+
+  clickForgotPassword: function () {
+    
   },
 
   clickSignUpLink: function () {
@@ -128,6 +136,12 @@ var SignIn = React.createClass({
               </div>
 
               {this.makeSubmitButton()}
+              <a
+                style={linkStyle}
+                onClick={this.clickForgotPassword}
+              >
+                Forgot Password?
+              </a>
             </div>
           </form>
 

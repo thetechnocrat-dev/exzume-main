@@ -26,8 +26,6 @@ module.exports = function (passport) {
           newUser.local.password = newUser.generateHash(password);
           newUser.local.email = req.body.email;
           newUser.local.confirmEmail.token = crypto.randomBytes(64).toString('hex');
-          var EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 3; // 3 days
-          newUser.local.confirmEmail.expires = new Date(Date.now() + EXPIRATION_TIME);
 
           newUser.save(function (err) {
             if (err) {
@@ -37,7 +35,11 @@ module.exports = function (passport) {
 
             var subject = 'Welcome to Exzume!';
 
-            email.send(req.body.email, subject, email.welcomeMessage);
+            email.send(
+              req.body.email,
+              subject,
+              email.welcomeMessage(newUser.local.username, newUser.local.confirmEmail.token
+            ));
             console.log('local-signup - user registration successful');
             return done(null, newUser);
           });

@@ -11,6 +11,7 @@ var Splash = require('./components/splash');
 var Admin = require('./components/admin/admin');
 var SignIn = require('./components/auth/signIn');
 var SignUp = require('./components/auth/signUp');
+var Confirm = require('./components/auth/confirm');
 var Auth = require('./components/auth');
 var Dashboard = require('./components/dashboard/dashboard');
 var Explore = require('./components/explore/explore');
@@ -22,6 +23,7 @@ var routes = (
     <Route component={Admin} path='admin' />
     <Route component={SignIn} path='signin' />
     <Route component={SignUp} path='signup' />
+    <Route component={Confirm} path='confirm/:username/:token' />
     <Route component={Auth} path='dashboard'>
       <IndexRoute component={Dashboard} />
       <Route component={Explore} path='explore' />

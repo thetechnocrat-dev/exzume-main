@@ -2,6 +2,7 @@
 module.exports = {
   db: 'mongodb://localhost/exzume-main',
   sessionSecret: 'knowThyself',
+  baseURL: 'localhost:3000',
   sendgrid: {
     apiKey: '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',
   },

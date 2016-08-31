@@ -26,12 +26,13 @@ var email = {
 
   welcomeMessage: function (username, token) {
     return (
-        'Hi ' + username + ',\n' + 'Thank you for signing up for exzume! We hope this first' +
-      'step to cultivating your data, yields many benefits'
+        'Thank you ' + username + ' for signing up for exzume! We hope this first' +
+        'step to cultivating your data yields many benefits. Click on the following link to' +
+        ' confirm your email: ' +
+        config.baseURL + '/#/confirm/' + username + '/' + token
       );
   },
 
 };
 
 module.exports = email;
-
