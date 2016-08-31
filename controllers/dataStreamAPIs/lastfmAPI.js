@@ -19,10 +19,9 @@ var lastfmAPI = {
         const timeStampTwoDaysAgo = Math.floor(dateTimeToday / 1000) - 86400 * 2; // in unix seconds
         const addDay = 86400; // seconds in day
 
-        axios.get(apiURLs.lastfm.rootURL, {
+        axios.get('http://ws.audioscrobbler.com/2.0/', {
           params: {
             method: 'user.getrecenttracks',
-            from: timeStampTwoDaysAgo,
             limit: 200,
             user: user.datastreams.lastfm,
             api_key: config.lastfm.clientID,
@@ -34,24 +33,17 @@ var lastfmAPI = {
 
           // function to create new day data object
           var newDayData = function (date, val) {
-            var obj = {
-              dateTime: date,
-              value: val,
-            };
-            return obj;
+            return { dateTime: date, value: val };
           };
 
           // initialize newData array
           var newData = [newDayData(moment(timeStampTwoDaysAgo * 1000).format('YYYY-MM-DD'), 0)];
           var last = timeStampTwoDaysAgo;
           console.log('for loop start');
-          console.log(streamRes);
 
           // store tracks played by day as counts in newData object
           for (var i = streamRes.data.recenttracks.track.length - 1; i >= 0; i--) {
             var currentDay = newData[newData.length - 1];
-            console.log(i);
-            console.log(streamRes.data.recenttracks.track[i]);
 
             // do not include now playing track
             if (streamRes.data.recenttracks.track[i].date != null) {
@@ -68,7 +60,6 @@ var lastfmAPI = {
             }
           }
 
-          console.log(newData);
           util.addDataToUser(user, 'Tracks Played', 'lastfm', newData, done);
         }).catch(function (error) {
           if (error.status == 401) {

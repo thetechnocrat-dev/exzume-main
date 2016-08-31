@@ -10,6 +10,7 @@ var AppSchema = new Schema(
     requirements: [String],
     basicPrice: Number,
     icon: String,
+    openUrl: String,
   },
   {
     toObject: { virtuals: true },
