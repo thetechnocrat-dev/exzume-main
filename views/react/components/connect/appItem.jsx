@@ -22,7 +22,6 @@ var AppItem = React.createClass({
 
   render: function () {
     cardStyle = { marginTop: '2%', marginBottom: '2%' };
-    console.log(this.props.app.avgRating);
     return (
       <div className="ui card" style={cardStyle}>
         <div className="content">
