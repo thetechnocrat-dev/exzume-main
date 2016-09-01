@@ -91,7 +91,7 @@ var SignIn = React.createClass({
   },
 
   clickForgotPassword: function () {
-    
+    this.history.push('/forgot');
   },
 
   clickSignUpLink: function () {

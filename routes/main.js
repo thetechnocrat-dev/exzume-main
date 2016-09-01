@@ -2,6 +2,8 @@ var User = require('../models/user');
 var Feature = require('../models/feature');
 var App = require('../models/app');
 var mongoose = require('mongoose');
+var email = require('../util/email');
+var crypto = require('crypto');
 
 module.exports = function (router, passport) {
 
@@ -44,7 +46,7 @@ module.exports = function (router, passport) {
   router.post('/signup', function (req, res) {
     passport.authenticate('local-signup', function (err, user, info) {
       if (err) {
-        res.status(500).json({ message: 'internal server error - try refreshing the page' });
+        res.status(500).send('internal server error - try refreshing the page');
       } else if (user) {
         req.login(user, function (err) {
           if (err) {
@@ -71,7 +73,7 @@ module.exports = function (router, passport) {
 
           user.save(function (err) {
             if (err) {
-              res.status(500).json({ message: 'internal server error' });
+              res.status(500).send('internal server error');
             } else {
               res.json({ message: 'user saved successfully' });
             }
@@ -83,4 +85,43 @@ module.exports = function (router, passport) {
     });
   });
 
+  router.post('/forgot', function (req, res) {
+    User.findOne({ 'local.email': req.body.email }, function (err, user) {
+      if (err) {
+        res.status(500).send(err);
+      } else if (user) {
+        email.send(
+          req.body.email,
+          'Reset exzume password',
+          email.forgotMessage(user.local.username, user.local.passwordResetToken)
+        );
+        res.json({ message: 'Reset password email sent' });
+      } else {
+        res.status(404).send('Email does not exist');
+      }
+    });
+  });
+
+  router.post('/reset-password', function (req, res) {
+    console.log(req.body);
+    User.findOne({ 'local.username': req.body.username }, function (err, user) {
+      if (err) {
+        res.status(500).send(err);
+      } else if (user && user.local.passwordResetToken == req.body.token) {
+        user.local.password = user.generateHash(req.body.password);
+        user.local.passwordResetToken = crypto.randomBytes(64).toString('hex');
+        user.save(function (err) {
+          if (err) {
+            res.status(500).send(err);
+          } else {
+            res.json({ responseText: 'Password succesfully reset' });
+          }
+        });
+      } else {
+        res.status(404).send('This link is no longer valid');
+      }
+    });
+  });
+
 };
+

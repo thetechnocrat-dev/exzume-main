@@ -33,6 +33,13 @@ var email = {
       );
   },
 
+  forgotMessage: function (username, resetToken) {
+    return (
+      'Hi ' + username + '. Here is a link to reset your password: ' +
+      config.baseURL + '/#/reset-password/' + username + '/' + resetToken
+    );
+  },
+
 };
 
 module.exports = email;

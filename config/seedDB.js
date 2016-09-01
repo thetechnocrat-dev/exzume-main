@@ -69,6 +69,8 @@ module.exports = function (done) {
         var newUser = new User();
         newUser.local.username = 'Watts42';
         newUser.local.password = newUser.generateHash('password');
+        newUser.local.email = 'exzume.app@gmail.com';
+        newUser.local.passwordResetToken = '123';
         newUser.save(function (err) {
           if (err) {
             callback(err, 'user insert error');

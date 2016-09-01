@@ -6,11 +6,13 @@ var UserSchema = new Schema({
   local: {
     username: { type: String, unique: true, required: true },
     password: { type: String, required: true },
-    email: String,
+    email: { type: String, unique: true, required: true },
+
     confirmEmail: {
       isConfirmed: { type: Boolean, default: false },
       token: String,
     },
+    passwordResetToken: { type: String, required: true },
   },
   formURL: { type: String, default: 'none' },
   zumes: [

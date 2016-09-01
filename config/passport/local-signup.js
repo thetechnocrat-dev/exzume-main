@@ -26,6 +26,7 @@ module.exports = function (passport) {
           newUser.local.password = newUser.generateHash(password);
           newUser.local.email = req.body.email;
           newUser.local.confirmEmail.token = crypto.randomBytes(64).toString('hex');
+          newUser.local.passwordResetToken = crypto.randomBytes(64).toString('hex');
 
           newUser.save(function (err) {
             if (err) {
