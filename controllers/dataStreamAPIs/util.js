@@ -3,24 +3,24 @@ Feature = require('../../models/feature');
 // non exported helper functions
 helper = {
   // function to add user to feature users array
-  addUserToFeature: function (userName, featureName, initSyncDone) {
-    Feature.findOne({ name: featureName }, function (err, feature) {
-      if (err) {
-        console.log(err);
-      } else if (feature.users.includes(userName)) {
-        console.log('user already included in feature users array');
-      } else {
-        feature.users.push(userName);
-        feature.save(function (err, feature) {
-          if (err) {
-            console.log('error saving feature: ', err);
-          } else if (feature) {
-            console.log('user added to ' + featureName + ' feature');
-          }
-        });
-      }
-    });
-  },
+  // addUserToFeature: function (userName, featureName, initSyncDone) {
+  //   Feature.findOne({ name: featureName }, function (err, feature) {
+  //     if (err) {
+  //       console.log(err);
+  //     } else if (feature.users.includes(userName)) {
+  //       console.log('user already included in feature users array');
+  //     } else {
+  //       feature.users.push(userName);
+  //       feature.save(function (err, feature) {
+  //         if (err) {
+  //           console.log('error saving feature: ', err);
+  //         } else if (feature) {
+  //           console.log('user added to ' + featureName + ' feature');
+  //         }
+  //       });
+  //     }
+  //   });
+  // },
 
   // if userFeature array doesn't it exist it will init it and return max,
   // else it returns the date to sync from
@@ -125,4 +125,3 @@ util = {
 };
 
 module.exports = util;
-

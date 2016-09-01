@@ -44,6 +44,7 @@ var lastfmAPI = {
           // store tracks played by day as counts in newData object
           for (var i = streamRes.data.recenttracks.track.length - 1; i >= 0; i--) {
             var currentDay = newData[newData.length - 1];
+            console.log(currentDay);
 
             // do not include now playing track
             if (streamRes.data.recenttracks.track[i].date != null) {
@@ -78,4 +79,3 @@ var lastfmAPI = {
 };
 
 module.exports = lastfmAPI;
-
