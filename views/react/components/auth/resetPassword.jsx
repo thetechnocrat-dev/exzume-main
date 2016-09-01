@@ -1,9 +1,10 @@
 var React = require('react');
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var FastFlux = require('../../util/fast-flux-react/fastFlux');
+var History = require('react-router').History;
 
 var ResetPassword = React.createClass({
-  mixins: [LinkedStateMixin],
+  mixins: [LinkedStateMixin, History],
 
   getInitialState: function () {
     return ({
@@ -74,9 +75,23 @@ var ResetPassword = React.createClass({
     }
   },
 
+  goToSignIn: function () {
+    this.history.push('/signin');
+  },
+
   makeContent: function () {
     if (this.state.successMessage) {
-      return (<h5 className="ui black header">{this.state.successMessage}</h5>);
+      return (
+          <div>
+            <h5 className="ui black header">{this.state.successMessage}</h5>
+            <div
+              className="ui green fluid large button"
+              onClick={this.goToSignIn}
+            >
+              Go Sign In
+            </div>
+        </div>
+      );
     } else {
       var formStyle = { backgroundColor: 'white' };
       return (
