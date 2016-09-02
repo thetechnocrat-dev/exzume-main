@@ -1,4 +1,5 @@
 var React = require('react');
+var moment = require('moment');
 var FastFlux = require('../../util/fast-flux-react/fastFlux');
 var Style = require('../../util/style');
 
@@ -18,6 +19,8 @@ var DataStreamItem = React.createClass({
       overflow: 'hidden',
       zIndex: '0',
       itemHeight: ITEM_HEIGHT,
+      syncError: false,
+      lastSyncTime: this.props.stream.lastSyncTime,
     });
   },
 
@@ -32,11 +35,11 @@ var DataStreamItem = React.createClass({
   },
 
   success: function () {
-    console.log(this.props.stream.name + ' synced');
+    this.setState({ lastSyncTime: Date.now() });
   },
 
   error: function () {
-    console.log(this.props.stream.name + ' sync failed');
+    this.setState({ syncError: true });
   },
 
   handleMouseEnter: function () {
@@ -60,7 +63,7 @@ var DataStreamItem = React.createClass({
   },
 
   makeSyncButton: function () {
-    var style = { marginTop: '10px' };
+    var style = { marginTop: '0' };
     if (this.state.isLoading) {
       return (
         <button className="ui disabled green loading button" style={style}>Sync</button>
@@ -68,6 +71,34 @@ var DataStreamItem = React.createClass({
     } else {
       return (
         <button className="ui green button" onClick={this.clickSync} style={style}>Sync</button>
+      );
+    }
+  },
+
+  openApp: function () {
+    var url = 'http://www.' + this.props.stream.name + '.com';
+    window.open(url, '_blank');
+  },
+
+  makeFeatures: function () {
+    var features = this.props.stream.features.map(function (feature) {
+      return feature.name;
+    });
+
+    return features.join(', ');
+  },
+
+  makeLastSync: function () {
+    var style = { fontSize: '0.8em', marginTop: '0' };
+    if (this.state.syncError) {
+      style.color = 'red';
+      return (
+        <p style={style}>Last sync failed</p>
+      );
+    } else {
+      style.color = 'green';
+      return (
+        <p style={style}>{'Last synced ' + moment(this.state.lastSyncTime).fromNow()}</p>
       );
     }
   },
@@ -87,6 +118,7 @@ var DataStreamItem = React.createClass({
       overflow: this.state.overflow,
       zIndex: this.state.zIndex,
     };
+    var headerStyle = { marginTop: '10px', marginBottom: '0' };
     return (
       <div
         className="eight wide mobile four wide tablet four wide computer column"
@@ -94,8 +126,11 @@ var DataStreamItem = React.createClass({
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
       >
-        <img className="ui image" src={imgPath} style={imgStyle} />
+        <img className="ui image" src={imgPath} onClick={this.openApp} style={imgStyle} />
         <br />
+        <h4 className="ui header" style={headerStyle}>{this.props.stream.name}</h4>
+        <p style={{ fontSize: '0.8em', margin: '0' }}>{this.makeFeatures()}</p>
+        {this.makeLastSync()}
         {this.makeSyncButton()}
       </div>
     );
