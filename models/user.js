@@ -40,6 +40,7 @@ var UserSchema = new Schema({
       accessToken: String,
       refreshToken: String,
       isConnected: { type: Boolean, default: false },
+      icon: { type: String, unique: true },
       features: [{
           name: String,
           data: [],

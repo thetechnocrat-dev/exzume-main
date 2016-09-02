@@ -15,7 +15,7 @@ var apps = [
       'wearable device highly recommended',
     ],
     basicPrice: 0,
-    icon: 'fitbit-logo.png',
+    connectIcon: 'fitbit-logo.png',
     openUrl: 'https://www.fitbit.com/',
   },
   {
@@ -27,7 +27,7 @@ var apps = [
       'account required',
     ],
     basicPrice: 0,
-    icon: 'lastfm-logo.png',
+    connectIcon: 'lastfm-logo.png',
     openUrl: 'http://www.last.fm/home',
   },
 ];

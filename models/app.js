@@ -9,7 +9,7 @@ var AppSchema = new Schema(
     express: Boolean,
     requirements: [String],
     basicPrice: Number,
-    icon: String,
+    connectIcon: { type: String, required: true },
     openUrl: String,
   },
   {
