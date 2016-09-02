@@ -38,7 +38,9 @@ SessionStore.getUserStreams = function () {
 
   for (key in _currentUser.datastreams) {
     if (_currentUser.datastreams[key].isConnected) {
-      userActiveStreams.push(_currentUser.datastreams[key]);
+      var stream = _currentUser.datastreams[key];
+      stream.name = key;
+      userActiveStreams.push(stream);
     }
   }
 

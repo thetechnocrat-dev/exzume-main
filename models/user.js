@@ -39,6 +39,7 @@ var UserSchema = new Schema({
       profileId: { type: String, unique: true },
       accessToken: String,
       refreshToken: String,
+      lastSyncTime: { type: Date, default: Date.now },
       isConnected: { type: Boolean, default: false },
       features: [{
           name: String,
@@ -49,6 +50,7 @@ var UserSchema = new Schema({
     lastfm: {
       username: String,
       key: String,
+      lastSyncTime: { type: Date, default: Date.now },
       isConnected: { type: Boolean, default: false },
       features: [{
           name: String,

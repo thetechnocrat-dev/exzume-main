@@ -28,7 +28,6 @@ helper = {
     var options = typeof options !== 'undefined' ? options : {};
     var blankFlag = options.blankFlag || null;
 
-    console.log('handle user feature array');
     var currentStream = user.datastreams[streamName];
 
     // check if user already has initialized userFeature
@@ -112,6 +111,9 @@ util = {
     for (; j < newData.length; j++) {
       thisFeature.data.push(newData[j]);
     };
+
+    // update lastSynTime
+    currentStream.lastSyncTime = Date.now();
 
     user.save(function (err, user) {
       if (err) {

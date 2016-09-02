@@ -27,7 +27,7 @@ var AppItem = React.createClass({
         <div className="content">
           <img
             className="left floated tiny ui image"
-            src={'/images/' + this.props.app.icon}
+            src={'/images/' + this.props.app.connectIcon}
             style={{ marginTop: '1%' }}
           />
           <div className="header">
