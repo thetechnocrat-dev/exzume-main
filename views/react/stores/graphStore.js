@@ -4,11 +4,17 @@ var moment = require('moment');
 
 var GraphStore = new Store(Dispatcher);
 var _selectedFeatures = [];
-var _filters = { dateBound: 'Week' };
+var _filters = {
+  dateBound: 'Week',
+  shouldNormalize: false,
+};
 
 GraphStore.resetGraphStore = function () {
   _selectedFeatures = [];
-  _filters = { dateBound: 'Week' };
+  _filters = {
+    dateBound: 'Week',
+    shouldNormalize: false,
+  };
 },
 
 GraphStore.addFeature = function (feature) {
@@ -41,18 +47,43 @@ GraphStore.getSeriesData = function () {
   };
 
   var seriesData = [];
-  for (var i = 0; i < _selectedFeatures.length; i++) {
-    var feature = _selectedFeatures[i];
-    var series = {};
-    series.name = feature.name;
-    series.values = [];
-    for (var j = 0; j < feature.data.length; j++) {
-      if (withinBounds(feature.data[j].dateTime, _filters.dateBound)) {
-        series.values.push({ x: feature.data[j].dateTime, y: parseInt(feature.data[j].value) });
+  if (!_filters.shouldNormalize) {
+    for (var i = 0; i < _selectedFeatures.length; i++) {
+      var feature = _selectedFeatures[i];
+      var series = {};
+      series.name = feature.name;
+      series.values = [];
+      for (var j = 0; j < feature.data.length; j++) {
+        if (withinBounds(feature.data[j].dateTime, _filters.dateBound)) {
+          series.values.push({ x: feature.data[j].dateTime, y: parseInt(feature.data[j].value) });
+        }
       }
-    }
 
-    seriesData.push(series);
+      seriesData.push(series);
+    }
+  } else {
+    for (var i = 0; i < _selectedFeatures.length; i++) {
+      var feature = _selectedFeatures[i];
+      var series = {};
+      series.name = feature.name;
+      series.values = [];
+      var sum = 0;
+
+      for (var j = 0; j < feature.data.length; j++) {
+        if (withinBounds(feature.data[j].dateTime, _filters.dateBound)) {
+          sum += parseInt(feature.data[j].value);
+          series.values.push({ x: feature.data[j].dateTime, y: parseInt(feature.data[j].value) });
+        }
+      }
+
+      var avg = sum / series.values.length;
+      var normalizedSeries = series.values.map(function (obj) {
+        obj.y /= avg;
+        return obj;
+      });
+
+      seriesData.push({ name: series.name, values: normalizedSeries });
+    }
   }
 
   return seriesData;

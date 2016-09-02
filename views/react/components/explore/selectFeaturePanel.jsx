@@ -5,6 +5,7 @@ var SessionStore = require('../../stores/sessionStore');
 // components
 var Dropdown = require('./dropdown');
 var SelectedFeatureMenu = require('./selectedFeatureMenu');
+var NormalizeButton = require('./NormalizeButton');
 
 var SelectFeaturePanel = React.createClass({
   propTypes: {
@@ -17,6 +18,7 @@ var SelectFeaturePanel = React.createClass({
       <div>
         <Dropdown features={this.props.selectableFeatures} />
         <SelectedFeatureMenu features={this.props.selectedFeatures} />
+        <NormalizeButton features={this.props.selectedFeatures} />
       </div>
     );
   },
@@ -24,4 +26,3 @@ var SelectFeaturePanel = React.createClass({
 });
 
 module.exports = SelectFeaturePanel;
-

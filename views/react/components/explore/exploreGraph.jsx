@@ -20,6 +20,7 @@ var ExploreGraph = React.createClass({
 
     var maxLength = 0;
     for (var i = 0; i < seriesData.length; i++) {
+      console.log(seriesData[i])
       if (seriesData[0].values.length > maxLength) { maxLength = seriesData[0].values.length; }
     }
 
@@ -72,4 +73,3 @@ var ExploreGraph = React.createClass({
 });
 
 module.exports = ExploreGraph;
-

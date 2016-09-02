@@ -4,7 +4,6 @@ var FastFlux = require('../../util/fast-flux-react/fastFlux');
 var GraphStore = require('../../stores/graphStore');
 
 // Components
-var Dropdown = require('./dropdown');
 var ExploreGraph = require('./exploreGraph');
 var SelectFeaturePanel = require('./selectFeaturePanel');
 var TimeMenu = require('./timeMenu');

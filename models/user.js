@@ -83,4 +83,3 @@ UserSchema.methods.validPassword = function (password) {
 UserSchema.set('toJSON', { getters: true, virtuals: true });
 
 module.exports = mongoose.model('User', UserSchema);
-

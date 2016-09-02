@@ -78,9 +78,7 @@ var SignIn = React.createClass({
           style={buttonStyle}
           className="ui green fluid large button"
           type="submit"
-          onClick={this.handleSubmit}
-        >
-          Sign In
+          onClick={this.handleSubmit}>Sign In
         </div>
       );
     }
