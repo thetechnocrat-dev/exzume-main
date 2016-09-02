@@ -11,51 +11,58 @@ var lastfmAPI = {
 
   sync: function (user, done) {
     var initSyncDone = function (error, startDate) {
+      // startDate is not used right now
       if (error) {
         done(error, null, null);
       } else if (startDate) {
-        var dateToday = moment().format('YYYY-MM-DD');
-        const dateTimeToday = new Date(dateToday).getTime(); // unix timestamp of that date
-        const timeStampTwoDaysAgo = Math.floor(dateTimeToday / 1000) - 86400 * 2; // in unix seconds
-        const addDay = 86400; // seconds in day
+        const daySeconds = 86400; // seconds in day
+        var timeLast; // last song synced time in unix time
 
         axios.get('http://ws.audioscrobbler.com/2.0/', {
           params: {
             method: 'user.getrecenttracks',
             limit: 200,
-            user: user.datastreams.lastfm,
+            user: user.datastreams.lastfm.username,
             api_key: config.lastfm.clientID,
             format: 'json',
           },
         }).then(function (streamRes) {
           console.log('made it to response');
-          console.log('is this updating?');
+          console.log(streamRes);
 
           // function to create new day data object
           var newDayData = function (date, val) {
             return { dateTime: date, value: val };
           };
 
+          // look at last day in existing data if it exists and re-count that day's tracks played
+          if (user.datastreams.lastfm.features[0].data.length != 0) {
+            var existingDataLength = user.datastreams.lastfm.features[0].data.length;
+            console.log(existingDataLength);
+            console.log(user.datastreams.lastfm.features[0].data[existingDataLength - 1].dateTime);
+            timeLast = Math.floor(new Date(user.datastreams.lastfm.features[0].data[existingDataLength - 1].dateTime).getTime() / 1000); // unix timestamp of the last dateTime in seconds
+          // or else track from beginning of 200 recent tracks
+          } else {
+            timeLast = streamRes.data.recenttracks.track[streamRes.data.recenttracks.track.length - 1].date.uts;
+          }
+
           // initialize newData array
-          var newData = [newDayData(moment(timeStampTwoDaysAgo * 1000).format('YYYY-MM-DD'), 0)];
-          var last = timeStampTwoDaysAgo;
-          console.log('for loop start');
+          var newData = [newDayData(moment(timeLast * 1000).format('YYYY-MM-DD'), 0)];
 
           // store tracks played by day as counts in newData object
           for (var i = streamRes.data.recenttracks.track.length - 1; i >= 0; i--) {
             var currentDay = newData[newData.length - 1];
-            console.log(currentDay);
 
             // do not include now playing track
             if (streamRes.data.recenttracks.track[i].date != null) {
               var timeThisTrack = streamRes.data.recenttracks.track[i].date.uts;
 
-              if (timeThisTrack > last) {
-                if (timeThisTrack <= last + addDay) {
+              if (timeThisTrack > timeLast) {
+                if (timeThisTrack <= timeLast + daySeconds) {
                   currentDay.value++;
                 } else {
-                  last = last + addDay;
-                  newData.push(newDayData(moment(last * 1000).format('YYYY-MM-DD'), 1));
+                  timeLast = Math.floor(timeLast / daySeconds) * daySeconds + daySeconds;
+                  newData.push(newDayData(moment(timeLast * 1000).format('YYYY-MM-DD'), 1));
                 }
               }
             }
