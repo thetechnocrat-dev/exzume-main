@@ -39,7 +39,7 @@ var NormalizeButton = React.createClass({
         {this.makeButton()}
       </div>
     );
-  }
+  },
 
 });
 
