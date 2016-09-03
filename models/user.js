@@ -5,7 +5,11 @@ var bcrypt = require('bcrypt');
 var UserSchema = new Schema({
   local: {
     username: { type: String, unique: true, required: true },
-    password: { type: String, required: true },
+    password: {
+      type: String,
+      minlength: [6, 'Password must be at least 6 characters.'],
+      required: true,
+    },
     email: { type: String, unique: true, required: true },
     confirmEmail: {
       isConfirmed: { type: Boolean, default: false },

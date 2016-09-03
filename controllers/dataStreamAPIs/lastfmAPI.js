@@ -47,7 +47,7 @@ var lastfmAPI = {
           }
 
           // initialize newData array
-          var newData = [newDayData(moment(timeLast * 1000).format('YYYY-MM-DD'), 0)];
+          var newData = [];
 
           // store tracks played by day as counts in newData object
           for (var i = streamRes.data.recenttracks.track.length - 1; i >= 0; i--) {
