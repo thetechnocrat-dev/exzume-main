@@ -28,6 +28,7 @@
     "lodash": "^4.13.1",
     "moment": "^2.14.1",
     "mongoose": "^4.4.20",
+    "mongoose-validator": "^1.2.5",
     "morgan": "~1.6.1",
     "passport": "^0.3.2",
     "passport-fitbit-oauth2": "^1.0.1",

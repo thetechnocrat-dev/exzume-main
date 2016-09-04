@@ -1,14 +1,23 @@
 var mongoose = require('mongoose');
+var validate = require('mongoose-validator');
 var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt');
+
+var passwordValidator = [
+  validate({
+    validator: 'isLength',
+    arguments: 6,
+    message: 'Name should be greater than {ARGS[0]} characters.',
+  }),
+];
 
 var UserSchema = new Schema({
   local: {
     username: { type: String, unique: true, required: true },
     password: {
       type: String,
-      minlength: [6, 'Password must be at least 6 characters.'],
       required: true,
+      validate: passwordValidator,
     },
     email: { type: String, unique: true, required: true },
     confirmEmail: {
