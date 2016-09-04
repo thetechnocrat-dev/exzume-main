@@ -2,7 +2,8 @@ var config = require('./config');
 var mongoose = require('mongoose');
 
 module.exports = function () {
-  mongoose.Promise = global.Promise; // gets rid of mpromise deprecation warning
+  // use native promises to get rid of mpromise deprecation warning
+  mongoose.Promise = global.Promise;
   var db = mongoose.connect(config.db);
 
   mongoose.connection.once('connected', function (err) {

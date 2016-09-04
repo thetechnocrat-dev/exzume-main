@@ -2,6 +2,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var User = require('../../models/user');
 var crypto = require('crypto');
 var email = require('../../util/email');
+var validator = require('validator');
 
 module.exports = function (passport) {
   passport.use('local-signup', new LocalStrategy({
@@ -22,8 +23,13 @@ module.exports = function (passport) {
           }
 
           var newUser = new User();
-          newUser.local.username = username;
-          newUser.local.password = newUser.generateHash(password);
+          newUser.local.username = validator.rtrim(username);
+          if (validator.isLength(password, { min: 6, max: undefined })) {
+            newUser.local.password = newUser.generateHash(password);
+          } else {
+            return done(null, false, { errorMessage: 'password must be at least 6 characters' });
+          }
+
           newUser.local.email = req.body.email;
           newUser.local.confirmEmail.token = crypto.randomBytes(64).toString('hex');
           newUser.local.passwordResetToken = crypto.randomBytes(64).toString('hex');
