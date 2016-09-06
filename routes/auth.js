@@ -3,6 +3,7 @@ var Feature = require('../models/feature');
 var mongoose = require('mongoose');
 var dataStreamAPIs = require('../controllers/dataStreamAPIs/dataStreamAPIs');
 var moment = require('moment');
+var async = require('async');
 
 module.exports = function (router, passport) {
   // makes sure a user is logged in
@@ -20,48 +21,6 @@ module.exports = function (router, passport) {
   router.get('/session', function (req, res) {
     res.json(req.user);
   });
-
-  // router.get('/insights', function (req, res) {
-  //   Insight.find({ ownerId: req.user._id }, function (err, insights) {
-  //     if (err) res.send(err);
-  //     res.json(insights);
-  //   });
-  // });
-  //
-  // router.route('/insights/:insightId')
-  //   .get(function (req, res) {
-  //     Insight.findOne({ _id: req.params.insightId }, function (err, insight) {
-  //       if (err) res.send(err);
-  //       if (insight) res.json(insight);
-  //     });
-  //   })
-  //   .put(function (req, res) {
-  //     Insight.findOne({ _id: req.params.insightId }, function (err, insight) {
-  //       if (insight) {
-  //         insight.message = req.body.message;
-  //         insight.liked = req.body.liked;
-  //         insight.save(function (err, insight) {
-  //           if (err) res.send(err);
-  //           if (insight) res.json(insight);
-  //         });
-  //       }
-  //     });
-  //   })
-  //   .post(function (req, res) {
-  //     var newInsight = new Insight();
-  //     newInsight.message = req.body.message;
-  //     newInsight.ownerId = mongoose.Types.ObjectId(req.body.ownerId);
-  //     newInsight.save(function (err, newInsight) {
-  //       if (err) res.send(err);
-  //       res.json(newInsight);
-  //     });
-  //   })
-  //   .delete(function (req, res) {
-  //     Insight.remove({ _id: req.params.insightId }, function (err, insight) {
-  //       if (err) res.send(err);
-  //       if (insight) res.json(insight);
-  //     });
-  //   });
 
   router.route('/zumes/:zumeId')
     .post(function (req, res) {
@@ -162,7 +121,7 @@ module.exports = function (router, passport) {
       console.log(next);
       console.log(req.params.datastream + ' callback route');
       passport.authenticate(req.params.datastream, {
-        successRedirect: '/#/dashboard?=', // redirect to grab from API and redirect
+        successRedirect: '/auth/datastreams/' + req.params.datastream + '/grab?isInitialSync=true', // redirect to grab from API and redirect
         failureRedirect: '/',
       })(req, res, next);
     }
@@ -170,12 +129,20 @@ module.exports = function (router, passport) {
 
   router.get('/datastreams/:datastream/grab', function (req, res) {
       var user = req.user;
-
+      var isInitialSync = req.query.isInitialSync;
       var done = function (error, updatedUser, shouldRedirect) {
         console.log('done');
-        if (error) res.send(error);
-        else if (updatedUser) res.json(updatedUser);
-        else if (shouldRedirect) res.redirect('/auth/datastreams/' + req.params.datastream);
+        if (error) {
+          res.send(error);
+        } else if (updatedUser) {
+          if (isInitialSync) {
+            res.redirect('/#/dashboard?=');
+          } else {
+            res.json(updatedUser);
+          }
+        } else if (shouldRedirect) {
+          res.redirect('/auth/datastreams/' + req.params.datastream);
+        }
       };
 
       dataStreamAPIs[req.params.datastream].sync(user, done);

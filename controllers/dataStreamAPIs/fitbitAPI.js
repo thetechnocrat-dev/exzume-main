@@ -52,4 +52,3 @@ var fitbitAPI = {
 };
 
 module.exports = fitbitAPI;
-
