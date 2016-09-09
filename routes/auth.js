@@ -130,8 +130,8 @@ module.exports = function (router, passport) {
   router.get('/datastreams/:datastream/grab', function (req, res) {
       var user = req.user;
       var isInitialSync = req.query.isInitialSync;
-      var done = function (error, updatedUser, shouldRedirect) {
-        console.log('done');
+      var endSync = function (error, updatedUser, shouldRedirect) {
+        console.log('sync is done');
         if (error) {
           res.send(error);
         } else if (updatedUser) {
@@ -145,7 +145,7 @@ module.exports = function (router, passport) {
         }
       };
 
-      dataStreamAPIs[req.params.datastream].sync(user, done);
+      dataStreamAPIs[req.params.datastream].sync(user, endSync);
     }
   );
 
