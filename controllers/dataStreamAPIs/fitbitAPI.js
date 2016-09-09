@@ -87,8 +87,20 @@ var fitbitAPI = {
       }
     };
 
-    // START HERE***************8========D
-    var processHeartRateData = function () {};
+    var processHeartRateData = function (heartRateArray, isFirstSync) {
+      var newData = [];
+      console.log('in pHRdata');
+      for (var i = 0; i < heartRateArray.length; i++) {
+        if (heartRateArray[i].value.restingHeartRate != undefined) {
+          newData.push({
+            dateTime: heartRateArray[i].dateTime,
+            value: heartRateArray[i].value.restingHeartRate,
+          });
+        }
+      }
+
+      return newData;
+    };
 
     async.series({
       // preSync calls back to startSync
@@ -99,8 +111,8 @@ var fitbitAPI = {
             } else if (startDate) {
               var baseUrl = 'https://api.fitbit.com/1/user/-/activities/steps/date/';
               var isFirstSync = false;
-              if (startDate === 'max') {
-                url = baseUrl + 'today' + '/max.json';
+              if (startDate === '1m') {
+                url = baseUrl + 'today' + '/1m.json';
                 isFirstSync = true;
               } else {
                 url = baseUrl + startDate + '/today.json';
@@ -148,6 +160,7 @@ var fitbitAPI = {
                 headers: { Authorization: 'Bearer ' + user.datastreams.fitbit.accessToken },
               }).then(function (streamRes) {
                 console.log(streamRes);
+                console.log('inside then');
                 var newData = processHeartRateData(streamRes.data['activities-heart'], isFirstSync);
                 util.addDataToUser(user, 'Heart Rate', 'fitbit', newData, nextSync);
               }).catch(function (err) {
@@ -155,7 +168,7 @@ var fitbitAPI = {
                   console.log('access token expired, redirecting to OAuth...');
                   nextSync('redirect', null);
                 } else {
-                  console.log('1 axios error')
+                  console.log('1 axios error');
                   nextSync(err.data.errors, null);
                 }
               });
