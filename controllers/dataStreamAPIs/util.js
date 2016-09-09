@@ -3,7 +3,7 @@ Feature = require('../../models/feature');
 // exported util functions
 util = {
   // function to add current data as object to user.datastreams.features array
-  addDataToUser: function (user, featureName, streamName, newData, endSync) {
+  addDataToUser: function (user, featureName, streamName, newData, nextSync) {
     var currentStream = user.datastreams[streamName];
 
     // find proper feature index within users datastream object
@@ -34,9 +34,9 @@ util = {
 
     user.save(function (err, user) {
       if (err) {
-        endSync(err, null, null);
+        nextSync(err, null);
       } else if (user) {
-        endSync(null, user, null);
+        nextSync(null, user);
       }
     });
   },

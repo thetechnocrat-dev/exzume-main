@@ -1,5 +1,6 @@
 var util = require('./util');
 var axios = require('axios');
+var async = require('async');
 
 // checks to see if user needs added to feature and if user feature array is initialized
 // returns date that sync should start from or 'max' if first time syncing
@@ -22,7 +23,7 @@ var preSync = function (user, featureName, streamName, startSync) {
     if (featureExists) {
       // returns start date for API's to sync from
       if (timeSeries.length === 0) {
-        startSync(null, 'max');
+        startSync(null, '1m');
         return;
       }
 
@@ -45,7 +46,7 @@ var preSync = function (user, featureName, streamName, startSync) {
         if (err) {
           startSync(err, null);
         } else if (user) {
-          startSync(null, 'max');
+          startSync(null, '1m');
         }
       });
     }
@@ -68,7 +69,7 @@ var fitbitAPI = {
     // startSync helper function:
     // a user can have a bunch of leading zeros in data if they made a fitbit account before
     // getting a tracking device, this removes those zeros
-    var processData = function (newData, isFirstInit) {
+    var processStepsData = function (newData, isFirstInit) {
       if (isFirstInit) {
         var i = 0;
         var shouldContinue = true;
@@ -86,35 +87,94 @@ var fitbitAPI = {
       }
     };
 
-    // preSync calls back to startSync which only executes without error
-    preSync(user, 'Steps', 'fitbit', function (err, startDate) {
-      if (err) {
-        endSync(err, null, null);
-      } else if (startDate) {
-        var baseUrl = 'https://api.fitbit.com/1/user/-/activities/steps/date/';
-        var isFirstSync = false;
-        if (startDate === 'max') {
-          url = baseUrl + 'today' + '/max.json';
-          isFirstSync = true;
-        } else {
-          url = baseUrl + startDate + '/today.json';
-        }
+    // START HERE***************8========D
+    var processHeartRateData = function () {};
 
-        axios({
-          method: 'GET',
-          url: url,
-          headers: { Authorization: 'Bearer ' + user.datastreams.fitbit.accessToken },
-        }).then(function (streamRes) {
-          var newData = processData(streamRes.data['activities-steps'], isFirstSync);
-          util.addDataToUser(user, 'Steps', 'fitbit', newData, endSync);
-        }).catch(function (err) {
-          if (err.status == 401) {
-            console.log('access token expired, redirecting to OAuth...');
-            endSync(null, null, true);
-          } else {
-            endSync(err.data.errors, null, null);
+    async.series({
+      // preSync calls back to startSync
+      steps: function (nextSync) {
+        preSync(user, 'Steps', 'fitbit', function (err, startDate) {
+            if (err) {
+              nextSync(err, null);
+            } else if (startDate) {
+              var baseUrl = 'https://api.fitbit.com/1/user/-/activities/steps/date/';
+              var isFirstSync = false;
+              if (startDate === 'max') {
+                url = baseUrl + 'today' + '/max.json';
+                isFirstSync = true;
+              } else {
+                url = baseUrl + startDate + '/today.json';
+              }
+
+              axios({
+                method: 'GET',
+                url: url,
+                headers: { Authorization: 'Bearer ' + user.datastreams.fitbit.accessToken },
+              }).then(function (streamRes) {
+                console.log(streamRes);
+                var newData = processStepsData(streamRes.data['activities-steps'], isFirstSync);
+                util.addDataToUser(user, 'Steps', 'fitbit', newData, nextSync);
+              }).catch(function (err) {
+                if (err.status == 401) {
+                  console.log('access token expired, redirecting to OAuth...');
+                  nextSync('redirect', null);
+                } else {
+                  nextSync(err.data.errors, null);
+                }
+              });
+            }
           }
-        });
+        );
+      },
+
+      heartRate: function (nextSync) {
+        preSync(user, 'Heart Rate', 'fitbit', function (err, startDate) {
+            if (err) {
+              nextSync(err, null);
+            } else if (startDate) {
+              var baseUrl = 'https://api.fitbit.com/1/user/-/activities/heart/date/';
+              var isFirstSync = false;
+              if (startDate === '1m') {
+                url = baseUrl + 'today' + '/1m.json';
+                isFirstSync = true;
+              } else {
+                url = baseUrl + startDate + '/today.json';
+              }
+
+              console.log(url);
+              axios({
+                method: 'GET',
+                url: url,
+                headers: { Authorization: 'Bearer ' + user.datastreams.fitbit.accessToken },
+              }).then(function (streamRes) {
+                console.log(streamRes);
+                var newData = processHeartRateData(streamRes.data['activities-heart'], isFirstSync);
+                util.addDataToUser(user, 'Heart Rate', 'fitbit', newData, nextSync);
+              }).catch(function (err) {
+                if (err.status == 401) {
+                  console.log('access token expired, redirecting to OAuth...');
+                  nextSync('redirect', null);
+                } else {
+                  console.log('1 axios error')
+                  nextSync(err.data.errors, null);
+                }
+              });
+            }
+          }
+        );
+      },
+
+    }, function (err, results) {
+      if (err === 'redirect') {
+        console.log('redirect')
+        endSync(null, null, true);
+      } else if (err) {
+        console.log('2 axios error')
+        endSync(err, null, null);
+      } else {
+        // second argument is last results.lastSeriesCallName is the user object
+        console.log(results);
+        endSync(null, results.heartRate, null);
       }
     });
   },

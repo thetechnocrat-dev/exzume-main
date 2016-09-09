@@ -1,6 +1,5 @@
 var moment = require('moment');
 var axios = require('axios');
-var apiURLs = require('../../routes/resources/apiURLs');
 var config = require('../../config/config');
 var util = require('./util');
 

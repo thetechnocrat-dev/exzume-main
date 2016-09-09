@@ -9,4 +9,3 @@ dataStreamAPIs = {
 };
 
 module.exports = dataStreamAPIs;
-
