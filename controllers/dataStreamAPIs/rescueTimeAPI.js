@@ -65,7 +65,7 @@ var rescueTimeAPI = {
           } else {
             axios.get('https://www.rescuetime.com/api/oauth/daily_summary_feed', {
               params: {
-                access_token: user.datastreams.rescuetime.accessToken,
+                access_token: user.datastreams.rescueTime.accessToken,
                 format: 'json',
               },
             }).then(function (streamRes) {
