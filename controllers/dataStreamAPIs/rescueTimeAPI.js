@@ -2,6 +2,8 @@ var axios = require('axios');
 var async = require('async');
 
 var preSync = function (user, featureName, streamName, startSync) {
+  console.log('inside rescue time presync');
+
   // if user stream doesn't contain feature array doesn't exist it will init it
   var prepUserFeatureArr = function (user, featureName, streamName, startSync) {
     var currentStream = user.datastreams[streamName];
@@ -40,6 +42,7 @@ var rescueTimeAPI = {
   },
 
   sync: function (user, endSync) {
+    console.log('in rescue time sync');
     var processData = function (newData) {
       var processedData = [];
       for (var i = 0; i < newData.length; i++) {
@@ -54,7 +57,9 @@ var rescueTimeAPI = {
 
     async.series([
       function (nextSync) {
+        console.log('inside rescuetime async series function');
         preSync(user, 'Computer Productive Time', 'rescuetime', function (err) {
+          console.log('inside rescueTime startSync');
           if (err) {
             nextSync(err, null);
           } else {
@@ -64,7 +69,7 @@ var rescueTimeAPI = {
                 format: 'json',
               },
             }).then(function (streamRes) {
-              console.log('made it to axios rescuetime sync call');
+              console.log('made it to axios rescuetime axios then call');
               var processedData = processData(streamRes.data);
               util.addDataToUser(
                 user, 'Computer Produvtive Time', 'rescuetime', processedData, nextSync
