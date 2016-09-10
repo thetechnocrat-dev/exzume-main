@@ -48,7 +48,7 @@ var rescueTimeAPI = {
       for (var i = 0; i < newData.length; i++) {
         console.log(newData[i].date);
         console.log(newData[i].all_productive_hours);
-        processHeartRateData.push({
+        processData.push({
           dateTime: newData[i].date,
           value: newData[i].all_productive_hours.toString(),
         });
@@ -64,7 +64,7 @@ var rescueTimeAPI = {
             nextSync(err, null);
           } else {
             console.log('about to axios call');
-            console.log(user.datastreams.rescueTime.accessToken);
+            console.log(user.datastreams.rescueTime);
             axios.get('https://www.rescuetime.com/api/oauth/daily_summary_feed', {
               params: {
                 access_token: user.datastreams.rescueTime.accessToken,
@@ -74,19 +74,19 @@ var rescueTimeAPI = {
               console.log('made it to axios rescuetime axios then call');
               var processedData = processData(streamRes.data);
               util.addDataToUser(
-                user, 'Computer Produvtive Time', 'rescuetime', processedData, nextSync
+                user, 'Computer Productive Time', 'rescuetime', processedData, nextSync
               );
             }).catch(function (err) {
               console.log('axios error');
               if (err) {
-                nextSync(err.data.errors, null);
+                nextSync(err, null);
               }
             });
           }
         });
       },
       ], function (err, results) {
-        console.log('async callback')
+        console.log('async callback');
         console.log(err);
         console.log(results[0].toString());
         if (err) {

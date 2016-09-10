@@ -126,6 +126,8 @@ module.exports = function (router, passport) {
       },
     }).then(function (authRes) {
       console.log('made it to rescueTime auth res');
+      console.log(authRes);
+      console.log(authRes.data.accessToken);
       req.user.datastreams.rescueTime.isConnected = true;
       req.user.datastreams.rescueTime.accessToken = authRes.data.accessToken;
       req.user.save(function (err) {
