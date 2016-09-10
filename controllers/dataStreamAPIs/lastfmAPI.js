@@ -73,7 +73,7 @@ var lastfmAPI = {
       for (var i = newData.length - 1; i >= 0; i--) {
         // do not include now playing track
         if (newData[i].date != null) {
-          var timeThisTrack = newData[i].date.uts; // 1473455213
+          var timeThisTrack = newData[i].date.uts;
           console.log(timeThisTrack);
 
           if (timeThisTrack > timeLastDay) {
@@ -99,41 +99,46 @@ var lastfmAPI = {
       return processedData;
     };
 
-    async.series({
-      tracksPlayed: function (nextSync) {
-        preSync(user, 'Tracks Played', 'lastfm', function (err) {
-          // timeLast is not used right now
-          if (err) {
-            nextSync(err, null);
-          } else {
-            // make axios call before calling processTracksData
-            axios.get('http://ws.audioscrobbler.com/2.0/', {
-              params: {
-                method: 'user.getrecenttracks',
-                limit: 200,
-                user: user.datastreams.lastfm.username,
-                api_key: config.lastfm.clientID,
-                format: 'json',
-              },
-            }).then(function (streamRes) {
-              console.log('made it to response');
-              console.log(streamRes);
-              console.log(streamRes.data.recenttracks.track);
-              var processedData = processTracksData(streamRes.data.recenttracks.track);
-              util.addDataToUser(user, 'Tracks Played', 'lastfm', processedData, nextSync);
-            }).catch(function (err) {
-              if (err.status == 401) {
-                console.log('access token expired, redirecting to OAuth...');
-                nextSync('redirect', null);
-              } else {
-                nextSync(err.data.errors, null);
-              }
-            });
-          }
-        });
-      },
+    var resources = [3, 2, 1];
+    var series = resources.map(function (resource) {
+      return (
+        function (nextSync) {
+          preSync(user, 'Tracks Played', 'lastfm', function (err) {
+            // timeLast is not used right now
+            if (err) {
+              nextSync(err, null);
+            } else {
+              // make axios call before calling processTracksData
+              axios.get('http://ws.audioscrobbler.com/2.0/', {
+                params: {
+                  method: 'user.getrecenttracks',
+                  limit: 200,
+                  user: user.datastreams.lastfm.username,
+                  api_key: config.lastfm.clientID,
+                  format: 'json',
+                  page: resource,
+                },
+              }).then(function (streamRes) {
+                console.log('made it to response');
+                console.log(streamRes);
+                console.log(streamRes.data.recenttracks.track);
+                var processedData = processTracksData(streamRes.data.recenttracks.track);
+                util.addDataToUser(user, 'Tracks Played', 'lastfm', processedData, nextSync);
+              }).catch(function (err) {
+                if (err.status == 401) {
+                  console.log('access token expired, redirecting to OAuth...');
+                  nextSync('redirect', null);
+                } else {
+                  nextSync(err.data.errors, null);
+                }
+              });
+            }
+          });
+        }
+      );
+    });
 
-    }, function (err, results) {
+    async.series(series, function (err, results) {
       if (err === 'redirect') {
         console.log('redirect');
         endSync(null, null, true);
@@ -143,7 +148,7 @@ var lastfmAPI = {
       } else {
         // second argument is last results.lastSeriesCallName is the user object
         console.log(results);
-        endSync(null, results.tracksPlayed, null);
+        endSync(null, results[results.length - 1], null);
       }
     });
   },

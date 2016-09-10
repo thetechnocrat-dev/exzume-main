@@ -13,7 +13,7 @@ var ExploreGraph = React.createClass({
 
   makeGraph: function () {
     if (this.props.seriesData.length === 0) {
-      var seriesData = [{ name: 'nothing selected', values: [{ x: '2016-07-16', y: '0' }] }];
+      var seriesData = [{ name: 'nothing selected', values: [{ x: '2016-07-16', y: 0 }] }];
     } else {
       var seriesData = this.props.seriesData;
     }
