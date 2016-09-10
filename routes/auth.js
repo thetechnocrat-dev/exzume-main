@@ -132,7 +132,7 @@ module.exports = function (router, passport) {
         if (err) {
           res.send(err);
         } else {
-          res.json(req.user);
+          res.redirect('/auth/datastreams/rescuetime/grab');
         }
       });
     }).catch(function (err) {
