@@ -54,6 +54,8 @@ var rescueTimeAPI = {
         });
       }
     };
+
+    async.series([
       function (nextSync) {
         console.log('inside rescuetime async series function');
         preSync(user, 'Computer Productive Time', 'rescueTime', function (err) {
