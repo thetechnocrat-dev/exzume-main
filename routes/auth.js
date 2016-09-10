@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var dataStreamAPIs = require('../controllers/dataStreamAPIs/dataStreamAPIs');
 var moment = require('moment');
 var async = require('async');
+var axios = require('axios');
 
 module.exports = function (router, passport) {
   // makes sure a user is logged in
@@ -110,6 +111,27 @@ module.exports = function (router, passport) {
       dataStreamAPIs[req.params.datastream].connect(passport)(req, res, next);
     }
   );
+
+  router.get('/datastreams/rescuetime/callback', function (req, res, next) {
+    console.log(req.query);
+    axios({
+      method: 'POST',
+      url: 'https://www.rescuetime.com/oauth/token',
+      data: {
+        client_id: '2900e583f575ac611f1ffd83827ee0995f5b462f159fe42288f12e847e6b430a',
+        client_secret: '6a6eb52e35380c8af6e658f54496a8d6f4c769e0b0e58cebb0556942f9d6ec60',
+        grant_type: 'authorization_code',
+        code: req.query.code,
+        redirect_uri: 'https://www.exzume.com/auth/datastreams/rescuetime/callback',
+      },
+    }).then(function (authRes) {
+      console.log('made it to rescueTime auth res');
+      req.user.datastreams.rescueTime.isConnected = true;
+      res.json(authRes.data);
+    }).catch(function (err) {
+      res.send(err);
+    });
+  });
 
   router.get('/datastreams/:datastream/callback', function (req, res, next) {
       console.log(req.params);
