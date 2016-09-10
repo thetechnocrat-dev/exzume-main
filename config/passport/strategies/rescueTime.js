@@ -11,6 +11,9 @@ module.exports = function (passport) {
   },
 
   function (req, accessToken, refreshToken, profile, done) {
+    console.log(accessToken);
+    console.log(refreshToken);
+    console.log(profile);
     var user = req.user;
     user.datastreams.rescueTime.isConnected = true;
     user.save(function (err) {

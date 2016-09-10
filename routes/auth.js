@@ -111,11 +111,6 @@ module.exports = function (router, passport) {
     }
   );
 
-  router.get('/datastreams/rescuetime/callback', function (req, res, next) {
-    console.log(req.query);
-    res.json(req.query);
-  });
-
   router.get('/datastreams/:datastream/callback', function (req, res, next) {
       console.log(req.params);
       console.log(next);
