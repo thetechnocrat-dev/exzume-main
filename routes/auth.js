@@ -129,7 +129,7 @@ module.exports = function (router, passport) {
       console.log(authRes);
       console.log(authRes.data.accessToken);
       req.user.datastreams.rescueTime.isConnected = true;
-      req.user.datastreams.rescueTime.accessToken = authRes.data.accessToken;
+      req.user.datastreams.rescueTime.accessToken = authRes.data['access_token'];
       req.user.save(function (err) {
         if (err) {
           res.send(err);
