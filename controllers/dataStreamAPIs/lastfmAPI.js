@@ -51,19 +51,21 @@ var lastfmAPI = {
       };
 
       const daySeconds = 86400; // seconds in day
-      var timeLast; // last song synced time in unix time
+      var lastSongTime;// last song synced time in unix time
 
-      // look at last day in existing data if it exists and re-count that day's tracks played
-      if (user.datastreams.lastfm.features[0].data.length != 0) {
-        var existingDataLength = user.datastreams.lastfm.features[0].data.length;
+      // case 1: use lastSongTime from DB
+      if (user.datastreams.lastfm.lastSongTime) {
+        lastSongTime = user.datastreams.lastfm.lastSongTime;
 
         // unix timestamp of the last dateTime in seconds
-        timeLastDay = Math.floor(new Date(user.datastreams.lastfm.features[0].data[existingDataLength - 1].dateTime).getTime() / 1000);
-      // or else track from beginning of 200 recent tracks
+        timeLastDay = Math.floor(lastSongTime / daySeconds) * daySeconds;
+        // timeLastDay = Math.floor(new Date(user.datastreams.lastfm.features[0].data[existingDataLength - 1].dateTime).getTime() / 1000);
+      // case 2: track from beginning of 200 recent tracks
       } else {
-        timeLast = newData[newData.length - 1].date.uts;
-        console.log('start here: ' + timeLast);
-        timeLastDay = Math.floor(timeLast / daySeconds) * daySeconds;
+        lastSongTime = newData[newData.length - 1].date.uts;
+        console.log('start here: ' + lastSongTime);
+
+        timeLastDay = Math.floor(lastSongTime / daySeconds) * daySeconds;
         console.log('start here: ' + moment(timeLastDay * 1000).utc().format('YYYY-MM-DD'));
       }
 
@@ -76,7 +78,7 @@ var lastfmAPI = {
           var timeThisTrack = newData[i].date.uts;
           console.log(timeThisTrack);
 
-          if (timeThisTrack > timeLastDay) {
+          if (timeThisTrack > timeLastDay && timeThisTrack > lastSongTime) {
             if (timeThisTrack <= timeLastDay + daySeconds) {
               currentDay.value++;
               console.log(currentDay.value);
@@ -99,7 +101,7 @@ var lastfmAPI = {
       return processedData;
     };
 
-    var resources = [3, 2, 1];
+    var resources = [6, 5, 4, 3, 2, 1];
     var series = resources.map(function (resource) {
       return (
         function (nextSync) {
