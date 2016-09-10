@@ -5,7 +5,8 @@ rescueTimeAPI = require('./rescueTimeAPI');
 dataStreamAPIs = {
   fitbit: fitbitAPI,
   lastfm: lastfmAPI,
-  rescueTime: rescueTimeAPI,
+  rescuetime: rescueTimeAPI,
 };
 
 module.exports = dataStreamAPIs;
+
