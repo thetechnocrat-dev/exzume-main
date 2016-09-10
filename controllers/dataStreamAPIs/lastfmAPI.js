@@ -101,7 +101,7 @@ var lastfmAPI = {
       return processedData;
     };
 
-    var resources = [6, 5, 4, 3, 2, 1];
+    var resources = [3, 2, 1];
     var series = resources.map(function (resource) {
       return (
         function (nextSync) {
