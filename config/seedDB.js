@@ -19,7 +19,7 @@ var apps = [
     openUrl: 'https://www.fitbit.com/',
   },
   {
-    name: 'lastFM',
+    name: 'LastFM',
     categories: ['music'],
     ratings: [5, 4],
     express: false,
@@ -29,6 +29,19 @@ var apps = [
     basicPrice: 0,
     connectIcon: 'lastfm-logo.png',
     openUrl: 'http://www.last.fm/home',
+  },
+  {
+    name: 'RescueTime',
+    categories: ['productivity'],
+    ratings: [5],
+    express: false,
+    requirements: [
+      'account required',
+      'download required',
+    ],
+    basicPrice: 0,
+    connectIcon: 'rescuetime-logo.png',
+    openUrl: 'https://www.rescuetime.com',
   },
 ];
 

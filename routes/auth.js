@@ -121,7 +121,7 @@ module.exports = function (router, passport) {
       console.log(next);
       console.log(req.params.datastream + ' callback route');
       passport.authenticate(req.params.datastream, {
-        successRedirect: '/auth/datastreams/' + req.params.datastream + '/grab?isInitialSync=true', // redirect to grab from API and redirect
+        successRedirect: '/auth/datastreams/' + req.params.datastream + '/grab?isInitialSync=true',
         failureRedirect: '/',
       })(req, res, next);
     }

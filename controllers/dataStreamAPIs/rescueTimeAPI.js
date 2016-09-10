@@ -3,6 +3,10 @@ var rescueTimeAPI = {
     return passport.authenticate('rescuetime');
   },
 
+  sync: function (user, endSync) {
+    endSync(null, user, null);
+  },
+
 };
 
 module.exports = rescueTimeAPI;
