@@ -54,8 +54,6 @@ var rescueTimeAPI = {
         });
       }
     };
-
-    async.series([
       function (nextSync) {
         console.log('inside rescuetime async series function');
         preSync(user, 'Computer Productive Time', 'rescueTime', function (err) {
@@ -63,6 +61,8 @@ var rescueTimeAPI = {
           if (err) {
             nextSync(err, null);
           } else {
+            console.log('about to axios call');
+            console.log(user.datastreams.rescueTime.accessToken);
             axios.get('https://www.rescuetime.com/api/oauth/daily_summary_feed', {
               params: {
                 access_token: user.datastreams.rescueTime.accessToken,
@@ -75,6 +75,7 @@ var rescueTimeAPI = {
                 user, 'Computer Produvtive Time', 'rescuetime', processedData, nextSync
               );
             }).catch(function (err) {
+              console.log('axios error');
               if (err) {
                 nextSync(err.data.errors, null);
               }
@@ -83,6 +84,9 @@ var rescueTimeAPI = {
         });
       },
       ], function (err, results) {
+        console.log('async callback')
+        console.log(err);
+        console.log(results[0].toString());
         if (err) {
           endSync(err, null, null);
         } else {
