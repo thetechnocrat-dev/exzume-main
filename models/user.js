@@ -52,6 +52,7 @@ var UserSchema = new Schema({
       key: String,
       lastSyncTime: { type: Date, default: Date.now },
       isConnected: { type: Boolean, default: false },
+      lastSongTime: Number,
       features: [{
           name: String,
           data: [],
