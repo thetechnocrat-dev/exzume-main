@@ -127,7 +127,14 @@ module.exports = function (router, passport) {
     }).then(function (authRes) {
       console.log('made it to rescueTime auth res');
       req.user.datastreams.rescueTime.isConnected = true;
-      res.json(authRes.data);
+      req.user.datastreams.rescueTime.accessToken = authRes.data.accessToken;
+      req.user.save(function (err) {
+        if (err) {
+          res.send(err);
+        } else {
+          res.json(req.user);
+        }
+      });
     }).catch(function (err) {
       res.send(err);
     });

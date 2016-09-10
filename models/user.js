@@ -62,6 +62,7 @@ var UserSchema = new Schema({
     rescueTime: {
       accessToken: String,
       refreshToken: String,
+      lastSyncTime: { type: Date, default: Date.now },
       isConnected: { type: Boolean, default: false },
       features: [{
           name: String,
