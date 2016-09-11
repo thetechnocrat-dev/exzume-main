@@ -48,7 +48,7 @@ var rescueTimeAPI = {
       for (var i = 0; i < newData.length; i++) {
         console.log(newData[i].date);
         console.log(newData[i].all_productive_hours);
-        processData.push({
+        processedData.push({
           dateTime: newData[i].date,
           value: newData[i].all_productive_hours.toString(),
         });
