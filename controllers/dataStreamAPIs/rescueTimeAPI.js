@@ -53,6 +53,8 @@ var rescueTimeAPI = {
           value: newData[i].all_productive_hours.toString(),
         });
       }
+
+      return processedData;
     };
 
     async.series([
@@ -74,7 +76,7 @@ var rescueTimeAPI = {
               console.log('made it to axios rescuetime axios then call');
               var processedData = processData(streamRes.data);
               util.addDataToUser(
-                user, 'Computer Productive Time', 'rescuetime', processedData, nextSync
+                user, 'Computer Productive Time', 'rescueTime', processedData, nextSync
               );
             }).catch(function (err) {
               console.log('axios error');

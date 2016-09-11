@@ -5,6 +5,9 @@ util = {
   // function to add current data as object to user.datastreams.features array
   addDataToUser: function (user, featureName, streamName, newData, nextSync) {
     var currentStream = user.datastreams[streamName];
+    console.log(currentStream);
+    console.log(featureName);
+    console.log(newData.toString());
 
     // find proper feature index within users datastream object
     var thisFeatureIndex;
