@@ -134,7 +134,7 @@ module.exports = function (router, passport) {
         if (err) {
           res.send(err);
         } else {
-          res.redirect('/auth/datastreams/rescuetime/grab');
+          res.redirect('/auth/datastreams/rescuetime/grab?isInitialSync=true');
         }
       });
     }).catch(function (err) {
