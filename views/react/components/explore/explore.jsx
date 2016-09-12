@@ -70,17 +70,43 @@ var Explore = React.createClass({
   },
 
   clickCorrelate: function () {
-    var selectedFeatures = GraphStore.getSelectedFeatures();
-    console.log(selectedFeatures[0].data);
-    console.log(selectedFeatures[1].data);
+    var selectedDataSeries = GraphStore.getSeriesData();
+    console.log(selectedDataSeries);
+    f1 = selectedDataSeries[0].values;
+    f2 = selectedDataSeries[1].values;
+
+    processedData = [];
+    var minLength = f1.length <= f2.length ? f1.length : f2.length;
+    var i = 0;
+    var j = 0;
+    while (i < minLength && j < minLength) {
+      if ((new Date(f1[i].x)).getTime() == (new Date(f2[j].x)).getTime()) {
+        processedData.push({ f1: f1[i].y, f2: f2[j].y });
+        i++; j++;
+      } else if ((new Date(f1[i].x)).getTime() < (new Date(f2[j].x)).getTime()) {
+        processedData.push({ f1: f1[i].y, f2: null });
+        i++;
+      } else {
+        processedData.push({ f1: null, f2: f2[j].y });
+        j++;
+      }
+    }
+
+    while (i < f1.length) {
+      processedData.push({ f1: f1[i].y, f2: null });
+      i++;
+    }
+
+    while (j < f2.length) {
+      processedData.push({ f1: null, f2: f2[j].y });
+      j++;
+    }
+
+    console.log(processedData);
 
     FastFlux.webCycle('post', '/auth/correlate', {
-      // success: this.success,
       shouldStoreReceive: false,
-      body: {
-        feature1: selectedFeatures[0].data,
-        feature2: selectedFeatures[1].data,
-      },
+      body: { data: JSON.stringify(processedData) },
     });
 
   },
