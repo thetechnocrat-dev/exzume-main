@@ -52,6 +52,39 @@ var Explore = React.createClass({
     this.setState({ viewPortHeight: viewPortHeight, viewPortWidth: viewPortWidth });
   },
 
+  makeCorrelateButton: function () {
+    if (GraphStore.hasTwoSelectedFeatures()) {
+      return (
+        <button
+          className="ui green button"
+          onClick={this.clickCorrelate}>Correlate
+        </button>
+      );
+    } else {
+      return (
+        <button className="ui disabled button">
+          Correlate
+        </button>
+      );
+    }
+  },
+
+  clickCorrelate: function () {
+    var selectedFeatures = GraphStore.getSelectedFeatures();
+    console.log(selectedFeatures[0].data);
+    console.log(selectedFeatures[1].data);
+
+    FastFlux.webCycle('post', '/auth/correlate', {
+      // success: this.success,
+      shouldStoreReceive: false,
+      body: {
+        feature1: selectedFeatures[0].data,
+        feature2: selectedFeatures[1].data,
+      },
+    });
+
+  },
+
   makePinZumeButton: function () {
     if (GraphStore.hasSelectedFeature()) {
       return (
@@ -162,6 +195,7 @@ var Explore = React.createClass({
                 <TimeMenu isDisabled={!GraphStore.hasSelectedFeature()} />
               </div>
               <div className="right floated column">
+                {this.makeCorrelateButton()}
                 {this.makePinZumeButton()}
                 {this.makeSuccessMessage()}
               </div>

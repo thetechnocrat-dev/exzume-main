@@ -175,6 +175,20 @@ module.exports = function (router, passport) {
     }
   );
 
+  router.post('/correlate', function (req, res) {
+    console.log('in correlate');
+    console.log(req.body);
+    axios({
+      method: 'POST',
+      url: 'http://0.0.0.0:5000/',
+      data: req.body,
+    }).then(function (dataRes) {
+      console.log(dataRes);
+    }).catch(function (err) {
+      res.send(err);
+    });
+  });
+
   router.get('/signout', function (req, res) {
     req.logout();
     res.json({ message: 'sign out success' });

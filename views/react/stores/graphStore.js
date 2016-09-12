@@ -97,6 +97,10 @@ GraphStore.getSelectedFeatures = function () {
   return _selectedFeatures;
 },
 
+GraphStore.hasTwoSelectedFeatures = function () {
+  return _selectedFeatures.length == 2;
+},
+
 GraphStore.__onDispatch = function (payload) {
   switch (payload.actionType) {
     case 'FEATURE_RECEIVED':
