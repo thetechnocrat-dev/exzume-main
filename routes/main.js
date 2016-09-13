@@ -42,22 +42,28 @@ module.exports = function (router, passport) {
         res.status(401).send(info.signinMessage);
       };
     })(req, res);
-  }),
+  });
 
   // demo link that makes axios call
   router.get('/demo', function (req, res) {
-    axios({
-      method: 'POST',
-      url: '/signin',
-      data: {
-        username: 'Watts42',
-        password: 'password',
-      },
-    }).then(function (resp) {
-      console.log(resp);
-    }).catch(function (err) {
-      res.send(err);
-    });
+    req.body.username = 'Watts42';
+    req.body.password = 'password';
+    passport.authenticate('local-login', function (err, user, info) {
+      if (err) {
+        res.status(500).json({ message: 'internal server error - try refreshing the page' });
+      } else if (user) {
+        console.log('user is logged in: ', user);
+        req.login(user, function (err) {
+          if (err) {
+            return next(err);
+          }
+        });
+
+        res.redirect('/#/dashboard');
+      } else {
+        res.status(401).send(info.signinMessage);
+      };
+    })(req, res);
   });
 
   router.post('/signup', function (req, res) {
