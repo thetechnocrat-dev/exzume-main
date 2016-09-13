@@ -13,7 +13,8 @@ var NormalizeButton = React.createClass({
   },
 
   makeButton: function () {
-    var buttonStyle = { marginTop: '2.5%' };
+    var buttonStyle = {};
+
     if (this.state.isNormalized) {
       return (
         <button

@@ -25,4 +25,3 @@ var SelectedFeatureMenu = React.createClass({
 });
 
 module.exports = SelectedFeatureMenu;
-

@@ -6,6 +6,7 @@ var SessionStore = require('../../stores/sessionStore');
 var Dropdown = require('./dropdown');
 var SelectedFeatureMenu = require('./selectedFeatureMenu');
 var NormalizeButton = require('./normalizeButton');
+var CorrelateButton = require('./correlateButton');
 
 var SelectFeaturePanel = React.createClass({
   propTypes: {
@@ -18,7 +19,12 @@ var SelectFeaturePanel = React.createClass({
       <div>
         <Dropdown features={this.props.selectableFeatures} />
         <SelectedFeatureMenu features={this.props.selectedFeatures} />
-        <NormalizeButton features={this.props.selectedFeatures} />
+        <div className="ui grid" style={{ marginTop: '0.5%' }}>
+          <div className="row" style={{ marginLeft: '2%' }}>
+            <NormalizeButton features={this.props.selectedFeatures} />
+            <CorrelateButton />
+          </div>
+        </div>
       </div>
     );
   },
