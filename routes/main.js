@@ -4,6 +4,7 @@ var App = require('../models/app');
 var mongoose = require('mongoose');
 var email = require('../util/email');
 var crypto = require('crypto');
+var axios = require('axios');
 
 module.exports = function (router, passport) {
 
@@ -42,6 +43,22 @@ module.exports = function (router, passport) {
       };
     })(req, res);
   }),
+
+  // demo link that makes axios call
+  router.get('/demo', function (req, res) {
+    axios({
+      method: 'POST',
+      url: '/signin',
+      data: {
+        username: 'Watts42',
+        password: 'password',
+      },
+    }).then(function (resp) {
+      console.log(resp);
+    }).catch(function (err) {
+      res.send(err);
+    });
+  });
 
   router.post('/signup', function (req, res) {
     passport.authenticate('local-signup', function (err, user, info) {
@@ -124,4 +141,3 @@ module.exports = function (router, passport) {
   });
 
 };
-
