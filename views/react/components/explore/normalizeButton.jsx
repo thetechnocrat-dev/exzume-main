@@ -19,7 +19,6 @@ var NormalizeButton = React.createClass({
       return (
         <button
           className="ui yellow button"
-          style={buttonStyle}
           onClick={this.handleClick}>Denormalize Data
         </button>
       );
@@ -27,7 +26,6 @@ var NormalizeButton = React.createClass({
       return (
         <button
           className="ui yellow button"
-          style={buttonStyle}
           onClick={this.handleClick}>Normalize Data
         </button>
       );
@@ -36,9 +34,7 @@ var NormalizeButton = React.createClass({
 
   render: function () {
     return (
-      <div>
-        {this.makeButton()}
-      </div>
+      this.makeButton()
     );
   },
 

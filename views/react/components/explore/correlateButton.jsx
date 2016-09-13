@@ -48,7 +48,7 @@ var CorrelateButton = React.createClass({
   },
 
   makeButton: function () {
-    var buttonStyle = {};
+    var buttonStyle = { marginLeft: '10px' };
 
     if (GraphStore.hasTwoSelectedFeatures()) {
       return (
@@ -70,9 +70,7 @@ var CorrelateButton = React.createClass({
 
   render: function () {
     return (
-      <div>
-        {this.makeButton()}
-      </div>
+      this.makeButton()
     );
   },
 

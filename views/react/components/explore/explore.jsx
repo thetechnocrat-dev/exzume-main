@@ -7,6 +7,9 @@ var GraphStore = require('../../stores/graphStore');
 var ExploreGraph = require('./exploreGraph');
 var SelectFeaturePanel = require('./selectFeaturePanel');
 var TimeMenu = require('./timeMenu');
+var SelectedFeatureMenu = require('./selectedFeatureMenu');
+var NormalizeButton = require('./normalizeButton');
+var CorrelateButton = require('./correlateButton');
 
 var Explore = React.createClass({
   getInitialState: function () {
@@ -147,10 +150,27 @@ var Explore = React.createClass({
     if (user) {
       return (
         <div>
-          <SelectFeaturePanel
-            selectableFeatures={this.getSelectableFeatures()}
-            selectedFeatures={GraphStore.getSelectedFeatures()}
-          />
+          <div className="ui grid">
+            <div className="four column row" style={{ marginBottom: '0', paddingBottom: '0' }}>
+              <div className="column">
+                <SelectFeaturePanel
+                  selectableFeatures={this.getSelectableFeatures()}
+                  selectedFeatures={GraphStore.getSelectedFeatures()}
+                />
+              </div>
+            </div>
+            <div className="row" style={{ marginTop: '0', paddingTop: '0', paddingBottom: '0' }}>
+              <div className="column">
+                <SelectedFeatureMenu features={GraphStore.getSelectedFeatures()} />
+              </div>
+            </div>
+            <div className="row" style={{ paddingTop: '9px', paddingBottom: '0' }}>
+              <div className="column">
+                <NormalizeButton features={GraphStore.getSelectedFeatures()} />
+                <CorrelateButton />
+              </div>
+            </div>
+          </div>
           <ExploreGraph
             seriesData={GraphStore.getSeriesData()}
             width={graphWidth}
