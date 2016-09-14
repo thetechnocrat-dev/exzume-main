@@ -126,11 +126,11 @@ module.exports = function (router, passport) {
         redirect_uri: 'https://www.exzume.com/auth/datastreams/rescuetime/callback',
       },
     }).then(function (authRes) {
-      console.log('made it to rescueTime auth res');
+      console.log('made it to rescuetime auth res');
       console.log(authRes);
       console.log(authRes.data.accessToken);
-      req.user.datastreams.rescueTime.isConnected = true;
-      req.user.datastreams.rescueTime.accessToken = authRes.data['access_token'];
+      req.user.datastreams.rescuetime.isConnected = true;
+      req.user.datastreams.rescuetime.accessToken = authRes.data['access_token'];
       req.user.save(function (err) {
         if (err) {
           res.send(err);
