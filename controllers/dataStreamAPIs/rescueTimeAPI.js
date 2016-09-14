@@ -62,23 +62,23 @@ var rescueTimeAPI = {
     async.series([
       function (nextSync) {
         console.log('inside rescuetime async series function');
-        preSync(user, 'Computer Productivity (Hours)', 'rescueTime', function (err) {
-          console.log('inside rescueTime startSync');
+        preSync(user, 'Computer Productivity (Hours)', 'rescuetime', function (err) {
+          console.log('inside rescuetime startSync');
           if (err) {
             nextSync(err, null);
           } else {
             console.log('about to axios call');
-            console.log(user.datastreams.rescueTime);
+            console.log(user.datastreams.rescuetime);
             axios.get('https://www.rescuetime.com/api/oauth/daily_summary_feed', {
               params: {
-                access_token: user.datastreams.rescueTime.accessToken,
+                access_token: user.datastreams.rescuetime.accessToken,
                 format: 'json',
               },
             }).then(function (streamRes) {
               console.log('made it to axios rescuetime axios then call');
               var processedData = processData(streamRes.data);
               util.addDataToUser(
-                user, 'Computer Productivity (Hours)', 'rescueTime', processedData, nextSync
+                user, 'Computer Productivity (Hours)', 'rescuetime', processedData, nextSync
               );
             }).catch(function (err) {
               console.log('axios error');
@@ -104,3 +104,4 @@ var rescueTimeAPI = {
 };
 
 module.exports = rescueTimeAPI;
+
