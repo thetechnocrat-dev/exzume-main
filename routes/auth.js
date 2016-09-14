@@ -5,6 +5,7 @@ var dataStreamAPIs = require('../controllers/dataStreamAPIs/dataStreamAPIs');
 var moment = require('moment');
 var async = require('async');
 var axios = require('axios');
+var config = require('../config/config');
 
 module.exports = function (router, passport) {
   // makes sure a user is logged in
@@ -180,7 +181,7 @@ module.exports = function (router, passport) {
     console.log(req.body);
     axios({
       method: 'POST',
-      url: 'http://0.0.0.0:5000/',
+      url: config.microURL,
       data: req.body,
     }).then(function (dataRes) {
       console.log(dataRes);
