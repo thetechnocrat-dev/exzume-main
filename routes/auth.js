@@ -183,8 +183,9 @@ module.exports = function (router, passport) {
       method: 'POST',
       url: config.microURL,
       data: req.body,
-    }).then(function (dataRes) {
-      console.log(dataRes);
+    }).then(function (resp) {
+      console.log(resp);
+      res.json(resp.data);
     }).catch(function (err) {
       res.send(err);
     });

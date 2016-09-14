@@ -17,6 +17,7 @@ var Explore = React.createClass({
       viewPortWidth: window.innerWidth,
       viewPortHeight: window.innerHeight,
       successMessage: false,
+      corrMessage: null,
     });
 
     if (SessionStore.isSignedIn()) {

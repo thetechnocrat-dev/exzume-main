@@ -4,6 +4,19 @@ var FastFlux = require('../../util/fast-flux-react/fastFlux');
 var PropTypes = React.PropTypes;
 
 var CorrelateButton = React.createClass({
+  getInitialState: function () {
+    var corrVal = null;
+    return { corrVal: corrVal };
+  },
+
+  corrSuccess: function (res) {
+    console.log(res);
+    this.setState({ corrVal: res.toFixed(2) });
+  },
+
+  corrError: function (resp) {
+    console.log(resp);
+  },
 
   handleClick: function () {
     var selectedDataSeries = GraphStore.getSeriesData();
@@ -41,10 +54,22 @@ var CorrelateButton = React.createClass({
     console.log(processedData);
 
     FastFlux.webCycle('post', '/auth/correlate', {
+      success: this.corrSuccess,
+      error: this.corrError,
       shouldStoreReceive: false,
       body: { data: JSON.stringify(processedData) },
     });
 
+  },
+
+  makeCorrMessage: function () {
+    var corrVal = this.state.corrVal;
+    var messageStyle = { display: 'inline-block', marginLeft: '10px' };
+    if (corrVal) {
+      return (
+        <div className="ui message" style={messageStyle}>{corrVal}</div>
+      );
+    }
   },
 
   makeButton: function () {
@@ -70,7 +95,10 @@ var CorrelateButton = React.createClass({
 
   render: function () {
     return (
-      this.makeButton()
+      <div style={{ display: 'inline-block' }}>
+        {this.makeButton()}
+        {this.makeCorrMessage()}
+      </div>
     );
   },
 
