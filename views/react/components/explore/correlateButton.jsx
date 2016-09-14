@@ -1,17 +1,14 @@
 var React = require('react');
 var GraphStore = require('../../stores/graphStore');
 var FastFlux = require('../../util/fast-flux-react/fastFlux');
-var PropTypes = React.PropTypes;
 
 var CorrelateButton = React.createClass({
-  getInitialState: function () {
-    var corrVal = null;
-    return { corrVal: corrVal };
+  propTypes: {
+    correlation: React.PropTypes.node,
   },
 
   corrSuccess: function (res) {
-    console.log(res);
-    this.setState({ corrVal: res.toFixed(2) });
+    FastFlux.cycle('CORRELATION_RECEIVED', res.toFixed(2));
   },
 
   corrError: function (resp) {
@@ -51,8 +48,6 @@ var CorrelateButton = React.createClass({
       j++;
     }
 
-    console.log(processedData);
-
     FastFlux.webCycle('post', '/auth/correlate', {
       success: this.corrSuccess,
       error: this.corrError,
@@ -63,11 +58,10 @@ var CorrelateButton = React.createClass({
   },
 
   makeCorrMessage: function () {
-    var corrVal = this.state.corrVal;
-    var messageStyle = { display: 'inline-block', marginLeft: '10px' };
-    if (corrVal) {
+    var messageStyle = { display: 'inline-block', marginLeft: '10px', marginTop: '-10px' };
+    if (this.props.correlation) {
       return (
-        <div className="ui message" style={messageStyle}>{corrVal}</div>
+        <div className="ui message" style={messageStyle}>{this.props.correlation}</div>
       );
     }
   },
@@ -105,3 +99,4 @@ var CorrelateButton = React.createClass({
 });
 
 module.exports = CorrelateButton;
+

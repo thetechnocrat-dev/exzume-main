@@ -160,15 +160,15 @@ var Explore = React.createClass({
                 />
               </div>
             </div>
-            <div className="row" style={{ marginTop: '0', paddingTop: '0', paddingBottom: '0' }}>
+            <div className="row" style={{ marginTop: '0', paddingTop: '0', paddingBottom: '9px' }}>
               <div className="column">
                 <SelectedFeatureMenu features={GraphStore.getSelectedFeatures()} />
               </div>
             </div>
-            <div className="row" style={{ paddingTop: '9px', paddingBottom: '0' }}>
+            <div className="row" style={{ paddingTop: '0', paddingBottom: '0' }}>
               <div className="column">
                 <NormalizeButton features={GraphStore.getSelectedFeatures()} />
-                <CorrelateButton />
+                <CorrelateButton correlation={GraphStore.getCorrelation()} />
               </div>
             </div>
           </div>
