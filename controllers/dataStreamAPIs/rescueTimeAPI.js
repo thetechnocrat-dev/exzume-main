@@ -60,7 +60,7 @@ var rescueTimeAPI = {
     async.series([
       function (nextSync) {
         console.log('inside rescuetime async series function');
-        preSync(user, 'Computer Productive Time', 'rescueTime', function (err) {
+        preSync(user, 'Computer Productivity (Hours)', 'rescueTime', function (err) {
           console.log('inside rescueTime startSync');
           if (err) {
             nextSync(err, null);
@@ -76,7 +76,7 @@ var rescueTimeAPI = {
               console.log('made it to axios rescuetime axios then call');
               var processedData = processData(streamRes.data);
               util.addDataToUser(
-                user, 'Computer Productive Time', 'rescueTime', processedData, nextSync
+                user, 'Computer Productivity (Hours)', 'rescueTime', processedData, nextSync
               );
             }).catch(function (err) {
               console.log('axios error');
@@ -102,4 +102,3 @@ var rescueTimeAPI = {
 };
 
 module.exports = rescueTimeAPI;
-
