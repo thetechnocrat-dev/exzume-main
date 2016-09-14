@@ -8,6 +8,7 @@ var _filters = {
   dateBound: 'Week',
   shouldNormalize: false,
 };
+var _correlation = null;
 
 GraphStore.resetGraphStore = function () {
   _selectedFeatures = [];
@@ -15,9 +16,12 @@ GraphStore.resetGraphStore = function () {
     dateBound: 'Week',
     shouldNormalize: false,
   };
+  _correlation = null;
 },
 
 GraphStore.addFeature = function (feature) {
+  // resets correlation when a feature is recieved because currently only two featurecan correlate
+  _correlation = null;
   _selectedFeatures.push(feature);
 },
 
@@ -32,6 +36,14 @@ GraphStore.removeFeature = function (feature) {
 
 GraphStore.addFilter = function (filter) {
   _filters[filter.key] = filter.value;
+},
+
+GraphStore.getCorrelation = function () {
+  return _correlation;
+},
+
+GraphStore.setCorrelation = function (correlation) {
+  _correlation = correlation;
 },
 
 GraphStore.getSeriesData = function () {
@@ -115,6 +127,9 @@ GraphStore.__onDispatch = function (payload) {
       this.addFilter(payload.data);
       this.__emitChange();
       break;
+    case 'CORRELATION_RECEIVED':
+      this.setCorrelation(payload.data);
+      this.__emitChange();
   }
 };
 
