@@ -19,14 +19,14 @@ var NormalizeButton = React.createClass({
       return (
         <button
           className="ui yellow button"
-          onClick={this.handleClick}>Denormalize Data
+          onClick={this.handleClick}>Denormalize
         </button>
       );
     } else {
       return (
         <button
           className="ui yellow button"
-          onClick={this.handleClick}>Normalize Data
+          onClick={this.handleClick}>Normalize
         </button>
       );
     }
@@ -41,3 +41,4 @@ var NormalizeButton = React.createClass({
 });
 
 module.exports = NormalizeButton;
+
