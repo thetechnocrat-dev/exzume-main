@@ -1,5 +1,6 @@
 var Dispatcher = require('../dispatcher/dispatcher');
 var Store = require('flux/utils').Store;
+var streamNames = require('../util/streamNames');
 
 var SessionStore = new Store(Dispatcher);
 var _currentUser = {};
@@ -39,6 +40,8 @@ SessionStore.getUserStreams = function () {
   for (key in _currentUser.datastreams) {
     if (_currentUser.datastreams[key].isConnected) {
       var stream = _currentUser.datastreams[key];
+      stream.key = key;
+      stream.name = streamNames[key];
       userActiveStreams.push(stream);
     }
   }
@@ -71,3 +74,4 @@ SessionStore.__onDispatch = function (payload) {
 };
 
 module.exports = SessionStore;
+

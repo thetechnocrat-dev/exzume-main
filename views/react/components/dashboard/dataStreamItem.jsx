@@ -25,7 +25,7 @@ var DataStreamItem = React.createClass({
   },
 
   clickSync: function () {
-    var url = 'auth/datastreams/' + this.props.stream.name + '/grab';
+    var url = 'auth/datastreams/' + this.props.stream.key + '/grab';
     FastFlux.webCycle('get', url, {
       success: this.success,
       error: this.error,
@@ -76,7 +76,7 @@ var DataStreamItem = React.createClass({
   },
 
   openApp: function () {
-    var url = 'http://www.' + this.props.stream.name + '.com';
+    var url = 'http://www.' + this.props.stream.key + '.com';
     window.open(url, '_blank');
   },
 
@@ -110,7 +110,7 @@ var DataStreamItem = React.createClass({
       width: this.state.iconSize,
       display: 'inline-block',
     };
-    var imgPath = 'images/' + this.props.stream.name + '-logo-round.png';
+    var imgPath = 'images/' + this.props.stream.key + '-logo-round.png';
     var itemStyle = {
       backgroundColor: this.state.backgroundColor,
       borderRadius: '20px',

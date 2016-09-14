@@ -36,7 +36,6 @@ var UserSchema = new Schema({
       ],
     },
     fitbit: {
-      name: { type: String, default: 'Fitbit' },
       profileId: { type: String, unique: true },
       accessToken: String,
       refreshToken: String,
@@ -49,7 +48,6 @@ var UserSchema = new Schema({
       ],
     },
     lastfm: {
-      name: { type: String, default: 'LastFM' },
       username: String,
       key: String,
       lastSyncTime: { type: Date, default: Date.now },
@@ -61,8 +59,7 @@ var UserSchema = new Schema({
         },
       ],
     },
-    rescueTime: {
-      name: { type: String, default: 'RescueTime' },
+    rescuetime: {
       accessToken: String,
       refreshToken: String,
       lastSyncTime: { type: Date, default: Date.now },
