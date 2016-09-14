@@ -26,6 +26,7 @@ var UserSchema = new Schema({
   ],
   datastreams: {
     survey: {
+      name: { type: String, default: 'Personal Survey' },
       isConnected: { type: Boolean, default: true },
       features: [{
           name: String,

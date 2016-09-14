@@ -46,7 +46,9 @@ var CorrelateButton = React.createClass({
     while (j < f2.length) {
       processedData.push({ f1: null, f2: f2[j].y });
       j++;
-    }
+    };
+
+    console.log(processedData);
 
     FastFlux.webCycle('post', '/auth/correlate', {
       success: this.corrSuccess,
@@ -99,4 +101,3 @@ var CorrelateButton = React.createClass({
 });
 
 module.exports = CorrelateButton;
-

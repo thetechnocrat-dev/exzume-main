@@ -28,7 +28,7 @@ var DataStreamIndex = React.createClass({
       );
     } else {
       return this.props.userStreams.map(function (stream, idx) {
-        if (stream.name !== 'survey') {
+        if (stream.name !== 'Personal Survey') {
           return (
             <DataStreamItem
               key={idx}
@@ -59,4 +59,3 @@ var DataStreamIndex = React.createClass({
 });
 
 module.exports = DataStreamIndex;
-
