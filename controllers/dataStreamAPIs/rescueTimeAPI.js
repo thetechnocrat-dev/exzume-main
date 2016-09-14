@@ -45,7 +45,9 @@ var rescueTimeAPI = {
     console.log('in rescue time sync');
     var processData = function (newData) {
       var processedData = [];
-      for (var i = 0; i < newData.length; i++) {
+
+      // data is pulled reverse chronologically, so start from end of array and sync backwards
+      for (var i = newData.length - 1; i > 0; i--) {
         console.log(newData[i].date);
         console.log(newData[i].all_productive_hours);
         processedData.push({
