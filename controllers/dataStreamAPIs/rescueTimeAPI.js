@@ -76,6 +76,8 @@ var rescueTimeAPI = {
               },
             }).then(function (streamRes) {
               console.log('made it to axios rescuetime axios then call');
+              console.log('----rescuetime form------');
+              console.log(streamRes.data);
               var processedData = processData(streamRes.data);
               util.addDataToUser(
                 user, 'Computer Productivity (Hours)', 'rescuetime', processedData, nextSync

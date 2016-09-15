@@ -60,7 +60,7 @@ var Explore = React.createClass({
     if (GraphStore.hasSelectedFeature()) {
       return (
         <button
-          className="ui green button"
+          className="ui disabled green button"
           onClick={this.clickPinZume}>Pin Zume
         </button>
       );
@@ -203,3 +203,4 @@ var Explore = React.createClass({
 });
 
 module.exports = Explore;
+
