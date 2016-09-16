@@ -8,6 +8,7 @@ var CorrelateButton = React.createClass({
   },
 
   corrSuccess: function (res) {
+    console.log(res);
     FastFlux.cycle('CORRELATION_RECEIVED', res.toFixed(2));
   },
 

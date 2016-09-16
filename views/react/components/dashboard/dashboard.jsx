@@ -5,6 +5,8 @@ var SessionStore = require('../../stores/sessionStore');
 var ProfilePanel = require('./profilePanel');
 var ZumePanel = require('./zumePanel');
 var SurveyPanel = require('./surveyPanel');
+var MoodCard = require('./moodCard');
+var DoughnutViz = require('./doughnutViz');
 
 var Dashboard = React.createClass({
   getInitialState: function () {
@@ -43,6 +45,8 @@ var Dashboard = React.createClass({
             userFeatures={SessionStore.getUserFeatures()}
             userStreams={SessionStore.getUserStreams()}
           />
+          <MoodCard user={user} />
+          <DoughnutViz average={10} current={5} color={'#000000'} label={'Productivity'} />
           <ZumePanel user={user} />
           <SurveyPanel user={user} />
         </div>
@@ -61,4 +65,3 @@ var Dashboard = React.createClass({
 });
 
 module.exports = Dashboard;
-
