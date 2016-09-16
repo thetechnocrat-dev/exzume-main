@@ -11,7 +11,12 @@ var MoodCard = React.createClass({
       <div className="ui card">
         <div className="content">
           <div className="header" style={{ marginBottom: '2%' }}>
-            I was satisfied with how I did today.
+            Mood
+          </div>
+          <div className="meta" style={{ marginBottom: '2%' }}>
+            <span className="date">
+              How satisfied were you with how you did today?
+            </span>
           </div>
           <div>
             <a className="ui large red label">1</a>
@@ -20,7 +25,7 @@ var MoodCard = React.createClass({
             <a className="ui large olive label">4</a>
             <a className="ui large green label">5</a>
             <a className="ui large teal label">6</a>
-            <a className="ui large blue label">7</a>
+            <a className="ui large purple label">7</a>
           </div>
         </div>
         <form className="ui form" style={{ margin: '2% 3% 2% 3%' }}>
