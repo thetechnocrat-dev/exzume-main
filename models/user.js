@@ -25,6 +25,20 @@ var UserSchema = new Schema({
     },
   ],
   datastreams: {
+    mood: {
+      name: { type: String, default: 'Mood' },
+      isHidden: { type: Boolean, default: false },
+      features: [
+        {
+          name: { type: String, default: 'Mood Rating' },
+          data: [],
+        },
+        {
+          name: { type: String, default: 'Mood Note' },
+          data: [],
+        },
+      ],
+    },
     survey: {
       name: { type: String, default: 'Personal Survey' },
       isConnected: { type: Boolean, default: true },

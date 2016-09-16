@@ -14,7 +14,7 @@ var MoodCard = React.createClass({
             Mood
           </div>
           <div className="meta" style={{ marginBottom: '2%' }}>
-            <span className="date">
+            <span>
               How satisfied were you with how you did today?
             </span>
           </div>
