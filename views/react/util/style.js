@@ -5,4 +5,7 @@ module.exports = {
   lightGreenHover: '#a5f3da',
   green: '#1FCC99',
   yellow: '#FFC219',
+  red: '#D14D28',
+  gray: '#A0A0A0',
 };
+
