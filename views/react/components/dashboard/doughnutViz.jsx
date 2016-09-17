@@ -5,50 +5,23 @@ var DoughnutChart = require('react-chartjs').Doughnut;
 
 var DoughnutViz = React.createClass({
   propTypes: {
-    average: React.PropTypes.number.isRequired,
-    current: React.PropTypes.number.isRequired,
-    color: React.PropTypes.string.isRequired,
+    chartData: React.PropTypes.array.isRequired,
     label: React.PropTypes.string.isRequired,
   },
 
+  componentDidMount: function () {
+    console.log('doughnut viz');
+    console.log(this.props);
+  },
+
   render: function () {
-    var chartOptions = {
-
-    };
-
-    var thisAverage = 0;
-    var thisCurrent = 0;
-
-    if (this.props.current > this.props.average) {
-      thisCurrent = this.props.average;
-      thisAverage = 0;
-    } else {
-      thisCurrent = this.props.current;
-      thisAverage = this.props.average - thisCurrent;
-    }
-
-    var chartData = [
-      {
-        color: '#000',
-        label: 'current',
-        value: thisCurrent,
-        borderWidth: 2,
-      }, {
-        color: '#E8E8EE',
-        label: 'till average',
-        value: thisAverage,
-        borderWidth: 1,
-      },
-    ];
+    chartOptions = {};
 
     return (
-      <div className="ui card">
-        <div className="content">
-          <div className="header" style={{ marginBottom: '3%' }}>
-            {this.props.label}
-          </div>
-          <DoughnutChart data={chartData} options={chartOptions}/>
-        </div>
+      <div>
+        <DoughnutChart data={this.props.chartData} options={chartOptions}/>
+        <br />
+        {this.props.label}
       </div>
     );
   },
@@ -56,3 +29,4 @@ var DoughnutViz = React.createClass({
 });
 
 module.exports = DoughnutViz;
+
