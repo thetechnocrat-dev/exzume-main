@@ -1,13 +1,18 @@
 var React = require('react');
+var History = require('react-router').History;
 
 // Components
+// var connectItem = require('./connectItem');
 
 var ConnectionCard = React.createClass({
+  mixins: [History],
+
   propTypes: {
     userStreams: React.PropTypes.array.isRequired,
   },
 
   clickConnect: function () {
+    this.history.push('/dashboard/connect');
   },
 
   makeConnectionItems: function () {
@@ -28,7 +33,20 @@ var ConnectionCard = React.createClass({
             Connections
           </div>
           <div className="ui three column grid">
-            {this.makeConnectionItems()}
+            <div className ="centered column" style={{ textAlign: 'center' }}>
+              <img className="ui image" src={'images/fitbit-logo-round.png'} />  
+            </div>
+            <div className ="centered column" style={{ textAlign: 'center' }}>
+              <img className="ui image" src={'images/lastfm-logo-round.png'} />  
+            </div>
+            <div className ="centered column" style={{ textAlign: 'center' }}>
+              <img className="ui image" src={'images/rescuetime-logo-round.png'} />  
+            </div>
+            <div className="column" style={{ textAlign: 'center' }}>
+              <div className="ui yellow icon button">
+                <i className="plus icon" />
+              </div>
+            </div>
           </div>
         </div>
       </div>

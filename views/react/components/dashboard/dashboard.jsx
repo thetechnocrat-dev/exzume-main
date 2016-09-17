@@ -48,12 +48,12 @@ var Dashboard = React.createClass({
             <div className="column">
               <MoodCard user={user} />
               <FitnessCard
-                currentSteps={4002}
-                avgSteps={7899}
-                currentActiveMinutes={36}
-                avgActiveMinutes={22}
-                currentFloors={6}
-                avgFloors={4}
+                currentSteps={7544}
+                avgSteps={8969}
+                currentActiveMinutes={24}
+                avgActiveMinutes={54}
+                currentFloors={18}
+                avgFloors={23}
                 exercisesThisWeek={3}
                 avgExercisesPerWeek={5}
               />
@@ -67,19 +67,19 @@ var Dashboard = React.createClass({
                     info: 'Your caffeine consumption has also trended significantly above average the last 3 days' },
                   { text: 'Your mood has trended significantly doward the last 4 days', 
                     info: 'click here to see notes you wrote on previous days were you had a high mood' },
-                  { text: 'You have less awakenings at night when you go to sleep later',
+                  { text: 'You wake up less at night when you go to sleep later',
                     info: 'no additional info found for this insight' },
                 ]}
               />
               <SleepCard
-                wakeUpTime={'6:40am'}
-                avgWakeUpTime={'7:00am'}
-                bedTime={'11:50pm'}
-                avgBedTime={'11:30pm'}
-                currentSleepEfficiency={78}
-                avgSleepEfficiency={80}
+                wakeUpTime={'7:28am'}
+                avgWakeUpTime={'8:26am'}
+                bedTime={'12:50am'}
+                avgBedTime={'12:46am'}
+                currentSleepEfficiency={96}
+                avgSleepEfficiency={95}
                 currentTimeToFallAsleep={12}
-                avgTimeToFallAsleep={20}
+                avgTimeToFallAsleep={21}
                 currentAwakenings={5}
                 avgAwakenings={3}
                 currentMinutesNapping={0}
@@ -88,12 +88,12 @@ var Dashboard = React.createClass({
             </div>
             <div className="column">
               <ProductivityCard
-                currentProductiveTime={4}
-                currentDistractingTime={5}
-                currentNeautralTime={0.5}
-                avgProductiveTime={3.8}
-                avgDistractingTime={2}
-                avgNeautralTime={0.3}
+                currentProductiveTime={6.2}
+                currentDistractingTime={0.3}
+                currentNeautralTime={0.6}
+                avgProductiveTime={7.2}
+                avgDistractingTime={0.4}
+                avgNeautralTime={0.4}
               />
               <ConnectionCard
                 userStreams={[1, 2, 3, 4, 5]}

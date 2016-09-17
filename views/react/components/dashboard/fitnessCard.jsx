@@ -46,8 +46,8 @@ var FitnessCard = React.createClass({
           />
           <HorzBarViz
             label={'exercises this week'}
-            avg={this.props.exercisesThisWeek}
-            current={this.props.avgExercisesPerWeek}
+            avg={this.props.avgExercisesPerWeek}
+            current={this.props.exercisesThisWeek}
             fillColor={Style.green}
             backgroundColor={Style.lightGreen}
           />
