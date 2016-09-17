@@ -191,6 +191,43 @@ module.exports = function (router, passport) {
     });
   });
 
+  router.post('/mood', function (req, res) {
+    var user = req.user;
+    var moodStream = user.datastreams.mood;
+    console.log(req.body);
+    var newMood = [req.body.moodRating, req.body.moodNote];
+
+    // create two features in features array of mood datastream
+    if (moodStream.features.length == 0) {
+      moodStream.features[0] = { name: 'Mood Rating', data: [] };
+      moodStream.features[1] = { name: 'Mood Notes', data: [] };
+    }
+
+    console.log(moodStream.features[0]);
+    console.log(moodStream.features[1]);
+
+    // re-update to edit overlap data
+    moodStream.features.map(function (feature, i) {
+      if (feature.data.length > 0 &&
+          moment(feature.data[feature.data.length - 1].dateTime).utc().format('YYYY-MM-DD')
+          == moment(req.body.dateTime).utc().format('YYYY-MM-DD')) {
+        feature.data[feature.data.length - 1].dateTime = req.body.dateTime;
+        feature.data[feature.data.length - 1].value = newMood[i];
+      } else {
+        feature.data.push({ dateTime: req.body.dateTime,
+                            value: newMood[i], });
+      }
+    });
+
+    user.save(function (err) {
+      if (err) {
+        res.send(err);
+      } else {
+        res.json(user);
+      }
+    });
+  });
+
   router.get('/signout', function (req, res) {
     req.logout();
     res.json({ message: 'sign out success' });

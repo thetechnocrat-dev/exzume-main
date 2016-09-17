@@ -30,11 +30,7 @@ var UserSchema = new Schema({
       isHidden: { type: Boolean, default: false },
       features: [
         {
-          name: { type: String, default: 'Mood Rating' },
-          data: [],
-        },
-        {
-          name: { type: String, default: 'Mood Note' },
+          name: { type: String },
           data: [],
         },
       ],
