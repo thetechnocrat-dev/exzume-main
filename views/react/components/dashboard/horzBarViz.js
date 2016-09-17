@@ -48,7 +48,7 @@ var HorzBarViz = React.createClass({
     return (
       <div style={outerStyle}>
         <div style={labelStyle}>{this.props.current.toFixed() + ' ' + this.props.label}</div>
-        <div style={secondLabelStyle}>{this.props.avg.toFixed()}</div>
+        <div style={secondLabelStyle}>{this.props.avg.toFixed() + ' avg'}</div>
         <div style={backgroundStyle}>
           <div style={fillStyle} />
         </div>
