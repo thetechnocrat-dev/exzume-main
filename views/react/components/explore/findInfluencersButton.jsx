@@ -7,9 +7,13 @@ var FindInfluencersButton = React.createClass({
     feature: React.PropTypes.array.isRequired,
   },
 
+  handleClick: function () {
+    FastFlux.cycle('GRAPH_TYPE_RECEIVED', 'bar');
+  },
+
   render: function () {
     return (
-      <div className="ui green button">Find Influencers</div>
+      <div className="ui green button" onClick={this.handleClick}>Find Influencers</div>
     );
   },
 });

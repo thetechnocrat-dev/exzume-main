@@ -11,6 +11,7 @@ var SelectedFeatureMenu = require('./selectedFeatureMenu');
 var NormalizeButton = require('./normalizeButton');
 var CorrelateButton = require('./correlateButton');
 var FindInfluencersButton = require('./findInfluencersButton');
+var BarExploreGraph = require('./barExploreGraph.jsx');
 
 var Explore = React.createClass({
   getInitialState: function () {
@@ -35,7 +36,11 @@ var Explore = React.createClass({
   },
 
   _onChangeGraph: function () {
-    this.setState({ seriesData: GraphStore.getSeriesData() });
+    this.setState({
+      graphType: GraphStore.getGraphType(),
+      barData: GraphStore.getBarData(),
+      seriesData: GraphStore.getSeriesData(),
+    });
   },
 
   componentDidMount: function () {
@@ -144,6 +149,29 @@ var Explore = React.createClass({
     });
   },
 
+  makeExploreGraph: function (graphWidth, graphHeight) {
+    console.log('inside makeExploreGraph');
+    console.log(GraphStore.getGraphType());
+    if (GraphStore.getGraphType() === 'line') {
+      return (
+        <ExploreGraph
+          seriesData={GraphStore.getSeriesData()}
+          width={graphWidth}
+          height={graphHeight}
+        />
+      );
+    } else if (GraphStore.getGraphType() === 'bar') {
+      console.log(GraphStore.getBarData());
+      return (
+        <BarExploreGraph
+          barData={GraphStore.getBarData()}
+          width={graphWidth}
+          height={graphHeight}
+        />
+      );
+    }
+  },
+
   makeContent: function () {
     var user = this.state.user;
     var graphHeight = this.state.viewPortHeight * 0.7;
@@ -174,11 +202,7 @@ var Explore = React.createClass({
               </div>
             </div>
           </div>
-          <ExploreGraph
-            seriesData={GraphStore.getSeriesData()}
-            width={graphWidth}
-            height={graphHeight}
-          />
+          {this.makeExploreGraph(graphWidth, graphHeight)}
           <div className="ui grid">
             <div className="four column row">
               <div className="column">

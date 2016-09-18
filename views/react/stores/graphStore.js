@@ -9,6 +9,7 @@ var _filters = {
   shouldNormalize: false,
 };
 var _correlation = null;
+var _graphType = 'line';
 
 GraphStore.resetGraphStore = function () {
   _selectedFeatures = [];
@@ -17,6 +18,7 @@ GraphStore.resetGraphStore = function () {
     shouldNormalize: false,
   };
   _correlation = null;
+  _graphType = 'line';
 },
 
 GraphStore.addFeature = function (feature) {
@@ -44,6 +46,26 @@ GraphStore.getCorrelation = function () {
 
 GraphStore.setCorrelation = function (correlation) {
   _correlation = correlation;
+},
+
+GraphStore.setGraphType = function (graphType) {
+  _graphType = graphType;
+},
+
+GraphStore.getGraphType = function () {
+  return _graphType;
+},
+
+GraphStore.getBarData = function () {
+  return [
+      { name: 'Series A',
+                values: [
+                        { x: 1, y:  91},
+                              { x: 2, y: 33},
+                                    { x: 4, y: 22 },
+                                        ]
+                                            },
+  ];
 },
 
 GraphStore.getSeriesData = function () {
@@ -169,6 +191,9 @@ GraphStore.__onDispatch = function (payload) {
       break;
     case 'CORRELATION_RECEIVED':
       this.setCorrelation(payload.data);
+      this.__emitChange();
+    case 'GRAPH_TYPE_RECEIVED':
+      this.setGraphType(payload.data);
       this.__emitChange();
   }
 };
