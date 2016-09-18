@@ -5,11 +5,14 @@ var preSync = function (user, featureNameArray, streamName, startSync) {
   console.log('inside rescue time presync');
 
   // if user stream doesn't contain feature array doesn't exist it will init it
-  var prepUserFeatureArr = function (user, featureName, streamName, startSync) {
+  var prepUserFeatureArr = function (user, featureNameArray, streamName, startSync) {
+    console.log('inside prepUserFeatureArr');
     var shouldSaveUser = false;
     var currentStream = user.datastreams[streamName];
 
-    for (featureName in featureNameArray) {
+    for (idx in featureNameArray) {
+      var featureName = featureNameArray[idx];
+
       // check if user already has initialized userFeature
       var featureExists = false;
       for (var i = 0; i < currentStream.features.length; i++) {
@@ -37,7 +40,7 @@ var preSync = function (user, featureNameArray, streamName, startSync) {
     }
   };
 
-  prepUserFeatureArr(user, featureName, streamName, startSync);
+  prepUserFeatureArr(user, featureNameArray, streamName, startSync);
 };
 
 var rescueTimeAPI = {
@@ -99,8 +102,6 @@ var rescueTimeAPI = {
               },
             }).then(function (streamRes) {
               console.log('made it to axios rescuetime axios then call');
-              console.log('----rescuetime form------');
-              console.log(streamRes.data);
               var processedDataArray = processData(streamRes.data);
               var featureNameArray = [
                 'Computer Productivity (Hours)',
@@ -121,7 +122,6 @@ var rescueTimeAPI = {
       },
       ], function (err, results) {
         console.log('async callback');
-        console.log(err);
         console.log(results[0].toString());
         if (err) {
           endSync(err, null, null);

@@ -48,9 +48,13 @@ util = {
   // features from same route
   addMuchDataToUser: function (user, featureNameArray, streamName, newDataArray, nextSync) {
     var currentStream = user.datastreams[streamName];
-    console.log(currentStream);
+    console.log('add much data to user');
 
-    for (featureName in featureNameArray) {
+    for (idx in featureNameArray) {
+      var featureName = featureNameArray[idx];
+      var newData = newDataArray[idx];
+      console.log(featureName);
+
       // find proper feature index within users datastream object
       var thisFeatureIndex;
       for (var i = 0; i < currentStream.features.length; i++) {
@@ -61,6 +65,7 @@ util = {
 
       // re-update overlap data
       var thisFeature = currentStream.features[thisFeatureIndex];
+      console.log(thisFeature);
       var j = 0;
       for (var i = 0; i < thisFeature.data.length && j < newData.length; i++) {
         if (thisFeature.data[i].dateTime === newData[j].dateTime) {
@@ -77,6 +82,8 @@ util = {
 
     // update lastSyncTime
     currentStream.lastSyncTime = Date.now();
+
+    console.log('made it to add much data user save');
 
     user.save(function (err, user) {
       if (err) {
