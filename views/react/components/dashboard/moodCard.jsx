@@ -3,6 +3,37 @@ var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var FastFlux = require('../../util/fast-flux-react/fastFlux');
 var moment = require('moment');
 
+var ratingButtons = [
+  {
+    color: 'red',
+    value: 1,
+  },
+  {
+    color: 'orange',
+    value: 2,
+  },
+  {
+    color: 'yellow',
+    value: 3,
+  },
+  {
+    color: 'olive',
+    value: 4,
+  },
+  {
+    color: 'green',
+    value: 5,
+  },
+  {
+    color: 'teal',
+    value: 6,
+  },
+  {
+    color: 'purple',
+    value: 7,
+  },
+];
+
 var MoodCard = React.createClass({
   mixins: [LinkedStateMixin],
 
@@ -16,6 +47,9 @@ var MoodCard = React.createClass({
     var lastUpdatedTime = null;
     var lastRating = null;
     var lastNote = '';
+    var enlarge = null;
+    var submitClicked = false;
+    var momentLastUpdatedTime = null;
 
     if (moodFeatures.length != 0) {
       var ratingData = moodFeatures[0].data;
@@ -24,34 +58,45 @@ var MoodCard = React.createClass({
       lastUpdatedTime = ratingData[ratingData.length - 1].dateTime;
       lastRating = ratingData[ratingData.length - 1].value;
       lastNote = noteData[noteData.length - 1].value;
-      console.log(typeof lastUpdatedTime);
-      console.log(lastUpdatedTime);
-      console.log(lastRating);
-      console.log(lastNote);
-      console.log(typeof Date.now());
-      console.log(moment(parseInt(lastUpdatedTime)).utc().format('YYYY-MM-DD'));
-      console.log(moment(Date.now()).utc().format('YYYY-MM-DD'));
+      submitClicked = true;
+
+      // console.log(typeof lastUpdatedTime);
+      // console.log(lastUpdatedTime);
+      // console.log(lastRating);
+      // console.log(lastNote);
+      // console.log(typeof Date.now());
+      // console.log(moment(parseInt(lastUpdatedTime)).utc().format('YYYY-MM-DD'));
+      // console.log(moment(Date.now()).utc().format('YYYY-MM-DD'));
+
+      for (i in ratingButtons) {
+        if (ratingButtons[i].value == lastRating) {
+          enlarge = ratingButtons[i].color;
+        }
+      }
 
       if (moment(parseInt(lastUpdatedTime)).utc().format('YYYY-MM-DD')
           != moment(Date.now()).utc().format('YYYY-MM-DD')) {
         lastUpdatedTime = null;
         lastRating = null;
         lastNote = null;
+        enlarge = null;
+        submitClicked = false;
       }
     };
 
     console.log(lastUpdatedTime);
     console.log(lastRating);
     console.log(lastNote);
+    console.log(enlarge);
 
     return {
       error: null,
       rating: lastRating,
-      enlarge: null,
+      enlarge: enlarge,
       note: lastNote,
       loading: false,
       lastUpdatedTime: lastUpdatedTime,
-      submitClicked: false,
+      submitClicked: submitClicked,
     };
   },
 
@@ -104,36 +149,6 @@ var MoodCard = React.createClass({
 
   makeRatingButtons: function () {
     var _this = this;
-    var ratingButtons = [
-      {
-        color: 'red',
-        value: 1,
-      },
-      {
-        color: 'orange',
-        value: 2,
-      },
-      {
-        color: 'yellow',
-        value: 3,
-      },
-      {
-        color: 'olive',
-        value: 4,
-      },
-      {
-        color: 'green',
-        value: 5,
-      },
-      {
-        color: 'teal',
-        value: 6,
-      },
-      {
-        color: 'purple',
-        value: 7,
-      },
-    ];
 
     return ratingButtons.map(function (ratingButton, idx) {
       if (_this.state.enlarge == ratingButton.color) {
@@ -187,7 +202,7 @@ var MoodCard = React.createClass({
     if (this.state.lastUpdatedTime) {
       return (
         <div className="meta" style={timeStyle}>
-          last updated: {moment(this.state.lastUpdatedTime).utc().fromNow()}
+          last updated: {moment(parseInt(this.state.lastUpdatedTime)).utc().fromNow()}
         </div>
       );
     }
