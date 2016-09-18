@@ -52,6 +52,7 @@ util = {
 
     for (idx in featureNameArray) {
       var featureName = featureNameArray[idx];
+      console.log(featureName);
 
       // find proper feature index within users datastream object
       var thisFeatureIndex;
@@ -79,6 +80,8 @@ util = {
 
     // update lastSyncTime
     currentStream.lastSyncTime = Date.now();
+
+    console.log('made it to add much data user save');
 
     user.save(function (err, user) {
       if (err) {
