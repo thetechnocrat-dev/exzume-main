@@ -101,6 +101,12 @@ var fitbitAPI = {
         featureRef: 'activities-floors',
         processDataFunc: processActivityData,
       },
+      {
+        featureName: 'Very Active Minutes',
+        baseUrl: 'https://api.fitbit.com/1/user/-/activities/minutesVeryActive/date/',
+        featureRef: 'activities-minutesVeryActive',
+        processDataFunc: processActivityData,
+      },
     ];
 
     var series = resources.map(function (resource) {
@@ -155,4 +161,3 @@ var fitbitAPI = {
 };
 
 module.exports = fitbitAPI;
-
