@@ -10,6 +10,7 @@ var TimeMenu = require('./timeMenu');
 var SelectedFeatureMenu = require('./selectedFeatureMenu');
 var NormalizeButton = require('./normalizeButton');
 var CorrelateButton = require('./correlateButton');
+var FindInfluencersButton = require('./findInfluencersButton');
 
 var Explore = React.createClass({
   getInitialState: function () {
@@ -169,6 +170,7 @@ var Explore = React.createClass({
               <div className="column">
                 <NormalizeButton features={GraphStore.getSelectedFeatures()} />
                 <CorrelateButton correlation={GraphStore.getCorrelation()} />
+                <FindInfluencersButton feature={GraphStore.getSelectedFeatures()} />
               </div>
             </div>
           </div>

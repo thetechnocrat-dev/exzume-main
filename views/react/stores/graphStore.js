@@ -101,6 +101,46 @@ GraphStore.getSeriesData = function () {
   return seriesData;
 },
 
+// For calculations
+GraphStore.getRawSeriesData = function () {
+  var today = moment(new Date());
+  var withinBounds =  function (date, dateBound) {
+    if (dateBound === 'Max') {
+      return true;
+    } else if (dateBound === 'Month') {
+      return 31 >= moment.duration(today.diff(moment(date))).asDays();
+    } else if (dateBound === 'Week') {
+      return 7 >= moment.duration(today.diff(moment(date))).asDays();
+    }
+  };
+
+  var seriesData = [];
+  for (var i = 0; i < _selectedFeatures.length; i++) {
+    var feature = _selectedFeatures[i];
+    var series = {};
+    series.name = feature.name;
+    series.values = [];
+    var sum = 0;
+
+    for (var j = 0; j < feature.data.length; j++) {
+      if (withinBounds(feature.data[j].dateTime, _filters.dateBound)) {
+        sum += parseInt(feature.data[j].value);
+        series.values.push({ x: feature.data[j].dateTime, y: parseInt(feature.data[j].value) });
+      }
+    }
+
+    var avg = sum / series.values.length;
+    var normalizedSeries = series.values.map(function (obj) {
+      obj.y /= avg;
+      return obj;
+    });
+
+    seriesData.push({ name: series.name, values: normalizedSeries });
+  }
+
+  return seriesData;
+},
+
 GraphStore.hasSelectedFeature = function () {
   return _selectedFeatures.length > 0;
 },

@@ -17,7 +17,7 @@ var CorrelateButton = React.createClass({
   },
 
   handleClick: function () {
-    var selectedDataSeries = GraphStore.getSeriesData();
+    var selectedDataSeries = GraphStore.getRawSeriesData();
     console.log(selectedDataSeries);
     f1 = selectedDataSeries[0].values;
     f2 = selectedDataSeries[1].values;
