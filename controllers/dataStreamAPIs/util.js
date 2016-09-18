@@ -50,7 +50,9 @@ util = {
     var currentStream = user.datastreams[streamName];
     console.log('add much data to user');
 
-    for (featureName in featureNameArray) {
+    for (idx in featureNameArray) {
+      var featureName = featureNameArray[idx];
+
       // find proper feature index within users datastream object
       var thisFeatureIndex;
       for (var i = 0; i < currentStream.features.length; i++) {

@@ -10,7 +10,9 @@ var preSync = function (user, featureNameArray, streamName, startSync) {
     var shouldSaveUser = false;
     var currentStream = user.datastreams[streamName];
 
-    for (featureName in featureNameArray) {
+    for (idx in featureNameArray) {
+      var featureName = featureNameArray[idx];
+
       // check if user already has initialized userFeature
       var featureExists = false;
       for (var i = 0; i < currentStream.features.length; i++) {
