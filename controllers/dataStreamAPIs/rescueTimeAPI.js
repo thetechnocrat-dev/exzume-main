@@ -5,7 +5,7 @@ var preSync = function (user, featureNameArray, streamName, startSync) {
   console.log('inside rescue time presync');
 
   // if user stream doesn't contain feature array doesn't exist it will init it
-  var prepUserFeatureArr = function (user, featureName, streamName, startSync) {
+  var prepUserFeatureArr = function (user, featureNameArray, streamName, startSync) {
     console.log('inside prepUserFeatureArr');
     var shouldSaveUser = false;
     var currentStream = user.datastreams[streamName];
@@ -38,7 +38,7 @@ var preSync = function (user, featureNameArray, streamName, startSync) {
     }
   };
 
-  prepUserFeatureArr(user, featureName, streamName, startSync);
+  prepUserFeatureArr(user, featureNameArray, streamName, startSync);
 };
 
 var rescueTimeAPI = {
