@@ -37,26 +37,37 @@ var rescueTimeAPI = {
   connect: function () {
     return function (req, res, next) {
       console.log('rescue time redirect');
-      res.redirect('https://www.rescuetime.com/oauth/authorize/?response_type=code&redirect_uri=https%3A%2F%2Fwww.exzume.com%2Fauth%2Fdatastreams%2Frescuetime%2Fcallback&scope=time_data%20category_data%20productivity_data&client_id=2900e583f575ac611f1ffd83827ee0995f5b462f159fe42288f12e847e6b430a');
+      res.redirect('https://www.rescuetime.com/oauth/authorize/?response_type=code&redirect_uri' +
+          '=https%3A%2F%2Fwww.exzume.com%2Fauth%2Fdatastreams%2Frescuetime%2Fcallback&scope=' +
+          'time_data%20category_data%20productivity_data&client_id=2900e583f575ac611f1ffd838' +
+          '27ee0995f5b462f159fe42288f12e847e6b430a');
     };
   },
 
   sync: function (user, endSync) {
     console.log('in rescue time sync');
     var processData = function (newData) {
-      var processedData = [];
+      var productiveHours = [];
+      var neutralHours = [];
+      var distractingHours = [];
 
       // data is pulled reverse chronologically, so start from end of array and sync backwards
       for (var i = newData.length - 1; i > 0; i--) {
-        console.log(newData[i].date);
-        console.log(newData[i].all_productive_hours);
-        processedData.push({
+        productiveHours.push({
           dateTime: newData[i].date,
           value: newData[i].all_productive_hours.toString(),
         });
+        neutralHours.push({
+          dateTime: newData[i].date,
+          value: newData[i].neutral_hours.toString(),
+        });
+        distractingHours.push({
+          dateTime: newData[i].date,
+          value: newData[i].all_distracting_hours.toString(),
+        });
       }
 
-      return processedData;
+      return [productiveHours, neutralHours, distractingHours];
     };
 
     async.series([
@@ -78,9 +89,14 @@ var rescueTimeAPI = {
               console.log('made it to axios rescuetime axios then call');
               console.log('----rescuetime form------');
               console.log(streamRes.data);
-              var processedData = processData(streamRes.data);
-              util.addDataToUser(
-                user, 'Computer Productivity (Hours)', 'rescuetime', processedData, nextSync
+              var processedDataArray = processData(streamRes.data);
+              var featureNameArray = [
+                'Computer Productivity (Hours)',
+                'Compuer Neutral (Hours)',
+                'Computer Distraction (Hours)',
+              ];
+              util.addMuchDataToUser(
+                user, featureNameArray, 'rescuetime', processedDataArray, nextSync
               );
             }).catch(function (err) {
               console.log('axios error');
