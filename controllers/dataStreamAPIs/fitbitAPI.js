@@ -54,7 +54,7 @@ var fitbitAPI = {
 
   sync: function (user, endSync) {
     // startSync helper functions:
-    var processActivityData = function (newData) {
+    var processActSleepData = function (newData) {
       var processedData = [];
       for (var i = 0; i < newData.length; i++) {
         if (newData[i].value != '0') {
@@ -87,7 +87,7 @@ var fitbitAPI = {
         featureName: 'Steps',
         baseUrl: 'https://api.fitbit.com/1/user/-/activities/steps/date/',
         featureRef: 'activities-steps',
-        processDataFunc: processActivityData,
+        processDataFunc: processActSleepData,
       },
       {
         featureName: 'Heart Rate',
@@ -99,13 +99,31 @@ var fitbitAPI = {
         featureName: 'Floors',
         baseUrl: 'https://api.fitbit.com/1/user/-/activities/floors/date/',
         featureRef: 'activities-floors',
-        processDataFunc: processActivityData,
+        processDataFunc: processActSleepData,
       },
       {
         featureName: 'Very Active Minutes',
         baseUrl: 'https://api.fitbit.com/1/user/-/activities/minutesVeryActive/date/',
         featureRef: 'activities-minutesVeryActive',
-        processDataFunc: processActivityData,
+        processDataFunc: processActSleepData,
+      },
+      {
+        featureName: 'Minutes Asleep',
+        baseUrl: 'https://api.fitbit.com/1/user/-/sleep/minutesAsleep/date/',
+        featureRef: 'sleep-minutesAsleep',
+        processDataFunc: processActSleepData,
+      },
+      {
+        featureName: '# of Awakenings',
+        baseUrl: 'https://api.fitbit.com/1/user/-/sleep/awakeningsCount/date/',
+        featureRef: 'sleep-awakeningsCount',
+        processDataFunc: processActSleepData,
+      },
+      {
+        featureName: 'Sleep Efficiency',
+        baseUrl: 'https://api.fitbit.com/1/user/-/sleep/efficiency/date/',
+        featureRef: 'sleep-efficiency',
+        processDataFunc: processActSleepData,
       },
     ];
 
@@ -130,6 +148,7 @@ var fitbitAPI = {
                 headers: { Authorization: 'Bearer ' + user.datastreams.fitbit.accessToken },
               }).then(function (streamRes) {
                 var processedData = resource.processDataFunc(streamRes.data[resource.featureRef]);
+
                 util.addDataToUser(
                   user, resource.featureName, 'fitbit', processedData, nextSync
                 );
