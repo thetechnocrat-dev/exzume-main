@@ -52,6 +52,7 @@ util = {
 
     for (idx in featureNameArray) {
       var featureName = featureNameArray[idx];
+      var newData = newDataArray[idx];
       console.log(featureName);
 
       // find proper feature index within users datastream object
@@ -64,6 +65,7 @@ util = {
 
       // re-update overlap data
       var thisFeature = currentStream.features[thisFeatureIndex];
+      console.log(thisFeature);
       var j = 0;
       for (var i = 0; i < thisFeature.data.length && j < newData.length; i++) {
         if (thisFeature.data[i].dateTime === newData[j].dateTime) {
