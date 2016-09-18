@@ -1,25 +1,32 @@
 var axios = require('axios');
 var async = require('async');
 
-var preSync = function (user, featureName, streamName, startSync) {
+var preSync = function (user, featureNameArray, streamName, startSync) {
   console.log('inside rescue time presync');
 
   // if user stream doesn't contain feature array doesn't exist it will init it
   var prepUserFeatureArr = function (user, featureName, streamName, startSync) {
+    var shouldSaveUser = false;
     var currentStream = user.datastreams[streamName];
 
-    // check if user already has initialized userFeature
-    var featureExists = false;
-    for (var i = 0; i < currentStream.features.length; i++) {
-      if (currentStream.features[i].name == featureName) {
-        featureExists = true;
+    for (featureName in featureNameArray) {
+      // check if user already has initialized userFeature
+      var featureExists = false;
+      for (var i = 0; i < currentStream.features.length; i++) {
+        if (currentStream.features[i].name == featureName) {
+          featureExists = true;
+        }
+      }
+
+      if (!featureExists) {
+        currentStream.features.push({ name: featureName });
+        shouldSaveUser = true;
       }
     }
 
-    if (featureExists) {
+    if (shouldSaveUser) {
       startSync(null);
     } else {
-      currentStream.features.push({ name: featureName });
       user.save(function (err, user) {
         if (err) {
           startSync(err);
@@ -73,7 +80,12 @@ var rescueTimeAPI = {
     async.series([
       function (nextSync) {
         console.log('inside rescuetime async series function');
-        preSync(user, 'Computer Productivity (Hours)', 'rescuetime', function (err) {
+        var featureNameArray = [
+          'Computer Productivity (Hours)',
+          'Compuer Neutral (Hours)',
+          'Computer Distraction (Hours)',
+        ];
+        preSync(user, featureNameArray, 'rescuetime', function (err) {
           console.log('inside rescuetime startSync');
           if (err) {
             nextSync(err, null);
