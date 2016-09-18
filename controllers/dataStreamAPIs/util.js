@@ -48,7 +48,7 @@ util = {
   // features from same route
   addMuchDataToUser: function (user, featureNameArray, streamName, newDataArray, nextSync) {
     var currentStream = user.datastreams[streamName];
-    console.log(currentStream);
+    console.log('add much data to user');
 
     for (featureName in featureNameArray) {
       // find proper feature index within users datastream object
