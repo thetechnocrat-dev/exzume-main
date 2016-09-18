@@ -67,7 +67,7 @@ GraphStore.getSeriesData = function () {
       series.values = [];
       for (var j = 0; j < feature.data.length; j++) {
         if (withinBounds(feature.data[j].dateTime, _filters.dateBound)) {
-          series.values.push({ x: feature.data[j].dateTime, y: parseInt(feature.data[j].value) });
+          series.values.push({ x: feature.data[j].dateTime, y: parseFloat(feature.data[j].value) });
         }
       }
 
