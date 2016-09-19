@@ -75,7 +75,13 @@ var CorrelateButton = React.createClass({
     console.log('in corrmsg');
     if (this.props.correlation) {
       return (
-        <div className="ui message" style={messageStyle}>{this.props.correlation}</div>
+        <div
+          className="ui message"
+          style={messageStyle}
+          data-tooltip="Varies between -1 and +1 with 0 implying no correlation."
+        >
+          <b>Correlation:</b> {this.props.correlation}
+        </div>
       );
     }
   },
@@ -87,7 +93,13 @@ var CorrelateButton = React.createClass({
       var percentConfidence = 100 - this.props.pValue * 100;
       console.log(percentConfidence);
       return (
-        <div className="ui message" style={messageStyle}>{percentConfidence}%</div>
+        <div
+          className="ui message"
+          style={messageStyle}
+          data-tooltip="More data points often increases reliability."
+        >
+          <b>% Confidence:</b> {percentConfidence}%
+        </div>
       );
     }
   },
