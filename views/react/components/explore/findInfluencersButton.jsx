@@ -24,12 +24,6 @@ var FindInfluencersButton = React.createClass({
     var currentFeatureIndex;
     var allSeries = [];
 
-    for (var i = 0; i < userFeatures.length; i++) {
-      if (userFeatures[i].name == currentFeatureName) {
-        currentFeatureIndex = i;
-      }
-    };
-
     var today = moment(new Date());
     var withinBounds =  function (date, dateBound) {
       if (dateBound === 'Max') {
@@ -98,7 +92,7 @@ var FindInfluencersButton = React.createClass({
 
     console.log(processedData);
 
-    FastFlux.webCycle('post', '/auth/correlate', {
+    FastFlux.webCycle('post', '/auth/correlateMany', {
       success: this.corrSuccess,
       error: this.corrError,
       shouldStoreReceive: false,

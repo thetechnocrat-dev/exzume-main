@@ -176,12 +176,27 @@ module.exports = function (router, passport) {
     }
   );
 
-  router.post('/correlate', function (req, res) {
-    console.log('in correlate');
+  router.post('/correlateTwo', function (req, res) {
+    console.log('in correlate two');
     console.log(req.body);
     axios({
       method: 'POST',
-      url: config.microURL,
+      url: config.microURL + 'correlateTwo',
+      data: req.body,
+    }).then(function (resp) {
+      console.log(resp);
+      res.json(resp.data);
+    }).catch(function (err) {
+      res.send(err);
+    });
+  });
+
+  router.post('/correlateMany', function (req, res) {
+    console.log('in correlate many');
+    console.log(req.body);
+    axios({
+      method: 'POST',
+      url: config.microURL + 'correlateMany',
       data: req.body,
     }).then(function (resp) {
       console.log(resp);
