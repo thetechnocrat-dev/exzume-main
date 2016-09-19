@@ -202,18 +202,22 @@ GraphStore.__onDispatch = function (payload) {
     case 'CORRELATION_RECEIVED':
       this.setCorrelation(payload.data);
       this.__emitChange();
+      break;
     case 'PVALUE_RECEIVED':
       this.setPValue(payload.data);
       this.__emitChange();
+      break;
     case 'GRAPH_TYPE_RECEIVED':
       this.setGraphType(payload.data);
       this.__emitChange();
+      break;
     case 'BAR_DATA_RECEIVED':
       console.log('BAR_DATA_RECEIVED');
       console.log(payload.data);
       this.setBarData(payload.data);
       this.setGraphType('bar');
       this.__emitChange();
+      break;
   }
 };
 
