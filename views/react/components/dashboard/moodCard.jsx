@@ -245,7 +245,7 @@ var MoodCard = React.createClass({
 
   render: function () {
     return (
-      <div className="ui card">
+      <div className="ui fluid card">
         <div className="content">
           <div className="header" style={{ marginBottom: '2%' }}>
             Mood
