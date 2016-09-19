@@ -199,8 +199,11 @@ var Explore = React.createClass({
             <div className="row" style={{ paddingTop: '0', paddingBottom: '0' }}>
               <div className="column">
                 <NormalizeButton features={GraphStore.getSelectedFeatures()} />
-                <CorrelateButton correlation={GraphStore.getCorrelation()} />
                 <FindInfluencersButton feature={GraphStore.getSelectedFeatures()} />
+                <CorrelateButton
+                  correlation={GraphStore.getCorrelation()}
+                  pValue={GraphStore.getPValue()}
+                />
               </div>
             </div>
           </div>
@@ -231,4 +234,3 @@ var Explore = React.createClass({
 });
 
 module.exports = Explore;
-

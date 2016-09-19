@@ -9,6 +9,7 @@ var _filters = {
   shouldNormalize: false,
 };
 var _correlation = null;
+var _pValue = null;
 var _graphType = 'line';
 
 GraphStore.resetGraphStore = function () {
@@ -18,12 +19,14 @@ GraphStore.resetGraphStore = function () {
     shouldNormalize: false,
   };
   _correlation = null;
+  _pValue = null;
   _graphType = 'line';
 },
 
 GraphStore.addFeature = function (feature) {
   // resets correlation when a feature is recieved because currently only two featurecan correlate
   _correlation = null;
+  _pValue = null;
   _selectedFeatures.push(feature);
 },
 
@@ -50,6 +53,14 @@ GraphStore.getCorrelation = function () {
 
 GraphStore.setCorrelation = function (correlation) {
   _correlation = correlation;
+},
+
+GraphStore.getPValue = function () {
+  return _pValue;
+},
+
+GraphStore.setPValue = function (pValue) {
+  _pValue = pValue;
 },
 
 GraphStore.setGraphType = function (graphType) {
@@ -187,6 +198,9 @@ GraphStore.__onDispatch = function (payload) {
       break;
     case 'CORRELATION_RECEIVED':
       this.setCorrelation(payload.data);
+      this.__emitChange();
+    case 'PVALUE_RECEIVED':
+      this.setPValue(payload.data);
       this.__emitChange();
     case 'GRAPH_TYPE_RECEIVED':
       this.setGraphType(payload.data);
