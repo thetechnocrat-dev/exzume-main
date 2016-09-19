@@ -10,6 +10,7 @@ var _filters = {
 };
 var _correlation = null;
 var _graphType = 'line';
+var _barData = [];
 
 GraphStore.resetGraphStore = function () {
   _selectedFeatures = [];
@@ -19,6 +20,7 @@ GraphStore.resetGraphStore = function () {
   };
   _correlation = null;
   _graphType = 'line';
+  _barData = [];
 },
 
 GraphStore.addFeature = function (feature) {
@@ -60,16 +62,17 @@ GraphStore.getGraphType = function () {
   return _graphType;
 },
 
+GraphStore.setBarData = function (barData) {
+  console.log('setBar Data');
+  console.log(barData);
+  console.log(_barData);
+  _barData.push(barData);
+  console.log(_barData);
+},
+
 GraphStore.getBarData = function () {
-  return [
-      { name: 'Series A',
-                values: [
-                        { x: 1, y:  91},
-                              { x: 2, y: 33},
-                                    { x: 4, y: 22 },
-                                        ]
-                                            },
-  ];
+  console.log(_barData);
+  return _barData;
 },
 
 GraphStore.getSeriesData = function () {
@@ -190,6 +193,12 @@ GraphStore.__onDispatch = function (payload) {
       this.__emitChange();
     case 'GRAPH_TYPE_RECEIVED':
       this.setGraphType(payload.data);
+      this.__emitChange();
+    case 'BAR_DATA_RECEIVED':
+      console.log('BAR_DATA_RECEIVED');
+      console.log(payload.data);
+      this.setBarData(payload.data);
+      this.setGraphType('bar');
       this.__emitChange();
   }
 };

@@ -10,8 +10,23 @@ var FindInfluencersButton = React.createClass({
   },
 
   corrSuccess: function (res) {
-    console.log(res);
-    FastFlux.cycle('GRAPH_TYPE_RECEIVED', 'bar');
+    console.log('find influencers success------');
+    var currentFeatureName = GraphStore.getSeriesData()[0].name;
+    var correlationData = res[currentFeatureName];
+    var barData = {};
+    var values = correlationData.map(function (corrVal, idx) {
+      var bar = {};
+      bar.x = idx;
+      bar.y = corrVal;
+      return bar;
+    });
+
+    console.log(values);
+
+    barData.values = values;
+    console.log(barData);
+
+    FastFlux.cycle('BAR_DATA_RECEIVED', barData);
   },
 
   corrError: function (resp) {
@@ -20,7 +35,6 @@ var FindInfluencersButton = React.createClass({
 
   handleClick: function () {
     var userFeatures = SessionStore.getUserFeatures();
-    var currentFeatureName = GraphStore.getSeriesData()[0].name;
     var currentFeatureIndex;
     var allSeries = [];
 
@@ -89,8 +103,6 @@ var FindInfluencersButton = React.createClass({
 
       processedData.push(thisRow);
     }
-
-    console.log(processedData);
 
     FastFlux.webCycle('post', '/auth/correlateMany', {
       success: this.corrSuccess,
