@@ -21,7 +21,6 @@ var FindInfluencersButton = React.createClass({
   handleClick: function () {
     var userFeatures = SessionStore.getUserFeatures();
     var currentFeatureName = GraphStore.getSeriesData()[0].name;
-    console.log(currentFeatureName);
     var currentFeatureIndex;
     var allSeries = [];
 
@@ -57,8 +56,6 @@ var FindInfluencersButton = React.createClass({
       allSeries.push({ name: series.name, values: series.values });
     }
 
-    console.log(allSeries);
-
     processedData = [];
 
     var checkDone = function (allSeries) {
@@ -73,18 +70,15 @@ var FindInfluencersButton = React.createClass({
 
     while (!checkDone(allSeries)) {
       var indexQueue = [];
-
       var earliestDate = Date.now();
 
       for (var i = 0; i < allSeries.length; i++) {
         if (allSeries[i].values.length != 0) {
-          console.log(earliestDate);
-          console.log((new Date(allSeries[i].values[0].x)).getTime());
           if ((new Date(allSeries[i].values[0].x)).getTime() == earliestDate) {
-
             indexQueue.push(i);
           } else if ((new Date(allSeries[i].values[0].x)).getTime() < earliestDate) {
             indexQueue = [i];
+            earliestDate = (new Date(allSeries[i].values[0].x)).getTime();
           }
         }
       };
@@ -98,8 +92,6 @@ var FindInfluencersButton = React.createClass({
           indexQueue.shift();
         }
       };
-
-      console.log(thisRow);
 
       processedData.push(thisRow);
     }
