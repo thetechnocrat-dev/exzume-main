@@ -33,6 +33,8 @@ GraphStore.addFeature = function (feature) {
 },
 
 GraphStore.removeFeature = function (feature) {
+  _correlation = null;
+  _pValue = null;
   for (var i = 0; i < _selectedFeatures.length; i++) {
     if (_selectedFeatures[i].name === feature.name) {
       _selectedFeatures.splice(i, 1);
