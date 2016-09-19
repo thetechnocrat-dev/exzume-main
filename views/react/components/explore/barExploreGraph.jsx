@@ -11,6 +11,7 @@ var BarExploreGraph = React.createClass({
     barData: React.PropTypes.array.isRequired,
     width: React.PropTypes.number.isRequired,
     height: React.PropTypes.number.isRequired,
+    title: React.PropTypes.string.isRequired,
   },
 
   handleClick: function () {
@@ -22,7 +23,7 @@ var BarExploreGraph = React.createClass({
     console.log(this.props.barData);
     console.log(Style.lightBackground);
     var outerStyle = {
-      zIndex: 4, position: 'relative', backgroundColor: Style.lightBackground, marginTop: '-36px',
+      zIndex: 4, position: 'relative', backgroundColor: Style.lightBackground, marginTop: '-69px',
     };
 
     return (
@@ -35,9 +36,9 @@ var BarExploreGraph = React.createClass({
           data={this.props.barData}
           width={this.props.width}
           height={this.props.height}
-          title="Bar Chart"
-          xAxisLabel="Value"
-          yAxisLabel="Label"
+          title={this.props.title}
+          xAxisLabel="feature"
+          yAxisLabel="correlation"
         />
       </div>
     );

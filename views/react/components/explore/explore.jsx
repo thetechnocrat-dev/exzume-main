@@ -169,6 +169,7 @@ var Explore = React.createClass({
           barData={GraphStore.getBarData()}
           width={graphWidth}
           height={graphHeight}
+          title={GraphStore.getSeriesData()[0].name + ' Influencers'}
         />
       );
     }

@@ -9,22 +9,41 @@ var FindInfluencersButton = React.createClass({
     feature: React.PropTypes.array.isRequired,
   },
 
+  findTopInfluencers: function (corrArray) {
+    // sorts correlations greatest to smallest by abs value
+    var sortedCorrArray = corrArray.slice().sort(function (feature1, feature2) {
+      if (Math.abs(feature1[1]) < Math.abs(feature2[1])) {
+        return 1;
+      } else if (Math.abs(feature1[1]) > Math.abs(feature2[1])) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+
+    return sortedCorrArray.slice(1, 6);
+  },
+
   corrSuccess: function (res) {
     console.log('find influencers success------');
     var currentFeatureName = GraphStore.getSeriesData()[0].name;
-    var correlationData = res[currentFeatureName];
+    var featureNames = Object.keys(res);
+    var corrData = res[currentFeatureName];
+    var labeledCorrData = featureNames.map(function (featureName, idx) {
+      return [featureName, corrData[idx]];
+    });
+
+    var topInfluencers = this.findTopInfluencers(labeledCorrData);
+
     var barData = {};
-    var values = correlationData.map(function (corrVal, idx) {
+    var values = topInfluencers.map(function (corrPair, idx) {
       var bar = {};
-      bar.x = idx;
-      bar.y = corrVal;
+      bar.x = corrPair[0];
+      bar.y = corrPair[1];
       return bar;
     });
 
-    console.log(values);
-
     barData.values = values;
-    console.log(barData);
 
     FastFlux.cycle('BAR_DATA_RECEIVED', barData);
   },
