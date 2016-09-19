@@ -20,6 +20,7 @@ var Explore = React.createClass({
       viewPortHeight: window.innerHeight,
       successMessage: false,
       corrMessage: null,
+      graphType: 'line',
     });
 
     if (SessionStore.isSignedIn()) {
@@ -36,6 +37,7 @@ var Explore = React.createClass({
   },
 
   _onChangeGraph: function () {
+    console.log('graph change');
     this.setState({
       graphType: GraphStore.getGraphType(),
       barData: GraphStore.getBarData(),
@@ -152,7 +154,7 @@ var Explore = React.createClass({
   makeExploreGraph: function (graphWidth, graphHeight) {
     console.log('inside makeExploreGraph');
     console.log(GraphStore.getGraphType());
-    if (GraphStore.getGraphType() === 'line') {
+    if (this.state.graphType === 'line') {
       return (
         <ExploreGraph
           seriesData={GraphStore.getSeriesData()}
@@ -160,7 +162,7 @@ var Explore = React.createClass({
           height={graphHeight}
         />
       );
-    } else if (GraphStore.getGraphType() === 'bar') {
+    } else if (this.state.graphType === 'bar') {
       console.log(GraphStore.getBarData());
       return (
         <BarExploreGraph
