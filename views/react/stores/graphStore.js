@@ -76,9 +76,7 @@ GraphStore.getGraphType = function () {
 GraphStore.setBarData = function (barData) {
   console.log('setBar Data');
   console.log(barData);
-  console.log(_barData);
-  _barData.push(barData);
-  console.log(_barData);
+  _barData = [barData];
 },
 
 GraphStore.getBarData = function () {

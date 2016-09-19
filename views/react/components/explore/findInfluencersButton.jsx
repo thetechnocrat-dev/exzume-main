@@ -114,8 +114,17 @@ var FindInfluencersButton = React.createClass({
   },
 
   render: function () {
+    var buttonStyle = { marginLeft: '10px' };
     return (
-      <div className="ui green button" onClick={this.handleClick}>Find Influencers</div>
+      <div style={{ display: 'inline-block' }}>
+        <button
+          className="ui green button"
+          onClick={this.handleClick}
+          style={buttonStyle}
+        >
+          Find Influencers
+        </button>
+      </div>
     );
   },
 });
