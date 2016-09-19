@@ -40,6 +40,10 @@ GraphStore.addFilter = function (filter) {
   _filters[filter.key] = filter.value;
 },
 
+GraphStore.getDateBound = function () {
+  return _filters.dateBound;
+},
+
 GraphStore.getCorrelation = function () {
   return _correlation;
 },
@@ -142,22 +146,14 @@ GraphStore.getRawSeriesData = function () {
     var series = {};
     series.name = feature.name;
     series.values = [];
-    var sum = 0;
 
     for (var j = 0; j < feature.data.length; j++) {
       if (withinBounds(feature.data[j].dateTime, _filters.dateBound)) {
-        sum += parseInt(feature.data[j].value);
         series.values.push({ x: feature.data[j].dateTime, y: parseInt(feature.data[j].value) });
       }
     }
 
-    var avg = sum / series.values.length;
-    var normalizedSeries = series.values.map(function (obj) {
-      obj.y /= avg;
-      return obj;
-    });
-
-    seriesData.push({ name: series.name, values: normalizedSeries });
+    seriesData.push({ name: series.name, values: series.values });
   }
 
   return seriesData;
