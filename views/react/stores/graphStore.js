@@ -12,6 +12,7 @@ var _correlation = null;
 var _pValue = null;
 var _graphType = 'line';
 var _barData = [];
+var _barOptions = {};
 
 GraphStore.resetGraphStore = function () {
   _selectedFeatures = [];
@@ -23,6 +24,7 @@ GraphStore.resetGraphStore = function () {
   _pValue = null;
   _graphType = 'line';
   _barData = [];
+  _barOptions = {};
 },
 
 GraphStore.addFeature = function (feature) {
@@ -78,7 +80,20 @@ GraphStore.getGraphType = function () {
 GraphStore.setBarData = function (barData) {
   console.log('setBar Data');
   console.log(barData);
-  _barData = [barData];
+  if (barData.constructor === Array) {
+    _barData = barData;
+  } else {
+    _barData = [barData];
+  }
+},
+
+GraphStore.setBarOptions = function (barOptions) {
+  console.log(barOptions);
+  _barOptions = {};
+},
+
+GraphStore.getBarOptions = function () {
+  return _barOptions;
 },
 
 GraphStore.getBarData = function () {

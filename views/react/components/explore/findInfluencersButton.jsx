@@ -45,6 +45,7 @@ var FindInfluencersButton = React.createClass({
 
     barData.values = values;
 
+    FastFlux.cycle('BAR_OPTIONS_RECEIVED', { xAxisLabel: 'features', yAxisLabel: 'correlation' });
     FastFlux.cycle('BAR_DATA_RECEIVED', barData);
   },
 

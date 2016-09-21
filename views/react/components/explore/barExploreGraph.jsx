@@ -12,6 +12,8 @@ var BarExploreGraph = React.createClass({
     width: React.PropTypes.number.isRequired,
     height: React.PropTypes.number.isRequired,
     title: React.PropTypes.string.isRequired,
+    yAxisLabel: React.PropTypes.string.isRequired,
+    xAxisLabel: React.PropTypes.string.isRequired,
   },
 
   handleClick: function () {
@@ -32,13 +34,14 @@ var BarExploreGraph = React.createClass({
           <i className="remove icon" />
         </div>
         <BarChart
+          grouped={true}
           style={{ zIndex: 2 }}
           data={this.props.barData}
           width={this.props.width}
           height={this.props.height}
           title={this.props.title}
-          xAxisLabel="feature"
-          yAxisLabel="correlation"
+          xAxisLabel={this.props.yAxisLabel}
+          yAxisLabel={this.propsxAxisLabel}
         />
       </div>
     );

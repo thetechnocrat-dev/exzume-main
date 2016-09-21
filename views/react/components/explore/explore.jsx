@@ -12,6 +12,7 @@ var NormalizeButton = require('./normalizeButton');
 var CorrelateButton = require('./correlateButton');
 var FindInfluencersButton = require('./findInfluencersButton');
 var BarExploreGraph = require('./barExploreGraph.jsx');
+var ABModal = require('./abModal');
 
 var Explore = React.createClass({
   getInitialState: function () {
@@ -170,6 +171,8 @@ var Explore = React.createClass({
           width={graphWidth}
           height={graphHeight}
           title={GraphStore.getSeriesData()[0].name + ' Influencers'}
+          xAxisLabel={GraphStore.getBarOptions.xAxisLabel}
+          yAxisLabel={GraphStore.getBarOptions.yAxisLabel}
         />
       );
     }
@@ -201,6 +204,8 @@ var Explore = React.createClass({
               <div className="column">
                 <NormalizeButton features={GraphStore.getSelectedFeatures()} />
                 <FindInfluencersButton feature={GraphStore.getSelectedFeatures()} />
+                <ABModal
+                  features={this.getSelectableFeatures()} />
                 <CorrelateButton
                   correlation={GraphStore.getCorrelation()}
                   pValue={GraphStore.getPValue()}
@@ -235,3 +240,4 @@ var Explore = React.createClass({
 });
 
 module.exports = Explore;
+
