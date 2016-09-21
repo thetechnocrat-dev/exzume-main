@@ -12,7 +12,7 @@ var _correlation = null;
 var _pValue = null;
 var _graphType = 'line';
 var _barData = [];
-var _barOptions = {};
+var _groupedBarData = [];
 
 GraphStore.resetGraphStore = function () {
   _selectedFeatures = [];
@@ -24,7 +24,7 @@ GraphStore.resetGraphStore = function () {
   _pValue = null;
   _graphType = 'line';
   _barData = [];
-  _barOptions = {};
+  _groupedBarData = [];
 },
 
 GraphStore.addFeature = function (feature) {
@@ -87,13 +87,14 @@ GraphStore.setBarData = function (barData) {
   }
 },
 
-GraphStore.setBarOptions = function (barOptions) {
-  console.log(barOptions);
-  _barOptions = {};
+GraphStore.setGroupedBarData = function (groupedBarData) {
+  console.log('set grouped bar data');
+  _groupedBarData = groupedBarData;
 },
 
-GraphStore.getBarOptions = function () {
-  return _barOptions;
+GraphStore.getGroupedBarData = function (groupedBarData) {
+  console.log(groupedBarData);
+  return _groupedBarData;
 },
 
 GraphStore.getBarData = function () {
@@ -231,6 +232,13 @@ GraphStore.__onDispatch = function (payload) {
       console.log(payload.data);
       this.setBarData(payload.data);
       this.setGraphType('bar');
+      this.__emitChange();
+      break;
+    case 'GROUPED_BAR_DATA_RECEIVED':
+      console.log('GROUPED_BAR_DATA_RECEIVED');
+      console.log(payload.data);
+      this.setGroupedBarData(payload.data);
+      this.setGraphType('groupedBar');
       this.__emitChange();
       break;
   }

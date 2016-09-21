@@ -6,9 +6,9 @@ var BarChart = rd3.BarChart;
 var Style = require('../../util/style');
 var FastFlux = require('../../util/fast-flux-react/fastFlux');
 
-var BarExploreGraph = React.createClass({
+var GroupedBarExploreGraph = React.createClass({
   propTypes: {
-    barData: React.PropTypes.array.isRequired,
+    groupedBarData: React.PropTypes.array.isRequired,
     width: React.PropTypes.number.isRequired,
     height: React.PropTypes.number.isRequired,
     title: React.PropTypes.string.isRequired,
@@ -20,10 +20,10 @@ var BarExploreGraph = React.createClass({
   },
 
   render: function () {
-    console.log(this.props.barData);
+    console.log(this.props.groupedBarData);
     console.log(Style.lightBackground);
     var outerStyle = {
-      zIndex: 4, position: 'relative', backgroundColor: Style.lightBackground, marginTop: '-69px',
+      zIndex: 4, position: 'relative', backgroundColor: Style.lightBackground, marginTop: '-39px',
     };
 
     return (
@@ -32,13 +32,14 @@ var BarExploreGraph = React.createClass({
           <i className="remove icon" />
         </div>
         <BarChart
+          grouped={true}
           style={{ zIndex: 2 }}
-          data={this.props.barData}
+          data={this.props.groupedBarData}
           width={this.props.width}
           height={this.props.height}
           title={this.props.title}
-          xAxisLabel={this.props.yAxisLabel}
-          yAxisLabel={this.propsxAxisLabel}
+          xAxisLabel={'features'}
+          yAxisLabel={'mean'}
         />
       </div>
     );
@@ -46,5 +47,5 @@ var BarExploreGraph = React.createClass({
 
 });
 
-module.exports = BarExploreGraph;
+module.exports = GroupedBarExploreGraph;
 

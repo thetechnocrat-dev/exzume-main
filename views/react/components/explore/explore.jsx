@@ -13,6 +13,7 @@ var CorrelateButton = require('./correlateButton');
 var FindInfluencersButton = require('./findInfluencersButton');
 var BarExploreGraph = require('./barExploreGraph.jsx');
 var ABModal = require('./abModal');
+var GroupedBarExploreGraph = require('./groupedBarExplore');
 
 var Explore = React.createClass({
   getInitialState: function () {
@@ -171,8 +172,15 @@ var Explore = React.createClass({
           width={graphWidth}
           height={graphHeight}
           title={GraphStore.getSeriesData()[0].name + ' Influencers'}
-          xAxisLabel={GraphStore.getBarOptions.xAxisLabel}
-          yAxisLabel={GraphStore.getBarOptions.yAxisLabel}
+        />
+      );
+    } else if (this.state.graphType === 'groupedBar') {
+      return (
+        <GroupedBarExploreGraph
+          groupedBarData={GraphStore.getGroupedBarData()}
+          width={graphWidth}
+          height={graphHeight}
+          title={'Sleep A/B Comparison'}
         />
       );
     }

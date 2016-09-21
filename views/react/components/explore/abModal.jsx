@@ -23,9 +23,9 @@ var ABModal = React.createClass({
 
   handleSubmit: function () {
     this.setState({ modalIsOpen: false });
-    var barData = [
+    var groupedBarData = [
           {
-                "name": "Series A",
+             "name": "Less than or equal to 400 minutes asleep",
                     "values": [
                             { "x": 1, "y":  91},
                                   { "x": 2, "y": 290},
@@ -33,23 +33,15 @@ var ABModal = React.createClass({
                                             ]
                                                 },
             {  
-                  "name": "Series B",
+              "name": "More than 400 minutes asleep",
                       "values": [
                               { "x": 1, "y":  9},
                                     { "x": 2, "y": 49},
                                           { "x": 3, "y": -20},
                                               ]
                                                   },
-              {  
-                    "name": "Series C",
-                        "values": [
-                                { "x": 1, "y":  14},
-                                      { "x": 2, "y": 77},
-                                            { "x": 3, "y": -70},
-                                                ]
-                                                    }
       ];
-    FastFlux.cycle('BAR_DATA_RECEIVED', barData);
+    FastFlux.cycle('GROUPED_BAR_DATA_RECEIVED', groupedBarData);
   },
 
   makeOptions: function () {
@@ -82,7 +74,7 @@ var ABModal = React.createClass({
           onClick={this.openModal}
           style={buttonStyle}
         >
-          AB Test
+          A/B Compare
         </button>
         <Modal
           isOpen={this.state.modalIsOpen}
@@ -113,7 +105,7 @@ var ABModal = React.createClass({
               days you slept 360 minutes or less and days you slept over 360 minutes and then return
               the features whose averages were most effected.
             </p>
-            <button className="ui green button" onClick={this.handleSubmit}>AB Test</button>
+            <button className="ui green button" onClick={this.handleSubmit}>A/B Compare</button>
           </form>
         </Modal>
       </div>
