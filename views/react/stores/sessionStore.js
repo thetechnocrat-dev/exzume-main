@@ -27,7 +27,9 @@ SessionStore.getUserFeatures = function () {
 
   for (dataStream in dataStreams) {
     for (var i = 0; i < dataStreams[dataStream].features.length; i++) {
-      userActiveFeatures.push(dataStreams[dataStream].features[i]);
+      if (dataStreams[dataStream].features[i].name != 'Mood Note') {
+        userActiveFeatures.push(dataStreams[dataStream].features[i]);
+      }
     }
   }
 
@@ -74,4 +76,3 @@ SessionStore.__onDispatch = function (payload) {
 };
 
 module.exports = SessionStore;
-
