@@ -26,9 +26,13 @@ var FindInfluencersButton = React.createClass({
 
   corrSuccess: function (res) {
     console.log('find influencers success------');
+    console.log(res);
     var currentFeatureName = GraphStore.getSeriesData()[0].name;
+    console.log(currentFeatureName);
     var featureNames = Object.keys(res);
+    console.log(featureNames);
     var corrData = res[currentFeatureName];
+    console.log(corrData);
     var labeledCorrData = featureNames.map(function (featureName, idx) {
       return [featureName, corrData[idx]];
     });
@@ -135,17 +139,30 @@ var FindInfluencersButton = React.createClass({
 
   render: function () {
     var buttonStyle = { marginLeft: '10px' };
-    return (
-      <div style={{ display: 'inline-block' }}>
-        <button
-          className="ui green button"
-          onClick={this.handleClick}
-          style={buttonStyle}
-        >
-          Find Influencers
-        </button>
-      </div>
-    );
+    if (this.props.feature.length == 1) {
+      return (
+        <div style={{ display: 'inline-block' }}>
+          <button
+            className="ui green button"
+              onClick={this.handleClick}
+                style={buttonStyle}
+          >
+            Find Influencers
+          </button>
+        </div>
+       );
+    } else {
+      return (
+         <div style={{ display: 'inline-block' }}>
+           <button
+             className="ui disabled green button"
+               style={buttonStyle}
+           >
+             Find Influencers
+           </button>
+         </div>
+      );
+    }
   },
 });
 

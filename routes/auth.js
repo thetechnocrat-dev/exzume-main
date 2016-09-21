@@ -211,11 +211,13 @@ module.exports = function (router, passport) {
     var moodStream = user.datastreams.mood;
     console.log(req.body);
     var newMood = [req.body.moodRating, req.body.moodNote];
+    var newDateTime = moment(parseInt(req.body.dateTime)).utc().format('YYYY-MM-DD');
+    console.log(newMood);
 
     // create two features in features array of mood datastream
     if (moodStream.features.length == 0) {
       moodStream.features[0] = { name: 'Mood Rating', data: [] };
-      moodStream.features[1] = { name: 'Mood Notes', data: [] };
+      moodStream.features[1] = { name: 'Mood Note', data: [] };
     }
 
     console.log(moodStream.features[0]);
@@ -224,16 +226,17 @@ module.exports = function (router, passport) {
     // re-update to edit overlap data
     moodStream.features.map(function (feature, i) {
       if (feature.data.length > 0 &&
-          moment(feature.data[feature.data.length - 1].dateTime).utc().format('YYYY-MM-DD')
-          == moment(req.body.dateTime).utc().format('YYYY-MM-DD')) {
-        feature.data[feature.data.length - 1].dateTime = req.body.dateTime;
+          feature.data[feature.data.length - 1].dateTime == newDateTime) {
+        feature.data[feature.data.length - 1].dateTime = newDateTime;
         feature.data[feature.data.length - 1].value = newMood[i];
       } else {
-        feature.data.push({ dateTime: req.body.dateTime,
+        feature.data.push({ dateTime: newDateTime,
                             value: newMood[i], });
       }
     });
 
+    console.log(moodStream.features[0].data.length);
+    console.log(moodStream.features[1].data.length);
     user.save(function (err) {
       if (err) {
         res.send(err);

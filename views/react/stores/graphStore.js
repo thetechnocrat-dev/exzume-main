@@ -80,11 +80,7 @@ GraphStore.getGraphType = function () {
 GraphStore.setBarData = function (barData) {
   console.log('setBar Data');
   console.log(barData);
-  if (barData.constructor === Array) {
-    _barData = barData;
-  } else {
-    _barData = [barData];
-  }
+  _barData = [barData];
 },
 
 GraphStore.setGroupedBarData = function (groupedBarData) {
