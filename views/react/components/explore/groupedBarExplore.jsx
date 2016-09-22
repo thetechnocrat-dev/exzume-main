@@ -24,6 +24,7 @@ var GroupedBarExploreGraph = React.createClass({
     console.log(Style.lightBackground);
     var outerStyle = {
       zIndex: 4, position: 'relative', backgroundColor: Style.lightBackground, marginTop: '-39px',
+      marginBottom: '30px',
     };
 
     return (
@@ -32,6 +33,7 @@ var GroupedBarExploreGraph = React.createClass({
           <i className="remove icon" />
         </div>
         <BarChart
+          legend={true}
           grouped={true}
           style={{ zIndex: 2 }}
           data={this.props.groupedBarData}

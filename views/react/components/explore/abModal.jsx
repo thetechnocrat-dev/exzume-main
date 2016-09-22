@@ -27,17 +27,21 @@ var ABModal = React.createClass({
           {
              "name": "Less than or equal to 400 minutes asleep",
                     "values": [
-                            { "x": 1, "y":  91},
-                                  { "x": 2, "y": 290},
-                                        { "x": 3, "y": -25},
+                            { "x": '# of Awakenings', "y":  7},
+                                  { "x": 'Sleep Efficiency', "y": 97},
+                                        { "x": 'Heart Rate', "y": 55},
+                                        { "x": 'Very Active Hours', "y": 7.13},
+                                        { "x": 'Steps (thousands)', "y": 8.457},
                                             ]
                                                 },
             {  
               "name": "More than 400 minutes asleep",
                       "values": [
-                              { "x": 1, "y":  9},
-                                    { "x": 2, "y": 49},
-                                          { "x": 3, "y": -20},
+                            { "x": '# of Awakenings', "y":  10},
+                                  { "x": 'Sleep Efficiency', "y": 95},
+                                        { "x": 'Heart Rate', "y": 53},
+                                        { "x": 'Very Active Hours', "y": 7.75},
+                                        { "x": 'Steps (thousands)', "y": 8.592},
                                               ]
                                                   },
       ];
