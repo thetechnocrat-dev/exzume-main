@@ -8,7 +8,7 @@ AppStore.resetAppStore = function (apps) {
   _apps = apps;
 },
 
-AppStore.apps = function () {
+AppStore.getApps = function () {
   return _apps;
 },
 
@@ -22,4 +22,3 @@ AppStore.__onDispatch = function (payload) {
 };
 
 module.exports = AppStore;
-

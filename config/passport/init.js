@@ -3,6 +3,7 @@ var localSignin = require('./local-login');
 var fitbit = require('./strategies/fitbit');
 var lastfm = require('./strategies/lastfm');
 var rescueTime = require('./strategies/rescueTime');
+var strava = require('./strategies/strava');
 var User = require('../../models/user');
 
 module.exports = function (passport) {
@@ -23,4 +24,5 @@ module.exports = function (passport) {
   fitbit(passport);
   lastfm(passport);
   rescueTime(passport);
+  strava(passport);
 };

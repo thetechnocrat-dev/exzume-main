@@ -12,13 +12,13 @@ var AppPanel = React.createClass({
 
   getInitialState: function () {
     return {
-      apps: AppStore.apps(),
+      apps: AppStore.getApps(),
     };
   },
 
   _onChange: function () {
     this.setState({
-      apps: AppStore.apps(),
+      apps: AppStore.getApps(),
     });
   },
 
@@ -34,7 +34,7 @@ var AppPanel = React.createClass({
     this.appToken.remove();
   },
 
-  userConnectedApps: function () {
+  getUserConnectedApps: function () {
     var dataStreams = this.props.user.datastreams;
     var userConnectedApps = [];
     for (key in dataStreams) {
@@ -47,7 +47,7 @@ var AppPanel = React.createClass({
   },
 
   makeAppItems: function () {
-    var userConnectedApps = this.userConnectedApps();
+    var userConnectedApps = this.getUserConnectedApps();
     var _this = this;
     return this.state.apps.map(function (app, idx) {
       return (
@@ -72,4 +72,3 @@ var AppPanel = React.createClass({
 });
 
 module.exports = AppPanel;
-

@@ -43,6 +43,19 @@ var apps = [
     connectIcon: 'rescuetime-logo.png',
     openUrl: 'https://www.rescuetime.com',
   },
+  {
+    name: 'Strava',
+    categories: ['fitness'],
+    ratings: [5],
+    express: false,
+    requirements: [
+      'account required',
+      'download required',
+    ],
+    basicPrice: 0,
+    connectIcon: 'rescuetime-logo.png',
+    openUrl: 'https://www.strava.com',
+  },
 ];
 
 module.exports = function (done) {
