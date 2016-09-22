@@ -1,10 +1,24 @@
 var React = require('react');
 var Modal = require('react-modal');
 var FastFlux = require('../../util/fast-flux-react/fastFlux');
+var LinkedStateMixin = require('react-addons-linked-state-mixin');
 
 // Components
 
 var ABModal = React.createClass({
+  mixins: [LinkedStateMixin],
+
+  getInitialState: function () {
+    return ({
+      seriesLabel1: '',
+      startDate1: '',
+      endDate1: '',
+      seriesLabel2: '',
+      startDate2: '',
+      endDate2: '',
+    });
+  },
+
   propTypes: {
     features: React.PropTypes.array.isRequired,
   },
@@ -21,9 +35,69 @@ var ABModal = React.createClass({
     this.setState({ modalIsOpen: false });
   },
 
+  withinDateBounds: function (date, startDate, endDate) {
+    return new Date(startDate) <= new Date(date) && new Date(endDate) >= new Date(date);
+  },
+
+  calcBucketAvgs: function (feature) {
+    var bucket1 = [];
+    var bucket2 = [];
+    var bucket1Sum = 0;
+    var bucket2Sum = 0;
+
+    for (var i = 0; i < feature.data.length; i++) {
+      if (this.withinDateBounds(
+                                feature.data[i].dateTime,
+                                this.state.startDate1,
+                                this.state.endDate1)) {
+        bucket1.push(parseFloat(feature.data[i].value));
+        bucket1Sum += parseFloat(feature.data[i].value);
+      } else if (this.withinDateBounds(
+                                  feature.data[i].dateTime,
+                                  this.state.startDate2,
+                                  this.state.endDate2)) {
+        bucket2.push(parseFloat(feature.data[i].valuae));
+        bucket2Sum += parseFloat(feature.data[i].value);
+      }
+    }
+
+    console.log(bucket1);
+    console.log(bucket2);
+
+    var bucket1Avg = bucket1Sum / bucket1.length;
+    var bucket2Avg = bucket2Sum / bucket2.length;
+
+    return [
+      { x: feature.name, y: bucket1Avg },
+      { x: feature.name, y: bucket2Avg },
+    ];
+  },
+
+  makeGroupedBarData: function () {
+    var groupedBarData = [];
+    var series1 = {};
+    var series2 = {};
+    series1.name = this.state.seriesLabel1;
+    series2.name = this.state.seriesLabel2;
+    series1.values = [];
+    series2.values = [];
+    (groupedBarData.push(series1, series2));
+
+    for (var i = 0; i < this.props.features.length; i++) {
+      // returns [featureSeriesA Avg obj, featureSeriesB Avg obj]
+      var bucketAvgs = this.calcBucketAvgs(this.props.features[i]);
+      series1.values.push(bucketAvgs[0]);
+      series2.values.push(bucketAvgs[1]);
+    }
+
+    return groupedBarData;
+  },
+
   handleSubmit: function () {
     this.setState({ modalIsOpen: false });
-    var groupedBarData = [
+    console.log(this.state);
+    var groupedBarData = this.makeGroupedBarData();
+    var groupedBarData1 = [
           {
              "name": "Less than or equal to 400 minutes asleep",
                     "values": [
@@ -95,20 +169,58 @@ var ABModal = React.createClass({
           </div>
           <form className="ui form">
             <div className="ui field">
-              <label>Pick a feature</label>
-              <select className="ui fluid dropdown">
-                <option value="">Select a Feature</option>
-                {this.makeOptions()}
-              </select>
+              <h4 className="ui dividing header">Series A</h4>
+              <div className="field">
+                <input
+                  type="text"
+                  name="seriesLabel1"
+                  placeholder="series label"
+                  valueLink={this.linkState('seriesLabel1')}
+                />
+              </div>
+              <div className="field">
+                <input
+                  type="text"
+                  name="startDate1"
+                  placeholder="start date"
+                  valueLink={this.linkState('startDate1')}
+                />
+              </div>
+              <div className="field">
+                <input
+                  type="text"
+                  name="endDate1"
+                  placeholder="end date"
+                  valueLink={this.linkState('endDate1')}
+                />
+              </div>
+              <h4 className="ui dividing header">Series B</h4>
+              <div className="field">
+                <input
+                  type="text"
+                  name="seriesLabel2"
+                  placeholder="series label"
+                  valueLink={this.linkState('seriesLabel2')}
+                />
+              </div>
+              <div className="field">
+                <input
+                  type="text"
+                  name="startDate2"
+                  placeholder="start date"
+                  valueLink={this.linkState('startDate2')}
+                />
+              </div>
+              <div className="field">
+                <input
+                  type="text"
+                  name="endDate2"
+                  placeholder="end date"
+                  valueLink={this.linkState('endDate2')}
+                />
+              </div>
             </div>
-            <div className="ui field">
-              <label>Pick a cutoff value</label>
-              <input type="text" name="feature" placeholder="input feature" />
-            </div>
-            <p>ex/ picking minutes asleep as the feature and cutoff as 360 will group your data into 
-              days you slept 360 minutes or less and days you slept over 360 minutes and then return
-              the features whose averages were most effected.
-            </p>
+
             <button className="ui green button" onClick={this.handleSubmit}>A/B Compare</button>
           </form>
         </Modal>
