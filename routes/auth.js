@@ -81,7 +81,7 @@ module.exports = function (router, passport) {
 
       userFeature.data.push({
         dateTime: moment().format('YYYY-MM-DD'),
-        value: parseInt(req.body.data),
+        value: parseInt(req.body.data), // change to not parseInt?
       });
 
       req.user.save(function (err, user) {

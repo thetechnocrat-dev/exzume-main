@@ -60,7 +60,7 @@ var fitbitAPI = {
         if (newData[i].value != '0') {
           processedData.push({
             dateTime: newData[i].dateTime,
-            value: newData[i].value,
+            value: parseInt(newData[i].value),
           });
         }
       }
