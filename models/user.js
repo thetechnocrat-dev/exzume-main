@@ -81,6 +81,15 @@ var UserSchema = new Schema({
         },
       ],
     },
+    strava: {
+      accessToken: String,
+      isConnected: { type: Boolean, default: false },
+      features: [{
+          name: String,
+          data: [],
+        },
+      ],
+    },
 
   },
 }, { autoIndex: false });

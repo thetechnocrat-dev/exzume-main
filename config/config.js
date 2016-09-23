@@ -28,5 +28,10 @@ module.exports = {
     clientSecret: process.env.RESCUETIME_ID || dev.rescueTime.clientID,
     callbackURL: process.env.RESCUE_TIME_URL || dev.rescueTime.callbackURL,
   },
+  strava: {
+    clientID: process.env.STRAVA_ID || dev.strava.clientID,
+    clientSecret: process.env.STRAVA_SECRET || dev.strava.clientSecret,
+    callbackURL: process.env.STRAVA_URL || dev.strava.callbackURL,
+  },
 
 };
