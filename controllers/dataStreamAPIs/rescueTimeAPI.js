@@ -65,15 +65,15 @@ var rescueTimeAPI = {
       for (var i = newData.length - 1; i > 0; i--) {
         productiveHours.push({
           dateTime: newData[i].date,
-          value: newData[i].all_productive_hours.toString(),
+          value: newData[i].all_productive_hours,
         });
         neutralHours.push({
           dateTime: newData[i].date,
-          value: newData[i].neutral_hours.toString(),
+          value: newData[i].neutral_hours,
         });
         distractingHours.push({
           dateTime: newData[i].date,
-          value: newData[i].all_distracting_hours.toString(),
+          value: newData[i].all_distracting_hours,
         });
       }
 
@@ -85,8 +85,8 @@ var rescueTimeAPI = {
         console.log('inside rescuetime async series function');
         var featureNameArray = [
           'Computer Productivity (Hours)',
-          'Compuer Neutral (Hours)',
-          'Computer Distraction (Hours)',
+          'Computer Neutral (Hours)',
+          'Computer Distractivity (Hours)',
         ];
         preSync(user, featureNameArray, 'rescuetime', function (err) {
           console.log('inside rescuetime startSync');
@@ -105,8 +105,8 @@ var rescueTimeAPI = {
               var processedDataArray = processData(streamRes.data);
               var featureNameArray = [
                 'Computer Productivity (Hours)',
-                'Compuer Neutral (Hours)',
-                'Computer Distraction (Hours)',
+                'Computer Neutral (Hours)',
+                'Computer Distractivity (Hours)',
               ];
               util.addMuchDataToUser(
                 user, featureNameArray, 'rescuetime', processedDataArray, nextSync
@@ -134,4 +134,3 @@ var rescueTimeAPI = {
 };
 
 module.exports = rescueTimeAPI;
-
