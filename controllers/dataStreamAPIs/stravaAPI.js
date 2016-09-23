@@ -2,24 +2,57 @@ var util = require('./util');
 var axios = require('axios');
 var async = require('async');
 
-// checks to see if user needs added to feature and if user feature array is initialized
-var preSync = function (user, featureName, streamName, startSync) {
+// // if user stream doesn't contain feature array doesn't exist it will init it
+// var prepUserFeatureArr = function (user, featureName, streamName) {
+//   var currentStream = user.datastreams[streamName];
+//
+//   // check if user already has initialized userFeature
+//   var featureExists = false;
+//   for (var i = 0; i < currentStream.features.length; i++) {
+//     if (currentStream.features[i].name == featureName) {
+//       featureExists = true;
+//     }
+//   }
+//
+//   if (!featureExists) {
+//     currentStream.features.push({ name: featureName });
+//     user.save(function (err, user) {
+//       if (err) {
+//         res.send(err);
+//       }
+//     });
+//   };
+// };
+
+var preSync = function (user, featureNameArray, streamName, startSync) {
+  console.log('inside strava presync');
+
   // if user stream doesn't contain feature array doesn't exist it will init it
-  var prepUserFeatureArr = function (user, featureName, streamName, startSync) {
+  var prepUserFeatureArr = function (user, featureNameArray, streamName, startSync) {
+    console.log('inside prepUserFeatureArr');
+    var shouldSaveUser = false;
     var currentStream = user.datastreams[streamName];
 
-    // check if user already has initialized userFeature
-    var featureExists = false;
-    for (var i = 0; i < currentStream.features.length; i++) {
-      if (currentStream.features[i].name == featureName) {
-        featureExists = true;
+    for (idx in featureNameArray) {
+      var featureName = featureNameArray[idx];
+
+      // check if user already has initialized userFeature
+      var featureExists = false;
+      for (var i = 0; i < currentStream.features.length; i++) {
+        if (currentStream.features[i].name == featureName) {
+          featureExists = true;
+        }
+      }
+
+      if (!featureExists) {
+        currentStream.features.push({ name: featureName });
+        shouldSaveUser = true;
       }
     }
 
-    if (featureExists) {
+    if (shouldSaveUser) {
       startSync(null);
     } else {
-      currentStream.features.push({ name: featureName });
       user.save(function (err, user) {
         if (err) {
           startSync(err);
@@ -30,7 +63,7 @@ var preSync = function (user, featureName, streamName, startSync) {
     }
   };
 
-  prepUserFeatureArr(user, featureName, streamName, startSync);
+  prepUserFeatureArr(user, featureNameArray, streamName, startSync);
 };
 
 var stravaAPI = {
@@ -39,104 +72,65 @@ var stravaAPI = {
   },
 
   sync: function (user, endSync) {
-    // var processTracksData = function (newData) {
-    //   // initialize newData array
-    //   var processedData = [];
-    //
-    //   // function to create new day data object
-    //   var newDayData = function (date, val) {
-    //     return { dateTime: date, value: val };
-    //   };
-    //
-    //   const daySeconds = 86400; // seconds in day
-    //   var lastSongTime;// last song synced time in unix time
-    //
-    //   // case 1: use lastSongTime from DB
-    //   if (user.datastreams.lastfm.lastSongTime) {
-    //     lastSongTime = user.datastreams.lastfm.lastSongTime;
-    //
-    //     // unix timestamp of the last dateTime in seconds
-    //     timeLastDay = Math.floor(lastSongTime / daySeconds) * daySeconds;
-    //     // timeLastDay = Math.floor(new Date(user.datastreams.lastfm.features[0].data[existingDataLength - 1].dateTime).getTime() / 1000);
-    //   // case 2: track from beginning of 200 recent tracks
-    //   } else {
-    //     lastSongTime = newData[newData.length - 1].date.uts;
-    //     console.log('start here: ' + lastSongTime);
-    //
-    //     timeLastDay = Math.floor(lastSongTime / daySeconds) * daySeconds;
-    //     console.log('start here: ' + moment(timeLastDay * 1000).utc().format('YYYY-MM-DD'));
-    //   }
-    //
-    //   var currentDay = newDayData(moment(timeLastDay * 1000).utc().format('YYYY-MM-DD'), 0);
-    //
-    //   // store tracks played by day as counts in newData object
-    //   for (var i = newData.length - 1; i >= 0; i--) {
-    //     // do not include now playing track
-    //     if (newData[i].date != null) {
-    //       var timeThisTrack = newData[i].date.uts;
-    //       console.log(timeThisTrack);
-    //
-    //       if (timeThisTrack > timeLastDay && timeThisTrack > lastSongTime) {
-    //         if (timeThisTrack <= timeLastDay + daySeconds) {
-    //           currentDay.value++;
-    //           console.log(currentDay.value);
-    //         } else {
-    //           console.log(currentDay.dateTime);
-    //           console.log(currentDay.value);
-    //           processedData.push(currentDay);
-    //
-    //           // set new timeLastDay to beginning of next day
-    //           timeLastDay = Math.floor(timeLastDay / daySeconds) * daySeconds + daySeconds;
-    //           currentDay = newDayData(moment(timeLastDay * 1000).utc().format('YYYY-MM-DD'), 1);
-    //         }
-    //       }
-    //     }
-    //   }
-    //
-    //   console.log(currentDay.dateTime);
-    //   console.log(currentDay.value);
-    //   processedData.push(currentDay);
-    //   return processedData;
-    // };
-    var processStravaData = function (newData) {
+    var processData = function (newData) {
+      var typeArr = [];
+      var distanceArr = [];
+      var movingTimeArr = [];
+      var dataArrs = [typeArr, distanceArr, movingTimeArr];
 
+      // data is pulled reverse chronologically, so start from end of array and sync backwards
+      for (var i = newData.length - 1; i > 0; i--) {
+        typeArr.push({ dateTime: newData[i].start_date_local,
+                        value: newData[i].type, });
+        distanceArr.push({ dateTime: newData[i].start_date_local,
+                        value: newData[i].distance, });
+        movingTimeArr.push({ dateTime: newData[i].start_date_local,
+                        value: newData[i].moving_time, });
+      }
+
+      return dataArrs;
     };
 
-    var resourceNames = ['Type', 'Distance', 'Moving Time'];
-    // var series = resourceNames.map(function (resourceName) {
-    //   return (
-    //     function (nextSync) {
-    //       preSync(user, 'Tracks Played', 'lastfm', function (err) {
-    //         if (err) {
-    //           nextSync(err, null);
-    //         } else {
-          // make axios call before calling processTracksData
-              axios({
-                method: 'GET',
-                url: 'https://www.strava.com/api/v3/athlete/activities',
-                headers: { Authorization: 'Bearer ' + user.datastreams.strava.accessToken },
-                // params: {}
-              }).then(function (streamRes) {
-                console.log('made it to response');
-                console.log(streamRes);
-                endSync(null, user, false); // nextSync
-                // var processedData = processStravaData(streamRes.data);
-                // util.addDataToUser(user, 'Tracks Played', 'lastfm', processedData, nextSync);
-              }).catch(function (err) {
-                if (err.status == 401) {
-                  console.log('access token expired, redirecting to OAuth...');
-                  // nextSync('redirect', null);
-                  endSync(err, null, null);
-                } else {
-                  endSync(err, null, null);
-                  // nextSync(err.data.errors, null);
-                }
-              });
-    //         }
-    //       });
-    //     }
-    //   );
-    // });
+    async.series([
+      function (nextSync) {
+        console.log('inside strava async series function');
+        var featureNameArray = ['Type', 'Distance', 'Moving Time'];
+        preSync(user, featureNameArray, 'strava', function (err) {
+          console.log('inside strava startSync');
+          if (err) {
+            nextSync(err, null);
+          } else {
+            console.log('about to axios call');
+            axios({
+              method: 'GET',
+              url: 'https://www.strava.com/api/v3/athlete/activities',
+              headers: { Authorization: 'Bearer ' + user.datastreams.strava.accessToken },
+              // params: {}
+            }).then(function (streamRes) {
+              console.log('made it to response');
+              console.log(streamRes);
+              var processedDataArr = processData(streamRes.data);
+              var featureNames = ['Type', 'Distance', 'Moving Time'];
+              util.addMuchDataToUser(user, featureNames, 'strava', processedDataArr, nextSync);
+            }).catch(function (err) {
+              console.log('axios error');
+              if (err) {
+                nextSync(err, null);
+              }
+            });
+          }
+        });
+
+      },
+    ], function (err, results) {
+      console.log('async callback');
+      console.log(results[0].toString());
+      if (err) {
+        endSync(err, null, null);
+      } else {
+        endSync(null, results[results.length - 1], null);
+      }
+    });
 
     // async.series(series, function (err, results) {
     //   if (err === 'redirect') {

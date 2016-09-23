@@ -83,6 +83,7 @@ var UserSchema = new Schema({
     },
     strava: {
       accessToken: String,
+      lastSyncTime: { type: Date, default: Date.now },
       isConnected: { type: Boolean, default: false },
       features: [{
           name: String,
