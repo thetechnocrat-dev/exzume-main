@@ -180,7 +180,7 @@ var Explore = React.createClass({
           groupedBarData={GraphStore.getGroupedBarData()}
           width={graphWidth}
           height={graphHeight}
-          title={'Sleep A/B Comparison'}
+          title={'A/B Comparison'}
         />
       );
     }
