@@ -26,6 +26,7 @@ module.exports = {
     clientID: '13684',
     clientSecret: '955496e6c8084ca11922e1dab49d960b25d2e6ed',
     callbackURL: 'http://localhost:3000/auth/datastreams/strava/callback',
+
     // accessToken: '98813d8e1e80821224fbf923f059fae17d1def44',
   },
 };

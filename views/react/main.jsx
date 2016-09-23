@@ -18,6 +18,7 @@ var Auth = require('./components/auth');
 var Dashboard = require('./components/dashboard/dashboard');
 var Explore = require('./components/explore/explore');
 var Connect = require('./components/connect/connect');
+var Play = require('./components/play');
 
 var routes = (
   <Route component={App} path='/'>
@@ -32,6 +33,7 @@ var routes = (
       <IndexRoute component={Dashboard} />
       <Route component={Explore} path='explore' />
       <Route component={Connect} path='connect' />
+      <Route component={Play} path='play' />
     </Route>
   </Route>
 );
