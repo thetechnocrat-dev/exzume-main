@@ -53,7 +53,7 @@ var apps = [
       'download required',
     ],
     basicPrice: 0,
-    connectIcon: 'rescuetime-logo.png',
+    connectIcon: 'strava-logo.png',
     openUrl: 'https://www.strava.com',
   },
 ];
