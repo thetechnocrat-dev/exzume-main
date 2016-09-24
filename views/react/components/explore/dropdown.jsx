@@ -14,15 +14,13 @@ var Dropdown = React.createClass({
     var _this = this;
     return this.props.features.map(function (userFeature, idx) {
       if (_this.props.label === 'Plot Features') {
-        console.log('here1');
         return (
           <DropdownItem
             key={idx}
             userFeature={userFeature}
           />
         );
-      } else if (_this.props.label === 'Correlate Features') {
-        console.log('here');
+      } else if (_this.props.label === 'Find Top Correlators of a Feature') {
         return (
           <DropdownCorrItem
             key={idx}

@@ -13,20 +13,26 @@ var NormalizeButton = React.createClass({
   },
 
   makeButton: function () {
-    var buttonStyle = {};
+    var buttonStyle = { marginTop: '10px' };
 
     if (this.state.isNormalized) {
       return (
         <button
           className="ui yellow button"
-          onClick={this.handleClick}>Denormalize
+          onClick={this.handleClick}
+          style={buttonStyle}
+        >
+          Denormalize
         </button>
       );
     } else {
       return (
         <button
           className="ui yellow button"
-          onClick={this.handleClick}>Normalize
+          onClick={this.handleClick}
+          style={buttonStyle}
+        >
+          Normalize
         </button>
       );
     }

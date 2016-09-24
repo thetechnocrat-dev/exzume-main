@@ -4,21 +4,24 @@ var SessionStore = require('../../stores/sessionStore');
 
 // components
 var Dropdown = require('./dropdown');
+var DropdownCorr = require('./dropdownCorr');
 
 var SelectFeaturePanel = React.createClass({
   propTypes: {
-    selectableFeatures: React.PropTypes.array.isRequired,
-    selectedFeatures: React.PropTypes.array.isRequired,
+    features: React.PropTypes.array.isRequired,
   },
 
   render: function () {
     return (
       <div>
-        <Dropdown label="Plot Features" features={this.props.selectableFeatures} />
-        <div style={{ width: '14px', display: 'inline-block' }} />
         <Dropdown
-          label="Correlate Features"
-          features={this.props.selectableFeatures}
+          label="Plot Features"
+          features={this.props.features}
+        />
+        <div style={{ margin: '5px', display: 'inline-block' }}>OR</div>
+        <DropdownCorr
+          label="Find Top Correlators of a Feature"
+          features={this.props.features}
           style={{ marginLeft: '14px' }}
         />
       </div>
@@ -28,3 +31,4 @@ var SelectFeaturePanel = React.createClass({
 });
 
 module.exports = SelectFeaturePanel;
+

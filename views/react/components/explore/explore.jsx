@@ -197,15 +197,17 @@ var Explore = React.createClass({
           <div className="ui grid">
             <div className="four column row" style={{ marginBottom: '0', paddingBottom: '0' }}>
               <SelectFeaturePanel
-                selectableFeatures={this.getSelectableFeatures()}
-                selectedFeatures={GraphStore.getSelectedFeatures()}
+                features={SessionStore.getUserFeatures()}
               />
             </div>
-            <div className="row" style={{ marginTop: '0', paddingTop: '0', paddingBottom: '9px' }}>
+            {/*<div
+                 className="row"
+                 style={{ marginTop: '0', paddingTop: '0', paddingBottom: '9px' }}
+              >
               <div className="column">
                 <SelectedFeatureMenu features={GraphStore.getSelectedFeatures()} />
               </div>
-            </div>
+            </div>*/}
             <div className="row" style={{ paddingTop: '0', paddingBottom: '0' }}>
               <div className="column">
                 <NormalizeButton features={GraphStore.getSelectedFeatures()} />
