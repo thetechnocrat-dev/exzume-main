@@ -23,12 +23,12 @@ var BarExploreGraph = React.createClass({
     console.log(this.props.barData);
     console.log(Style.lightBackground);
     var outerStyle = {
-      zIndex: 4, position: 'relative', backgroundColor: Style.lightBackground, marginTop: '-69px',
+      zIndex: 4, position: 'relative', backgroundColor: Style.lightBackground, marginTop: '-38px',
     };
 
     return (
       <div style={outerStyle}>
-        <div className="ui green icon button" onClick={this.handleClick} style={{ float: 'right' }}>
+        <div className="ui icon button" onClick={this.handleClick} style={{ float: 'right' }}>
           <i className="remove icon" />
         </div>
         <BarChart

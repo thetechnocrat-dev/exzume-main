@@ -14,7 +14,13 @@ var SelectFeaturePanel = React.createClass({
   render: function () {
     return (
       <div>
-        <Dropdown features={this.props.selectableFeatures} />
+        <Dropdown label="Plot Features" features={this.props.selectableFeatures} />
+        <div style={{ width: '14px', display: 'inline-block' }} />
+        <Dropdown
+          label="Correlate Features"
+          features={this.props.selectableFeatures}
+          style={{ marginLeft: '14px' }}
+        />
       </div>
     );
   },

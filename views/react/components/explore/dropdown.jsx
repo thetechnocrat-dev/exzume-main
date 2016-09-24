@@ -2,20 +2,34 @@ var React = require('react');
 
 // Components
 var DropdownItem = require('./dropdownItem');
+var DropdownCorrItem = require('./dropdownCorrItem');
 
 var Dropdown = React.createClass({
   propTypes: {
+    label: React.PropTypes.string.isRequired,
     features: React.PropTypes.array.isRequired,
   },
 
   makeDropdownItems: function () {
+    var _this = this;
     return this.props.features.map(function (userFeature, idx) {
-      return (
+      if (_this.props.label === 'Plot Features') {
+        console.log('here1');
+        return (
           <DropdownItem
             key={idx}
             userFeature={userFeature}
           />
         );
+      } else if (_this.props.label === 'Correlate Features') {
+        console.log('here');
+        return (
+          <DropdownCorrItem
+            key={idx}
+            userFeature={userFeature}
+          />
+        );
+      }
     });
   },
 
@@ -23,7 +37,7 @@ var Dropdown = React.createClass({
     return (
       <div className="ui compact menu">
         <div className="ui simple dropdown item">
-          Select Feature 
+          {this.props.label}
           <i className="dropdown icon"></i>
           <div className="menu">
             {this.makeDropdownItems()}

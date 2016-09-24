@@ -171,7 +171,7 @@ var Explore = React.createClass({
           barData={GraphStore.getBarData()}
           width={graphWidth}
           height={graphHeight}
-          title={GraphStore.getSeriesData()[0].name + ' Influencers'}
+          title={GraphStore.getBarTitle()}
         />
       );
     } else if (this.state.graphType === 'groupedBar') {
@@ -196,12 +196,10 @@ var Explore = React.createClass({
         <div>
           <div className="ui grid">
             <div className="four column row" style={{ marginBottom: '0', paddingBottom: '0' }}>
-              <div className="column">
-                <SelectFeaturePanel
-                  selectableFeatures={this.getSelectableFeatures()}
-                  selectedFeatures={GraphStore.getSelectedFeatures()}
-                />
-              </div>
+              <SelectFeaturePanel
+                selectableFeatures={this.getSelectableFeatures()}
+                selectedFeatures={GraphStore.getSelectedFeatures()}
+              />
             </div>
             <div className="row" style={{ marginTop: '0', paddingTop: '0', paddingBottom: '9px' }}>
               <div className="column">
@@ -211,12 +209,12 @@ var Explore = React.createClass({
             <div className="row" style={{ paddingTop: '0', paddingBottom: '0' }}>
               <div className="column">
                 <NormalizeButton features={GraphStore.getSelectedFeatures()} />
-                <FindInfluencersButton feature={GraphStore.getSelectedFeatures()} />
-                <ABModal features={this.getSelectableFeatures()} />
+                {/*<FindInfluencersButton feature={GraphStore.getSelectedFeatures()} />
+                 <ABModal features={this.getSelectableFeatures()} />
                 <CorrelateButton
                   correlation={GraphStore.getCorrelation()}
                   pValue={GraphStore.getPValue()}
-                />
+                /> */}
               </div>
             </div>
           </div>
@@ -227,8 +225,8 @@ var Explore = React.createClass({
                 <TimeMenu isDisabled={!GraphStore.hasSelectedFeature()} />
               </div>
               <div className="right floated column">
-                {this.makePinZumeButton()}
-                {this.makeSuccessMessage()}
+              {/*{this.makePinZumeButton()}
+                {this.makeSuccessMessage()} */}
               </div>
             </div>
           </div>

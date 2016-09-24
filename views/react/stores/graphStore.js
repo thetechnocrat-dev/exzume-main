@@ -13,6 +13,7 @@ var _pValue = null;
 var _graphType = 'line';
 var _barData = [];
 var _groupedBarData = [];
+var _barTitle = '';
 
 GraphStore.resetGraphStore = function () {
   _selectedFeatures = [];
@@ -25,6 +26,21 @@ GraphStore.resetGraphStore = function () {
   _graphType = 'line';
   _barData = [];
   _groupedBarData = [];
+  _barTitle = '';
+},
+
+GraphStore.clearBarInfo = function () {
+  _barData = [];
+  _barTitle = '';
+  _graphType = 'line';
+},
+
+GraphStore.setBarTitle = function (barTitle) {
+  _barTitle = barTitle;
+},
+
+GraphStore.getBarTitle = function () {
+  return _barTitle;
 },
 
 GraphStore.addFeature = function (feature) {
@@ -199,6 +215,7 @@ GraphStore.hasTwoSelectedFeatures = function () {
 GraphStore.__onDispatch = function (payload) {
   switch (payload.actionType) {
     case 'FEATURE_RECEIVED':
+      this.clearBarInfo();
       this.addFeature(payload.data);
       this.__emitChange();
       break;
@@ -234,6 +251,11 @@ GraphStore.__onDispatch = function (payload) {
       console.log(payload.data);
       this.setGroupedBarData(payload.data);
       this.setGraphType('groupedBar');
+      this.__emitChange();
+      break;
+    case 'BAR_TITLE_RECEIVED':
+      console.log('BAR_TITLE_RECEIVED');
+      this.setBarTitle(payload.data);
       this.__emitChange();
       break;
   }
