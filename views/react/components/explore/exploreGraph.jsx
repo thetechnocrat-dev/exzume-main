@@ -62,7 +62,8 @@ var ExploreGraph = React.createClass({
   render: function () {
     return (
       <div>
-        <div className="ui container">
+        <div className="ui segment">
+          hi there
           {this.makeGraph()}
         </div>
       </div>
