@@ -91,7 +91,16 @@ var UserSchema = new Schema({
         },
       ],
     },
-
+    darksky: {
+      isConnected: { type: Boolean, default: false },
+      lastSyncTime: { type: Date, default: Date.now },
+      lastSyncLoc: { lat: Number, long: Number },
+      features: [{
+          name: String,
+          data: [],
+        },
+      ],
+    },
   },
 }, { autoIndex: false });
 
