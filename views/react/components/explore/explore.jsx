@@ -14,6 +14,7 @@ var FindInfluencersButton = require('./findInfluencersButton');
 var BarExploreGraph = require('./barExploreGraph.jsx');
 var ABModal = require('./abModal');
 var GroupedBarExploreGraph = require('./groupedBarExplore');
+var Play = require('../play');
 
 var Explore = React.createClass({
   getInitialState: function () {
@@ -238,9 +239,11 @@ var Explore = React.createClass({
   },
 
   render: function () {
+    console.log(GraphStore.getSeriesData());
     return (
       <div>
         {this.makeContent()}
+        <Play data={GraphStore.getSeriesData()} />
       </div>
     );
   },

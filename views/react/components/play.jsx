@@ -1,29 +1,37 @@
 var React = require('react');
 var Recharts = require('recharts');
-const {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend} = Recharts;
+const {ScatterChart, Scatter, XAxis, YAxis, ZAxis, CartesianGrid, Tooltip, Legend} = Recharts;
 
-const data = [
-        {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
-              {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},
-                    {name: 'Page C', uv: 2000, pv: 9800, amt: 2290},
-                          {name: 'Page D', uv: 2780, pv: 3908, amt: 2000},
-                                {name: 'Page E', uv: 1890, pv: 4800, amt: 2181},
-                                      {name: 'Page F', uv: 2390, pv: 3800, amt: 2500},
-                                            {name: 'Page G', uv: 3490, pv: 4300, amt: 2100},
-];
+const data01 = [{x: 10, y: 30}, {x: 30, y: 200}, {x: 45, y: 100}, {x: 50, y: 400}, {x: 70, y: 150}, {x: 100, y: 250}];
+const data02 = [{x: 30, y: 20}, {x: 50, y: 180}, {x: 75, y: 240}, {x: 100, y: 100}, {x: 120, y: 190}];
 
 var Play = React.createClass({
+    formatData: function () {
+      if (this.props.data[0]) {
+        var _this = this;
+        return this.props.data[0].values.map(function (el, i) {
+          return (
+            {x: new Date (el.x).getTime(), y: el.y}
+          );
+        });
+      } else {
+        return [{x: 12, y: 22}];
+      }
+    },
+
   render: function () {
-    return (
-      <LineChart width={600} height={300} data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-        <Line type="monotone" dataKey="uv" stroke="#8884d8" />
-          <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-            <XAxis dataKey="name" />
-              <YAxis />
-                <Tooltip />
-                </LineChart>
-    );
-  },
+    console.log(this.formatData());
+          return (
+                    <ScatterChart width={600} height={400} margin={{top: 20, right: 20, bottom: 20, left: 20}}>
+                            <XAxis dataKey={'x'} name='stature' unit='cm' domain={['dataMin', 'dataMax']}/>
+                                    <YAxis dataKey={'y'} name='weight' unit='kg'/>
+                                                    <CartesianGrid />
+                                                            <Tooltip cursor={{strokeDasharray: '3 3'}}/>
+                                                                    <Legend/>
+                                                                            <Scatter name='A school' data={this.formatData()} fill='#8884d8' line shape="cross"/>
+                                                                                          </ScatterChart>
+                                                                                              );
+            }
 
 });
 

@@ -23,6 +23,8 @@ var DropdownCorr = React.createClass({
 
   render: function () {
     return (
+      <div>
+      <div className="ui loading selection dropdown">{this.props.label}</div>
       <div className="ui compact menu">
         <div className="ui simple dropdown item">
           {this.props.label}
@@ -31,6 +33,7 @@ var DropdownCorr = React.createClass({
             {this.makeDropdownItems()}
           </div>
         </div>
+      </div>
       </div>
     );
   },
