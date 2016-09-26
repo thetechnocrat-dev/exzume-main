@@ -39,11 +39,12 @@ var AppItem = React.createClass({
           <div className="extra content">
             <div className="ui one column grid">
               <div className="row" style={{ paddingBottom: '0' }}>
-                <Rating currentRating={this.props.app.avgRating} /> 
+                <Rating currentRating={this.props.app.avgRating} />
                 <p style={{ marginLeft: '3%' }}>{this.makeRatingCount()}</p>
               </div>
               <div className="row" style={{ paddingTop: '0' }}>
                 <ConnectButton
+                  appName={this.props.app.name}
                   isConnected={this.props.isConnected}
                   openUrl={this.props.app.openUrl}
                   connectUrl={'/auth/datastreams/' + this.props.app.name.toLowerCase()}
@@ -59,4 +60,3 @@ var AppItem = React.createClass({
 });
 
 module.exports = AppItem;
-

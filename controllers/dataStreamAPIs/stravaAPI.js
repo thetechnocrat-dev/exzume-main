@@ -2,28 +2,6 @@ var util = require('./util');
 var axios = require('axios');
 var async = require('async');
 
-// // if user stream doesn't contain feature array doesn't exist it will init it
-// var prepUserFeatureArr = function (user, featureName, streamName) {
-//   var currentStream = user.datastreams[streamName];
-//
-//   // check if user already has initialized userFeature
-//   var featureExists = false;
-//   for (var i = 0; i < currentStream.features.length; i++) {
-//     if (currentStream.features[i].name == featureName) {
-//       featureExists = true;
-//     }
-//   }
-//
-//   if (!featureExists) {
-//     currentStream.features.push({ name: featureName });
-//     user.save(function (err, user) {
-//       if (err) {
-//         res.send(err);
-//       }
-//     });
-//   };
-// };
-
 var preSync = function (user, featureNameArray, streamName, startSync) {
   console.log('inside strava presync');
 

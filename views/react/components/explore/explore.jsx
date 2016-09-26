@@ -213,11 +213,11 @@ var Explore = React.createClass({
               <div className="column">
                 <NormalizeButton features={GraphStore.getSelectedFeatures()} />
                 {/*<FindInfluencersButton feature={GraphStore.getSelectedFeatures()} />
-                 <ABModal features={this.getSelectableFeatures()} />
+                 <ABModal features={this.getSelectableFeatures()} />*/}
                 <CorrelateButton
                   correlation={GraphStore.getCorrelation()}
                   pValue={GraphStore.getPValue()}
-                /> */}
+                />
               </div>
             </div>
           </div>
@@ -250,4 +250,3 @@ var Explore = React.createClass({
 });
 
 module.exports = Explore;
-

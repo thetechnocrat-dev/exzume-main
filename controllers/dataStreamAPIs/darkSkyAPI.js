@@ -3,7 +3,7 @@ var axios = require('axios');
 var async = require('async');
 
 var preSync = function (user, featureNameArray, streamName, startSync) {
-  console.log('inside rescue time presync');
+  console.log('inside darksky presync');
 
   // if user stream doesn't contain feature array doesn't exist it will init it
   var prepUserFeatureArr = function (user, featureNameArray, streamName, startSync) {
@@ -44,73 +44,89 @@ var preSync = function (user, featureNameArray, streamName, startSync) {
   prepUserFeatureArr(user, featureNameArray, streamName, startSync);
 };
 
-var rescueTimeAPI = {
+var darkSkyAPI = {
   connect: function () {
     return function (req, res, next) {
-      console.log('rescue time redirect');
-      res.redirect('https://www.rescuetime.com/oauth/authorize/?response_type=code&redirect_uri' +
-          '=https%3A%2F%2Fwww.exzume.com%2Fauth%2Fdatastreams%2Frescuetime%2Fcallback&scope=' +
-          'time_data%20category_data%20productivity_data&client_id=2900e583f575ac611f1ffd838' +
-          '27ee0995f5b462f159fe42288f12e847e6b430a');
+      console.log('in darksky connect');
+      res.redirect('/auth/datastreams/darksky/grab?isInitialSync=true');
     };
   },
 
   sync: function (user, endSync) {
-    console.log('in rescue time sync');
-    var processData = function (newData) {
-      var productiveHours = [];
-      var neutralHours = [];
-      var distractingHours = [];
+    console.log('in darksky sync');
+    // get long + lat!
+    var processData = function (dataResp) {
+      var dailyData = dataResp.daily.data;
+      console.log('inside processData');
+      console.log(dailyData);
+      var summary = [];
+      var precipProb = [];
+      var precipType = [];
+      var minTemp = [];
+      var maxTemp = [];
 
-      // data is pulled reverse chronologically, so start from end of array and sync backwards
-      for (var i = newData.length - 1; i > 0; i--) {
-        productiveHours.push({
-          dateTime: newData[i].date,
-          value: newData[i].all_productive_hours,
+      for (var i = 0; i < dailyData.length; i++) {
+        summary.push({
+          dateTime: dailyData[i].time,
+          value: dailyData[i].summary,
         });
-        neutralHours.push({
-          dateTime: newData[i].date,
-          value: newData[i].neutral_hours,
+        precipProb.push({
+          dateTime: dailyData[i].time,
+          value: dailyData[i].precipProbability,
         });
-        distractingHours.push({
-          dateTime: newData[i].date,
-          value: newData[i].all_distracting_hours,
+        // if no precipType, use 'cloudy/sunny' icon?
+        precipType.push({
+          dateTime: dailyData[i].time,
+          value: dailyData[i].precipType,
+        });
+        minTemp.push({
+          dateTime: dailyData[i].time,
+          value: dailyData[i].temperatureMin,
+        });
+        maxTemp.push({
+          dateTime: dailyData[i].time,
+          value: dailyData[i].temperatureMax,
         });
       }
 
-      return [productiveHours, neutralHours, distractingHours];
+      return [summary, precipProb, precipType, minTemp, maxTemp];
     };
 
     async.series([
       function (nextSync) {
-        console.log('inside rescuetime async series function');
+        console.log('inside darksky async series function');
         var featureNameArray = [
-          'Computer Productivity (Hours)',
-          'Computer Neutral (Hours)',
-          'Computer Distractivity (Hours)',
+          'Weather Summary',
+          'Precipitation Probability',
+          'Precipitation Type',
+          'Minimum Temperature',
+          'Maximum Temperature',
         ];
-        preSync(user, featureNameArray, 'rescuetime', function (err) {
-          console.log('inside rescuetime startSync');
+        preSync(user, featureNameArray, 'darksky', function (err) {
+          console.log('inside darksky startSync');
           if (err) {
             nextSync(err, null);
           } else {
             console.log('about to axios call');
-            console.log(user.datastreams.rescuetime);
-            axios.get('https://www.rescuetime.com/api/oauth/daily_summary_feed', {
+            console.log(user.datastreams.darksky);
+            axios.get('https://api.darksky.net/forecast/17a51b74f64749f570ab28816c11884d/37.8267,-122.4233', {
               params: {
-                access_token: user.datastreams.rescuetime.accessToken,
-                format: 'json',
+                exclude: 'currently,minutely,hourly,alerts,flags',
               },
             }).then(function (streamRes) {
-              console.log('made it to axios rescuetime axios then call');
+              console.log('made it to darksky axios then call');
+              console.log(streamRes);
               var processedDataArray = processData(streamRes.data);
               var featureNameArray = [
-                'Computer Productivity (Hours)',
-                'Computer Neutral (Hours)',
-                'Computer Distractivity (Hours)',
+                'Weather Summary',
+                'Precipitation Probability',
+                'Precipitation Type',
+                'Minimum Temperature',
+                'Maximum Temperature',
               ];
+
               util.addMuchDataToUser(
-                user, featureNameArray, 'rescuetime', processedDataArray, nextSync
+                user, featureNameArray, 'darksky', processedDataArray, nextSync
               );
             }).catch(function (err) {
               console.log('axios error');
@@ -131,7 +147,6 @@ var rescueTimeAPI = {
         }
       });
   },
-
 };
 
-module.exports = rescueTimeAPI;
+module.exports = darkSkyAPI;

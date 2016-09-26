@@ -56,6 +56,18 @@ var apps = [
     connectIcon: 'strava-logo.png',
     openUrl: 'https://www.strava.com',
   },
+  {
+    name: 'DarkSky',
+    categories: ['weather'],
+    ratings: [3],
+    express: true,
+    requirements: [
+      'nothing required',
+    ],
+    basicPrice: 0,
+    connectIcon: 'darksky-logo.png',
+    openUrl: 'https://darksky.net/app/',
+  },
 ];
 
 module.exports = function (done) {
