@@ -59,7 +59,7 @@ var darkSkyAPI = {
 
       console.log(next);
       console.log('in darksky connect');
-      res.redirect('/auth/datastreams/darksky/grab?isInitialSync=true');
+      res.redirect('/auth/datastreams/darksky/grab');
     },
 
   sync: function (user, endSync) {
