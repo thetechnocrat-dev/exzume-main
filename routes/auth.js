@@ -166,7 +166,11 @@ module.exports = function (router, passport) {
         if (error) {
           res.send(error);
         } else if (updatedUser) {
-          res.json(updatedUser);
+          if (isInitialSync) {
+            res.redirect('/#/dashboard?=');
+          } else {
+            res.json(updatedUser);
+          }
         } else if (shouldRedirect) {
           res.redirect('/auth/datastreams/' + req.params.datastream);
         }
