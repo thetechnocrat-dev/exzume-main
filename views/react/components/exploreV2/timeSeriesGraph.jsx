@@ -50,8 +50,6 @@ var TimeSeriesCompareGraph = React.createClass({
         <Tooltip
           formatter={
             function (value, name) {
-              console.log(value);
-              console.log(name);
               if (name == 'date') {
                 return moment(value).utc().format('MM-DD-YY');
               } else if (name == 'value') {

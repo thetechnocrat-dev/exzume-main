@@ -9,7 +9,7 @@ var SelectFeatureDropdown = React.createClass({
   },
 
   componentDidMount: function () {
-    $('.ui.dropdown')
+    $('#selectFeatureDropdown')
       .dropdown()
     ;
   },
@@ -28,7 +28,7 @@ var SelectFeatureDropdown = React.createClass({
 
   render: function () {
     return (
-      <div className="ui selection dropdown">
+      <div className="ui selection dropdown" id="selectFeatureDropdown">
         <input type="hidden" name="select a feature to explore" />
         <i className="dropdown icon" />
         <div className="default text">Select a Feature to Explore</div>

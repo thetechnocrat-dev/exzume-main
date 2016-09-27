@@ -6,6 +6,8 @@ var ExploreStore = require('../../stores/exploreStore');
 // Components
 var TimeSeriesGraph = require('./timeSeriesGraph');
 var SelectFeatureDropdown = require('./selectFeatureDropdown');
+var ExploreMenu = require('./exploreMenu');
+var AddFeatureDropdown = require('./addFeatureDropdown');
 
 var Explore = React.createClass({
   getInitialState:  function () {
@@ -87,25 +89,16 @@ var Explore = React.createClass({
     }
   },
 
-  makeContent: function () {
-    return (
-      <div className="ui bottom attached segment">
-        {this.makeExploreGraph()}
-      </div>
-    );
-  },
-
   render: function () {
     if (this.state.user) {
       return (
         <div>
           <SelectFeatureDropdown features={SessionStore.getUserFeatures()} />
-          <div className="ui top attached menu">
-            <a className="active item">
-              Home
-            </a>
+          <ExploreMenu />
+          <div className="ui bottom attached segment">
+            <AddFeatureDropdown />
+            {this.makeExploreGraph()}
           </div>
-          {this.makeContent()}
         </div>
       );
     } else {
