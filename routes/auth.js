@@ -107,11 +107,15 @@ module.exports = function (router, passport) {
       });
     });
 
-  router.get('/datastreams/:datastream', function (req, res, next) {
+  router.route('/datastreams/:datastream')
+    .get(function (req, res, next) {
       console.log('auth connect ' + req.params.datastream);
       dataStreamAPIs[req.params.datastream].connect(passport)(req, res, next);
-    }
-  );
+    })
+    .post(function (req, res, next) {
+      console.log('auth connecting without passport ' + req.params.datastream);
+      dataStreamAPIs[req.params.datastream].connect(req, res, next);
+    });
 
   router.get('/datastreams/rescuetime/callback', function (req, res, next) {
     console.log(req.query);
@@ -162,11 +166,7 @@ module.exports = function (router, passport) {
         if (error) {
           res.send(error);
         } else if (updatedUser) {
-          if (isInitialSync) {
-            res.redirect('/#/dashboard?=');
-          } else {
-            res.json(updatedUser);
-          }
+          res.json(updatedUser);
         } else if (shouldRedirect) {
           res.redirect('/auth/datastreams/' + req.params.datastream);
         }

@@ -9,7 +9,7 @@ var ConnectButton = React.createClass({
     connectUrl: React.PropTypes.string.isRequired,
   },
 
-  requestUserLocation: function () {
+  requestUserLocation: function (connectUrl) {
 
     if (!navigator.geolocation) {
       console.log('Geolocation is not supported by your browser');
@@ -17,12 +17,19 @@ var ConnectButton = React.createClass({
     }
 
     function success(position) {
-      var latitude  = position.coords.latitude;
-      var longitude = position.coords.longitude;
+      var lat = position.coords.latitude;
+      var long = position.coords.longitude;
+      var userLoc = { latitude: lat, longitude: long };
 
-      console.log('Latitude is ' + latitude + '°');
-      console.log('Longitude is ' + longitude + '°');
-      window.open(this.props.connectUrl, '_self');
+      console.log('Latitude is ' + lat + '°');
+      console.log('Longitude is ' + long + '°');
+
+      // POST to user document in DB
+      if (lat & long) {
+        FastFlux.webCycle('post', connectUrl, {
+          body: userLoc,
+        });
+      };
     };
 
     function error() {
@@ -37,7 +44,7 @@ var ConnectButton = React.createClass({
       window.open(this.props.openUrl, '_blank');
     } else {
       if (this.props.appName == 'DarkSky') {
-        this.requestUserLocation();
+        this.requestUserLocation(this.props.connectUrl);
       } else {
         window.open(this.props.connectUrl, '_self');
       }
