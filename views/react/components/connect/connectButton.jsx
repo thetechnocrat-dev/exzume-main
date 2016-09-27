@@ -18,7 +18,7 @@ var ConnectButton = React.createClass({
 
     if (!navigator.geolocation) {
       console.log('Geolocation is not supported by your browser');
-      this.setState({ loading: false, errorMsg: 'Geolocation is not supported by your browser' });
+      this.setState({ loading: false, errorMsg: 'Geolocation is not supported by your browser.' });
       return;
     }
 
@@ -50,11 +50,11 @@ var ConnectButton = React.createClass({
   },
 
   successCallback: function () {
-    this.setState({ loading: false, successMsg: 'Your location has been saved' });
+    this.setState({ loading: false, successMsg: 'Your location has been saved.' });
   },
 
   errorCallback: function (err) {
-    this.setState({ loading: false, errorMsg: 'Unable to retrieve your location' });
+    this.setState({ loading: false, errorMsg: 'Unable to retrieve your location.' });
   },
 
   handleClick: function () {
@@ -69,6 +69,10 @@ var ConnectButton = React.createClass({
         window.open(this.props.connectUrl, '_self');
       }
     }
+  },
+
+  handleCloseClick: function () {
+    this.setState({ errorMsg: '', successMsg: '' });
   },
 
   makeButton: function () {
@@ -97,8 +101,11 @@ var ConnectButton = React.createClass({
   makeMessage: function () {
     if (this.state.errorMsg.length > 0) {
       return (
-        <div className="ui error message">
-          <i className="close icon"></i>
+        <div className="ui small error message">
+          <i
+            className="close icon"
+            onClick={this.handleCloseClick}
+          />
           <div className="header">
             {this.state.errorMsg}
           </div>
@@ -106,8 +113,11 @@ var ConnectButton = React.createClass({
       );
     } else if (this.state.successMsg.length > 0) {
       return (
-        <div className="ui success message">
-          <i className="close icon"></i>
+        <div className="ui small success message">
+          <i
+            className="close icon"
+            onClick={this.handleCloseClick}
+          />
           <div className="header">
             {this.state.successMsg}
           </div>
