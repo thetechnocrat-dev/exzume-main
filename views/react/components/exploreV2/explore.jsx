@@ -94,9 +94,8 @@ var Explore = React.createClass({
       return (
         <div>
           <SelectFeatureDropdown features={SessionStore.getUserFeatures()} />
-          <ExploreMenu />
+          <ExploreMenu features={SessionStore.getUserFeatures()} />
           <div className="ui bottom attached segment">
-            <AddFeatureDropdown />
             {this.makeExploreGraph()}
           </div>
         </div>

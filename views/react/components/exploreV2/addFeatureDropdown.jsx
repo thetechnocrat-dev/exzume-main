@@ -1,33 +1,40 @@
 var React = require('react');
 
-var AddFeatureDropdown = React.createClass({
-  componentDidMount: function () {
-    $('#addFeatureDropdown')
-      .dropdown()
-    ;
+// Components
+var AddFeatureDropdownItem = require('./addFeatureDropdownItem');
+
+var Dropdown = React.createClass({
+  propTypes: {
+    features: React.PropTypes.array.isRequired,
+  },
+
+  makeDropdownItems: function () {
+    var _this = this;
+    return this.props.features.map(function (feature, idx) {
+      return (
+        <AddFeatureDropdownItem
+          key={idx}
+          feature={feature}
+        />
+      );
+    });
   },
 
   render: function () {
     return (
-      <div className="ui multiple dropdown" id="addFeatureDropdown">
-        <input type="hidden" name="filters" />
-        <span className="text">Compare</span>
-        <div className="menu">
-          <div className="scrolling menu">
-            <div className="item" data-value="important">
-              Important
-            </div>
-            <div className="item" data-value="announcement">
-              Announcement
-            </div>
+      <div className="ui compact menu">
+        <div className="ui simple dropdown item">
+          Compare 
+          <i className="plus icon"></i>
+          <div className="menu">
+            {this.makeDropdownItems()}
           </div>
         </div>
-        <i className="plus icon" />
       </div>
     );
   },
 
 });
 
-module.exports = AddFeatureDropdown;
+module.exports = Dropdown;
 

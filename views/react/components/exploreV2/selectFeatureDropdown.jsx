@@ -1,7 +1,7 @@
 var React = require('react');
 
 // Components
-var DropdownItem = require('./dropdownItem');
+var SelectFeatureDropdownItem = require('./selectFeatureDropdownItem');
 
 var SelectFeatureDropdown = React.createClass({
   propTypes: {
@@ -15,10 +15,9 @@ var SelectFeatureDropdown = React.createClass({
   },
 
   makeDropdownItems: function () {
-    var _this = this;
     return this.props.features.map(function (feature, idx) {
       return (
-        <DropdownItem
+        <SelectFeatureDropdownItem
           key={idx}
           feature={feature}
         />
