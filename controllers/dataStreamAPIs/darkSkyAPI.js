@@ -45,16 +45,31 @@ var preSync = function (user, featureNameArray, streamName, startSync) {
 };
 
 var darkSkyAPI = {
-  connect: function () {
-    return function (req, res, next) {
+  connect: function (req, res, next) {
+      var user = req.user;
+      var latitude = parseFloat(req.body.latitude);
+      var longitude = parseFloat(req.body.longitude);
+
+      user.datastreams.darksky.isConnected = true;
+      user.datastreams.darksky.lastSyncLoc = { lat: latitude, long: longitude };
+      user.save(function (err) {
+        if (err) res.send(err);
+        console.log('user saved with lastSyncLoc');
+      });
+
+      console.log(next);
       console.log('in darksky connect');
       res.redirect('/auth/datastreams/darksky/grab?isInitialSync=true');
-    };
-  },
+    },
 
   sync: function (user, endSync) {
     console.log('in darksky sync');
-    // get long + lat!
+
+    // get latest user location
+    var latitude = user.datastreams.darksky.lastSyncLoc.lat;
+    var longitude = user.datastreams.darksky.lastSyncLoc.long;
+    var url = 'https://api.darksky.net/forecast/17a51b74f64749f570ab28816c11884d/' + latitude + ',' + longitude;
+
     var processData = function (dataResp) {
       var dailyData = dataResp.daily.data;
       console.log('inside processData');
@@ -109,7 +124,7 @@ var darkSkyAPI = {
           } else {
             console.log('about to axios call');
             console.log(user.datastreams.darksky);
-            axios.get('https://api.darksky.net/forecast/17a51b74f64749f570ab28816c11884d/37.8267,-122.4233', {
+            axios.get(url, {
               params: {
                 exclude: 'currently,minutely,hourly,alerts,flags',
               },
@@ -137,15 +152,16 @@ var darkSkyAPI = {
           }
         });
       },
-      ], function (err, results) {
-        console.log('async callback');
-        console.log(results[0].toString());
-        if (err) {
-          endSync(err, null, null);
-        } else {
-          endSync(null, results[results.length - 1], null);
-        }
-      });
+    ], function (err, results) {
+      console.log('async callback');
+      console.log(results.length);
+      console.log(results[0].toString());
+      if (err) {
+        endSync(err, null, null);
+      } else {
+        endSync(null, results[results.length - 1], null);
+      }
+    });
   },
 };
 
