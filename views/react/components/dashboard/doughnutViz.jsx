@@ -1,8 +1,9 @@
 var React = require('react');
 var Recharts = require('recharts');
 const { PieChart, Pie, Sector } = Recharts;
-const data = [{ name: 'Group A', value: 400 }, { name: 'Group B', value: 300 },
-              { name: 'Group C', value: 300 }, { name: 'Group D', value: 200 },];
+// accepts data as prop in the following format:
+// const data = [{ name: 'Group A', value: 400 }, { name: 'Group B', value: 300 },
+//               { name: 'Group C', value: 300 }, { name: 'Group D', value: 200 },];
 
 const renderActiveShape = (props) => {
   const RADIAN = Math.PI / 180;
@@ -41,9 +42,9 @@ const renderActiveShape = (props) => {
       />
       <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none"/>
       <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none"/>
-      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`PV ${value}`}</text>
+      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`${value} hours`}</text>
       <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
-        {`(Rate ${(percent * 100).toFixed(2)}%)`}
+        {`${(percent * 100).toFixed(2)}%`}
       </text>
     </g>
   );
@@ -51,7 +52,7 @@ const renderActiveShape = (props) => {
 
 var DoughnutViz = React.createClass({
   propTypes: {
-    // chartData: React.PropTypes.array.isRequired,
+    chartData: React.PropTypes.array.isRequired,
     // label: React.PropTypes.string.isRequired,
   },
 
@@ -72,11 +73,11 @@ var DoughnutViz = React.createClass({
     chartOptions = {};
 
     return (
-    	<PieChart width={800} height={400} onMouseEnter={this.onPieEnter}>
+      <PieChart width={800} height={400} onMouseEnter={this.onPieEnter}>
         <Pie
-        	activeIndex={this.state.activeIndex}
+          activeIndex={this.state.activeIndex}
           activeShape={renderActiveShape}
-          data={data}
+          data={this.props.chartData}
           cx={300}
           cy={200}
           innerRadius={60}
@@ -85,10 +86,8 @@ var DoughnutViz = React.createClass({
        </PieChart>
     );
 
-    //
     // return (
     //   <div>
-    //
     //     <DoughnutChart data={this.props.chartData} options={chartOptions}/>
     //     <br />
     //     {this.props.label}

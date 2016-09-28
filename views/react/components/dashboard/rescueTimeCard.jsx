@@ -24,8 +24,9 @@ var RescueTimeCard = React.createClass({
 
   render: function () {
     var rescuetime = this.props.rescuetime;
-    var data = [{ name: 'Group A', value: 400 }, { name: 'Group B', value: 300 },
-                { name: 'Group C', value: 300 },];
+    console.log(rescuetime);
+    var currentChartData = [{ name: 'productive hours', value: 400 }, { name: 'distracting hours', value: 300 },
+                            { name: 'neutral hours', value: 300 },];
 
     var chartDataCurrent = [
       {
@@ -64,11 +65,10 @@ var RescueTimeCard = React.createClass({
     return (
       <div className="ui fluid card">
         <div className="content">
-          <div className="header" style={{ marginBottom: '2%' }}>
+          <div className="header">
             Productivity
           </div>
-            <DoughnutViz />
-
+          <DoughnutViz chartData={currentChartData}/>
         </div>
       </div>
     );
