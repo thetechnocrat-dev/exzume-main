@@ -4,14 +4,15 @@ var Style = require('../../util/style');
 // Components
 var DoughnutViz = require('./doughnutViz');
 
-var ProductivityCard = React.createClass({
+var RescueTimeCard = React.createClass({
   propTypes: {
-    currentProductiveTime: React.PropTypes.number.isRequired,
-    currentDistractingTime: React.PropTypes.number.isRequired,
-    currentNeautralTime: React.PropTypes.number.isRequired,
-    avgProductiveTime: React.PropTypes.number.isRequired,
-    avgDistractingTime: React.PropTypes.number.isRequired,
-    avgNeautralTime: React.PropTypes.number.isRequired,
+    rescuetime: React.PropTypes.object.isRequired,
+    // currentProductiveTime: React.PropTypes.number.isRequired,
+    // currentDistractingTime: React.PropTypes.number.isRequired,
+    // currentNeutralTime: React.PropTypes.number.isRequired,
+    // avgProductiveTime: React.PropTypes.number.isRequired,
+    // avgDistractingTime: React.PropTypes.number.isRequired,
+    // avgNeutralTime: React.PropTypes.number.isRequired,
   },
 
   componentDidMount: function () {
@@ -31,8 +32,8 @@ var ProductivityCard = React.createClass({
         value: this.props.currentDistractingTime,
       }, {
         color: Style.gray,
-        label: 'neautral hours',
-        value: this.props.currentNeautralTime,
+        label: 'neutral hours',
+        value: this.props.currentNeutralTime,
       },
     ];
 
@@ -47,8 +48,8 @@ var ProductivityCard = React.createClass({
         value: this.props.avgDistractingTime,
       }, {
         color: Style.gray,
-        label: 'neautral hours',
-        value: this.props.avgNeautralTime,
+        label: 'neutral hours',
+        value: this.props.avgNeutralTime,
       },
     ];
 
@@ -67,5 +68,4 @@ var ProductivityCard = React.createClass({
 
 });
 
-module.exports = ProductivityCard;
-
+module.exports = RescueTimeCard;

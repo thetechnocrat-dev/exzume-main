@@ -30,28 +30,22 @@ var DarkSkyCard = React.createClass({
   },
 
   render: function () {
-    if (this.props.darksky.isConnected) {
-      return (
-        <div className="ui fluid card">
-          <div className="content">
-            <div className="header" style={{ marginBottom: '2%' }}>
-              Weather
-            </div>
-            {this.makeWeatherData()}
+    return (
+      <div className="ui fluid card">
+        <div className="content">
+          <div className="header" style={{ marginBottom: '2%' }}>
+            Weather
           </div>
-          <div className="extra content">
-            <div className="right floated author">
-              <i className="exchange icon"></i>
-              DarkSky
-            </div>
+          {this.makeWeatherData()}
+        </div>
+        <div className="extra content">
+          <div className="right floated author">
+            <i className="exchange icon"></i>
+            DarkSky
           </div>
         </div>
-      );
-    } else {
-      return (
-        <div />
-      );
-    }
+      </div>
+    );
   },
 
 });
