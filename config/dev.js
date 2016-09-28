@@ -1,4 +1,4 @@
-// Set the environment configuration object -- for development
+// Set the environment configuration object -- for development on localhost
 module.exports = {
   db: 'mongodb://localhost/exzume-main',
   sessionSecret: 'knowThyself',

@@ -7,9 +7,10 @@ var DarkSkyCard = React.createClass({
   },
 
   makeWeatherData: function () {
-    var minTemp = (this.props.darksky.features[3].data[0].value).toFixed(1);
-    var maxTemp = (this.props.darksky.features[4].data[0].value).toFixed(1);
-    var dailySummary = this.props.darksky.features[0].data[0].value;
+    var darksky = this.props.darksky;
+    var minTemp = (darksky.features[3].data[0].value).toFixed(1);
+    var maxTemp = (darksky.features[4].data[0].value).toFixed(1);
+    var dailySummary = darksky.features[0].data[0].value;
 
     return (
       <div className="description" style={{ textAlign: 'center' }}>

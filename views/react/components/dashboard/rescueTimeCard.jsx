@@ -1,5 +1,7 @@
 var React = require('react');
 var Style = require('../../util/style');
+var Recharts = require('recharts');
+const { PieChart, Pie, Sector } = Recharts;
 
 // Components
 var DoughnutViz = require('./doughnutViz');
@@ -21,6 +23,10 @@ var RescueTimeCard = React.createClass({
   },
 
   render: function () {
+    var rescuetime = this.props.rescuetime;
+    var data = [{ name: 'Group A', value: 400 }, { name: 'Group B', value: 300 },
+                { name: 'Group C', value: 300 },];
+
     var chartDataCurrent = [
       {
         color: Style.green,
@@ -37,21 +43,21 @@ var RescueTimeCard = React.createClass({
       },
     ];
 
-    var chartDataAvg = [
-      {
-        color: Style.green,
-        label: 'productive hours',
-        value: this.props.avgProductiveTime,
-      }, {
-        color: Style.red,
-        label: 'distracting hours',
-        value: this.props.avgDistractingTime,
-      }, {
-        color: Style.gray,
-        label: 'neutral hours',
-        value: this.props.avgNeutralTime,
-      },
-    ];
+    // var chartDataAvg = [
+    //   {
+    //     color: Style.green,
+    //     label: 'productive hours',
+    //     value: this.props.avgProductiveTime,
+    //   }, {
+    //     color: Style.red,
+    //     label: 'distracting hours',
+    //     value: this.props.avgDistractingTime,
+    //   }, {
+    //     color: Style.gray,
+    //     label: 'neutral hours',
+    //     value: this.props.avgNeutralTime,
+    //   },
+    // ];
 
     return (
       <div className="ui fluid card">
@@ -59,8 +65,9 @@ var RescueTimeCard = React.createClass({
           <div className="header" style={{ marginBottom: '2%' }}>
             Productivity
           </div>
-            <DoughnutViz label={'today'} chartData={chartDataCurrent} />
-            <DoughnutViz label={'average'} chartData={chartDataAvg} />
+            <DoughnutViz />
+            // <DoughnutViz label={'today'} chartData={chartDataCurrent} />
+            // <DoughnutViz label={'average'} chartData={chartDataAvg} />
         </div>
       </div>
     );
