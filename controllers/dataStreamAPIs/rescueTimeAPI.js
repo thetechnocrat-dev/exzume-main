@@ -52,7 +52,7 @@ var rescueTimeAPI = {
       res.redirect('https://www.rescuetime.com/oauth/authorize/?response_type=code&' +
           'redirect_uri=' + encodeURIComponent(config.rescueTime.callbackURL) +
           '&scope=time_data%20category_data%20productivity_data&' +
-          'client_id=' + config.rescueTime.clientSecret);
+          'client_id=' + config.rescueTime.clientID);
     };
   },
 
