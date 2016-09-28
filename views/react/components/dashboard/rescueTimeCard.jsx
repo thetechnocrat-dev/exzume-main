@@ -58,6 +58,8 @@ var RescueTimeCard = React.createClass({
     //     value: this.props.avgNeutralTime,
     //   },
     // ];
+    /*{ <DoughnutViz label={'today'} chartData={chartDataCurrent} />
+     <DoughnutViz label={'average'} chartData={chartDataAvg} /> }*/
 
     return (
       <div className="ui fluid card">
@@ -66,8 +68,7 @@ var RescueTimeCard = React.createClass({
             Productivity
           </div>
             <DoughnutViz />
-            // <DoughnutViz label={'today'} chartData={chartDataCurrent} />
-            // <DoughnutViz label={'average'} chartData={chartDataAvg} />
+
         </div>
       </div>
     );
