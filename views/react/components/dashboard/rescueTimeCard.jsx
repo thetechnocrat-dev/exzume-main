@@ -19,7 +19,7 @@ var RescueTimeCard = React.createClass({
   render: function () {
     var rescuetime = this.props.rescuetime;
     console.log(rescuetime.features);
-    var dataLength = rescuetime.features[0].data[0].length;
+    var dataLength = rescuetime.features[0].data.length;
     var currentProductiveTime = rescuetime.features[0].data[dataLength - 1].value;
     var currentNeutralTime = rescuetime.features[1].data[dataLength - 1].value;
     var currentDistractingTime = rescuetime.features[2].data[dataLength - 1].value;
