@@ -9,12 +9,6 @@ var DoughnutViz = require('./doughnutViz');
 var RescueTimeCard = React.createClass({
   propTypes: {
     rescuetime: React.PropTypes.object.isRequired,
-    // currentProductiveTime: React.PropTypes.number.isRequired,
-    // currentDistractingTime: React.PropTypes.number.isRequired,
-    // currentNeutralTime: React.PropTypes.number.isRequired,
-    // avgProductiveTime: React.PropTypes.number.isRequired,
-    // avgDistractingTime: React.PropTypes.number.isRequired,
-    // avgNeutralTime: React.PropTypes.number.isRequired,
   },
 
   componentDidMount: function () {
@@ -25,24 +19,13 @@ var RescueTimeCard = React.createClass({
   render: function () {
     var rescuetime = this.props.rescuetime;
     console.log(rescuetime.features);
-    var currentChartData = [{ name: 'productive time', value: 400 }, { name: 'distracting time', value: 300 },
-                            { name: 'neutral time', value: 300 },];
-
-    var chartDataCurrent = [
-      {
-        color: Style.green,
-        label: 'productive hours',
-        value: this.props.currentProductiveTime,
-      }, {
-        color: Style.red,
-        label: 'distracting hours',
-        value: this.props.currentDistractingTime,
-      }, {
-        color: Style.gray,
-        label: 'neutral hours',
-        value: this.props.currentNeutralTime,
-      },
-    ];
+    var dataLength = rescuetime.features[0].data[0].length;
+    var currentProductiveTime = rescuetime.features[0].data[dataLength - 1].value;
+    var currentNeutralTime = rescuetime.features[1].data[dataLength - 1].value;
+    var currentDistractingTime = rescuetime.features[2].data[dataLength - 1].value;
+    var currentChartData = [{ name: 'productive time', value: currentProductiveTime },
+                            { name: 'neutral time', value: currentNeutralTime },
+                            { name: 'distracting time', value: currentDistractingTime },];
 
     // var chartDataAvg = [
     //   {
