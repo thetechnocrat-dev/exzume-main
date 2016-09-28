@@ -30,7 +30,7 @@ var DarkSkyCard = React.createClass({
   },
 
   render: function () {
-    if (this.props.darksky) {
+    if (this.props.darksky.isConnected) {
       return (
         <div className="ui fluid card">
           <div className="content">
