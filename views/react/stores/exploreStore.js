@@ -14,9 +14,13 @@ var _filters = {
   },
 };
 
-// Initial State timeSeriesDisplay
+// Initial State for timeSeriesDisplay
 var _timeSeriesData = [];
 
+// Initial State for ScatterCompare
+var _scatterCompare = [];
+
+// Base Explore Store Methods
 ExploreStore.reset = function () {
   _currentGraphDisplay = 'timeSeries';
   _feature = {};
@@ -27,9 +31,9 @@ ExploreStore.reset = function () {
     },
   };
   _timeSeriesData = [];
+  _scatterCompare = [];
 };
 
-// Base Explore Store Methods
 ExploreStore.setCurrentGraphDisplay = function (graphDisplay) {
   _currentGraphDisplay = graphDisplay;
 };
@@ -47,11 +51,16 @@ ExploreStore.getFeature = function () {
 };
 
 ExploreStore.isActive = function () {
-  return _feature.name();
+  if (_feature.name) {
+    return true;
+  } else {
+    return false;
+  }
 };
 
 ExploreStore.setFilter = function (filter) {
   _filters[_currentGraphDisplay][filter.key] = filter.value;
+  console.log(_filters);
 };
 
 // Time Series Display Specific
@@ -73,8 +82,6 @@ featureToTimeSeries = function (feature) {
 ExploreStore.getTimeSeriesData = function () {
   var today = moment(new Date());
   var withinBounds =  function (date, dateBound) {
-    console.log(date);
-    console.log(dateBound);
     if (dateBound === 'max') {
       return true;
     } else if (dateBound === 'month') {
@@ -85,19 +92,34 @@ ExploreStore.getTimeSeriesData = function () {
   };
 
   var filteredTimeSeries = [];
-  var timeFilter = _filters[_currentGraphDisplay].dateBound;
+  var timeFilter = _filters.timeSeries.dateBound;
   for (var i = 0; i < _timeSeriesData.length; i++) {
     var timeSeries = { name: _timeSeriesData[i].name, data: [] };
     for (var j = 0; j < _timeSeriesData[i].data.length; j++) {
       if (withinBounds(_timeSeriesData[i].data[j].x, timeFilter)) {
-        timeSeries.data.push(_timeSeriesData[i].data[j]);
+        // make a copy so that underlieing array is not modified
+        var dataPoint = { x: _timeSeriesData[i].data[j].x, y: _timeSeriesData[i].data[j].y };
+        timeSeries.data.push(dataPoint);
       }
     }
 
-    console.log(filteredTimeSeries);
-    console.log(_timeSeriesData);
-
     filteredTimeSeries.push(timeSeries);
+  }
+
+  console.log(_filters.timeSeries.shouldNormalize);
+  console.log(_timeSeriesData);
+  console.log(filteredTimeSeries);
+  if (_filters.timeSeries.shouldNormalize) {
+    for (var i = 0; i < filteredTimeSeries.length; i++) {
+      var max = -1;
+      for (var j = 0; j < filteredTimeSeries[i].data.length; j++) {
+        if (filteredTimeSeries[i].data[j].y > max) { max = filteredTimeSeries[i].data[j].y; }
+      }
+
+      for (var k = 0; k < filteredTimeSeries[i].data.length; k++) {
+        filteredTimeSeries[i].data[k].y = filteredTimeSeries[i].data[k].y / max;
+      }
+    }
   }
 
   return filteredTimeSeries;

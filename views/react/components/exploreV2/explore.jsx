@@ -8,6 +8,7 @@ var TimeSeriesGraph = require('./timeSeriesGraph');
 var SelectFeatureDropdown = require('./selectFeatureDropdown');
 var ExploreMenu = require('./exploreMenu');
 var AddFeatureDropdown = require('./addFeatureDropdown');
+var AddFeatureDropdownIdeal = require('./addFeatureDropdownIdeal');
 
 var Explore = React.createClass({
   getInitialState:  function () {
@@ -15,6 +16,7 @@ var Explore = React.createClass({
       viewPortWidth: window.innerWidth,
       viewPortHeight: window.innerHeight,
       currentGraphDisplay: ExploreStore.getCurrentGraphDisplay(),
+      timeSeriesData: [{ name: 'nothing selected', data: [{ x: 0, y: 0 }] }],
     };
 
     if (SessionStore.isSignedIn()) {
@@ -31,7 +33,10 @@ var Explore = React.createClass({
   },
 
   _onChangeExplore: function () {
-    this.setState({ currentGraphDisplay: ExploreStore.getCurrentGraphDisplay() });
+    this.setState({
+      currentGraphDisplay: ExploreStore.getCurrentGraphDisplay(),
+      timeSeriesData: ExploreStore.getTimeSeriesData(),
+    });
   },
 
   handleResize: function () {
@@ -72,16 +77,9 @@ var Explore = React.createClass({
     var graphWidth = this.calcGraphWidth();
     var graphHeight = this.state.viewPortHeight * 0.7;
     if (this.state.currentGraphDisplay === 'timeSeries') {
-      var data;
-      if (ExploreStore.getTimeSeriesData().length === 0) {
-        data = [{ name: 'nothing selected', data: [{ x: 0, y: 0 }] }];
-      } else {
-        data = ExploreStore.getTimeSeriesData();
-      }
-
       return (
         <TimeSeriesGraph
-          data={data}
+          data={this.state.timeSeriesData}
           width={graphWidth}
           height={graphHeight}
         />
@@ -94,8 +92,11 @@ var Explore = React.createClass({
       return (
         <div>
           <SelectFeatureDropdown features={SessionStore.getUserFeatures()} />
-          <ExploreMenu features={SessionStore.getUserFeatures()} />
-          <div className="ui bottom attached segment">
+          <ExploreMenu
+            features={SessionStore.getUserFeatures()}
+            isDisabled={!ExploreStore.isActive()}
+          />
+          <div className="ui bottom attached segment" style={{ backgroundColor: 'white' }}>
             {this.makeExploreGraph()}
           </div>
         </div>
@@ -106,7 +107,6 @@ var Explore = React.createClass({
       );
     }
   },
-
 });
 
 module.exports = Explore;

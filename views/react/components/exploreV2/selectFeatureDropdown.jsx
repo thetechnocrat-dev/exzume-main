@@ -1,4 +1,5 @@
 var React = require('react');
+var Style = require('../../util/style');
 
 // Components
 var SelectFeatureDropdownItem = require('./selectFeatureDropdownItem');
@@ -27,10 +28,15 @@ var SelectFeatureDropdown = React.createClass({
 
   render: function () {
     return (
-      <div className="ui selection dropdown" id="selectFeatureDropdown">
+      <div
+        className="ui green floating dropdown right labeled icon button"
+        id="selectFeatureDropdown"
+      >
         <input type="hidden" name="select a feature to explore" />
+        <div className="default text" style={{ color: 'white' }}>
+          Select a Feature to Explore
+        </div>
         <i className="dropdown icon" />
-        <div className="default text">Select a Feature to Explore</div>
         <div className="menu">
           {this.makeDropdownItems()}
         </div>

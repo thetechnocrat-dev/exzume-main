@@ -6,6 +6,7 @@ var AddFeatureDropdownItem = require('./addFeatureDropdownItem');
 var Dropdown = React.createClass({
   propTypes: {
     features: React.PropTypes.array.isRequired,
+    isDisabled: React.PropTypes.bool.isRequired,
   },
 
   makeDropdownItems: function () {
@@ -21,11 +22,17 @@ var Dropdown = React.createClass({
   },
 
   render: function () {
+    if (this.props.isDisabled) {
+      var className = 'ui disabled simple dropdown item';
+    } else {
+      var className = 'ui simple dropdown item';
+    }
+
     return (
       <div className="ui compact menu">
-        <div className="ui simple dropdown item">
+        <div className={className}>
           Compare 
-          <i className="plus icon"></i>
+          <i className="plus icon" />
           <div className="menu">
             {this.makeDropdownItems()}
           </div>
