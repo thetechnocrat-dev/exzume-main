@@ -1,6 +1,7 @@
 var util = require('./util');
 var axios = require('axios');
 var async = require('async');
+var config = require('../../config/config');
 
 var preSync = function (user, featureNameArray, streamName, startSync) {
   console.log('inside rescue time presync');
@@ -48,10 +49,10 @@ var rescueTimeAPI = {
   connect: function () {
     return function (req, res, next) {
       console.log('rescue time redirect');
-      res.redirect('https://www.rescuetime.com/oauth/authorize/?response_type=code&redirect_uri' +
-          '=https%3A%2F%2Fwww.exzume.com%2Fauth%2Fdatastreams%2Frescuetime%2Fcallback&scope=' +
-          'time_data%20category_data%20productivity_data&client_id=2900e583f575ac611f1ffd838' +
-          '27ee0995f5b462f159fe42288f12e847e6b430a');
+      res.redirect('https://www.rescuetime.com/oauth/authorize/?response_type=code&' +
+          'redirect_uri=' + encodeURIComponent(config.rescueTime.callbackURL) +
+          '&scope=time_data%20category_data%20productivity_data&' +
+          'client_id=' + config.rescueTime.clientID);
     };
   },
 

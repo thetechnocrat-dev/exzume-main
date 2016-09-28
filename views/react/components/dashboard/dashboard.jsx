@@ -7,13 +7,14 @@ var ZumePanel = require('./zumePanel');
 var SurveyPanel = require('./surveyPanel');
 var MoodCard = require('./moodCard');
 var DarkSkyCard = require('./darkSkyCard');
-var ProductivityCard = require('./productivityCard');
+var RescueTimeCard = require('./rescueTimeCard');
 var InsightCard = require('./insightCard');
 var ConnectionCard = require('./connectionCard');
 var FitnessCard = require('./fitnessCard');
 var SleepCard = require('./sleepCard');
 
 var Dashboard = React.createClass({
+
   getInitialState: function () {
     if (SessionStore.isSignedIn()) {
       return { user: SessionStore.currentUser() };
@@ -38,6 +39,22 @@ var Dashboard = React.createClass({
     this.sessionToken.remove();
   },
 
+  makeDarkSkyCard: function () {
+    if (this.state.user.datastreams.darksky.isConnected) {
+      return (
+        <DarkSkyCard darksky={this.state.user.datastreams.darksky} />
+      );
+    }
+  },
+
+  makeRescueTimeCard: function () {
+    if (this.state.user.datastreams.rescuetime.isConnected) {
+      return (
+        <RescueTimeCard rescuetime={this.state.user.datastreams.rescuetime} />
+      );
+    }
+  },
+
   makeContent: function () {
     var user = this.state.user;
 
@@ -48,7 +65,7 @@ var Dashboard = React.createClass({
           <div className="ui three column stackable grid">
             <div className="column">
               <MoodCard user={user} />
-              <DarkSkyCard darksky={user.datastreams.darksky} />
+              {this.makeDarkSkyCard()}
               <FitnessCard
                 currentSteps={7544}
                 avgSteps={8969}
@@ -89,14 +106,7 @@ var Dashboard = React.createClass({
               />
             </div>
             <div className="column">
-              <ProductivityCard
-                currentProductiveTime={6.2}
-                currentDistractingTime={0.3}
-                currentNeautralTime={0.6}
-                avgProductiveTime={7.2}
-                avgDistractingTime={0.4}
-                avgNeautralTime={0.4}
-              />
+              {this.makeRescueTimeCard()}
               <ConnectionCard
                 userStreams={[1, 2, 3, 4, 5]}
               />
