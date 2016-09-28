@@ -1,6 +1,7 @@
 var React = require('react');
 var Recharts = require('recharts');
 const { PieChart, Pie, Sector } = Recharts;
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
 // accepts data as prop in the following format:
 // const data = [{ name: 'Group A', value: 400 }, { name: 'Group B', value: 300 },
 //               { name: 'Group C', value: 300 }, { name: 'Group D', value: 200 },];
@@ -83,6 +84,7 @@ var DoughnutViz = React.createClass({
           innerRadius={60}
           outerRadius={80}
           fill="#8884d8"/>
+            {data.map((entry, index) => <Cell fill={COLORS[index % COLORS.length]}/>)}
        </PieChart>
     );
 
