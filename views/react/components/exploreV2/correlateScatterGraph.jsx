@@ -65,6 +65,7 @@ var TimeSeriesCompareGraph = React.createClass({
           <YAxis
             dataKey={'y'}
             name={this.props.data[0].yLabel}
+            domain={['dataMin', 'dataMax']}
           />
           <CartesianGrid />
           <Tooltip

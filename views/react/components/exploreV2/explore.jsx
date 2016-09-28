@@ -103,9 +103,10 @@ var Explore = React.createClass({
     } else if (this.state.currentGraphDisplay === 'correlateBar') {
       return (
         <CorrelateBarGraph
-         data={this.state.barCorrelateData}
+          data={this.state.barCorrelateData}
           width={graphWidth}
           height={graphHeight}
+          currentFeatureName={this.state.currentFeature.name}
         />
       );
     }
