@@ -106,11 +106,11 @@ var Dashboard = React.createClass({
               />
             </div>
             <div className="column">
-              {this.makeRescueTimeCard()}
               <ConnectionCard
                 userStreams={[1, 2, 3, 4, 5]}
               />
             </div>
+            {this.makeRescueTimeCard()}
           </div>
         </div>
       );

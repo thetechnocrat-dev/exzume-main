@@ -44,7 +44,7 @@ const renderActiveShape = (props) => {
       <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none"/>
       <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`${value} hours`}</text>
       <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
-        {`${(percent * 100).toFixed(2)}%`}
+        {`${(percent * 100).toFixed(1)}%`}
       </text>
     </g>
   );
@@ -73,19 +73,17 @@ var DoughnutViz = React.createClass({
     chartOptions = {};
 
     return (
-      <div>
-        <PieChart width={800} height={400} onMouseEnter={this.onPieEnter}>
-          <Pie
-            activeIndex={this.state.activeIndex}
-            activeShape={renderActiveShape}
-            data={this.props.chartData}
-            cx={300}
-            cy={200}
-            innerRadius={60}
-            outerRadius={80}
-            fill="#8884d8"/>
-         </PieChart>
-       </div>
+      <PieChart width={800} height={400} onMouseEnter={this.onPieEnter}>
+        <Pie
+          activeIndex={this.state.activeIndex}
+          activeShape={renderActiveShape}
+          data={this.props.chartData}
+          cx={300}
+          cy={200}
+          innerRadius={60}
+          outerRadius={80}
+          fill="#8884d8"/>
+       </PieChart>
     );
 
     // return (
