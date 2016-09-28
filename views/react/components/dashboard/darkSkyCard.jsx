@@ -47,6 +47,10 @@ var DarkSkyCard = React.createClass({
           </div>
         </div>
       );
+    } else {
+      return (
+        <div />
+      );
     }
   },
 
