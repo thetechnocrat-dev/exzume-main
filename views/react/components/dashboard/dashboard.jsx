@@ -6,6 +6,7 @@ var ProfilePanel = require('./profilePanel');
 var ZumePanel = require('./zumePanel');
 var SurveyPanel = require('./surveyPanel');
 var MoodCard = require('./moodCard');
+var DarkSkyCard = require('./darkSkyCard');
 var ProductivityCard = require('./productivityCard');
 var InsightCard = require('./insightCard');
 var ConnectionCard = require('./connectionCard');
@@ -47,6 +48,7 @@ var Dashboard = React.createClass({
           <div className="ui three column stackable grid">
             <div className="column">
               <MoodCard user={user} />
+              <DarkSkyCard darksky={user.datastreams.darksky} />
               <FitnessCard
                 currentSteps={7544}
                 avgSteps={8969}
@@ -65,7 +67,7 @@ var Dashboard = React.createClass({
                     info: 'Your exercise is highly correlated with getting more steps' },
                   { text: 'Your productivity has trended signficantly above average the last 3 days',
                     info: 'Your caffeine consumption has also trended significantly above average the last 3 days' },
-                  { text: 'Your mood has trended significantly doward the last 4 days', 
+                  { text: 'Your mood has trended significantly doward the last 4 days',
                     info: 'click here to see notes you wrote on previous days were you had a high mood' },
                   { text: 'You wake up less at night when you go to sleep later',
                     info: 'no additional info found for this insight' },
@@ -115,4 +117,3 @@ var Dashboard = React.createClass({
 });
 
 module.exports = Dashboard;
-

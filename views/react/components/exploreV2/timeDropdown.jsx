@@ -36,7 +36,7 @@ var TimeDropdown = React.createClass({
     }
 
     return (
-      <div className={className} id="timeDropdown" style={{ paddingRight: '1px' }}>
+      <div className={className} id="timeDropdown" style={{ width: '70px' }}>
         <div className="text">week</div>
         <i className="dropdown icon" />
         <div className="menu">

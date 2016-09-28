@@ -109,20 +109,6 @@ var stravaAPI = {
         endSync(null, results[results.length - 1], null);
       }
     });
-
-    // async.series(series, function (err, results) {
-    //   if (err === 'redirect') {
-    //     console.log('redirect');
-    //     endSync(null, null, true);
-    //   } else if (err) {
-    //     console.log('2 axios error');
-    //     endSync(err, null, null);
-    //   } else {
-    //     // second argument is last results.lastSeriesCallName is the user object
-    //     console.log(results);
-    //     endSync(null, results[results.length - 1], null);
-    //   }
-    // });
   },
 
 };

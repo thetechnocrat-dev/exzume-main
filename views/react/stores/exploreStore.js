@@ -17,8 +17,11 @@ var _filters = {
 // Initial State for timeSeriesDisplay
 var _timeSeriesData = [];
 
-// Initial State for ScatterCompare
+// Initial State for ScatterCorrelate
 var _scatterCorrelateData = [];
+
+// Initial State for BarCorrelate
+var _barCorrelateData = [];
 
 // Base Explore Store Methods
 ExploreStore.reset = function () {
@@ -167,6 +170,8 @@ ExploreStore.setCorrelateScatterData = function (feature) {
 ExploreStore.getCorrelateScatterData = function () {
   return _scatterCorrelateData;
 };
+
+// Correlate Bar Specific
 
 ExploreStore.__onDispatch = function (payload) {
   switch (payload.actionType) {

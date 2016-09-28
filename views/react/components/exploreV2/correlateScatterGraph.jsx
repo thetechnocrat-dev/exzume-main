@@ -41,7 +41,7 @@ var TimeSeriesCompareGraph = React.createClass({
     return (
       <div style={{ textAlign: 'center' }}>
         <div
-          className="ui large header"
+          className="ui medium header"
           style={{ display: 'inline-block', margin: '0' }}
         >
           {this.props.data[0].name}

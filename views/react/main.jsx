@@ -32,10 +32,10 @@ var routes = (
     <Route component={ResetPassword} path='reset-password/:username/:token' />
     <Route component={Auth} path='dashboard'>
       <IndexRoute component={Dashboard} />
-      <Route component={Explore} path='explore' />
+      <Route component={Explore} path='exploreOld' />
       <Route component={Connect} path='connect' />
       <Route component={Play} path='play' />
-      <Route component={ExploreV2} path='explorev2' />
+      <Route component={ExploreV2} path='explore' />
     </Route>
   </Route>
 );
