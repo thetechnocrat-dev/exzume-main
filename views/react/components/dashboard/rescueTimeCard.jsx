@@ -1,5 +1,6 @@
 var React = require('react');
 var Style = require('../../util/style');
+var moment = require('moment');
 var Recharts = require('recharts');
 const { PieChart, Pie, Sector } = Recharts;
 
@@ -18,11 +19,23 @@ var RescueTimeCard = React.createClass({
 
   render: function () {
     var rescuetime = this.props.rescuetime;
-    console.log(rescuetime.features);
+    var lastSyncTime = this.props.rescuetime.lastSyncTime;
     var dataLength = rescuetime.features[0].data.length;
-    var currentProductiveTime = rescuetime.features[0].data[dataLength - 1].value;
-    var currentNeutralTime = rescuetime.features[1].data[dataLength - 1].value;
-    var currentDistractingTime = rescuetime.features[2].data[dataLength - 1].value;
+    var dateToday = moment().format('YYYY-MM-DD');
+    var currentProductiveTime;
+    var currentNeutralTime;
+    var currentDistractingTime;
+
+    if (dateToday == rescuetime.features[0].data[dataLength - 1].dateTime) {
+      currentProductiveTime = rescuetime.features[0].data[dataLength - 1].value;
+      currentNeutralTime = rescuetime.features[1].data[dataLength - 1].value;
+      currentDistractingTime = rescuetime.features[2].data[dataLength - 1].value;
+    } else {
+      currentProductiveTime = 0;
+      currentNeutralTime = 0;
+      currentDistractingTime = 0;
+    };
+
     var currentChartData = [{ name: 'productive time', value: currentProductiveTime },
                             { name: 'neutral time', value: currentNeutralTime },
                             { name: 'distracting time', value: currentDistractingTime },];
@@ -51,7 +64,16 @@ var RescueTimeCard = React.createClass({
           <div className="header">
             Productivity
           </div>
-          <DoughnutViz chartData={currentChartData}/>
+          <DoughnutViz chartData={currentChartData} />
+        </div>
+        <div className="extra content">
+          <div className="left floated time">
+            last synced: {lastSyncTime}
+          </div>
+          <div className="right floated author">
+            <i className="exchange icon"></i>
+            RescueTime
+          </div>
         </div>
       </div>
     );
