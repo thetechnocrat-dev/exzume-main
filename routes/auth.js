@@ -123,11 +123,11 @@ module.exports = function (router, passport) {
       method: 'POST',
       url: 'https://www.rescuetime.com/oauth/token',
       data: {
-        client_id: '2900e583f575ac611f1ffd83827ee0995f5b462f159fe42288f12e847e6b430a',
-        client_secret: '6a6eb52e35380c8af6e658f54496a8d6f4c769e0b0e58cebb0556942f9d6ec60',
+        client_id: config.rescueTime.clientID,
+        client_secret: config.rescueTime.clientSecret,
         grant_type: 'authorization_code',
         code: req.query.code,
-        redirect_uri: 'https://www.exzume.com/auth/datastreams/rescuetime/callback',
+        redirect_uri: config.rescueTime.callbackURL,
       },
     }).then(function (authRes) {
       console.log('made it to rescuetime auth res');

@@ -24,9 +24,9 @@ module.exports = {
     callbackURL: process.env.LASTFM_URL || dev.lastfm.callbackURL,
   },
   rescueTime: {
-    clientID: process.env.RESCUE_TIME_ID || dev.rescueTime.clientID,
-    clientSecret: process.env.RESCUETIME_ID || dev.rescueTime.clientID,
-    callbackURL: process.env.RESCUE_TIME_URL || dev.rescueTime.callbackURL,
+    clientID: process.env.RESCUETIME_ID || dev.rescueTime.clientID,
+    clientSecret: process.env.RESCUETIME_SECRET || dev.rescueTime.clientSecret,
+    callbackURL: process.env.RESCUETIME_URL || dev.rescueTime.callbackURL,
   },
   strava: {
     clientID: process.env.STRAVA_ID || dev.strava.clientID,
