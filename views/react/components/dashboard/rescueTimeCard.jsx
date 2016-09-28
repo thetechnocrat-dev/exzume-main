@@ -24,9 +24,9 @@ var RescueTimeCard = React.createClass({
 
   render: function () {
     var rescuetime = this.props.rescuetime;
-    console.log(rescuetime);
-    var currentChartData = [{ name: 'productive hours', value: 400 }, { name: 'distracting hours', value: 300 },
-                            { name: 'neutral hours', value: 300 },];
+    console.log(rescuetime.features);
+    var currentChartData = [{ name: 'productive time', value: 400 }, { name: 'distracting time', value: 300 },
+                            { name: 'neutral time', value: 300 },];
 
     var chartDataCurrent = [
       {

@@ -73,17 +73,19 @@ var DoughnutViz = React.createClass({
     chartOptions = {};
 
     return (
-      <PieChart width={800} height={400} onMouseEnter={this.onPieEnter}>
-        <Pie
-          activeIndex={this.state.activeIndex}
-          activeShape={renderActiveShape}
-          data={this.props.chartData}
-          cx={300}
-          cy={200}
-          innerRadius={60}
-          outerRadius={80}
-          fill="#8884d8"/>
-       </PieChart>
+      <div>
+        <PieChart width={800} height={400} onMouseEnter={this.onPieEnter}>
+          <Pie
+            activeIndex={this.state.activeIndex}
+            activeShape={renderActiveShape}
+            data={this.props.chartData}
+            cx={300}
+            cy={200}
+            innerRadius={60}
+            outerRadius={80}
+            fill="#8884d8"/>
+         </PieChart>
+       </div>
     );
 
     // return (
