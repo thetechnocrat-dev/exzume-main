@@ -9,6 +9,7 @@ var SelectFeatureDropdown = require('./selectFeatureDropdown');
 var ExploreMenu = require('./exploreMenu');
 var AddFeatureDropdown = require('./addFeatureDropdown');
 var AddFeatureDropdownIdeal = require('./addFeatureDropdownIdeal');
+var CorrelateScatterGraph = require('./correlateScatterGraph');
 
 var Explore = React.createClass({
   getInitialState:  function () {
@@ -17,6 +18,7 @@ var Explore = React.createClass({
       viewPortHeight: window.innerHeight,
       currentGraphDisplay: ExploreStore.getCurrentGraphDisplay(),
       timeSeriesData: [{ name: 'nothing selected', data: [{ x: 0, y: 0 }] }],
+      scatterCompareData: [],
     };
 
     if (SessionStore.isSignedIn()) {
@@ -36,6 +38,7 @@ var Explore = React.createClass({
     this.setState({
       currentGraphDisplay: ExploreStore.getCurrentGraphDisplay(),
       timeSeriesData: ExploreStore.getTimeSeriesData(),
+      scatterCompareData: ExploreStore.getCorrelateScatterData(),
     });
   },
 
@@ -84,6 +87,14 @@ var Explore = React.createClass({
           height={graphHeight}
         />
       );
+    } else if (this.state.currentGraphDisplay === 'correlateScatter') {
+      return (
+        <CorrelateScatterGraph
+          data={this.state.scatterCompareData}
+          width={graphWidth}
+          height={graphHeight}
+        />
+      );
     }
   },
 
@@ -94,6 +105,7 @@ var Explore = React.createClass({
           <SelectFeatureDropdown features={SessionStore.getUserFeatures()} />
           <ExploreMenu
             features={SessionStore.getUserFeatures()}
+            currentGraphDisplay={this.state.currentGraphDisplay}
             isDisabled={!ExploreStore.isActive()}
           />
           <div className="ui bottom attached segment" style={{ backgroundColor: 'white' }}>

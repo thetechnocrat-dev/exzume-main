@@ -1,6 +1,7 @@
 var React = require('react');
 var Recharts = require('recharts');
 var moment = require('moment');
+var FastFlux = require('../../util/fast-flux-react/fastFlux');
 const { ScatterChart, Scatter, XAxis, YAxis, ZAxis, CartesianGrid, Tooltip, Legend } = Recharts;
 
 const fillColors = [
@@ -25,27 +26,28 @@ var TimeSeriesCompareGraph = React.createClass({
           key={idx}
           name={series.name}
           data={series.data}
-          line
           fill={fillColors[idx % fillColors.length]}
         />
       );
     });
   },
 
-  render: function () {
-    if (this.props.data[0].name == 'nothing selected') {
-      var title = 'Select a Feature to Begin';
-    } else {
-      var title = this.props.data[0].name + ' Over Time';
-    }
+  clickBackIcon: function () {
+    console.log('clicked');
+    FastFlux.cycle('GRAPH_DISPLAY_RECEIVED', 'timeSeries');
+  },
 
+  render: function () {
     return (
       <div style={{ textAlign: 'center' }}>
         <div
           className="ui large header"
           style={{ display: 'inline-block', margin: '0' }}
         >
-          {title}
+          {this.props.data[0].name}
+        </div>
+        <div className="ui right floated icon button">
+          <i className="reply icon" onClick={this.clickBackIcon} />
         </div>
         <ScatterChart
           width={this.props.width}
@@ -54,29 +56,18 @@ var TimeSeriesCompareGraph = React.createClass({
         >
           <XAxis
             dataKey={'x'}
-            name='date'
+            name={this.props.data[0].xLabel}
             type='number'
-            tickFormatter={
-              function (date) {
-                return moment(date).utc().format('MM-DD-YY');
-              }
-            }
             tickSize={14}
             tick={{ strokeWidth: 0 }}
             domain={['dataMin', 'dataMax']}
           />
-          <YAxis dataKey={'y'} name='value' />
+          <YAxis
+            dataKey={'y'}
+            name={this.props.data[0].yLabel}
+          />
           <CartesianGrid />
           <Tooltip
-            formatter={
-              function (value, name) {
-                if (name == 'date') {
-                  return moment(value).utc().format('MM-DD-YY');
-                } else if (name == 'value') {
-                  return value;
-                }
-              }
-            }
             cursor={{ strokeDasharray: '3 3' }}/>
           <Legend/>
           {this.makeScatters()}

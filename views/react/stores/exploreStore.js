@@ -18,7 +18,7 @@ var _filters = {
 var _timeSeriesData = [];
 
 // Initial State for ScatterCompare
-var _scatterCompare = [];
+var _scatterCorrelateData = [];
 
 // Base Explore Store Methods
 ExploreStore.reset = function () {
@@ -31,7 +31,7 @@ ExploreStore.reset = function () {
     },
   };
   _timeSeriesData = [];
-  _scatterCompare = [];
+  _scatterCorrelateData = [];
 };
 
 ExploreStore.setCurrentGraphDisplay = function (graphDisplay) {
@@ -60,7 +60,6 @@ ExploreStore.isActive = function () {
 
 ExploreStore.setFilter = function (filter) {
   _filters[_currentGraphDisplay][filter.key] = filter.value;
-  console.log(_filters);
 };
 
 // Time Series Display Specific
@@ -106,9 +105,6 @@ ExploreStore.getTimeSeriesData = function () {
     filteredTimeSeries.push(timeSeries);
   }
 
-  console.log(_filters.timeSeries.shouldNormalize);
-  console.log(_timeSeriesData);
-  console.log(filteredTimeSeries);
   if (_filters.timeSeries.shouldNormalize) {
     for (var i = 0; i < filteredTimeSeries.length; i++) {
       var max = -1;
@@ -138,6 +134,40 @@ ExploreStore.removeTimeSeriesData = function (feature) {
   }
 };
 
+// Correlate Scatter Specific
+
+ExploreStore.featuresToScatter = function (mainFeature, otherFeature) {
+  var scatterSeries = {};
+  scatterSeries.name = mainFeature.name + ' vs ' + otherFeature.name;
+  scatterSeries.data = [];
+  scatterSeries.xLabel = mainFeature.name;
+  scatterSeries.yLabel = otherFeature.name;
+  for (var i = 0; i < mainFeature.data.length; i++) {
+    for (var j = 0; j < otherFeature.data.length; j++) {
+      if (mainFeature.data[i].dateTime == otherFeature.data[j].dateTime) {
+        var dataPoint = {
+          x: mainFeature.data[i].value,
+          y: otherFeature.data[j].value,
+        };
+        scatterSeries.data.push(dataPoint);
+        break;
+      } else if (mainFeature.data[i].dateTime < otherFeature.data[j].dateTime) {
+        break;
+      }
+    }
+  }
+
+  return scatterSeries;
+};
+
+ExploreStore.setCorrelateScatterData = function (feature) {
+  _scatterCorrelateData = [this.featuresToScatter(_feature, feature)];
+};
+
+ExploreStore.getCorrelateScatterData = function () {
+  return _scatterCorrelateData;
+};
+
 ExploreStore.__onDispatch = function (payload) {
   switch (payload.actionType) {
     case 'GRAPH_DISPLAY_RECEIVED':
@@ -160,6 +190,11 @@ ExploreStore.__onDispatch = function (payload) {
       break;
     case 'FILTER_RECEIVED':
       this.setFilter(payload.data);
+      this.__emitChange();
+      break;
+    case 'CORRELATE_SCATTER_RECEIVED':
+      this.setCurrentGraphDisplay('correlateScatter');
+      this.setCorrelateScatterData(payload.data);
       this.__emitChange();
       break;
   }

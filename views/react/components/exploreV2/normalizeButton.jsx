@@ -28,7 +28,7 @@ var NormalizeButton = React.createClass({
     } else if (this.state.isNormalized) {
       return (
         <button
-          className="ui basic button"
+          className="ui active basic button"
           onClick={this.handleClick}
         >
           Normalize
@@ -37,7 +37,7 @@ var NormalizeButton = React.createClass({
     } else {
       return (
         <button
-          className="ui active basic button"
+          className="ui basic button"
           onClick={this.handleClick}
         >
           Normalize
