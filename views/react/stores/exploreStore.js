@@ -172,6 +172,13 @@ ExploreStore.getCorrelateScatterData = function () {
 };
 
 // Correlate Bar Specific
+ExploreStore.setBarCorrelateData = function (barCorrelateData) {
+  _barCorrelateData = barCorrelateData;
+};
+
+ExploreStore.getBarCorrelateData = function () {
+  return _barCorrelateData;
+};
 
 ExploreStore.__onDispatch = function (payload) {
   switch (payload.actionType) {
@@ -200,6 +207,11 @@ ExploreStore.__onDispatch = function (payload) {
     case 'CORRELATE_SCATTER_RECEIVED':
       this.setCurrentGraphDisplay('correlateScatter');
       this.setCorrelateScatterData(payload.data);
+      this.__emitChange();
+      break;
+    case 'CORRELATE_BAR_RECEIVED':
+      this.setCurrentGraphDisplay('correlateBar');
+      this.setBarCorrelateData(payload.data);
       this.__emitChange();
       break;
   }

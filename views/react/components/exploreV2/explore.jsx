@@ -10,6 +10,7 @@ var ExploreMenu = require('./exploreMenu');
 var AddFeatureDropdown = require('./addFeatureDropdown');
 var AddFeatureDropdownIdeal = require('./addFeatureDropdownIdeal');
 var CorrelateScatterGraph = require('./correlateScatterGraph');
+var CorrelateBarGraph = require('./barCorrelateGraph');
 
 var Explore = React.createClass({
   getInitialState:  function () {
@@ -17,8 +18,10 @@ var Explore = React.createClass({
       viewPortWidth: window.innerWidth,
       viewPortHeight: window.innerHeight,
       currentGraphDisplay: ExploreStore.getCurrentGraphDisplay(),
+      currentFeature: { name: 'nothing selected' },
       timeSeriesData: [{ name: 'nothing selected', data: [{ x: 0, y: 0 }] }],
       scatterCompareData: [],
+      barCorrelateData: [],
     };
 
     if (SessionStore.isSignedIn()) {
@@ -39,6 +42,8 @@ var Explore = React.createClass({
       currentGraphDisplay: ExploreStore.getCurrentGraphDisplay(),
       timeSeriesData: ExploreStore.getTimeSeriesData(),
       scatterCompareData: ExploreStore.getCorrelateScatterData(),
+      currentFeature: ExploreStore.getFeature(),
+      barCorrelateData: ExploreStore.getBarCorrelateData(),
     });
   },
 
@@ -95,6 +100,14 @@ var Explore = React.createClass({
           height={graphHeight}
         />
       );
+    } else if (this.state.currentGraphDisplay === 'correlateBar') {
+      return (
+        <CorrelateBarGraph
+         data={this.state.barCorrelateData}
+          width={graphWidth}
+          height={graphHeight}
+        />
+      );
     }
   },
 
@@ -105,6 +118,7 @@ var Explore = React.createClass({
           <SelectFeatureDropdown features={SessionStore.getUserFeatures()} />
           <ExploreMenu
             features={SessionStore.getUserFeatures()}
+            currentFeatureName={this.state.currentFeature.name}
             currentGraphDisplay={this.state.currentGraphDisplay}
             isDisabled={!ExploreStore.isActive()}
           />

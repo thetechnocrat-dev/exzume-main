@@ -13,10 +13,10 @@ var ExploreMenu = React.createClass({
     features: React.PropTypes.array.isRequired,
     currentGraphDisplay: React.PropTypes.string.isRequired,
     isDisabled: React.PropTypes.bool.isRequired,
+    currentFeatureName: React.PropTypes.string.isRequired,
   },
 
   render: function () {
-    console.log(this.props);
     return (
       <div className="ui top attached menu" style={{ backgroundColor: 'white' }}>
         <div className="item">
@@ -38,7 +38,11 @@ var ExploreMenu = React.createClass({
             />
         </div>
         <div className="item">
-          <CorrelateDropdown features={this.props.features} isDisabled={this.props.isDisabled} />
+          <CorrelateDropdown
+            features={this.props.features}
+            isDisabled={this.props.isDisabled}
+            currentFeatureName={this.props.currentFeatureName}
+          />
         </div>
       </div>
     );
