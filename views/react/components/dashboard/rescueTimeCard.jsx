@@ -26,15 +26,15 @@ var RescueTimeCard = React.createClass({
     var currentNeutralTime;
     var currentDistractingTime;
 
-    if (dateToday == rescuetime.features[0].data[dataLength - 1].dateTime) {
+    // if (dateToday == rescuetime.features[0].data[dataLength - 1].dateTime) {
       currentProductiveTime = rescuetime.features[0].data[dataLength - 1].value;
       currentNeutralTime = rescuetime.features[1].data[dataLength - 1].value;
       currentDistractingTime = rescuetime.features[2].data[dataLength - 1].value;
-    } else {
-      currentProductiveTime = 0;
-      currentNeutralTime = 0;
-      currentDistractingTime = 0;
-    };
+    // } else {
+    //   currentProductiveTime = 0;
+    //   currentNeutralTime = 0;
+    //   currentDistractingTime = 0;
+    // };
 
     var currentChartData = [{ name: 'productive time', value: currentProductiveTime },
                             { name: 'neutral time', value: currentNeutralTime },
