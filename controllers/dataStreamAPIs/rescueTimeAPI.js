@@ -97,13 +97,15 @@ var rescueTimeAPI = {
           } else {
             console.log('about to axios call');
             console.log(user.datastreams.rescuetime);
-            axios.get('https://www.rescuetime.com/api/oauth/daily_summary_feed', {
+            axios.get('https://www.rescuetime.com/api/oauth/overview_data', {
               params: {
                 access_token: user.datastreams.rescuetime.accessToken,
                 format: 'json',
+                resolution_time: 'day',
               },
             }).then(function (streamRes) {
               console.log('made it to axios rescuetime axios then call');
+              console.log(streamRes.data);
               var processedDataArray = processData(streamRes.data);
               var featureNameArray = [
                 'Computer Productivity (Hours)',
