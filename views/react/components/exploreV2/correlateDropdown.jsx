@@ -2,10 +2,13 @@ var React = require('react');
 var FastFlux = require('../../util/fast-flux-react/fastFlux.js');
 var moment = require('moment');
 
+// Components
+var CorrelateWithItem = require('./correlateWithItem');
+
 var CorrelateDropdown = React.createClass({
   propTypes: {
     isDisabled: React.PropTypes.bool.isRequired,
-    features: React.PropTypes.array.isRequired,
+    dataStreams: React.PropTypes.array.isRequired,
     currentFeatureName: React.PropTypes.string.isRequired,
   },
 
@@ -23,16 +26,16 @@ var CorrelateDropdown = React.createClass({
 
   makeCorrelateWithItems: function () {
     var _this = this;
-    return this.props.features.map(function (feature, idx) {
-      return (
-        <div
-          className="item"
-          key={idx}
-          onClick={_this.clickCorrelateWithItem.bind(null, feature)}
-        >
-          {feature.name}
-        </div>
-      );
+    return this.props.dataStreams.map(function (dataStream, idx) {
+      if (dataStream.name != 'Personal Survey') {
+        return (
+          <CorrelateWithItem
+            className="item"
+            key={idx}
+            dataStream={dataStream}
+          />
+        );
+      }
     });
   },
 
@@ -60,8 +63,6 @@ var CorrelateDropdown = React.createClass({
     });
 
     var topInfluencers = this.findTopInfluencers(labeledCorrData);
-
-    console.log(topInfluencers);
 
     var barData = {};
     var values = topInfluencers.map(function (corrPair, idx) {

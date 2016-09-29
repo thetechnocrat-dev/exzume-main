@@ -3,17 +3,36 @@ var FastFlux = require('../../util/fast-flux-react/fastFlux');
 
 var DropdownItem = React.createClass({
   propTypes: {
-    feature: React.PropTypes.object.isRequired,
+    dataStream: React.PropTypes.object.isRequired,
   },
 
-  clickItem: function () {
-    FastFlux.cycle('FEATURE_RECEIVED', this.props.feature);
+  makeFeatureItems: function () {
+    var _this = this;
+    return this.props.dataStream.features.map(function (feature, idx) {
+      return (
+        <div
+          className="item"
+          key={idx}
+          onClick={_this.clickFeatureItem.bind(null, feature)}
+        >
+          {feature.name}
+        </div>
+      );
+    });
+  },
+
+  clickFeatureItem: function (feature) {
+    FastFlux.cycle('FEATURE_RECEIVED', feature);
   },
 
   render: function () {
     return (
-      <div className="item" onClick={this.clickItem}>
-        {this.props.feature.name}
+      <div className="item">
+        <i className="dropdown icon" />
+        {this.props.dataStream.name}
+        <div className="menu">
+          {this.makeFeatureItems()}
+        </div>
       </div>
     );
   },

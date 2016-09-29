@@ -7,8 +7,6 @@ var ExploreStore = require('../../stores/exploreStore');
 var TimeSeriesGraph = require('./timeSeriesGraph');
 var SelectFeatureDropdown = require('./selectFeatureDropdown');
 var ExploreMenu = require('./exploreMenu');
-var AddFeatureDropdown = require('./addFeatureDropdown');
-var AddFeatureDropdownIdeal = require('./addFeatureDropdownIdeal');
 var CorrelateScatterGraph = require('./correlateScatterGraph');
 var CorrelateBarGraph = require('./barCorrelateGraph');
 
@@ -116,12 +114,13 @@ var Explore = React.createClass({
     if (this.state.user) {
       return (
         <div>
-          <SelectFeatureDropdown features={SessionStore.getUserFeatures()} />
+          <SelectFeatureDropdown dataStreams={SessionStore.getUserStreams()} />
           <ExploreMenu
             features={SessionStore.getUserFeatures()}
             currentFeatureName={this.state.currentFeature.name}
             currentGraphDisplay={this.state.currentGraphDisplay}
             isDisabled={!ExploreStore.isActive()}
+            dataStreams={SessionStore.getUserStreams()}
           />
           <div className="ui bottom attached segment" style={{ backgroundColor: 'white' }}>
             {this.makeExploreGraph()}
