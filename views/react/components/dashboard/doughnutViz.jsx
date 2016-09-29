@@ -83,8 +83,9 @@ var DoughnutViz = React.createClass({
           cy={200}
           innerRadius={60}
           outerRadius={80}
-          fill="#8884d8"/>
+          fill="#8884d8">
           {data.map((entry, index) => <Cell fill={COLORS[index % COLORS.length]}/>)}
+        </Pie>
        </PieChart>
     );
 
