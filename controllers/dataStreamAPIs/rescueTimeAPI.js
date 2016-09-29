@@ -73,12 +73,14 @@ var rescueTimeAPI = {
       var distractingSecs = 0;
       console.log('in processData');
       console.log(startDate);
-
+      console.log(typeof newData[0][0]);
+      console.log(newData[0][0].slice(0, 10));
       // find first date in response
       while (startDate != newData[0][0].slice(0, 10)) {
-        if (moment(startDate, 'YYYY-MM-DD') < moment(newData[j][0].slice(0, 10), 'YYYY-MM-DD')) {
+        // if (moment(startDate, 'YYYY-MM-DD') < moment(newData[j][0].slice(0, 10), 'YYYY-MM-DD')) {
           startDate = moment(startDate, 'YYYY-MM-DD').add(1, 'day').format('YYYY-MM-DD');
-        }
+          console.log(startDate);
+        // }
       }
 
       var thisDate = startDate;
