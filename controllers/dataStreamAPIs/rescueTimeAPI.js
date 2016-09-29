@@ -155,7 +155,7 @@ var rescueTimeAPI = {
             }).then(function (streamRes) {
               console.log('made it to axios rescuetime axios then call');
               console.log(streamRes.data.rows);
-              var processedDataArray = processData(streamRes.data.rows, startDate);
+              var processedDataArray = processData(streamRes.rows, startDate);
               var featureNameArray = [
                 'Computer Productivity (Hours)',
                 'Computer Neutral (Hours)',
