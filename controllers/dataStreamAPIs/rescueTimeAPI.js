@@ -151,10 +151,11 @@ var rescueTimeAPI = {
                 restrict_kind: 'productivity',
                 restrict_begin: startDate,
                 restrict_end: endDate,
+                resolution_time: 'day',
               },
             }).then(function (streamRes) {
               console.log('made it to axios rescuetime axios then call');
-              console.log(streamRes.data.rows);
+              console.log(streamRes.rows);
               var processedDataArray = processData(streamRes.rows, startDate);
               var featureNameArray = [
                 'Computer Productivity (Hours)',
