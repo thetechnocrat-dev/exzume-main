@@ -10,7 +10,7 @@ module.exports = {
   fitbit: {
     clientID: '227TQM',
     clientSecret: 'd44c4411eec72933ccd86d7efe8ea12d',
-    callbackURL: 'http://localhost:3000/auth/datastreams/fitbit/callback/',
+    callbackURL: 'http://localhost:3000/auth/datastreams/fitbit/callback',
   },
   lastfm: {
     clientID: 'efe65c99aaf387249c3cf8ca16e6b884',
@@ -26,6 +26,7 @@ module.exports = {
     clientID: '13684',
     clientSecret: '955496e6c8084ca11922e1dab49d960b25d2e6ed',
     callbackURL: 'http://localhost:3000/auth/datastreams/strava/callback',
+
     // accessToken: '98813d8e1e80821224fbf923f059fae17d1def44',
   },
 };
