@@ -9,7 +9,7 @@ var _currentGraphDisplay = 'timeSeries';
 var _feature = {};
 var _filters = {
   timeSeries: {
-    dateBound: 'week',
+    dateBound: 'month',
     shouldNormalize: false,
   },
 };
@@ -29,7 +29,7 @@ ExploreStore.reset = function () {
   _feature = {};
   var _filters = {
     timeSeries: {
-      dateBound: 'week',
+      dateBound: 'month',
       shouldNormalize: false,
     },
   };

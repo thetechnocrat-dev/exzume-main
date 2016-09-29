@@ -10,7 +10,7 @@ var TimeMenu = React.createClass({
   },
 
   getInitialState: function () {
-    return { selectedLabel: 'Week', labels: ['Week', 'Month', 'Max'] };
+    return { selectedLabel: 'Month', labels: ['Week', 'Month', 'Max'] };
   },
 
   clickItem: function (itemLabel) {
