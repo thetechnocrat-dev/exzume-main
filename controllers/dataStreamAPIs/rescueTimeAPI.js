@@ -71,19 +71,20 @@ var rescueTimeAPI = {
       var productiveSecs = 0;
       var neutralSecs = 0;
       var distractingSecs = 0;
-      var thisDate;
       console.log('in processData');
       console.log(startDate);
 
       // find first date in response
-      var j = 0;
-      while (startDate != newData[j][0].slice(0, 10)) {
-        j++;
-      };
+      while (startDate != newData[0][0].slice(0, 10)) {
+        if (moment(startDate, 'YYYY-MM-DD') < moment(newData[j][0].slice(0, 10), 'YYYY-MM-DD')) {
+          startDate = moment(startDate, 'YYYY-MM-DD').add(1, 'day').format('YYYY-MM-DD');
+        }
+      }
 
-      thisDate = newData[j][0].slice(0, 10);
+      var thisDate = startDate;
 
-      for (var i = j; i < newData.length; i++) {
+      // loop through rest of rows of data
+      for (var i = 0; i < newData.length; i++) {
         console.log(thisDate);
         if (newData[i][0].slice(0, 10) == thisDate) {
           if (newData[i][3] > 0) {
