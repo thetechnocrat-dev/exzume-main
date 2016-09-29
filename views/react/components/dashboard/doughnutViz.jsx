@@ -1,7 +1,6 @@
 var React = require('react');
 var Recharts = require('recharts');
 const { PieChart, Pie, Sector, Cell } = Recharts;
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
 // accepts data as prop in the following format:
 // const data = [{ name: 'Group A', value: 400 }, { name: 'Group B', value: 300 },
 //               { name: 'Group C', value: 300 }, { name: 'Group D', value: 200 },];
@@ -19,36 +18,40 @@ const renderActiveShape = (props) => {
   const ex = mx + (cos >= 0 ? 1 : -1) * 22;
   const ey = my;
   const textAnchor = cos >= 0 ? 'start' : 'end';
+  const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
 
   return (
     <g>
-      <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>{payload.name}</text>
-      <Sector
-        cx={cx}
-        cy={cy}
-        innerRadius={innerRadius}
-        outerRadius={outerRadius}
-        startAngle={startAngle}
-        endAngle={endAngle}
-        fill={fill}
-      />
-      <Sector
-        cx={cx}
-        cy={cy}
-        startAngle={startAngle}
-        endAngle={endAngle}
-        innerRadius={outerRadius + 6}
-        outerRadius={outerRadius + 10}
-        fill={fill}
-      />
-      <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none"/>
-      <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none"/>
+      {COLORS.map((entry, index) =>
+        <text x={cx} y={cy} dy={8} textAnchor="middle" fill={COLORS[index]}>{payload.name}</text>
+        <Sector
+          cx={cx}
+          cy={cy}
+          innerRadius={innerRadius}
+          outerRadius={outerRadius}
+          startAngle={startAngle}
+          endAngle={endAngle}
+          fill={COLORS[index]}
+        />
+        <Sector
+          cx={cx}
+          cy={cy}
+          startAngle={startAngle}
+          endAngle={endAngle}
+          innerRadius={outerRadius + 6}
+          outerRadius={outerRadius + 10}
+          fill={COLORS[index]}
+        />
+        <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={COLORS[index]} fill="none"/>
+        <circle cx={ex} cy={ey} r={2} fill={COLORS[index]} stroke="none"/>
+      )}
       <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`${value} hours`}</text>
       <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
         {`${(percent * 100).toFixed(1)}%`}
       </text>
     </g>
   );
+
 };
 
 var DoughnutViz = React.createClass({
@@ -82,9 +85,7 @@ var DoughnutViz = React.createClass({
           cy={200}
           innerRadius={60}
           outerRadius={80}
-          fill="#8884d8">
-          {data.map((entry, index) => <Cell fill={COLORS[index % COLORS.length]}/>)}
-        </Pie>
+          />
        </PieChart>
     );
 
