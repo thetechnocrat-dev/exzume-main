@@ -97,7 +97,7 @@ var rescueTimeAPI = {
           } else {
             console.log('about to axios call');
             console.log(user.datastreams.rescuetime);
-            axios.get('https://www.rescuetime.com/api/oauth/productivity_data', {
+            axios.get('https://www.rescuetime.com/api/oauth/data', {
               params: {
                 access_token: user.datastreams.rescuetime.accessToken,
                 format: 'json',
