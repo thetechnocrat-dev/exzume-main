@@ -71,17 +71,25 @@ var rescueTimeAPI = {
       var productiveSecs = 0;
       var neutralSecs = 0;
       var distractingSecs = 0;
-      var thisDate = startDate;
+      var thisDate;
       console.log('in processData');
-      console.log(thisDate);
+      console.log(startDate);
 
-      for (var i = 0; i < newData.length; i++) {
+      // find first date in response
+      var j = 0;
+      while (startDate != newData[j][0].slice(0, 10)) {
+        j++;
+      };
+
+      thisDate = newData[j][0].slice(0, 10);
+
+      for (var i = j; i < newData.length; i++) {
         console.log(thisDate);
         if (newData[i][0].slice(0, 10) == thisDate) {
           if (newData[i][3] > 0) {
             productiveSecs += newData[i][1];
           } else if (newData[i][3] == 0) {
-            neturalSecs += newData[i][1];
+            neutralSecs += newData[i][1];
           } else {
             distractingSecs += newData[i][1];
           }
