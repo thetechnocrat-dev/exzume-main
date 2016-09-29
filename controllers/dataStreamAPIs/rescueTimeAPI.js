@@ -152,9 +152,11 @@ var rescueTimeAPI = {
                 restrict_begin: startDate,
                 restrict_end: endDate,
                 resolution_time: 'day',
+                perspective: 'interval',
               },
             }).then(function (streamRes) {
               console.log('made it to axios rescuetime axios then call');
+              console.log(streamRes);
               console.log(streamRes.rows);
               var processedDataArray = processData(streamRes.rows, startDate);
               var featureNameArray = [
