@@ -34,7 +34,7 @@ var preSync = function (user, featureNameArray, streamName, startSync) {
     }
 
     if (startDate == null) {
-      startSync(null, '1m');
+      startSync(null, moment().subtract(1, 'month').format('YYYY-MM-DD'));
     } else {
       user.save(function (err, user) {
         if (err) {
@@ -60,111 +60,74 @@ var rescueTimeAPI = {
     };
   },
 
-  sync: function (user, endSync, isInitialSync) {
+  sync: function (user, endSync) {
     console.log('in rescue time sync');
-    var dateToday = moment().format('YYYY-MM-DD');
-    // var processHistData = function (newData) {
-    //   var productiveHours = [];
-    //   var neutralHours = [];
-    //   var distractingHours = [];
-    //
-    //   // data is pulled reverse chronologically, so start from end of array and sync backwards
-    //   for (var i = newData.length - 1; i > 0; i--) {
-    //     productiveHours.push({
-    //       dateTime: newData[i].date,
-    //       value: newData[i].all_productive_hours,
-    //     });
-    //     neutralHours.push({
-    //       dateTime: newData[i].date,
-    //       value: newData[i].neutral_hours,
-    //     });
-    //     distractingHours.push({
-    //       dateTime: newData[i].date,
-    //       value: newData[i].all_distracting_hours,
-    //     });
-    //   }
-    //
-    //   return [productiveHours, neutralHours, distractingHours];
-    // };
 
-    var processDailyData = function (newData) {
+    var processData = function (newData, startDate) {
       var productiveHours = [];
       var neutralHours = [];
       var distractingHours = [];
       var productiveSecs = 0;
       var neutralSecs = 0;
       var distractingSecs = 0;
+      var thisDate = startDate;
 
       for (var i = 0; i < newData.length; i++) {
-        if (newData[i][3] > 0) {
-          productiveSecs += newData[i][1];
-        } else if (newData[i][3] == 0) {
-          neturalSecs += newData[i][1];
+        if (newData[i][0].slice(0, 10) == thisDate) {
+          if (newData[i][3] > 0) {
+            productiveSecs += newData[i][1];
+          } else if (newData[i][3] == 0) {
+            neturalSecs += newData[i][1];
+          } else {
+            distractingSecs += newData[i][1];
+          }
         } else {
-          distractingSecs += newData[i][1];
+          productiveHours.push({
+            dateTime: thisDate,
+            value: productiveSecs / 3600,
+          });
+          neutralHours.push({
+            dateTime: thisDate,
+            value: neutralSecs / 3600,
+          });
+          distractingHours.push({
+            dateTime: thisDate,
+            value: distractingSecs / 3600,
+          });
+          var thisDate = moment(newData[i][0].slice(0, 10), 'YYYY-MM-DD').add(1, 'day').format('YYYY-MM-DD');
+          if (newData[i][3] > 0) {
+            productiveSecs = newData[i][1];
+            neutralSecs = 0;
+            distractingSecs = 0;
+          } else if (newData[i][3] == 0) {
+            productiveSecs = 0;
+            neutralSecs = newData[i][1];
+            distractingSecs = 0;
+          } else {
+            productiveSecs = 0;
+            neutralSecs = 0;
+            distractingSecs = newData[i][1];
+          }
         }
-      }
+      };
 
       productiveHours.push({
-        dateTime: dateToday,
+        dateTime: thisDate,
         value: productiveSecs / 3600,
       });
       neutralHours.push({
-        dateTime: dateToday,
+        dateTime: thisDate,
         value: neutralSecs / 3600,
       });
       distractingHours.push({
-        dateTime: dateToday,
+        dateTime: thisDate,
         value: distractingSecs / 3600,
       });
 
       return [productiveHours, neutralHours, distractingHours];
     };
 
-    var series = [
-
-      // initial Sync function
-      // function (nextSync) {
-      //   console.log('inside rescuetime async series function');
-      //   var featureNameArray = [
-      //     'Computer Productivity (Hours)',
-      //     'Computer Neutral (Hours)',
-      //     'Computer Distractivity (Hours)',
-      //   ];
-      //   preSync(user, featureNameArray, 'rescuetime', function (err) {
-      //     console.log('inside rescuetime startSync');
-      //     if (err) {
-      //       nextSync(err, null);
-      //     } else {
-      //       console.log('about to axios call');
-      //       console.log(user.datastreams.rescuetime);
-      //       axios.get('https://www.rescuetime.com/api/oauth/daily_summary_feed', {
-      //         params: {
-      //           access_token: user.datastreams.rescuetime.accessToken,
-      //           format: 'json',
-      //         },
-      //       }).then(function (streamRes) {
-      //         console.log('made it to axios rescuetime axios then call');
-      //         var processedDataArray = processHistData(streamRes.data.rows);
-      //         var featureNameArray = [
-      //           'Computer Productivity (Hours)',
-      //           'Computer Neutral (Hours)',
-      //           'Computer Distractivity (Hours)',
-      //         ];
-      //         util.addMuchDataToUser(
-      //           user, featureNameArray, 'rescuetime', processedDataArray, nextSync
-      //         );
-      //       }).catch(function (err) {
-      //         console.log('axios error');
-      //         if (err) {
-      //           nextSync(err, null);
-      //         }
-      //       });
-      //     }
-      //   });
-      // },
-
-      // daily sync function
+    async.series([
       function (nextSync) {
         console.log('inside rescuetime async series function');
         var featureNameArray = [
@@ -172,11 +135,12 @@ var rescueTimeAPI = {
           'Computer Neutral (Hours)',
           'Computer Distractivity (Hours)',
         ];
-        preSync(user, featureNameArray, 'rescuetime', function (err) {
+        preSync(user, featureNameArray, 'rescuetime', function (err, startDate) {
           console.log('inside rescuetime startSync');
           if (err) {
             nextSync(err, null);
           } else {
+            var endDate = moment().format('YYYY-MM-DD');
             console.log('about to axios call');
             console.log(user.datastreams.rescuetime);
             axios.get('https://www.rescuetime.com/api/oauth/data', {
@@ -184,12 +148,13 @@ var rescueTimeAPI = {
                 access_token: user.datastreams.rescuetime.accessToken,
                 format: 'json',
                 restrict_kind: 'productivity',
-                restrict_begin: dateToday,
-                restrict_end: dateToday,
+                restrict_begin: startDate,
+                restrict_end: endDate,
               },
-            }).then(function (streamRes, dateToday) {
+            }).then(function (streamRes) {
               console.log('made it to axios rescuetime axios then call');
-              var processedDataArray = processDailyData(streamRes.data, dateToday);
+              console.log(streamRes.data.rows);
+              var processedDataArray = processData(streamRes.data.rows, startDate);
               var featureNameArray = [
                 'Computer Productivity (Hours)',
                 'Computer Neutral (Hours)',
@@ -207,9 +172,7 @@ var rescueTimeAPI = {
           }
         });
       },
-    ];
-
-    async.series(series, function (err, results) {
+    ], function (err, results) {
         console.log('async callback');
         console.log(results[0].toString());
         if (err) {
