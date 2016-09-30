@@ -28,9 +28,9 @@ var RescueTimeCard = React.createClass({
 
     // get current times:
     // if (dateToday == rescuetime.features[0].data[dataLength - 1].dateTime) {
-      currentProductiveTime = rescuetime.features[0].data[dataLength - 1].value.toFixed(1);
-      currentNeutralTime = rescuetime.features[1].data[dataLength - 1].value.toFixed(1);
-      currentDistractingTime = rescuetime.features[2].data[dataLength - 1].value.toFixed(1);
+      currentProductiveTime = rescuetime.features[0].data[dataLength - 1].value.toFixed(2);
+      currentNeutralTime = rescuetime.features[1].data[dataLength - 1].value.toFixed(2);
+      currentDistractingTime = rescuetime.features[2].data[dataLength - 1].value.toFixed(2);
     // } else {
     //   currentProductiveTime = 0;
     //   currentNeutralTime = 0;
@@ -59,13 +59,13 @@ var RescueTimeCard = React.createClass({
     console.log(avgArr[0]);
     console.log(avgArr[1]);
     console.log(avgArr[2]);
-    console.log(avgArr[0].toFixed(1));
-    console.log(avgArr[1].toFixed(1));
-    console.log(avgArr[2].toFixed(1));
+    console.log(avgArr[0].toFixed(2));
+    console.log(avgArr[1].toFixed(2));
+    console.log(avgArr[2].toFixed(2));
 
-    var averageChartData = [{ name: 'productive time', value: avgArr[0].toFixed(1) },
-                            { name: 'neutral time', value: avgArr[1].toFixed(1) },
-                            { name: 'distracting time', value: avgArr[2].toFixed(1) },];
+    var averageChartData = [{ name: 'productive time', value: avgArr[0].toFixed(2) },
+                            { name: 'neutral time', value: avgArr[1].toFixed(2) },
+                            { name: 'distracting time', value: avgArr[2].toFixed(2) },];
 
     return (
       <div className="ui fluid card">
