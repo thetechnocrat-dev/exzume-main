@@ -37,7 +37,7 @@ var UserSchema = new Schema({
     },
     survey: {
       name: { type: String, default: 'Personal Survey' },
-      isConnected: { type: Boolean, default: true },
+      isConnected: { type: Boolean, default: false },
       features: [{
           name: String,
           prompt: String,
@@ -47,6 +47,7 @@ var UserSchema = new Schema({
       ],
     },
     fitbit: {
+      name: { type: String, default: 'Fitbit' },
       profileId: { type: String, unique: true },
       accessToken: String,
       refreshToken: String,
@@ -60,6 +61,7 @@ var UserSchema = new Schema({
       ],
     },
     lastfm: {
+      name: { type: String, default: 'LastFM' },
       username: String,
       key: String,
       lastSyncTime: { type: Date, default: Date.now },
@@ -73,6 +75,7 @@ var UserSchema = new Schema({
       ],
     },
     rescuetime: {
+      name: { type: String, default: 'RescueTime' },
       accessToken: String,
       refreshToken: String,
       lastSyncTime: { type: Date, default: Date.now },
@@ -85,6 +88,7 @@ var UserSchema = new Schema({
       ],
     },
     strava: {
+      name: { type: String, default: 'Strava' },
       accessToken: String,
       lastSyncTime: { type: Date, default: Date.now },
       syncIcon: { type: String, default: 'images/strava-logo-round.png' },
@@ -96,6 +100,7 @@ var UserSchema = new Schema({
       ],
     },
     darksky: {
+      name: { type: String, default: 'DarkSky' },
       isConnected: { type: Boolean, default: false },
       lastSyncTime: { type: Date, default: Date.now },
       syncIcon: { type: String, default: 'images/darksky-logo-round.png' },
