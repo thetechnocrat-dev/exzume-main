@@ -107,7 +107,7 @@ var rescueTimeAPI = {
             dateTime: thisDate,
             value: distractingSecs / 3600,
           });
-          thisDate = moment(newData[i][0].slice(0, 10), 'YYYY-MM-DD').add(1, 'day').format('YYYY-MM-DD');
+          thisDate = moment(thisDate, 'YYYY-MM-DD').add(1, 'day').format('YYYY-MM-DD');
           if (newData[i][3] > 0) {
             productiveSecs = newData[i][1];
             neutralSecs = 0;
