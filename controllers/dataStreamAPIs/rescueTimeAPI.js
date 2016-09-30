@@ -77,10 +77,8 @@ var rescueTimeAPI = {
       console.log(newData[0][0].slice(0, 10));
       // find first date in response
       while (startDate != newData[0][0].slice(0, 10)) {
-        // if (moment(startDate, 'YYYY-MM-DD') < moment(newData[j][0].slice(0, 10), 'YYYY-MM-DD')) {
-          startDate = moment(startDate, 'YYYY-MM-DD').add(1, 'day').format('YYYY-MM-DD');
-          console.log(startDate);
-        // }
+        startDate = moment(startDate, 'YYYY-MM-DD').add(1, 'day').format('YYYY-MM-DD');
+        console.log(startDate);
       }
 
       var thisDate = startDate;
@@ -109,7 +107,7 @@ var rescueTimeAPI = {
             dateTime: thisDate,
             value: distractingSecs / 3600,
           });
-          var thisDate = moment(newData[i][0].slice(0, 10), 'YYYY-MM-DD').add(1, 'day').format('YYYY-MM-DD');
+          thisDate = moment(newData[i][0].slice(0, 10), 'YYYY-MM-DD').add(1, 'day').format('YYYY-MM-DD');
           if (newData[i][3] > 0) {
             productiveSecs = newData[i][1];
             neutralSecs = 0;
