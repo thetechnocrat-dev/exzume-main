@@ -28,9 +28,9 @@ var RescueTimeCard = React.createClass({
 
     // get current times:
     // if (dateToday == rescuetime.features[0].data[dataLength - 1].dateTime) {
-      currentProductiveTime = rescuetime.features[0].data[dataLength - 1].value;
-      currentNeutralTime = rescuetime.features[1].data[dataLength - 1].value;
-      currentDistractingTime = rescuetime.features[2].data[dataLength - 1].value;
+      currentProductiveTime = rescuetime.features[0].data[dataLength - 1].value.toFixed(1);
+      currentNeutralTime = rescuetime.features[1].data[dataLength - 1].value.toFixed(1);
+      currentDistractingTime = rescuetime.features[2].data[dataLength - 1].value.toFixed(1);
     // } else {
     //   currentProductiveTime = 0;
     //   currentNeutralTime = 0;
@@ -54,9 +54,9 @@ var RescueTimeCard = React.createClass({
       return avg;
     });
 
-    var averageChartData = [{ name: 'productive time', value: avgArr[0] },
-                            { name: 'neutral time', value: avgArr[1] },
-                            { name: 'distracting time', value: avgArr[2] },];
+    var averageChartData = [{ name: 'productive time', value: avgArr[0].toFixed(1) },
+                            { name: 'neutral time', value: avgArr[1].toFixed(1) },
+                            { name: 'distracting time', value: avgArr[2].toFixed(1) },];
 
     return (
       <div className="ui fluid card">
@@ -64,9 +64,9 @@ var RescueTimeCard = React.createClass({
           <div className="header">
             Productivity
           </div>
-          <h4 className="ui sub header">Today</h4>
+          <h3 className="ui sub header">Today</h3>
           <DoughnutViz chartData={currentChartData} />
-          <h4 className="ui sub header">Average</h4>
+          <h3 className="ui sub header">Average</h3>
           <DoughnutViz chartData={averageChartData} />
         </div>
         <div className="extra content">
