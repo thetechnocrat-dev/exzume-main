@@ -28,17 +28,15 @@ var RescueTimeCard = React.createClass({
 
     // get current times:
     // if (dateToday == rescuetime.features[0].data[dataLength - 1].dateTime) {
-      currentProductiveTime = rescuetime.features[0].data[dataLength - 1].value.toFixed(2);
-      currentNeutralTime = rescuetime.features[1].data[dataLength - 1].value.toFixed(2);
-      currentDistractingTime = rescuetime.features[2].data[dataLength - 1].value.toFixed(2);
+      currentProductiveTime = parseFloat(rescuetime.features[0].data[dataLength - 1].value.toFixed(2));
+      currentNeutralTime = parseFloat(rescuetime.features[1].data[dataLength - 1].value.toFixed(2));
+      currentDistractingTime = parseFloat(rescuetime.features[2].data[dataLength - 1].value.toFixed(2));
     // } else {
     //   currentProductiveTime = 0;
     //   currentNeutralTime = 0;
     //   currentDistractingTime = 0;
     // };
-    console.log(currentProductiveTime);
-    console.log(currentNeutralTime);
-    console.log(currentDistractingTime);
+
     var currentChartData = [{ name: 'productive time', value: currentProductiveTime },
                             { name: 'neutral time', value: currentNeutralTime },
                             { name: 'distracting time', value: currentDistractingTime },];
@@ -56,16 +54,9 @@ var RescueTimeCard = React.createClass({
       return avg;
     });
 
-    console.log(avgArr[0]);
-    console.log(avgArr[1]);
-    console.log(avgArr[2]);
-    console.log(avgArr[0].toFixed(2));
-    console.log(avgArr[1].toFixed(2));
-    console.log(avgArr[2].toFixed(2));
-
-    var averageChartData = [{ name: 'productive time', value: avgArr[0].toFixed(2) },
-                            { name: 'neutral time', value: avgArr[1].toFixed(2) },
-                            { name: 'distracting time', value: avgArr[2].toFixed(2) },];
+    var averageChartData = [{ name: 'productive time', value: parseFloat(avgArr[0].toFixed(2)) },
+                            { name: 'neutral time', value: parseFloat(avgArr[1].toFixed(2)) },
+                            { name: 'distracting time', value: parseFloat(avgArr[2].toFixed(2)) },];
 
     return (
       <div className="ui fluid card">
