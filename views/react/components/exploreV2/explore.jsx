@@ -110,17 +110,29 @@ var Explore = React.createClass({
     }
   },
 
+  getProcessedUserStreams: function () {
+    var userStreams = SessionStore.getUserStreams();
+    var processedUserStreams = [];
+    for (var i = 0; i < userStreams.length; i++) {
+      if (userStreams[i].name != 'DarkSky') {
+        processedUserStreams.push(userStreams[i]);
+      }
+    }
+
+    return processedUserStreams;
+  },
+
   render: function () {
     if (this.state.user) {
       return (
         <div>
-          <SelectFeatureDropdown dataStreams={SessionStore.getUserStreams()} />
+          <SelectFeatureDropdown dataStreams={this.getProcessedUserStreams()} />
           <ExploreMenu
             features={SessionStore.getUserFeatures()}
             currentFeatureName={this.state.currentFeature.name}
             currentGraphDisplay={this.state.currentGraphDisplay}
             isDisabled={!ExploreStore.isActive()}
-            dataStreams={SessionStore.getUserStreams()}
+            dataStreams={this.getProcessedUserStreams()}
           />
           <div className="ui bottom attached segment" style={{ backgroundColor: 'white' }}>
             {this.makeExploreGraph()}
