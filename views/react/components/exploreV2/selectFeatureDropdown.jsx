@@ -36,7 +36,7 @@ var SelectFeatureDropdown = React.createClass({
       >
         <input type="hidden" name="select a feature to explore" />
         <div className="default text" style={{ color: 'white' }}>
-          Select a Feature to Explore
+          {'Select a Feature to Explore'}
         </div>
         <i className="dropdown icon" />
         <div className="menu">
