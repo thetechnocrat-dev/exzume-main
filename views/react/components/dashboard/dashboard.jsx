@@ -47,6 +47,19 @@ var Dashboard = React.createClass({
     }
   },
 
+  makeConnectionCard: function () {
+    var userStreams = [];
+    for (var stream in this.state.user.datastreams) {
+      if (stream.isConnected) {
+        userStreams.push(stream);
+      }
+    };
+
+    return (
+      <ConnectionCard userStreams={userStreams} />
+    );
+  },
+
   makeRescueTimeCard: function () {
     if (this.state.user.datastreams.rescuetime.isConnected) {
       return (
@@ -106,9 +119,7 @@ var Dashboard = React.createClass({
               />
             </div>
             <div className="column">
-              <ConnectionCard
-                userStreams={[1, 2, 3, 4, 5]}
-              />
+              {this.makeConnectionCard()}
             </div>
             {this.makeRescueTimeCard()}
           </div>
