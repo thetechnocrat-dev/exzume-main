@@ -48,15 +48,16 @@ var Dashboard = React.createClass({
   },
 
   makeConnectionCard: function () {
-    var userStreams = [];
-    for (var stream in this.state.user.datastreams) {
-      if (stream.isConnected) {
-        userStreams.push(stream);
+    var allStreams = this.state.user.datastreams;
+    var connectedStreams = [];
+    for (stream in allStreams) {
+      if (allStreams[stream].isConnected) {
+        connectedStreams.push(allStreams[stream]);
       }
     };
 
     return (
-      <ConnectionCard userStreams={userStreams} />
+      <ConnectionCard connectedStreams={connectedStreams} />
     );
   },
 
