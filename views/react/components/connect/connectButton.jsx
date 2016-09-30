@@ -92,8 +92,9 @@ var ConnectButton = React.createClass({
             className="ui green labeled mini icon button"
             onClick={this.handleClick}
             data-inverted=""
-            data-tooltip="DarkSky does not require an account but needs your location to work."
-            data-position="right center"
+            data-variation="tiny"
+            data-tooltip="No account needed but requires your location to work."
+            data-position="bottom center"
           >
             <i className="plus icon" />
             {this.props.isConnected ? 'open' : 'connect'}

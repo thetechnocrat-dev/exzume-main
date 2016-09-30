@@ -49,4 +49,3 @@ var Connect = React.createClass({
 });
 
 module.exports = Connect;
-
