@@ -36,6 +36,9 @@ var RescueTimeCard = React.createClass({
     //   currentNeutralTime = 0;
     //   currentDistractingTime = 0;
     // };
+    console.log(currentProductiveTime);
+    console.log(currentNeutralTime);
+    console.log(currentDistractingTime);
     var currentChartData = [{ name: 'productive time', value: currentProductiveTime },
                             { name: 'neutral time', value: currentNeutralTime },
                             { name: 'distracting time', value: currentDistractingTime },];
@@ -53,6 +56,12 @@ var RescueTimeCard = React.createClass({
       console.log(avg);
       return avg;
     });
+    console.log(avgArr[0]);
+    console.log(avgArr[1]);
+    console.log(avgArr[2]);
+    console.log(avgArr[0].toFixed(1));
+    console.log(avgArr[1].toFixed(1));
+    console.log(avgArr[2].toFixed(1));
 
     var averageChartData = [{ name: 'productive time', value: avgArr[0].toFixed(1) },
                             { name: 'neutral time', value: avgArr[1].toFixed(1) },
