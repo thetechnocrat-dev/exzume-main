@@ -51,7 +51,7 @@ var AppPanel = React.createClass({
     var _this = this;
     return this.state.apps.map(function (app, idx) {
       return (
-        <div className='column' key={idx}>
+        <div className='sixteen wide mobile eight wide tablet four wide computer column' key={idx}>
           <AppItem
             app={app}
             isConnected={userConnectedApps.includes(app.name.toLowerCase())}
@@ -63,7 +63,7 @@ var AppPanel = React.createClass({
 
   render: function () {
     return (
-      <div className="ui doubling four column grid container">
+      <div className="ui grid container">
         {this.makeAppItems()}
       </div>
     );
