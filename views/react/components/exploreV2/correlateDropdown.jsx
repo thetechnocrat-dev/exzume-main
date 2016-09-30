@@ -10,6 +10,7 @@ var CorrelateDropdown = React.createClass({
     isDisabled: React.PropTypes.bool.isRequired,
     dataStreams: React.PropTypes.array.isRequired,
     currentFeatureName: React.PropTypes.string.isRequired,
+    features: React.PropTypes.array.isRequired,
   },
 
   componentDidMount: function () {

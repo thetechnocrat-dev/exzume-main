@@ -43,6 +43,7 @@ var ExploreMenu = React.createClass({
             dataStreams={this.props.dataStreams}
             isDisabled={this.props.isDisabled}
             currentFeatureName={this.props.currentFeatureName}
+            features={this.props.features}
           />
         </div>
       </div>
