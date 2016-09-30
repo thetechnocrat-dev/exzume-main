@@ -14,6 +14,7 @@ var ExploreMenu = React.createClass({
     currentGraphDisplay: React.PropTypes.string.isRequired,
     isDisabled: React.PropTypes.bool.isRequired,
     currentFeatureName: React.PropTypes.string.isRequired,
+    dataStreams: React.PropTypes.array.isRequired,
   },
 
   render: function () {
@@ -21,7 +22,7 @@ var ExploreMenu = React.createClass({
       <div className="ui top attached menu" style={{ backgroundColor: 'white' }}>
         <div className="item">
           <AddFeatureDropdown
-            features={this.props.features}
+            dataStreams={this.props.dataStreams}
             isDisabled={
               this.props.isDisabled || this.props.currentGraphDisplay == 'correlateScatter'
             }
@@ -39,9 +40,10 @@ var ExploreMenu = React.createClass({
         </div>
         <div className="item">
           <CorrelateDropdown
-            features={this.props.features}
+            dataStreams={this.props.dataStreams}
             isDisabled={this.props.isDisabled}
             currentFeatureName={this.props.currentFeatureName}
+            features={this.props.features}
           />
         </div>
       </div>

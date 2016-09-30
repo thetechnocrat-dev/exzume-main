@@ -1,7 +1,7 @@
 var React = require('react');
 var FastFlux = require('../../util/fast-flux-react/fastFlux');
 
-var DropdownItem = React.createClass({
+var CorrelateWithItem = React.createClass({
   propTypes: {
     dataStream: React.PropTypes.object.isRequired,
   },
@@ -22,7 +22,7 @@ var DropdownItem = React.createClass({
   },
 
   clickFeatureItem: function (feature) {
-    FastFlux.cycle('FEATURE_RECEIVED', feature);
+    FastFlux.cycle('CORRELATE_SCATTER_RECEIVED', feature);
   },
 
   render: function () {
@@ -39,5 +39,5 @@ var DropdownItem = React.createClass({
 
 });
 
-module.exports = DropdownItem;
+module.exports = CorrelateWithItem;
 

@@ -3,21 +3,23 @@ var React = require('react');
 // Components
 var AddFeatureDropdownItem = require('./addFeatureDropdownItem');
 
-var Dropdown = React.createClass({
+var AddFeatureDropdown = React.createClass({
   propTypes: {
-    features: React.PropTypes.array.isRequired,
+    dataStreams: React.PropTypes.array.isRequired,
     isDisabled: React.PropTypes.bool.isRequired,
   },
 
   makeDropdownItems: function () {
     var _this = this;
-    return this.props.features.map(function (feature, idx) {
-      return (
-        <AddFeatureDropdownItem
-          key={idx}
-          feature={feature}
-        />
-      );
+    return this.props.dataStreams.map(function (dataStream, idx) {
+      if (dataStream.name != 'Personal Survey') {
+        return (
+          <AddFeatureDropdownItem
+            key={idx}
+            dataStream={dataStream}
+          />
+        );
+      }
     });
   },
 
@@ -43,5 +45,5 @@ var Dropdown = React.createClass({
 
 });
 
-module.exports = Dropdown;
+module.exports = AddFeatureDropdown;
 

@@ -18,6 +18,45 @@ var TimeSeriesCompareGraph = React.createClass({
     height: React.PropTypes.number.isRequired,
   },
 
+  getInitialState: function () {
+    return { rSquared: null, confidence: null, isLoading: true, error: null };
+  },
+
+  corrSuccess: function (res) {
+    console.log(res);
+    var rSquared = parseFloat(res[0]).toFixed(2);
+    var confidence = parseFloat(100 - (res[1] * 100)).toFixed(2);
+    this.setState({ rSquared: rSquared, confidence: confidence, isLoading: false });
+  },
+
+  corrError: function (res) {
+    this.setState({ error: 'Sorry, something went wrong with our analytic server' });
+  },
+
+  getCorrelation: function (data) {
+    arr1 = [];
+    arr2 = [];
+    for (var i = 0; i < data.length; i++) {
+      arr1.push(data[i].x);
+      arr2.push(data[i].y);
+    }
+
+    FastFlux.webCycle('post', '/auth/correlateTwo', {
+      success: this.corrSuccess,
+      error: this.corrError,
+      shouldStoreReceive: false,
+      body: { data: JSON.stringify({ f1: arr1, f2: arr2 }) },
+    });
+  },
+
+  componentDidMount: function () {
+    this.getCorrelation(this.props.data[0].data);
+  },
+
+  componentWillReceiveProps: function (newProps) {
+    this.getCorrelation(newProps.data[0].data);
+  },
+
   makeScatters: function () {
     var _this = this;
     return this.props.data.map(function (series, idx) {
@@ -37,7 +76,25 @@ var TimeSeriesCompareGraph = React.createClass({
     FastFlux.cycle('GRAPH_DISPLAY_RECEIVED', 'timeSeries');
   },
 
+  makeCorrelationInfo: function () {
+    if (this.state.isLoading) {
+      console.log('making loader');
+      return (
+        <div className="ui active text loader">Calculating Correlation</div>
+      );
+    } else if (this.state.rSquared && this.state.confidence) {
+      return (
+        <div style={{ display: 'inline-block', marginLeft: '10px' }}>
+          <div className="ui message" style={{ padding: '5px 10px 5px 10px' }}>
+            {'r2: ' + this.state.rSquared + ', confidence: ' + this.state.confidence + '%'}
+          </div>
+        </div>
+      );
+    }
+  },
+
   render: function () {
+    console.log(this.state);
     return (
       <div style={{ textAlign: 'center' }}>
         <div
@@ -46,6 +103,7 @@ var TimeSeriesCompareGraph = React.createClass({
         >
           {this.props.data[0].name}
         </div>
+        {this.makeCorrelationInfo()}
         <div className="ui right floated icon button">
           <i className="reply icon" onClick={this.clickBackIcon} />
         </div>

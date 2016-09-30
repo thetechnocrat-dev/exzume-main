@@ -6,7 +6,7 @@ var SelectFeatureDropdownItem = require('./selectFeatureDropdownItem');
 
 var SelectFeatureDropdown = React.createClass({
   propTypes: {
-    features: React.PropTypes.array.isRequired,
+    dataStreams: React.PropTypes.array.isRequired,
   },
 
   componentDidMount: function () {
@@ -16,13 +16,15 @@ var SelectFeatureDropdown = React.createClass({
   },
 
   makeDropdownItems: function () {
-    return this.props.features.map(function (feature, idx) {
-      return (
-        <SelectFeatureDropdownItem
-          key={idx}
-          feature={feature}
-        />
-      );
+    return this.props.dataStreams.map(function (dataStream, idx) {
+      if (dataStream.name != 'Personal Survey') {
+        return (
+          <SelectFeatureDropdownItem
+            key={idx}
+            dataStream={dataStream}
+          />
+        );
+      }
     });
   },
 
@@ -34,7 +36,7 @@ var SelectFeatureDropdown = React.createClass({
       >
         <input type="hidden" name="select a feature to explore" />
         <div className="default text" style={{ color: 'white' }}>
-          Select a Feature to Explore
+          {'Select a Feature to Explore'}
         </div>
         <i className="dropdown icon" />
         <div className="menu">
