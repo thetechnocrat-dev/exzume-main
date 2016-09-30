@@ -26,6 +26,7 @@ var RescueTimeCard = React.createClass({
     var currentNeutralTime;
     var currentDistractingTime;
 
+    // get current times:
     // if (dateToday == rescuetime.features[0].data[dataLength - 1].dateTime) {
       currentProductiveTime = rescuetime.features[0].data[dataLength - 1].value;
       currentNeutralTime = rescuetime.features[1].data[dataLength - 1].value;
@@ -35,28 +36,29 @@ var RescueTimeCard = React.createClass({
     //   currentNeutralTime = 0;
     //   currentDistractingTime = 0;
     // };
-
     var currentChartData = [{ name: 'productive time', value: currentProductiveTime },
                             { name: 'neutral time', value: currentNeutralTime },
                             { name: 'distracting time', value: currentDistractingTime },];
 
-    // var chartDataAvg = [
-    //   {
-    //     color: Style.green,
-    //     label: 'productive hours',
-    //     value: this.props.avgProductiveTime,
-    //   }, {
-    //     color: Style.red,
-    //     label: 'distracting hours',
-    //     value: this.props.avgDistractingTime,
-    //   }, {
-    //     color: Style.gray,
-    //     label: 'neutral hours',
-    //     value: this.props.avgNeutralTime,
-    //   },
-    // ];
-    /*{ <DoughnutViz label={'today'} chartData={chartDataCurrent} />
-     <DoughnutViz label={'average'} chartData={chartDataAvg} /> }*/
+    // get average times:
+    var averageProductiveTime;
+    var averageNeutralTime;
+    var averageDistractingTime;
+    var avgArr = [averageProductiveTime, averageNeutralTime, averageDistractingTime];
+
+    avgArr.map(function (avg, idx) {
+      var sum = 0;
+      for (var i = 0; i < dataLength; i++) {
+        sum += rescuetime.features[idx].data[i].value;
+      }
+
+      avg = sum / dataLength;
+      return avg;
+    });
+
+    var averageChartData = [{ name: 'productive time', value: averageProductiveTime },
+                            { name: 'neutral time', value: averageNeutralTime },
+                            { name: 'distracting time', value: averageDistractingTime },];
 
     return (
       <div className="ui fluid card">
@@ -64,7 +66,10 @@ var RescueTimeCard = React.createClass({
           <div className="header">
             Productivity
           </div>
+          <h4 className="ui sub header">Today</h4>
           <DoughnutViz chartData={currentChartData} />
+          <h4 className="ui sub header">Average</h4>
+          <DoughnutViz chartData={averageChartData} />
         </div>
         <div className="extra content">
           <div className="left floated time">
