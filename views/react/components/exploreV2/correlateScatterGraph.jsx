@@ -78,7 +78,6 @@ var TimeSeriesCompareGraph = React.createClass({
 
   makeCorrelationInfo: function () {
     if (this.state.isLoading) {
-      console.log('making loader');
       return (
         <div className="ui active text loader">Calculating Correlation</div>
       );
@@ -94,7 +93,6 @@ var TimeSeriesCompareGraph = React.createClass({
   },
 
   render: function () {
-    console.log(this.state);
     return (
       <div style={{ textAlign: 'center' }}>
         <div

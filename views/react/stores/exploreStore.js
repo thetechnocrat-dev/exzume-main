@@ -21,7 +21,8 @@ var _timeSeriesData = [];
 var _scatterCorrelateData = [];
 
 // Initial State for BarCorrelate
-var _barCorrelateData = [];
+var _barCorrelateData = [{ correlation: 0, name: 'still calculating' }];
+var _barCorrelateIsLoading = true;
 
 // Base Explore Store Methods
 ExploreStore.reset = function () {
@@ -35,6 +36,8 @@ ExploreStore.reset = function () {
   };
   _timeSeriesData = [];
   _scatterCorrelateData = [];
+  _barCorrelateData = [{ correlation: 0, name: 'still calculating' }];
+  _barCorrelateIsLoading = true;
 };
 
 ExploreStore.setCurrentGraphDisplay = function (graphDisplay) {
@@ -180,6 +183,14 @@ ExploreStore.getBarCorrelateData = function () {
   return _barCorrelateData;
 };
 
+ExploreStore.setBarCorrelateIsLoading = function (bool) {
+  _barCorrelateIsLoading = bool;
+};
+
+ExploreStore.getBarCorrelateIsLoading = function () {
+  return _barCorrelateIsLoading;
+};
+
 ExploreStore.__onDispatch = function (payload) {
   switch (payload.actionType) {
     case 'GRAPH_DISPLAY_RECEIVED':
@@ -211,6 +222,7 @@ ExploreStore.__onDispatch = function (payload) {
       break;
     case 'CORRELATE_BAR_RECEIVED':
       this.setCurrentGraphDisplay('correlateBar');
+      this.setBarCorrelateIsLoading(false);
       this.setBarCorrelateData(payload.data);
       this.__emitChange();
       break;

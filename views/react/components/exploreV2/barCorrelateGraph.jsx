@@ -10,10 +10,19 @@ var BarCorrelateGraph = React.createClass({
     height: React.PropTypes.number.isRequired,
     data: React.PropTypes.array.isRequired,
     currentFeatureName: React.PropTypes.string.isRequired,
+    isLoading: React.PropTypes.bool.isRequired,
   },
 
   clickBackIcon: function () {
     FastFlux.cycle('GRAPH_DISPLAY_RECEIVED', 'timeSeries');
+  },
+
+  makeLoader: function () {
+    if (this.props.isLoading) {
+      return (
+        <div className="ui active text loader">Calculating Correlations</div>
+      );
+    }
   },
 
   render: function () {
@@ -26,6 +35,7 @@ var BarCorrelateGraph = React.createClass({
         >
           {'Top Correlations with ' + this.props.currentFeatureName}
         </div>
+        {this.makeLoader()}
         <div className="ui right floated icon button">
           <i className="reply icon" onClick={this.clickBackIcon} />
         </div>

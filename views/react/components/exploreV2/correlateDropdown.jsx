@@ -87,6 +87,8 @@ var CorrelateDropdown = React.createClass({
   },
 
   clickCorrelateWithAll: function () {
+    FastFlux.cycle('GRAPH_DISPLAY_RECEIVED', 'correlateBar');
+
     var userFeatures = this.props.features;
     var allSeries = [];
 

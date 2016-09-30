@@ -20,6 +20,7 @@ var Explore = React.createClass({
       timeSeriesData: [{ name: 'nothing selected', data: [{ x: 0, y: 0 }] }],
       scatterCompareData: [],
       barCorrelateData: [],
+      barCorrelateIsLoading: ExploreStore.getBarCorrelateIsLoading(),
     };
 
     if (SessionStore.isSignedIn()) {
@@ -42,6 +43,7 @@ var Explore = React.createClass({
       scatterCompareData: ExploreStore.getCorrelateScatterData(),
       currentFeature: ExploreStore.getFeature(),
       barCorrelateData: ExploreStore.getBarCorrelateData(),
+      barCorrelateIsLoading: ExploreStore.getBarCorrelateIsLoading(),
     });
   },
 
@@ -105,6 +107,7 @@ var Explore = React.createClass({
           width={graphWidth}
           height={graphHeight}
           currentFeatureName={this.state.currentFeature.name}
+          isLoading={this.state.barCorrelateIsLoading}
         />
       );
     }
