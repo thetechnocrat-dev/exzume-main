@@ -1,9 +1,6 @@
 var React = require('react');
 var History = require('react-router').History;
 
-// Components
-// var connectItem = require('./connectItem');
-
 var ConnectionCard = React.createClass({
   mixins: [History],
 
@@ -18,8 +15,8 @@ var ConnectionCard = React.createClass({
   makeConnectionItems: function () {
     return this.props.userStreams.map(function (stream, idx) {
       return (
-        <div className="column">
-          <i className="huge firefox icon" key={idx} />
+        <div className ="centered column" style={{ textAlign: 'center' }}>
+          <img className="ui image" key={idx} src={stream.syncIcon} />
         </div>
       );
     });
@@ -33,15 +30,7 @@ var ConnectionCard = React.createClass({
             Connections
           </div>
           <div className="ui three column grid">
-            <div className ="centered column" style={{ textAlign: 'center' }}>
-              <img className="ui image" src={'images/fitbit-logo-round.png'} />  
-            </div>
-            <div className ="centered column" style={{ textAlign: 'center' }}>
-              <img className="ui image" src={'images/lastfm-logo-round.png'} />  
-            </div>
-            <div className ="centered column" style={{ textAlign: 'center' }}>
-              <img className="ui image" src={'images/rescuetime-logo-round.png'} />  
-            </div>
+            {this.makeConnectionItems()}
             <div className="column" style={{ textAlign: 'center' }}>
               <div className="ui yellow icon button">
                 <i className="plus icon" />
@@ -56,4 +45,3 @@ var ConnectionCard = React.createClass({
 });
 
 module.exports = ConnectionCard;
-

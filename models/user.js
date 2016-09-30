@@ -51,6 +51,7 @@ var UserSchema = new Schema({
       accessToken: String,
       refreshToken: String,
       lastSyncTime: { type: Date, default: Date.now },
+      syncIcon: { type: String, default: 'images/fitbit-logo-round.png' },
       isConnected: { type: Boolean, default: false },
       features: [{
           name: String,
@@ -62,6 +63,7 @@ var UserSchema = new Schema({
       username: String,
       key: String,
       lastSyncTime: { type: Date, default: Date.now },
+      syncIcon: { type: String, default: 'images/lastfm-logo-round.png' },
       isConnected: { type: Boolean, default: false },
       lastSongTime: Number,
       features: [{
@@ -74,6 +76,7 @@ var UserSchema = new Schema({
       accessToken: String,
       refreshToken: String,
       lastSyncTime: { type: Date, default: Date.now },
+      syncIcon: { type: String, default: 'images/rescuetime-logo-round.png' },
       isConnected: { type: Boolean, default: false },
       features: [{
           name: String,
@@ -84,6 +87,7 @@ var UserSchema = new Schema({
     strava: {
       accessToken: String,
       lastSyncTime: { type: Date, default: Date.now },
+      syncIcon: { type: String, default: 'images/strava-logo-round.png' },
       isConnected: { type: Boolean, default: false },
       features: [{
           name: String,
@@ -94,6 +98,7 @@ var UserSchema = new Schema({
     darksky: {
       isConnected: { type: Boolean, default: false },
       lastSyncTime: { type: Date, default: Date.now },
+      syncIcon: { type: String, default: 'images/darksky-logo-round.png' },
       lastSyncLoc: { lat: Number, long: Number },
       features: [{
           name: String,

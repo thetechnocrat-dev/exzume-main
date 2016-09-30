@@ -9,6 +9,7 @@ var AppSchema = new Schema(
     express: Boolean,
     requirements: [String],
     basicPrice: Number,
+    syncIcon: { type: String, required: true },
     connectIcon: { type: String, required: true },
     openUrl: String,
   },
@@ -25,4 +26,3 @@ AppSchema.virtual('avgRating').get(function () {
 });
 
 module.exports = mongoose.model('App', AppSchema);
-
