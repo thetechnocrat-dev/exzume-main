@@ -50,6 +50,7 @@ var RescueTimeCard = React.createClass({
       }
 
       avg = sum / dataLength;
+      console.log(avg);
       return avg;
     });
 
