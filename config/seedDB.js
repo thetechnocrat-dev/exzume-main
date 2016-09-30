@@ -8,7 +8,7 @@ var apps = [
   {
     name: 'Fitbit',
     categories: ['fitness', 'wearable'],
-    ratings: [5],
+    // ratings: [5],
     express: false,
     requirements: [
       'account required',
@@ -22,7 +22,7 @@ var apps = [
   {
     name: 'LastFM',
     categories: ['music'],
-    ratings: [5, 4],
+    // ratings: [5, 4],
     express: false,
     requirements: [
       'account required',
@@ -35,7 +35,7 @@ var apps = [
   {
     name: 'RescueTime',
     categories: ['productivity'],
-    ratings: [5],
+    // ratings: [5],
     express: false,
     requirements: [
       'account required',
@@ -46,24 +46,24 @@ var apps = [
     connectIcon: 'rescuetime-logo.png',
     openUrl: 'https://www.rescuetime.com',
   },
-  {
-    name: 'Strava',
-    categories: ['fitness'],
-    ratings: [5],
-    express: false,
-    requirements: [
-      'account required',
-      'download required',
-    ],
-    basicPrice: 0,
-    syncIcon: 'images/strava-logo-round.png',
-    connectIcon: 'strava-logo.png',
-    openUrl: 'https://www.strava.com',
-  },
+  // {
+  //   name: 'Strava',
+  //   categories: ['fitness'],
+  //   ratings: [5],
+  //   express: false,
+  //   requirements: [
+  //     'account required',
+  //     'download required',
+  //   ],
+  //   basicPrice: 0,
+  //   syncIcon: 'images/strava-logo-round.png',
+  //   connectIcon: 'strava-logo.png',
+  //   openUrl: 'https://www.strava.com',
+  // },
   {
     name: 'DarkSky',
     categories: ['weather'],
-    ratings: [3],
+    // ratings: [3],
     express: true,
     requirements: [
       'nothing required',
