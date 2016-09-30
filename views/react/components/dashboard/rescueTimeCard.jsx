@@ -41,11 +41,8 @@ var RescueTimeCard = React.createClass({
                             { name: 'distracting time', value: currentDistractingTime },];
 
     // get average times:
-    var averageProductiveTime;
-    var averageNeutralTime;
-    var averageDistractingTime;
-    var avgArr = [averageProductiveTime, averageNeutralTime, averageDistractingTime];
-
+    // avgArr = [averageProductiveTime, averageNeutralTime, averageDistractingTime];
+    var avgArr = [0, 0, 0];
     avgArr.map(function (avg, idx) {
       var sum = 0;
       for (var i = 0; i < dataLength; i++) {
@@ -56,9 +53,9 @@ var RescueTimeCard = React.createClass({
       return avg;
     });
 
-    var averageChartData = [{ name: 'productive time', value: averageProductiveTime },
-                            { name: 'neutral time', value: averageNeutralTime },
-                            { name: 'distracting time', value: averageDistractingTime },];
+    var averageChartData = [{ name: 'productive time', value: avgArr[0] },
+                            { name: 'neutral time', value: avgArr[1] },
+                            { name: 'distracting time', value: avgArr[2] },];
 
     return (
       <div className="ui fluid card">
