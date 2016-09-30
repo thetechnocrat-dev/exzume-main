@@ -92,18 +92,6 @@ var Dashboard = React.createClass({
               />
             </div>
             <div className="column">
-              <InsightCard insights={
-                [
-                  { text: 'Your steps have trended significantly below average the last 5 days',
-                    info: 'Your exercise is highly correlated with getting more steps' },
-                  { text: 'Your productivity has trended signficantly above average the last 3 days',
-                    info: 'Your caffeine consumption has also trended significantly above average the last 3 days' },
-                  { text: 'Your mood has trended significantly doward the last 4 days',
-                    info: 'click here to see notes you wrote on previous days were you had a high mood' },
-                  { text: 'You wake up less at night when you go to sleep later',
-                    info: 'no additional info found for this insight' },
-                ]}
-              />
               <SleepCard
                 wakeUpTime={'7:28am'}
                 avgWakeUpTime={'8:26am'}
