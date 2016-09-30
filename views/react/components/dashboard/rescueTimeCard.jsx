@@ -44,9 +44,8 @@ var RescueTimeCard = React.createClass({
                             { name: 'distracting time', value: currentDistractingTime },];
 
     // get average times:
-    // avgArr = [averageProductiveTime, averageNeutralTime, averageDistractingTime];
-    var avgArr = [0, 0, 0];
-    avgArr.map(function (avg, idx) {
+    var arr = [0, 0, 0];
+    var avgArr = arr.map(function (avg, idx) {
       var sum = 0;
       for (var i = 0; i < dataLength; i++) {
         sum += rescuetime.features[idx].data[i].value;
@@ -56,6 +55,7 @@ var RescueTimeCard = React.createClass({
       console.log(avg);
       return avg;
     });
+
     console.log(avgArr[0]);
     console.log(avgArr[1]);
     console.log(avgArr[2]);
