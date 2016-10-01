@@ -28,8 +28,8 @@ var RescueTimeCard = React.createClass({
     console.log('prod card');
     console.log(this.props);
 
-    this.setState({ cardWidth: $('.ui .fluid .card').width() });
-    this.setState({ cardHeight: $('.ui .fluid .card').height() });
+    this.setState({ cardWidth: $('.card').width() });
+    this.setState({ cardHeight: $('.card').height() });
     console.log('component mounted');
     console.log(this.state.cardWidth);
     console.log(this.state.cardHeight);
