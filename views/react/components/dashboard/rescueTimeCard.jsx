@@ -12,9 +12,28 @@ var RescueTimeCard = React.createClass({
     rescuetime: React.PropTypes.object.isRequired,
   },
 
+  getInitialState: function () {
+    return ({ cardWidth: null, cardHeight: null });
+  },
+
+  handleResize: function () {
+    this.setState({ cardWidth: $('.ui .fluid .card').width() });
+    this.setState({ cardHeight: $('.ui .fluid .card').height() });
+    console.log('resizing...');
+    console.log(this.state.cardWidth);
+    console.log(this.state.cardHeight);
+  },
+
   componentDidMount: function () {
     console.log('prod card');
     console.log(this.props);
+
+    this.setState({ cardWidth: $('.ui .fluid .card').width() });
+    this.setState({ cardHeight: $('.ui .fluid .card').height() });
+    console.log('component mounted');
+    console.log(this.state.cardWidth);
+    console.log(this.state.cardHeight);
+    window.addEventListener('resize', this.handleResize);
   },
 
   render: function () {
@@ -67,11 +86,19 @@ var RescueTimeCard = React.createClass({
           <div className="ui stackable two column grid">
             <div className="column">
               <h1 className="ui sub header">Today</h1>
-              <DoughnutViz chartData={currentChartData} />
+              <DoughnutViz
+                chartData={currentChartData}
+                cardWidth={this.state.cardWidth}
+                cardHeight={this.state.cardHeight}
+              />
             </div>
             <div className="column">
               <h1 className="ui sub header">Average</h1>
-              <DoughnutViz chartData={averageChartData} />
+                <DoughnutViz
+                  chartData={averageChartData}
+                  cardWidth={this.state.cardWidth}
+                  cardHeight={this.state.cardHeight}
+                />
             </div>
           </div>
         </div>

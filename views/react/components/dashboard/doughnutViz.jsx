@@ -54,9 +54,13 @@ const renderActiveShape = (props) => {
 var DoughnutViz = React.createClass({
   propTypes: {
     chartData: React.PropTypes.array.isRequired,
-    // label: React.PropTypes.string.isRequired,
+    cardWidth: React.PropTypes.number.isRequired,
+    cardHeight: React.PropTypes.number.isRequired,
   },
-
+  propTypes: {
+    streamName: React.PropTypes.string.isRequired,
+    syncIcon: React.PropTypes.string.isRequired,
+  },
   getInitialState: function () {
     return ({ activeIndex: 0 });
   },
@@ -74,7 +78,7 @@ var DoughnutViz = React.createClass({
     chartOptions = {};
 
     return (
-      <PieChart onMouseEnter={this.onPieEnter}>
+      <PieChart width={600} height={300} onMouseEnter={this.onPieEnter}>
         <Pie
           activeIndex={this.state.activeIndex}
           activeShape={renderActiveShape}
