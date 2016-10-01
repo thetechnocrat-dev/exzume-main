@@ -56,6 +56,7 @@ var CorrelateDropdown = React.createClass({
   },
 
   corrSuccess: function (res) {
+    console.log(res);
     var currentFeatureName = this.props.currentFeatureName;
     var featureNames = Object.keys(res);
     var corrData = res[currentFeatureName];
@@ -157,6 +158,8 @@ var CorrelateDropdown = React.createClass({
 
       processedData.push(thisRow);
     }
+
+    console.log(processedData);
 
     FastFlux.webCycle('post', '/auth/correlateMany', {
       success: this.corrSuccess,
