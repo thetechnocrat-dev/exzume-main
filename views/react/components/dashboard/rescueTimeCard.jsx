@@ -66,11 +66,11 @@ var RescueTimeCard = React.createClass({
           </div>
           <div className="ui stackable two column grid">
             <div className="column">
-              <h3 className="ui sub header">Today</h3>
+              <h2 className="ui sub header">Today</h2>
               <DoughnutViz chartData={currentChartData} />
             </div>
             <div className="column">
-              <h3 className="ui sub header">Average</h3>
+              <h2 className="ui sub header">Average</h2>
               <DoughnutViz chartData={averageChartData} />
             </div>
           </div>

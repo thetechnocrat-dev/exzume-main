@@ -104,7 +104,9 @@ var Dashboard = React.createClass({
             <div className="column">
               {this.makeConnectionCard()}
             </div>
-            {this.makeRescueTimeCard()}
+            <div className="two wide column">
+              {this.makeRescueTimeCard()}
+            </div>
           </div>
         </div>
       );
