@@ -75,7 +75,7 @@ var DoughnutViz = React.createClass({
 
     return (
       <ResponsiveContainer>
-        <PieChart width={'75%'} height={'75%'} onMouseEnter={this.onPieEnter}>
+        <PieChart width={'100%'} height={'100%'} onMouseEnter={this.onPieEnter}>
           <Pie
             activeIndex={this.state.activeIndex}
             activeShape={renderActiveShape}
