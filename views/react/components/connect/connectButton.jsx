@@ -87,19 +87,31 @@ var ConnectButton = React.createClass({
       );
     } else {
       if (this.props.appName == 'DarkSky') {
-        return (
-          <button
-            className="ui green labeled mini icon button"
-            onClick={this.handleClick}
-            data-inverted=""
-            data-variation="tiny"
-            data-tooltip="No account needed but requires your location to work."
-            data-position="bottom center"
-          >
-            <i className="plus icon" />
-            {this.props.isConnected ? 'open' : 'connect'}
-          </button>
-        );
+        if (this.props.isConnected) {
+          return (
+            <button
+              className="ui green labeled mini icon button"
+              onClick={this.handleClick}
+            >
+              <i className="plus icon" />
+              {this.props.isConnected ? 'open' : 'connect'}
+            </button>
+          );
+        } else {
+          return (
+            <button
+              className="ui green labeled mini icon button"
+              onClick={this.handleClick}
+              data-inverted=""
+              data-variation="tiny"
+              data-tooltip="No account needed but requires your location to work."
+              data-position="bottom center"
+            >
+              <i className="plus icon" />
+              {this.props.isConnected ? 'open' : 'connect'}
+            </button>
+          );
+        }
       } else {
         return (
           <button

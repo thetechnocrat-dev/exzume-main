@@ -23,6 +23,22 @@ var ConnectionCard = React.createClass({
     });
   },
 
+  makeMetaText: function () {
+    if (this.props.connectedStreams.length == 0) {
+      return (
+        <div className="meta" style={{ marginBottom: '3%' }}>
+          Click on plus icon to add a datastream.
+        </div>
+      );
+    } else {
+      return (
+        <div className="meta" style={{ marginBottom: '3%' }}>
+          Click on an icon to sync.
+        </div>
+      );
+    }
+  },
+
   render: function () {
     var textStyle = { marginBottom: '2%' };
     return (
@@ -31,9 +47,7 @@ var ConnectionCard = React.createClass({
           <div className="header" style={{ marginBottom: '1%' }}>
             Connections
           </div>
-          <div className="meta" style={{ marginBottom: '3%' }}>
-            Click on an icon to sync.
-          </div>
+          {this.makeMetaText()}
           <div className="ui three column grid" style={{ paddingTop: '3%' }}>
             {this.makeConnectionItems()}
           </div>
