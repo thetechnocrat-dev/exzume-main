@@ -1,6 +1,6 @@
 var React = require('react');
 var Recharts = require('recharts');
-const { PieChart, Pie, Sector, ResponsiveContainer } = Recharts;
+const { PieChart, Pie, Sector } = Recharts;
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
 // accepts data as prop in the following format:
 // const data = [{ name: 'Group A', value: 400 }, { name: 'Group B', value: 300 },
@@ -74,19 +74,17 @@ var DoughnutViz = React.createClass({
     chartOptions = {};
 
     return (
-      <ResponsiveContainer>
-        <PieChart width={600} height={300} onMouseEnter={this.onPieEnter}>
-          <Pie
-            activeIndex={this.state.activeIndex}
-            activeShape={renderActiveShape}
-            data={this.props.chartData}
-            cx={'25%'}
-            cy={'50%'}
-            innerRadius={60}
-            outerRadius={80}
-            fill="#8884d8"/>
-         </PieChart>
-       </ResponsiveContainer>
+      <PieChart onMouseEnter={this.onPieEnter}>
+        <Pie
+          activeIndex={this.state.activeIndex}
+          activeShape={renderActiveShape}
+          data={this.props.chartData}
+          cx={'25%'}
+          cy={'50%'}
+          innerRadius={60}
+          outerRadius={80}
+          fill="#8884d8"/>
+       </PieChart>
     );
 
     // return (
