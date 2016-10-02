@@ -10,9 +10,11 @@ var DropdownItem = React.createClass({
 
   makeFeatureItems: function () {
     return this.props.dataStream.features.map(function (feature, idx) {
-      return (
-        <AddFeatureDropdownFeatureItem key={idx} feature={feature} />
-      );
+      if (feature.name != 'Mood Note') {
+        return (
+          <AddFeatureDropdownFeatureItem key={idx} feature={feature} />
+        );
+      }
     });
   },
 
@@ -31,4 +33,3 @@ var DropdownItem = React.createClass({
 });
 
 module.exports = DropdownItem;
-

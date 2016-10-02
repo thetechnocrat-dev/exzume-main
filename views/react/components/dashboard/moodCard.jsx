@@ -60,14 +60,6 @@ var MoodCard = React.createClass({
       lastNote = noteData[noteData.length - 1].value;
       submitClicked = true;
 
-      // console.log(typeof lastUpdatedTime);
-      // console.log(lastUpdatedTime);
-      // console.log(lastRating);
-      // console.log(lastNote);
-      // console.log(typeof Date.now());
-      // console.log(moment(parseInt(lastUpdatedTime)).utc().format('YYYY-MM-DD'));
-      // console.log(moment(Date.now()).utc().format('YYYY-MM-DD'));
-
       for (i in ratingButtons) {
         if (ratingButtons[i].value == lastRating) {
           enlarge = ratingButtons[i].color;
@@ -83,11 +75,6 @@ var MoodCard = React.createClass({
         submitClicked = false;
       }
     };
-
-    console.log(lastUpdatedTime);
-    console.log(lastRating);
-    console.log(lastNote);
-    console.log(enlarge);
 
     return {
       error: null,
@@ -154,24 +141,47 @@ var MoodCard = React.createClass({
 
     return ratingButtons.map(function (ratingButton, idx) {
       if (_this.state.enlarge == ratingButton.color) {
-        return (
-          <a
-            className={'ui big ' + ratingButton.color +  ' label'}
-            onClick={_this.onRatingChange.bind(_this, ratingButton)}
-            key={idx}
-          >
-            {ratingButton.value}
-          </a>
-        );
+        if (_this.state.submitClicked) {
+          return (
+            <button
+              className={'ui large disabled ' + ratingButton.color +  ' button'}
+              onClick={_this.onRatingChange.bind(_this, ratingButton)}
+              key={idx}
+            >
+              {ratingButton.value}
+            </button>
+          );
+        } else {
+          return (
+            <button
+              className={'ui large ' + ratingButton.color +  ' button'}
+              onClick={_this.onRatingChange.bind(_this, ratingButton)}
+              key={idx}
+            >
+              {ratingButton.value}
+            </button>
+          );
+        };
       } else {
-        return (
-          <a
-            className={'ui large ' + ratingButton.color +  ' label'}
-            onClick={_this.onRatingChange.bind(_this, ratingButton)}
-          >
-            {ratingButton.value}
-          </a>
-        );
+        if (_this.state.submitClicked) {
+          return (
+            <button
+              className={'ui small disabled ' + ratingButton.color +  ' button'}
+              onClick={_this.onRatingChange.bind(_this, ratingButton)}
+            >
+              {ratingButton.value}
+            </button>
+          );
+        } else {
+          return (
+            <button
+              className={'ui small ' + ratingButton.color +  ' button'}
+              onClick={_this.onRatingChange.bind(_this, ratingButton)}
+            >
+              {ratingButton.value}
+            </button>
+          );
+        };
       }
 
     });
@@ -258,7 +268,7 @@ var MoodCard = React.createClass({
               How satisfied were you with how you did today?
             </span>
           </div>
-          <div>
+          <div className="row">
             {this.makeRatingButtons()}
           </div>
         </div>

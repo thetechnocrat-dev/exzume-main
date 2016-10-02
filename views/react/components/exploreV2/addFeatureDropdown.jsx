@@ -33,7 +33,7 @@ var AddFeatureDropdown = React.createClass({
     return (
       <div className="ui compact menu">
         <div className={className}>
-          Compare 
+          Compare
           <i className="plus icon" />
           <div className="menu">
             {this.makeDropdownItems()}
@@ -46,4 +46,3 @@ var AddFeatureDropdown = React.createClass({
 });
 
 module.exports = AddFeatureDropdown;
-
