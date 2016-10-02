@@ -213,10 +213,16 @@ module.exports = function (router, passport) {
   router.post('/mood', function (req, res) {
     var user = req.user;
     var moodStream = user.datastreams.mood;
-    console.log(req.body);
-    var newMood = [req.body.moodRating, req.body.moodNote];
-    var newDateTime = moment(parseInt(req.body.dateTime)).utc().format('YYYY-MM-DD');
-    console.log(newMood);
+
+    // may not be a robust way to make isConnected true
+    // there's a chance the post may fail and no data gets saved except this boolean
+    if (!moodStream.isConnected) {
+      moodStream.isConnected = true;
+    };
+
+    // create latest mood rating/note with dateTime
+    var newMood = [parseInt(req.body.moodRating), req.body.moodNote];
+    var newDateTime = parseInt(req.body.dateTime);
 
     // create two features in features array of mood datastream
     if (moodStream.features.length == 0) {
@@ -224,23 +230,20 @@ module.exports = function (router, passport) {
       moodStream.features[1] = { name: 'Mood Note', data: [] };
     }
 
-    console.log(moodStream.features[0]);
-    console.log(moodStream.features[1]);
-
-    // re-update to edit overlap data
+    // edit overlapping data from same day or else push new data
     moodStream.features.map(function (feature, i) {
       if (feature.data.length > 0 &&
-          feature.data[feature.data.length - 1].dateTime == newDateTime) {
-        feature.data[feature.data.length - 1].dateTime = newDateTime;
-        feature.data[feature.data.length - 1].value = newMood[i];
+          moment(moment(feature.data[feature.data.length - 1].dateTime).format('YYYY-MM-DD'))
+          .isSame(moment(newDateTime).format('YYYY-MM-DD'))) {
+        feature.data.pop();
+        feature.data.push({ dateTime: newDateTime,
+                            value: newMood[i], });
       } else {
         feature.data.push({ dateTime: newDateTime,
                             value: newMood[i], });
       }
     });
 
-    console.log(moodStream.features[0].data.length);
-    console.log(moodStream.features[1].data.length);
     user.save(function (err) {
       if (err) {
         res.send(err);
