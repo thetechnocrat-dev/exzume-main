@@ -31,6 +31,7 @@ var RescueTimeCard = React.createClass({
   },
 
   render: function () {
+    console.log(this.props);
     var rescuetime = this.props.rescuetime;
     var lastSyncTime = this.props.rescuetime.lastSyncTime;
     // var lastSyncTime = Date.now();
