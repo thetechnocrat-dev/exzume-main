@@ -34,8 +34,7 @@ var RescueTimeCard = React.createClass({
     console.log(this.props);
     var rescuetime = this.props.rescuetime;
     var lastSyncTime = this.props.rescuetime.lastSyncTime;
-    // var lastSyncTime = Date.now();
-    // var dataLength = rescuetime.features[0].data.length;
+    var dataLength = rescuetime.features[0].data.length;
     var currentProductiveTime;
     var currentNeutralTime;
     var currentDistractingTime;
