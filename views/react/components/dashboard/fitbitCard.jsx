@@ -12,6 +12,7 @@ var FitbitCard = React.createClass({
 
   render: function () {
     var fitbit = this.props.fitbit;
+    var lastSyncTime = moment(this.props.fitbit.lastSyncTime).fromNow();
     var calcAvg = function (featureDataArray) {
       var sum = 0;
       for (var i = 0; i < featureDataArray.length; i++) {
@@ -30,9 +31,6 @@ var FitbitCard = React.createClass({
 
       return null;
     };
-
-    var lastSyncTime = moment(1475510301404).fromNow();
-    console.log(fitbit.features);
 
     var minutesAsleepIdx = findFeatureIndex(fitbit.features, 'Minutes Asleep');
     var minutesAsleepLength = fitbit.features[minutesAsleepIdx].data.length;
@@ -87,6 +85,7 @@ var FitbitCard = React.createClass({
     var currentFloors = parseFloat(
       fitbit.features[floorsIdx].data[floorsLength - 1].value.toFixed(0)
     );
+
     return (
       <div className="ui fluid card">
         <div className="content">
