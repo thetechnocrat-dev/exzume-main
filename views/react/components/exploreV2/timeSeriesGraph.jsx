@@ -1,6 +1,7 @@
 var React = require('react');
 var Recharts = require('recharts');
 var moment = require('moment');
+var Style = require('../../util/style');
 const { ScatterChart, Scatter, XAxis, YAxis, ZAxis, CartesianGrid, Tooltip, Legend } = Recharts;
 
 const fillColors = [
@@ -9,6 +10,34 @@ const fillColors = [
                     '#c6dec7', '#ead3c6', '#f0b98d', '#ef9708', '#0fcfc0', '#9cded6', '#d5eae7',
                     '#f3e1eb', '#f6c4e1', '#f79cd4',
                    ];
+
+const CustomTooltip = React.createClass({
+  propTypes: {
+    payload: React.PropTypes.array,
+  },
+
+  getNotes: function () {
+
+  },
+
+  render: function () {
+    const { active } = this.props;
+
+    if (active) {
+      const { payload, label } = this.props;
+      console.log(payload);
+      return (
+        <div className="custom-tooltip">
+          <p className="date">{`date : ${moment(payload[0].value).utc().format('MM-DD-YY')}`}</p>
+          <p className="value">{`value : ${payload[1].value}`}</p>
+          <p className="desc">{this.getNotes()}</p>
+        </div>
+      );
+    }
+
+    return null;
+  },
+});
 
 var TimeSeriesCompareGraph = React.createClass({
   propTypes: {
@@ -68,17 +97,12 @@ var TimeSeriesCompareGraph = React.createClass({
           <YAxis dataKey={'y'} name='value' />
           <CartesianGrid />
           <Tooltip
-            formatter={
-              function (value, name) {
-                if (name == 'date') {
-                  return moment(value).utc().format('MM-DD-YY');
-                } else if (name == 'value') {
-                  return value;
-                }
-              }
-            }
-            cursor={{ strokeDasharray: '3 3' }}/>
-          <Legend/>
+            content={<CustomTooltip payload={this.props.data} />}
+            wrapperStyle={{ padding: '10px',
+                            'background-color': Style.lightBackgroundHover,
+                            'border-radius': '10px', }}
+            cursor={{ strokeDasharray: '3 3' }} />
+          <Legend />
           {this.makeScatters()}
         </ScatterChart>
       </div>
@@ -88,4 +112,3 @@ var TimeSeriesCompareGraph = React.createClass({
 });
 
 module.exports = TimeSeriesCompareGraph;
-
