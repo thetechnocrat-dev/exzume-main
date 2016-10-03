@@ -5,6 +5,7 @@ var Style = require('../../util/style');
 var AddFeatureDropdownFeatureItem = React.createClass({
   propTypes: {
     feature: React.PropTypes.object.isRequired,
+    moodNoteFeature: React.PropTypes.object,
   },
 
   getInitialState: function () {
@@ -13,8 +14,16 @@ var AddFeatureDropdownFeatureItem = React.createClass({
 
   clickItem: function () {
     if (this.state.isSelected) {
+      if (this.props.feature.name == 'Mood Rating') {
+        FastFlux.cycle('MOOD_FEATURE_REMOVED', this.props.moodNoteFeature);
+      }
+
       FastFlux.cycle('TIME_SERIES_REMOVED', this.props.feature);
     } else {
+      if (this.props.feature.name == 'Mood Rating') {
+        FastFlux.cycle('MOOD_FEATURE_RECEIVED', this.props.moodNoteFeature);
+      }
+
       FastFlux.cycle('TIME_SERIES_RECEIVED', this.props.feature);
     }
 
@@ -47,4 +56,3 @@ var AddFeatureDropdownFeatureItem = React.createClass({
 });
 
 module.exports = AddFeatureDropdownFeatureItem;
-

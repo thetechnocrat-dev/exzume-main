@@ -18,6 +18,7 @@ var Explore = React.createClass({
       currentGraphDisplay: ExploreStore.getCurrentGraphDisplay(),
       currentFeature: { name: 'nothing selected' },
       timeSeriesData: [{ name: 'nothing selected', data: [{ x: 0, y: 0 }] }],
+      moodNoteSeriesData: {},
       scatterCompareData: [],
       barCorrelateData: [],
       barCorrelateIsLoading: ExploreStore.getBarCorrelateIsLoading(),
@@ -40,6 +41,7 @@ var Explore = React.createClass({
     this.setState({
       currentGraphDisplay: ExploreStore.getCurrentGraphDisplay(),
       timeSeriesData: ExploreStore.getTimeSeriesData(),
+      moodNoteSeriesData: ExploreStore.getMoodNoteSeriesData(),
       scatterCompareData: ExploreStore.getCorrelateScatterData(),
       currentFeature: ExploreStore.getFeature(),
       barCorrelateData: ExploreStore.getBarCorrelateData(),
@@ -88,6 +90,7 @@ var Explore = React.createClass({
       return (
         <TimeSeriesGraph
           data={this.state.timeSeriesData}
+          moodNoteData={this.state.moodNoteSeriesData}
           width={graphWidth}
           height={graphHeight}
         />
@@ -151,4 +154,3 @@ var Explore = React.createClass({
 });
 
 module.exports = Explore;
-

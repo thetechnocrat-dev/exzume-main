@@ -14,23 +14,28 @@ const fillColors = [
 const CustomTooltip = React.createClass({
   propTypes: {
     payload: React.PropTypes.array,
+    notes: React.PropTypes.array,
   },
 
-  getNotes: function () {
-
+  getNotes: function (dateTime) {
+    if (this.props.notes.length != 0 && this.props.notes[0].x == dateTime) {
+      return (
+        <p className="note">{`note: ${this.props.notes[0].y}`}</p>
+      );
+    }
   },
 
   render: function () {
     const { active } = this.props;
 
     if (active) {
-      const { payload, label } = this.props;
-      console.log(payload);
+      const { payload, notes } = this.props;
+
       return (
         <div className="custom-tooltip">
-          <p className="date">{`date : ${moment(payload[0].value).utc().format('MM-DD-YY')}`}</p>
-          <p className="value">{`value : ${payload[1].value}`}</p>
-          <p className="desc">{this.getNotes()}</p>
+          <p className="date">{`${payload[0].name} : ${moment(payload[0].value).utc().format('MM-DD-YY')}`}</p>
+          <p className="value">{`${payload[1].name}: ${payload[1].value}`}</p>
+          {this.getNotes(payload[0].value)}
         </div>
       );
     }
@@ -42,6 +47,7 @@ const CustomTooltip = React.createClass({
 var TimeSeriesCompareGraph = React.createClass({
   propTypes: {
     data: React.PropTypes.array.isRequired,
+    moodNoteData: React.PropTypes.object,
     width: React.PropTypes.number.isRequired,
     height: React.PropTypes.number.isRequired,
   },
@@ -62,6 +68,11 @@ var TimeSeriesCompareGraph = React.createClass({
   },
 
   render: function () {
+    var moodNoteSeriesData = [];
+    if (this.props.moodNoteData) {
+      moodNoteSeriesData = this.props.moodNoteData.data;
+    }
+
     if (this.props.data[0].name == 'nothing selected') {
       var title = 'Select a Feature to Begin';
     } else {
@@ -97,10 +108,14 @@ var TimeSeriesCompareGraph = React.createClass({
           <YAxis dataKey={'y'} name='value' />
           <CartesianGrid />
           <Tooltip
-            content={<CustomTooltip payload={this.props.data} />}
+            content={<CustomTooltip
+                        payload={this.props.data}
+                        notes={moodNoteSeriesData}
+                      />
+                    }
             wrapperStyle={{ padding: '10px',
-                            'background-color': Style.lightBackgroundHover,
-                            'border-radius': '10px', }}
+                            backgroundColor: Style.lightBackgroundHover,
+                            borderRadius: '10px', }}
             cursor={{ strokeDasharray: '3 3' }} />
           <Legend />
           {this.makeScatters()}

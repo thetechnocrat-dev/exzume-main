@@ -1,6 +1,8 @@
 var React = require('react');
 var FastFlux = require('../../util/fast-flux-react/fastFlux');
 
+var moodNoteFeature;
+
 var DropdownItem = React.createClass({
   propTypes: {
     dataStream: React.PropTypes.object.isRequired,
@@ -19,12 +21,23 @@ var DropdownItem = React.createClass({
             {feature.name}
           </div>
         );
+      } else {
+        moodNoteFeature = feature;
+        console.log(moodNoteFeature);
+        return;
       }
     });
   },
 
   clickFeatureItem: function (feature) {
-    FastFlux.cycle('FEATURE_RECEIVED', feature);
+    if (feature.name == 'Mood Rating') {
+      FastFlux.cycle('FEATURE_RECEIVED', feature);
+      console.log('sending mood note...');
+      console.log(moodNoteFeature);
+      FastFlux.cycle('MOOD_FEATURE_RECEIVED', moodNoteFeature);
+    } else {
+      FastFlux.cycle('FEATURE_RECEIVED', feature);
+    }
   },
 
   render: function () {
