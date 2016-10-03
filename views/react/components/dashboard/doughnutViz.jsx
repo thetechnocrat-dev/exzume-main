@@ -22,7 +22,9 @@ const renderActiveShape = (props) => {
 
   return (
     <g>
-      <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>{payload.name}</text>
+      <text x={cx} y={cy * 0.9} dy={8} textAnchor="middle" fill={fill}>{payload.name}</text>
+      <text x={cx} y={cy * 1.1} dy={8} textAnchor="middle" fill={fill}>{`${value} hours` + ' ' + `${(percent * 100).toFixed(1)}%`}</text>
+
       <Sector
         cx={cx}
         cy={cy}
@@ -41,12 +43,6 @@ const renderActiveShape = (props) => {
         outerRadius={outerRadius + 10}
         fill={fill}
       />
-      <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none"/>
-      <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none"/>
-      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`${value} hours`}</text>
-      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
-        {`${(percent * 100).toFixed(1)}%`}
-      </text>
     </g>
   );
 };
@@ -54,13 +50,9 @@ const renderActiveShape = (props) => {
 var DoughnutViz = React.createClass({
   propTypes: {
     chartData: React.PropTypes.array.isRequired,
-    cardWidth: React.PropTypes.number.isRequired,
-    cardHeight: React.PropTypes.number.isRequired,
+    chartDiameter: React.PropTypes.number.isRequired,
   },
-  propTypes: {
-    streamName: React.PropTypes.string.isRequired,
-    syncIcon: React.PropTypes.string.isRequired,
-  },
+
   getInitialState: function () {
     return ({ activeIndex: 0 });
   },
@@ -76,17 +68,21 @@ var DoughnutViz = React.createClass({
 
   render: function () {
     chartOptions = {};
+    console.log(this.props.chartWidth);
 
     return (
-      <PieChart width={600} height={300} onMouseEnter={this.onPieEnter}>
+      <PieChart
+        width={this.props.chartDiameter}
+        height={this.props.chartDiameter}
+        onMouseEnter={this.onPieEnter}
+        style={{ marginLeft: '-15px' }}
+      >
         <Pie
           activeIndex={this.state.activeIndex}
           activeShape={renderActiveShape}
           data={this.props.chartData}
-          cx={'25%'}
-          cy={'50%'}
-          innerRadius={60}
-          outerRadius={80}
+          innerRadius={this.props.chartDiameter * 0.25}
+          outerRadius={this.props.chartDiameter * 0.4}
           fill="#8884d8"/>
        </PieChart>
     );
@@ -103,3 +99,4 @@ var DoughnutViz = React.createClass({
 });
 
 module.exports = DoughnutViz;
+

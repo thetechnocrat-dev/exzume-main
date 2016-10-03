@@ -16,91 +16,77 @@ var RescueTimeCard = React.createClass({
     return ({ cardWidth: null, cardHeight: null });
   },
 
+  setDiameter: function () {
+    var diameter = document.getElementById('rescueTimeCard').offsetWidth;
+    this.setState({ diameter: diameter });
+  },
+
   handleResize: function () {
-    this.setState({ cardWidth: $('.ui .fluid .card').width() });
-    this.setState({ cardHeight: $('.ui .fluid .card').height() });
-    console.log('resizing...');
-    console.log(this.state.cardWidth);
-    console.log(this.state.cardHeight);
+    this.setDiameter();
   },
 
   componentDidMount: function () {
-    console.log('prod card');
-    console.log(this.props);
-
-    this.setState({ cardWidth: $('.card').width() });
-    this.setState({ cardHeight: $('.card').height() });
-    console.log('component mounted');
-    console.log(this.state.cardWidth);
-    console.log(this.state.cardHeight);
+    this.setDiameter();
     window.addEventListener('resize', this.handleResize);
   },
 
   render: function () {
-    var rescuetime = this.props.rescuetime;
-    var lastSyncTime = this.props.rescuetime.lastSyncTime;
-    var dataLength = rescuetime.features[0].data.length;
-    var dateToday = moment().format('YYYY-MM-DD');
+    // var rescuetime = this.props.rescuetime;
+    // var lastSyncTime = this.props.rescuetime.lastSyncTime;
+    var lastSyncTime = Date.now();
+    // var dataLength = rescuetime.features[0].data.length;
     var currentProductiveTime;
     var currentNeutralTime;
     var currentDistractingTime;
 
-    // get current times:
-    // if (dateToday == rescuetime.features[0].data[dataLength - 1].dateTime) {
-      currentProductiveTime = parseFloat(rescuetime.features[0].data[dataLength - 1].value.toFixed(2));
-      currentNeutralTime = parseFloat(rescuetime.features[1].data[dataLength - 1].value.toFixed(2));
-      currentDistractingTime = parseFloat(rescuetime.features[2].data[dataLength - 1].value.toFixed(2));
-    // } else {
-    //   currentProductiveTime = 0;
-    //   currentNeutralTime = 0;
-    //   currentDistractingTime = 0;
-    // };
+    currentProductiveTime = parseFloat(rescuetime.features[0].data[dataLength - 1].value.toFixed(2));
+    currentNeutralTime = parseFloat(rescuetime.features[1].data[dataLength - 1].value.toFixed(2));
+    currentDistractingTime = parseFloat(rescuetime.features[2].data[dataLength - 1].value.toFixed(2));
+
+    // currentProductiveTime = 4.22;
+    // currentNeutralTime = 0.45;
+    // currentDistractingTime = 1.55;
 
     var currentChartData = [{ name: 'productive time', value: currentProductiveTime },
                             { name: 'neutral time', value: currentNeutralTime },
                             { name: 'distracting time', value: currentDistractingTime },];
 
     // get average times:
-    var arr = [0, 0, 0];
-    var avgArr = arr.map(function (avg, idx) {
-      var sum = 0;
-      for (var i = 0; i < dataLength; i++) {
-        sum += rescuetime.features[idx].data[i].value;
-      }
+    // var arr = [0, 0, 0];
+    // var avgArr = arr.map(function (avg, idx) {
+    //   var sum = 0;
+    //   for (var i = 0; i < dataLength; i++) {
+    //     sum += rescuetime.features[idx].data[i].value;
+    //   }
 
-      avg = sum / dataLength;
-      console.log(avg);
-      return avg;
-    });
+    //   avg = sum / dataLength;
+    //   console.log(avg);
+    //   return avg;
+    // });
 
-    var averageChartData = [{ name: 'productive time', value: parseFloat(avgArr[0].toFixed(2)) },
-                            { name: 'neutral time', value: parseFloat(avgArr[1].toFixed(2)) },
-                            { name: 'distracting time', value: parseFloat(avgArr[2].toFixed(2)) },];
+    // var averageChartData = [{ name: 'productive time', value: parseFloat(avgArr[0].toFixed(2)) },
+    //                         { name: 'neutral time', value: parseFloat(avgArr[1].toFixed(2)) },
+    //                         { name: 'distracting time', value: parseFloat(avgArr[2].toFixed(2)) },];
 
     return (
-      <div className="ui fluid card">
+      <div className="ui fluid card" id="rescueTimeCard">
         <div className="content">
           <div className="header">
             Productivity
           </div>
-          <div className="ui stackable two column grid">
-            <div className="column">
-              <h1 className="ui sub header">Today</h1>
-              <DoughnutViz
-                chartData={currentChartData}
-                cardWidth={this.state.cardWidth}
-                cardHeight={this.state.cardHeight}
-              />
-            </div>
-            <div className="column">
+            <h1 className="ui sub header">Today</h1>
+            <DoughnutViz
+              chartData={currentChartData}
+              chartDiameter={this.state.diameter}
+            />
+            {/*<div className="column">
               <h1 className="ui sub header">Average</h1>
                 <DoughnutViz
                   chartData={averageChartData}
-                  cardWidth={this.state.cardWidth}
+                  cardDiameter={this.state.cardWidth}
                   cardHeight={this.state.cardHeight}
                 />
-            </div>
-          </div>
+            </div>*/}
         </div>
         <div className="extra content">
           <div className="left floated time">
@@ -118,3 +104,4 @@ var RescueTimeCard = React.createClass({
 });
 
 module.exports = RescueTimeCard;
+

@@ -56,7 +56,8 @@ var Dashboard = React.createClass({
   },
 
   makeRescueTimeCard: function () {
-    if (this.state.user.datastreams.rescuetime.isConnected) {
+    // if (this.state.user.datastreams.rescuetime.isConnected) {
+    if (true) {
       return (
         <RescueTimeCard rescuetime={this.state.user.datastreams.rescuetime} />
       );
@@ -102,9 +103,9 @@ var Dashboard = React.createClass({
               />
             </div>
             <div className="column">
+              {this.makeRescueTimeCard()}
               {this.makeConnectionCard()}
             </div>
-            {this.makeRescueTimeCard()}
           </div>
         </div>
       );

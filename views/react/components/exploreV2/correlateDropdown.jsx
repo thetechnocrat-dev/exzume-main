@@ -56,7 +56,6 @@ var CorrelateDropdown = React.createClass({
   },
 
   corrSuccess: function (res) {
-    console.log(res);
     var currentFeatureName = this.props.currentFeatureName;
     var featureNames = Object.keys(res);
     var corrData = res[currentFeatureName];
@@ -77,8 +76,6 @@ var CorrelateDropdown = React.createClass({
     var barCorrelateData = topInfluencers.map(function (corrPair) {
       return { name: corrPair[0], correlation: corrPair[1] };
     });
-
-    console.log(barCorrelateData);
 
     FastFlux.cycle('CORRELATE_BAR_RECEIVED', barCorrelateData);
   },

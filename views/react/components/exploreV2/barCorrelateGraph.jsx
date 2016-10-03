@@ -26,7 +26,6 @@ var BarCorrelateGraph = React.createClass({
   },
 
   render: function () {
-    console.log(this.props);
     return (
       <div style={{ textAlign: 'center' }}>
         <div
