@@ -60,7 +60,7 @@ var Dashboard = React.createClass({
   },
 
   makeFitbitCard: function () {
-    if (true) {
+    if (this.state.user.datastreams.fitbit.isConnected) {
       return (
         <FitbitCard fitbit={this.state.user.datastreams.fitbit} />
       );

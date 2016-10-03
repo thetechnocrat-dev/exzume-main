@@ -1,125 +1,69 @@
 var React = require('react');
 var SessionStore = require('../../stores/sessionStore');
 var FastFlux = require('../../util/fast-flux-react/fastFlux');
-var GraphStore = require('../../stores/graphStore');
+var ExploreStore = require('../../stores/exploreStore');
 
 // Components
-var ExploreGraph = require('./exploreGraph');
-var SelectFeaturePanel = require('./selectFeaturePanel');
-var TimeMenu = require('./timeMenu');
-var SelectedFeatureMenu = require('./selectedFeatureMenu');
-var NormalizeButton = require('./normalizeButton');
-var CorrelateButton = require('./correlateButton');
-var FindInfluencersButton = require('./findInfluencersButton');
-var BarExploreGraph = require('./barExploreGraph.jsx');
-var ABModal = require('./abModal');
-var GroupedBarExploreGraph = require('./groupedBarExplore');
-var Play = require('../play');
+var TimeSeriesGraph = require('./timeSeriesGraph');
+var SelectFeatureDropdown = require('./selectFeatureDropdown');
+var ExploreMenu = require('./exploreMenu');
+var CorrelateScatterGraph = require('./correlateScatterGraph');
+var CorrelateBarGraph = require('./barCorrelateGraph');
 
 var Explore = React.createClass({
-  getInitialState: function () {
-    var initState = ({
+  getInitialState:  function () {
+    var initialState = {
       viewPortWidth: window.innerWidth,
       viewPortHeight: window.innerHeight,
-      successMessage: false,
-      corrMessage: null,
-      graphType: 'line',
-    });
+      currentGraphDisplay: ExploreStore.getCurrentGraphDisplay(),
+      currentFeature: { name: 'nothing selected' },
+      timeSeriesData: [{ name: 'nothing selected', data: [{ x: 0, y: 0 }] }],
+      moodNoteSeriesData: {},
+      scatterCompareData: [],
+      barCorrelateData: [],
+      barCorrelateIsLoading: ExploreStore.getBarCorrelateIsLoading(),
+    };
 
     if (SessionStore.isSignedIn()) {
-      initState.user = SessionStore.currentUser();
+      initialState.user = SessionStore.currentUser();
     } else {
-      initState.user = null;
+      initialState.user = null;
     }
 
-    return initState;
+    return initialState;
   },
 
   _onChangeSession: function () {
     this.setState({ user: SessionStore.currentUser() });
   },
 
-  _onChangeGraph: function () {
-    console.log('graph change');
+  _onChangeExplore: function () {
     this.setState({
-      graphType: GraphStore.getGraphType(),
-      barData: GraphStore.getBarData(),
-      seriesData: GraphStore.getSeriesData(),
+      currentGraphDisplay: ExploreStore.getCurrentGraphDisplay(),
+      timeSeriesData: ExploreStore.getTimeSeriesData(),
+      moodNoteSeriesData: ExploreStore.getMoodNoteSeriesData(),
+      scatterCompareData: ExploreStore.getCorrelateScatterData(),
+      currentFeature: ExploreStore.getFeature(),
+      barCorrelateData: ExploreStore.getBarCorrelateData(),
+      barCorrelateIsLoading: ExploreStore.getBarCorrelateIsLoading(),
     });
+  },
+
+  handleResize: function () {
+    this.setState({ viewPortHeight: window.innerHeight, viewPortWidth: window.innerWidth });
   },
 
   componentDidMount: function () {
     this.sessionToken = SessionStore.addListener(this._onChangeSession);
-    this.graphToken = GraphStore.addListener(this._onChangeGraph);
+    this.exploreToken = ExploreStore.addListener(this._onChangeExplore);
     window.addEventListener('resize', this.handleResize);
   },
 
   componentWillUnmount: function () {
     this.sessionToken.remove();
-    GraphStore.resetGraphStore({});
-    this.graphToken.remove();
+    ExploreStore.reset();
+    this.exploreToken.remove();
     window.removeEventListener('resize', this.handleResize);
-  },
-
-  handleResize: function () {
-    var viewPortHeight = window.innerHeight;
-    var viewPortWidth = window.innerWidth;
-    this.setState({ viewPortHeight: viewPortHeight, viewPortWidth: viewPortWidth });
-  },
-
-  makePinZumeButton: function () {
-    if (GraphStore.hasSelectedFeature()) {
-      return (
-        <button
-          className="ui disabled green button"
-          onClick={this.clickPinZume}>Pin Zume
-        </button>
-      );
-    } else {
-      return (
-        <button className="ui disabled button">
-          Pin Zume
-        </button>
-      );
-    }
-  },
-
-  clickPinZume: function () {
-    var selectedFeatures = GraphStore.getSelectedFeatures().map(function (feature) {
-      return feature.name;
-    });
-
-    var data = { featureNames: selectedFeatures };
-
-    FastFlux.webCycle('post', '/auth/zumes/create', {
-      success: this.success,
-      shouldStoreReceive: true,
-      storeActionType: 'SESSION_RECEIVED',
-      body: data,
-    });
-
-  },
-
-  success: function () {
-    this.setState({ successMessage: true });
-  },
-
-  closeMessage: function () {
-    this.setState({ successMessage: false });
-  },
-
-  makeSuccessMessage: function () {
-    if (this.state.successMessage) {
-      return (
-        <div className="ui success message">
-          <i className="close icon" onClick={this.closeMessage} />
-          <div className="header">
-            Zume successfully pinned.
-          </div>
-          <p>Check it out on your Dashboard!</p>
-        </div>
-      );
-    }
   },
 
   calcGraphWidth: function () {
@@ -139,113 +83,73 @@ var Explore = React.createClass({
     }
   },
 
-  getSelectableFeatures: function () {
-    var userFeatures = SessionStore.getUserFeatures();
-    var selectedFeatures = GraphStore.getSelectedFeatures();
-
-    return userFeatures.filter(function (feature) {
-      for (var i = 0; i < selectedFeatures.length; i++) {
-        if (selectedFeatures[i].name === feature.name) {
-          return false;
-        }
-      }
-
-      return true;
-    });
-  },
-
-  makeExploreGraph: function (graphWidth, graphHeight) {
-    console.log('inside makeExploreGraph');
-    console.log(GraphStore.getGraphType());
-    if (this.state.graphType === 'line') {
-      return (
-        <ExploreGraph
-          seriesData={GraphStore.getSeriesData()}
-          width={graphWidth}
-          height={graphHeight}
-        />
-      );
-    } else if (this.state.graphType === 'bar') {
-      console.log(GraphStore.getBarData());
-      return (
-        <BarExploreGraph
-          barData={GraphStore.getBarData()}
-          width={graphWidth}
-          height={graphHeight}
-          title={GraphStore.getBarTitle()}
-        />
-      );
-    } else if (this.state.graphType === 'groupedBar') {
-      return (
-        <GroupedBarExploreGraph
-          groupedBarData={GraphStore.getGroupedBarData()}
-          width={graphWidth}
-          height={graphHeight}
-          title={'A/B Comparison'}
-        />
-      );
-    }
-  },
-
-  makeContent: function () {
-    var user = this.state.user;
-    var graphHeight = this.state.viewPortHeight * 0.7;
+  makeExploreGraph: function () {
     var graphWidth = this.calcGraphWidth();
-
-    if (user) {
+    var graphHeight = this.state.viewPortHeight * 0.7;
+    if (this.state.currentGraphDisplay === 'timeSeries') {
       return (
-        <div>
-          <div className="ui grid">
-            <div className="four column row" style={{ marginBottom: '0', paddingBottom: '0' }}>
-              <SelectFeaturePanel
-                features={SessionStore.getUserFeatures()}
-              />
-            </div>
-            {/*<div
-                 className="row"
-                 style={{ marginTop: '0', paddingTop: '0', paddingBottom: '9px' }}
-              >
-              <div className="column">
-                <SelectedFeatureMenu features={GraphStore.getSelectedFeatures()} />
-              </div>
-            </div>*/}
-            <div className="row" style={{ paddingTop: '0', paddingBottom: '0' }}>
-              <div className="column">
-                <NormalizeButton features={GraphStore.getSelectedFeatures()} />
-                {/*<FindInfluencersButton feature={GraphStore.getSelectedFeatures()} />
-                 <ABModal features={this.getSelectableFeatures()} />*/}
-                <CorrelateButton
-                  correlation={GraphStore.getCorrelation()}
-                  pValue={GraphStore.getPValue()}
-                />
-              </div>
-            </div>
-          </div>
-          {this.makeExploreGraph(graphWidth, graphHeight)}
-          <div className="ui grid">
-            <div className="four column row">
-              <div className="column">
-                <TimeMenu isDisabled={!GraphStore.hasSelectedFeature()} />
-              </div>
-              <div className="right floated column">
-              {/*{this.makePinZumeButton()}
-                {this.makeSuccessMessage()} */}
-              </div>
-            </div>
-          </div>
-        </div>
+        <TimeSeriesGraph
+          data={this.state.timeSeriesData}
+          moodNoteData={this.state.moodNoteSeriesData}
+          width={graphWidth}
+          height={graphHeight}
+        />
+      );
+    } else if (this.state.currentGraphDisplay === 'correlateScatter') {
+      return (
+        <CorrelateScatterGraph
+          data={this.state.scatterCompareData}
+          width={graphWidth}
+          height={graphHeight}
+        />
+      );
+    } else if (this.state.currentGraphDisplay === 'correlateBar') {
+      return (
+        <CorrelateBarGraph
+          data={this.state.barCorrelateData}
+          width={graphWidth}
+          height={graphHeight}
+          currentFeatureName={this.state.currentFeature.name}
+          isLoading={this.state.barCorrelateIsLoading}
+        />
       );
     }
+  },
+
+  getProcessedUserStreams: function () {
+    var userStreams = SessionStore.getUserStreams();
+    var processedUserStreams = [];
+    for (var i = 0; i < userStreams.length; i++) {
+      if (userStreams[i].name != 'DarkSky') {
+        processedUserStreams.push(userStreams[i]);
+      }
+    }
+
+    return processedUserStreams;
   },
 
   render: function () {
-    console.log(GraphStore.getSeriesData());
-    return (
-      <div>
-        {this.makeContent()}
-        <Play data={GraphStore.getSeriesData()} />
-      </div>
-    );
+    if (this.state.user) {
+      return (
+        <div>
+          <SelectFeatureDropdown dataStreams={this.getProcessedUserStreams()} />
+          <ExploreMenu
+            features={SessionStore.getUserFeatures()}
+            currentFeatureName={this.state.currentFeature.name}
+            currentGraphDisplay={this.state.currentGraphDisplay}
+            isDisabled={!ExploreStore.isActive()}
+            dataStreams={this.getProcessedUserStreams()}
+          />
+          <div className="ui bottom attached segment" style={{ backgroundColor: 'white' }}>
+            {this.makeExploreGraph()}
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div />
+      );
+    }
   },
 });
 

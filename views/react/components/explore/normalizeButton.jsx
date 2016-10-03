@@ -1,8 +1,12 @@
 var React = require('react');
 var FastFlux = require('../../util/fast-flux-react/fastFlux');
-var PropTypes = React.PropTypes;
+var Style = require('../../util/style');
 
 var NormalizeButton = React.createClass({
+  propTypes: {
+    isDisabled: React.PropTypes.bool.isRequired,
+  },
+
   getInitialState: function () {
     return { isNormalized: false };
   },
@@ -13,24 +17,28 @@ var NormalizeButton = React.createClass({
   },
 
   makeButton: function () {
-    var buttonStyle = { marginTop: '10px' };
-
-    if (this.state.isNormalized) {
+    if (this.props.isDisabled) {
       return (
         <button
-          className="ui yellow button"
-          onClick={this.handleClick}
-          style={buttonStyle}
+          className="ui basic disabled button"
         >
-          Denormalize
+          Normalize
+        </button>
+      );
+    } else if (this.state.isNormalized) {
+      return (
+        <button
+          className="ui active basic button"
+          onClick={this.handleClick}
+        >
+          Normalize
         </button>
       );
     } else {
       return (
         <button
-          className="ui yellow button"
+          className="ui basic button"
           onClick={this.handleClick}
-          style={buttonStyle}
         >
           Normalize
         </button>
