@@ -148,12 +148,15 @@ var MoodCard = React.createClass({
       if (_this.state.enlarge == ratingButton.color) {
         if (_this.state.submitClicked) {
           return (
-            <div className="column" style={columnStyle}>
+            <div
+              className="column"
+              style={columnStyle}
+              key={idx}
+              onClick={_this.onRatingChange.bind(_this, ratingButton)}
+            >
               <button
                 className={'ui large disabled ' + ratingButton.color +  ' button'}
-                onClick={_this.onRatingChange.bind(_this, ratingButton)}
-                style={largeButtonStyle.width}
-                key={idx}
+                style={largeButtonStyle}
               >
                 {ratingButton.value}
               </button>
@@ -161,12 +164,15 @@ var MoodCard = React.createClass({
           );
         } else {
           return (
-            <div className="column" style={columnStyle}>
+            <div
+              className="column"
+              style={columnStyle}
+              onClick={_this.onRatingChange.bind(_this, ratingButton)}
+              key={idx}
+            >
               <button
                 className={'ui large ' + ratingButton.color +  ' button'}
-                onClick={_this.onRatingChange.bind(_this, ratingButton)}
                 style={largeButtonStyle}
-                key={idx}
               >
                 {ratingButton.value}
               </button>
@@ -176,10 +182,14 @@ var MoodCard = React.createClass({
       } else {
         if (_this.state.submitClicked) {
           return (
-            <div className="column" style={columnStyle}>
+            <div
+              className="column"
+              style={columnStyle}
+              onClick={_this.onRatingChange.bind(_this, ratingButton)}
+              key={idx}
+            >
               <button
                 className={'ui small disabled ' + ratingButton.color +  ' button'}
-                onClick={_this.onRatingChange.bind(_this, ratingButton)}
                 style={buttonStyle}
               >
                 {ratingButton.value}
@@ -188,10 +198,14 @@ var MoodCard = React.createClass({
           );
         } else {
           return (
-            <div className="column" style={columnStyle}>
+            <div
+              className="column"
+              onClick={_this.onRatingChange.bind(_this, ratingButton)}
+              style={columnStyle}
+              key={idx}
+            >
               <button
                 className={'ui small ' + ratingButton.color +  ' button'}
-                onClick={_this.onRatingChange.bind(_this, ratingButton)}
                 style={buttonStyle}
               >
                 {ratingButton.value}
@@ -216,7 +230,7 @@ var MoodCard = React.createClass({
     } else {
       return (
         <div className="disabled field">
-          <label>Notes about my day:</label>
+          <label style={{ marginTop: '10px' }}>Notes about my day:</label>
           <textarea rows="3" valueLink={this.linkState('note')}></textarea>
         </div>
       );
