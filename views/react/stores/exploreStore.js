@@ -16,6 +16,7 @@ var _filters = {
 
 // Initial State for timeSeriesDisplay
 var _timeSeriesData = [];
+var _moodNoteSeriesData = [];
 
 // Initial State for ScatterCorrelate
 var _scatterCorrelateData = [];
@@ -35,6 +36,7 @@ ExploreStore.reset = function () {
     },
   };
   _timeSeriesData = [];
+  _moodNoteSeriesData = [];
   _scatterCorrelateData = [];
   _barCorrelateData = [{ correlation: 0, name: 'still calculating' }];
   _barCorrelateIsLoading = true;
@@ -69,7 +71,7 @@ ExploreStore.setFilter = function (filter) {
 };
 
 // Time Series Display Specific
-featureToTimeSeries = function (feature) {
+var featureToTimeSeries = function (feature) {
   var timeSeries = {};
   timeSeries.name = feature.name;
   timeSeries.data = [];
@@ -84,25 +86,56 @@ featureToTimeSeries = function (feature) {
   return timeSeries;
 };
 
-ExploreStore.getTimeSeriesData = function () {
-  var today = moment(new Date());
-  var withinBounds =  function (date, dateBound) {
-    if (dateBound === 'max') {
-      return true;
-    } else if (dateBound === 'month') {
-      return 31 >= moment.duration(today.diff(moment(date))).asDays();
-    } else if (dateBound === 'week') {
-      return 7 >= moment.duration(today.diff(moment(date))).asDays();
-    }
-  };
+var today = moment(new Date());
+var withinBounds =  function (date, dateBound) {
+  if (dateBound === 'max') {
+    return true;
+  } else if (dateBound === 'month') {
+    return 31 >= moment.duration(today.diff(moment(date))).asDays();
+  } else if (dateBound === 'week') {
+    return 7 >= moment.duration(today.diff(moment(date))).asDays();
+  }
+};
 
+ExploreStore.addMoodNoteSeriesData = function (feature) {
+  _moodNoteSeriesData.push(featureToTimeSeries(feature));
+  console.log(_moodNoteSeriesData);
+},
+
+ExploreStore.removeMoodNoteSeriesData = function () {
+  _moodNoteSeriesData = [];
+},
+
+ExploreStore.getMoodNoteSeriesData = function () {
+  if (_moodNoteSeriesData.length != 0) {
+    var timeFilter = _filters.timeSeries.dateBound;
+    var filteredMoodNoteSeries = { name: _moodNoteSeriesData[0].name, data: [] };
+    for (var j = 0; j < _moodNoteSeriesData[0].data.length; j++) {
+      if (withinBounds(_moodNoteSeriesData[0].data[j].x, timeFilter)) {
+        // make a copy so that underlying array is not modified
+        var dataPoint = {
+          x: _moodNoteSeriesData[0].data[j].x,
+          y: _moodNoteSeriesData[0].data[j].y,
+        };
+        filteredMoodNoteSeries.data.push(dataPoint);
+      }
+    }
+
+    return filteredMoodNoteSeries;
+  }
+
+  return null;
+},
+
+ExploreStore.getTimeSeriesData = function () {
   var filteredTimeSeries = [];
   var timeFilter = _filters.timeSeries.dateBound;
   for (var i = 0; i < _timeSeriesData.length; i++) {
     var timeSeries = { name: _timeSeriesData[i].name, data: [] };
+
     for (var j = 0; j < _timeSeriesData[i].data.length; j++) {
       if (withinBounds(_timeSeriesData[i].data[j].x, timeFilter)) {
-        // make a copy so that underlieing array is not modified
+        // make a copy so that underlying array is not modified
         var dataPoint = { x: _timeSeriesData[i].data[j].x, y: _timeSeriesData[i].data[j].y };
         timeSeries.data.push(dataPoint);
       }
@@ -211,6 +244,14 @@ ExploreStore.__onDispatch = function (payload) {
       this.removeTimeSeriesData(payload.data);
       this.__emitChange();
       break;
+    case 'MOOD_FEATURE_RECEIVED':
+      this.addMoodNoteSeriesData(payload.data);
+      this.__emitChange();
+      break;
+    case 'MOOD_FEATURE_REMOVED':
+      this.removeMoodNoteSeriesData(payload.data);
+      this.__emitChange();
+      break;
     case 'FILTER_RECEIVED':
       this.setFilter(payload.data);
       this.__emitChange();
@@ -230,4 +271,3 @@ ExploreStore.__onDispatch = function (payload) {
 };
 
 module.exports = ExploreStore;
-
