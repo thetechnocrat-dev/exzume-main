@@ -32,6 +32,10 @@ var RescueTimeCard = React.createClass({
     window.addEventListener('resize', this.handleResize);
   },
 
+  componentWillUnmount: function () {
+    window.removeEventListener('resize', this.handleResize);
+  },
+
   render: function () {
     var rescuetime = this.props.rescuetime;
     var lastSyncTime = moment(this.props.rescuetime.lastSyncTime).fromNow();
