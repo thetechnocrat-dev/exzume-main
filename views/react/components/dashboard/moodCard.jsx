@@ -138,48 +138,65 @@ var MoodCard = React.createClass({
 
   makeRatingButtons: function () {
     var _this = this;
+    var columnStyle = { textAlign: 'center', padding: '0', display: 'flex' };
+    var buttonStyle = {
+      paddingLeft: '0', paddingRight: '0',  width: '90%', margin: 'auto', marginTop: '5px',
+    };
+    var largeButtonStyle = { paddingLeft: '0', paddingRight: '0',  width: '100%', margin: 'auto' };
 
     return ratingButtons.map(function (ratingButton, idx) {
       if (_this.state.enlarge == ratingButton.color) {
         if (_this.state.submitClicked) {
           return (
-            <button
-              className={'ui large disabled ' + ratingButton.color +  ' button'}
-              onClick={_this.onRatingChange.bind(_this, ratingButton)}
-              key={idx}
-            >
-              {ratingButton.value}
-            </button>
+            <div className="column" style={columnStyle}>
+              <button
+                className={'ui large disabled ' + ratingButton.color +  ' button'}
+                onClick={_this.onRatingChange.bind(_this, ratingButton)}
+                style={largeButtonStyle.width}
+                key={idx}
+              >
+                {ratingButton.value}
+              </button>
+            </div>
           );
         } else {
           return (
-            <button
-              className={'ui large ' + ratingButton.color +  ' button'}
-              onClick={_this.onRatingChange.bind(_this, ratingButton)}
-              key={idx}
-            >
-              {ratingButton.value}
-            </button>
+            <div className="column" style={columnStyle}>
+              <button
+                className={'ui large ' + ratingButton.color +  ' button'}
+                onClick={_this.onRatingChange.bind(_this, ratingButton)}
+                style={largeButtonStyle}
+                key={idx}
+              >
+                {ratingButton.value}
+              </button>
+            </div>
           );
         };
       } else {
         if (_this.state.submitClicked) {
           return (
-            <button
-              className={'ui small disabled ' + ratingButton.color +  ' button'}
-              onClick={_this.onRatingChange.bind(_this, ratingButton)}
-            >
-              {ratingButton.value}
-            </button>
+            <div className="column" style={columnStyle}>
+              <button
+                className={'ui small disabled ' + ratingButton.color +  ' button'}
+                onClick={_this.onRatingChange.bind(_this, ratingButton)}
+                style={buttonStyle}
+              >
+                {ratingButton.value}
+              </button>
+            </div>
           );
         } else {
           return (
-            <button
-              className={'ui small ' + ratingButton.color +  ' button'}
-              onClick={_this.onRatingChange.bind(_this, ratingButton)}
-            >
-              {ratingButton.value}
-            </button>
+            <div className="column" style={columnStyle}>
+              <button
+                className={'ui small ' + ratingButton.color +  ' button'}
+                onClick={_this.onRatingChange.bind(_this, ratingButton)}
+                style={buttonStyle}
+              >
+                {ratingButton.value}
+              </button>
+            </div>
           );
         };
       }
@@ -192,7 +209,7 @@ var MoodCard = React.createClass({
     if (!this.state.submitClicked) {
       return (
         <div className="field">
-          <label>Notes about my day:</label>
+          <label style={{ marginTop: '10px' }}>Notes about my day:</label>
           <textarea rows="3" valueLink={this.linkState('note')}></textarea>
         </div>
       );
@@ -268,8 +285,12 @@ var MoodCard = React.createClass({
               How satisfied were you with how you did today?
             </span>
           </div>
-          <div className="row">
-            {this.makeRatingButtons()}
+          <div className="ui grid" style={{ height: '42px' }}>
+            <div className="seven column row"
+              style={{ margin: '0px 10px 0px 10px' }}
+            >
+              {this.makeRatingButtons()}
+            </div>
           </div>
         </div>
         <form className="ui form" style={{ margin: '2% 3% 2% 3%' }}>
