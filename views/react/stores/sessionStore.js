@@ -21,6 +21,10 @@ SessionStore.currentUsername = function () {
   return _currentUser.local.username;
 },
 
+SessionStore.getTimezoneOffset = function () {
+  return _currentUser.timezoneOffset;
+},
+
 SessionStore.getUserFeatures = function () {
   var dataStreams = _currentUser.datastreams;
   var userActiveFeatures = [];

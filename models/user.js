@@ -13,6 +13,9 @@ var UserSchema = new Schema({
     },
     passwordResetToken: { type: String, required: true },
   },
+
+  // time-zone offset in milliseconds: (+ means UTC is ahead of current zone)
+  timezoneOffset: { type: Number, default: 0 },
   formURL: { type: String, default: 'none' },
   zumes: [
     { featureNames: [] },

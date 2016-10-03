@@ -33,6 +33,7 @@ module.exports = function (passport) {
           newUser.local.email = req.body.email;
           newUser.local.confirmEmail.token = crypto.randomBytes(64).toString('hex');
           newUser.local.passwordResetToken = crypto.randomBytes(64).toString('hex');
+          newUser.timezoneOffset = (new Date()).getTimezoneOffset() * 3600;
 
           newUser.save(function (err) {
             if (err) {

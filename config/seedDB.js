@@ -114,6 +114,8 @@ module.exports = function (done) {
         newUser.local.password = newUser.generateHash('password');
         newUser.local.email = 'exzume.app@gmail.com';
         newUser.local.passwordResetToken = '123';
+        newUser.timezoneOffset = 420 * 3600;
+
         newUser.save(function (err) {
           if (err) {
             callback(err, 'user insert error');
