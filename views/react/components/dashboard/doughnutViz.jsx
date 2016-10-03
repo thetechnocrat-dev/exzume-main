@@ -1,7 +1,9 @@
 var React = require('react');
 var Recharts = require('recharts');
-const { PieChart, Pie, Sector } = Recharts;
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
+var Style = require('../../util/style');
+const { PieChart, Pie, Sector, Cell } = Recharts;
+const COLORS = [Style.green, Style.gray, Style.red];
+
 // accepts data as prop in the following format:
 // const data = [{ name: 'Group A', value: 400 }, { name: 'Group B', value: 300 },
 //               { name: 'Group C', value: 300 }, { name: 'Group D', value: 200 },];
@@ -22,9 +24,16 @@ const renderActiveShape = (props) => {
 
   return (
     <g>
-      <text x={cx} y={cy * 0.9} dy={8} textAnchor="middle" fill={fill}>{payload.name}</text>
-      <text x={cx} y={cy * 1.1} dy={8} textAnchor="middle" fill={fill}>{`${value} hours` + ' ' + `${(percent * 100).toFixed(1)}%`}</text>
-
+      <text x={cx} y={cy * 0.9} dy={8} textAnchor="middle" fill={'black'}>{payload.name}</text>
+      <text
+        x={cx}
+        y={cy * 1.1}
+        dy={8}
+        textAnchor="middle"
+        fill={'black'}
+      >
+        {`${(percent * 100).toFixed(1)}%` + ' (' + `${value} hours` + ')'}
+      </text>
       <Sector
         cx={cx}
         cy={cy}
@@ -61,14 +70,8 @@ var DoughnutViz = React.createClass({
     this.setState({ activeIndex: index });
   },
 
-  componentDidMount: function () {
-    console.log('doughnut viz / twolevelpiechart');
-    console.log(this.props);
-  },
-
   render: function () {
     chartOptions = {};
-    console.log(this.props.chartWidth);
 
     return (
       <PieChart
@@ -83,17 +86,16 @@ var DoughnutViz = React.createClass({
           data={this.props.chartData}
           innerRadius={this.props.chartDiameter * 0.25}
           outerRadius={this.props.chartDiameter * 0.4}
-          fill="#8884d8"/>
+          fill="#8884d8"
+        >
+          {
+            this.props.chartData.map((entry, index) =>
+              <Cell fill={COLORS[index % COLORS.length]}/>
+            )
+          }
+       </Pie>
        </PieChart>
     );
-
-    // return (
-    //   <div>
-    //     <DoughnutChart data={this.props.chartData} options={chartOptions}/>
-    //     <br />
-    //     {this.props.label}
-    //   </div>
-    // );
   },
 
 });

@@ -6,6 +6,7 @@ const { PieChart, Pie, Sector } = Recharts;
 
 // Components
 var DoughnutViz = require('./doughnutViz');
+var HorzBarViz = require('./horzBarViz');
 
 var RescueTimeCard = React.createClass({
   propTypes: {
@@ -13,7 +14,8 @@ var RescueTimeCard = React.createClass({
   },
 
   getInitialState: function () {
-    return ({ cardWidth: null, cardHeight: null });
+    // cardDiameter will update once component mounts
+    return ({ cardDiameter: null });
   },
 
   setDiameter: function () {
@@ -31,42 +33,41 @@ var RescueTimeCard = React.createClass({
   },
 
   render: function () {
-    console.log(this.props);
     var rescuetime = this.props.rescuetime;
-    var lastSyncTime = this.props.rescuetime.lastSyncTime;
+    var lastSyncTime = moment(this.props.rescuetime.lastSyncTime).fromNow();
     var dataLength = rescuetime.features[0].data.length;
-    var currentProductiveTime;
-    var currentNeutralTime;
-    var currentDistractingTime;
 
-    currentProductiveTime = parseFloat(rescuetime.features[0].data[dataLength - 1].value.toFixed(2));
-    currentNeutralTime = parseFloat(rescuetime.features[1].data[dataLength - 1].value.toFixed(2));
-    currentDistractingTime = parseFloat(rescuetime.features[2].data[dataLength - 1].value.toFixed(2));
+    var currentProductiveTime = parseFloat(
+      rescuetime.features[0].data[dataLength - 1].value.toFixed(2)
+    );
+    var currentNeutralTime = parseFloat(
+      rescuetime.features[1].data[dataLength - 1].value.toFixed(2)
+    );
+    var currentDistractingTime = parseFloat(
+      rescuetime.features[2].data[dataLength - 1].value.toFixed(2)
+    );
 
-    // currentProductiveTime = 4.22;
-    // currentNeutralTime = 0.45;
-    // currentDistractingTime = 1.55;
-
-    var currentChartData = [{ name: 'productive time', value: currentProductiveTime },
-                            { name: 'neutral time', value: currentNeutralTime },
-                            { name: 'distracting time', value: currentDistractingTime },];
+    var currentChartData = [
+      { name: 'productive time', value: currentProductiveTime },
+      { name: 'neutral time', value: currentNeutralTime },
+      { name: 'distracting time', value: currentDistractingTime },
+    ];
 
     // get average times:
-    // var arr = [0, 0, 0];
-    // var avgArr = arr.map(function (avg, idx) {
-    //   var sum = 0;
-    //   for (var i = 0; i < dataLength; i++) {
-    //     sum += rescuetime.features[idx].data[i].value;
-    //   }
+    var arr = [0, 0, 0];
+    var avgArr = arr.map(function (avg, idx) {
+      var sum = 0;
+      for (var i = 0; i < dataLength; i++) {
+        sum += rescuetime.features[idx].data[i].value;
+      }
 
-    //   avg = sum / dataLength;
-    //   console.log(avg);
-    //   return avg;
-    // });
+      avg = sum / dataLength;
+      return avg;
+    });
 
-    // var averageChartData = [{ name: 'productive time', value: parseFloat(avgArr[0].toFixed(2)) },
-    //                         { name: 'neutral time', value: parseFloat(avgArr[1].toFixed(2)) },
-    //                         { name: 'distracting time', value: parseFloat(avgArr[2].toFixed(2)) },];
+    var avgProductiveTime = parseFloat(avgArr[0].toFixed(2));
+    var avgNeutralTime = parseFloat(avgArr[1].toFixed(2));
+    var avgDistractingTime = parseFloat(avgArr[2].toFixed(2));
 
     return (
       <div className="ui fluid card" id="rescueTimeCard">
@@ -74,19 +75,31 @@ var RescueTimeCard = React.createClass({
           <div className="header">
             Productivity
           </div>
-            <h1 className="ui sub header">Today</h1>
-            <DoughnutViz
-              chartData={currentChartData}
-              chartDiameter={this.state.diameter}
-            />
-            {/*<div className="column">
-              <h1 className="ui sub header">Average</h1>
-                <DoughnutViz
-                  chartData={averageChartData}
-                  cardDiameter={this.state.cardWidth}
-                  cardHeight={this.state.cardHeight}
-                />
-            </div>*/}
+          <DoughnutViz
+            chartData={currentChartData}
+            chartDiameter={this.state.diameter}
+          />
+          <HorzBarViz
+            label={'productive hours'}
+            avg={avgProductiveTime}
+            current={currentProductiveTime}
+            fillColor={Style.green}
+            backgroundColor={Style.lightGreen}
+          />
+          <HorzBarViz
+            label={'distracting hours'}
+            avg={avgDistractingTime}
+            current={avgDistractingTime}
+            fillColor={Style.green}
+            backgroundColor={Style.lightGreen}
+          />
+          <HorzBarViz
+            label={'neutral hours'}
+            avg={avgNeutralTime}
+            current={currentNeutralTime}
+            fillColor={Style.green}
+            backgroundColor={Style.lightGreen}
+          />
         </div>
         <div className="extra content">
           <div className="left floated time">
