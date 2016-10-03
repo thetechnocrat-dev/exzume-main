@@ -2,16 +2,12 @@ var React = require('react');
 var SessionStore = require('../../stores/sessionStore');
 
 // Components
-var ProfilePanel = require('./profilePanel');
-var ZumePanel = require('./zumePanel');
-var SurveyPanel = require('./surveyPanel');
 var MoodCard = require('./moodCard');
 var DarkSkyCard = require('./darkSkyCard');
 var RescueTimeCard = require('./rescueTimeCard');
 var InsightCard = require('./insightCard');
 var ConnectionCard = require('./connectionCard');
-var FitnessCard = require('./fitnessCard');
-var SleepCard = require('./sleepCard');
+var FitbitCard = require('./fitbitCard');
 
 var Dashboard = React.createClass({
 
@@ -63,6 +59,14 @@ var Dashboard = React.createClass({
     }
   },
 
+  makeFitbitCard: function () {
+    if (true) {
+      return (
+        <FitbitCard fitbit={this.state.user.datastreams.fitbit} />
+      );
+    }
+  },
+
   makeContent: function () {
     var user = this.state.user;
 
@@ -74,32 +78,9 @@ var Dashboard = React.createClass({
             <div className="column">
               <MoodCard user={user} />
               {this.makeDarkSkyCard()}
-              <FitnessCard
-                currentSteps={7544}
-                avgSteps={8969}
-                currentActiveMinutes={24}
-                avgActiveMinutes={54}
-                currentFloors={18}
-                avgFloors={23}
-                exercisesThisWeek={3}
-                avgExercisesPerWeek={5}
-              />
             </div>
             <div className="column">
-              <SleepCard
-                wakeUpTime={'7:28am'}
-                avgWakeUpTime={'8:26am'}
-                bedTime={'12:50am'}
-                avgBedTime={'12:46am'}
-                currentSleepEfficiency={96}
-                avgSleepEfficiency={95}
-                currentTimeToFallAsleep={12}
-                avgTimeToFallAsleep={21}
-                currentAwakenings={5}
-                avgAwakenings={3}
-                currentMinutesNapping={0}
-                avgMinutesNapping={9}
-              />
+              {this.makeFitbitCard()}
             </div>
             <div className="column">
               {this.makeRescueTimeCard()}

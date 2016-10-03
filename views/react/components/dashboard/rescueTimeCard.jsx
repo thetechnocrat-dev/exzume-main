@@ -73,7 +73,7 @@ var RescueTimeCard = React.createClass({
       <div className="ui fluid card" id="rescueTimeCard">
         <div className="content">
           <div className="header">
-            Productivity
+            Computer Productivity
           </div>
           <DoughnutViz
             chartData={currentChartData}

@@ -18,7 +18,7 @@ var ConnectionCard = React.createClass({
       var streamName = stream.name.toLowerCase();
       var syncIcon = stream.syncIcon;
       return (
-        <ConnectionItem streamName={streamName} syncIcon={syncIcon} />
+        <ConnectionItem streamName={streamName} syncIcon={syncIcon} key={idx} />
       );
     });
   },
