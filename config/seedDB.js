@@ -110,6 +110,7 @@ module.exports = function (done) {
       function (callback) {
         var newUser = new User();
         newUser.local.username = 'Watts42';
+        newUser.local.isAdmin = true;
         newUser.local.password = newUser.generateHash('password');
         newUser.local.email = 'exzume.app@gmail.com';
         newUser.local.passwordResetToken = '123';

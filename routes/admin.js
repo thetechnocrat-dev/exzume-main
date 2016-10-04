@@ -8,6 +8,16 @@ var axios = require('axios');
 
 module.exports = function (router, sg) {
 
+  // only Admin user can access
+  router.use(function (req, res, next) {
+    console.log('here');
+    if (req.isAuthenticated() && req.user.local.username === 'Watts42') {
+      return next();
+    } else {
+      res.status(403).json({ message: 'unauthorized' });
+    }
+  }),
+
   router.route('/features/:featureId')
     .get(function (req, res) {
       Feature.findOne({ _id: req.params.featureId }, function (err, feature) {

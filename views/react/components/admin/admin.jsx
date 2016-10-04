@@ -1,6 +1,7 @@
 var React = require('react');
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var History = require('react-router').History;
+var SessionStore = require('../../stores/sessionStore');
 
 // components
 var TextForm = require('./textForm');
@@ -14,38 +15,22 @@ var Admin = React.createClass({
     this.history.push('/');
   },
 
+  componentWillMount: function () {
+    // makes sure only a signed in admin can access
+    if (SessionStore.isSignedIn()) {
+      if (!SessionStore.currentUser().local.isAdmin) {
+        this.history.push('/');
+      }
+    } else {
+      this.history.push('/');
+    }
+  },
+
   render: function () {
     var containerStyle = { margin: '10%' };
 
     return (
       <div className="ui container" style={containerStyle}>
-        <TextForm
-          header="Add form url to User"
-          labels={ ['username', 'formUrl'] }
-          submitUrl="/admin/addform"
-          method="put"
-        />
-
-        <div className="ui horizontal divider">or</div>
-
-        <TextForm
-          header="Add Insight to User (needs updated to match new back end)"
-          labels={ ['username', 'insightMessage'] }
-          submitUrl="/admin/addinsight"
-          method="put"
-        />
-
-        <div className="ui horizontal divider">or</div>
-
-        <TextForm
-          header="Add Visualization to User"
-          labels={ ['username', 'visLink'] }
-          submitUrl="/admin/addvis"
-          method="put"
-        />
-
-        <div className="ui horizontal divider">or</div>
-
         <TextForm
           header="Add feature to database"
           labels={ ['name'] }
@@ -88,21 +73,6 @@ var Admin = React.createClass({
           method="get"
           submitUrl="/admin/testemail"
         />
-
-        <div className="ui horizontal divider">or</div>
-
-        <a href={'https://www.rescuetime.com/oauth/authorize/?response_type=code&redirect_uri' +
-          '=https%3A%2F%2Fwww.exzume.com%2Fauth%2Fdatastreams%2Frescuetime%2Fcallback&scope' +
-            '=time_data%20category_data%20productivity_data&client_id=2900e583f575ac611f1ffd' +
-            '83827ee0995f5b462f159fe42288f12e847e6b430a'} >
-          <button className="ui green  button">
-            rescue time test
-          </button>
-        </a>
-
-        <div className="ui horizontal divider">or</div>
-
-        <UrlTester />
 
         <div className="ui horizontal divider">or</div>
 
