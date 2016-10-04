@@ -12,11 +12,18 @@ var FitbitCard = require('./fitbitCard');
 var Dashboard = React.createClass({
 
   getInitialState: function () {
+    var initialState = {
+      viewPortWidth: window.innerWidth,
+      viewPortHeight: window.innerHeight,
+    };
+
     if (SessionStore.isSignedIn()) {
-      return { user: SessionStore.currentUser() };
+      initialState.user = SessionStore.currentUser();
     } else {
-      return { user: null };
+      initialState.user = null;
     }
+
+    return initialState;
   },
 
   _onChange: function () {
@@ -27,42 +34,116 @@ var Dashboard = React.createClass({
     }
   },
 
+  handleResize: function () {
+    this.setState({ viewPortHeight: window.innerHeight, viewPortWidth: window.innerWidth });
+  },
+
   componentDidMount: function () {
     this.sessionToken = SessionStore.addListener(this._onChange);
+    window.addEventListener('resize', this.handleResize);
   },
 
   componentWillUnmount: function () {
     this.sessionToken.remove();
+    window.removeEventListener('resize', this.handleResize);
   },
 
-  makeDarkSkyCard: function () {
-    if (this.state.user.datastreams.darksky.isConnected) {
-      return (
-        <DarkSkyCard darksky={this.state.user.datastreams.darksky} />
+  makeCards: function () {
+    var cards = [];
+
+    // the order you put cards here is the same order they will be going left to right
+    cards.push(
+      <MoodCard user={this.state.user} />
+    );
+
+    if (this.state.user.datastreams.fitbit.isConnected) {
+      cards.push(
+        <FitbitCard fitbit={this.state.user.datastreams.fitbit} />
       );
     }
-  },
 
-  makeConnectionCard: function () {
-    var connectedStreams = SessionStore.getUserStreams();
-
-    return (
-      <ConnectionCard connectedStreams={connectedStreams} />
-    );
-  },
-
-  makeRescueTimeCard: function () {
     if (this.state.user.datastreams.rescuetime.isConnected) {
-      return (
+      cards.push(
         <RescueTimeCard rescuetime={this.state.user.datastreams.rescuetime} />
       );
     }
+
+    if (this.state.user.datastreams.darksky.isConnected) {
+      cards.push(
+        <DarkSkyCard darksky={this.state.user.datastreams.darksky} />
+      );
+    }
+
+    cards.push(
+      <ConnectionCard connectedStreams={SessionStore.getUserStreams()} />
+    );
+
+    return cards;
   },
 
-  makeFitbitCard: function () {
-    if (this.state.user.datastreams.fitbit.isConnected) {
+  makeColumn: function (columnNum, columnCount, cards) {
+    // so that when i % columnCount equals zero it will go in last column
+    if (columnNum === columnCount) {
+      columnNum = 0;
+    }
+
+    var cardsFilterd = cards.filter(function (card, i) {
+      return (i + 1) % columnCount === columnNum;
+    });
+
+    return cardsFilterd;
+  },
+
+  makeColumns: function (columnCount, rowClassName, cards) {
+    if (columnCount === 1) {
       return (
-        <FitbitCard fitbit={this.state.user.datastreams.fitbit} />
+        <div className={rowClassName}>
+          <div className="column">
+            {this.makeColumn(1, columnCount, cards)}
+          </div>
+        </div>
+      );
+    } else if (columnCount === 2) {
+      return (
+        <div className={rowClassName}>
+          <div className="column">
+            {this.makeColumn(1, columnCount, cards)}
+          </div>
+          <div className="column">
+            {this.makeColumn(2, columnCount, cards)}
+          </div>
+        </div>
+      );
+    } else if (columnCount === 3) {
+      return (
+        <div className={rowClassName}>
+          <div className="column">
+            {this.makeColumn(1, columnCount, cards)}
+          </div>
+          <div className="column">
+            {this.makeColumn(2, columnCount, cards)}
+          </div>
+          <div className="column">
+            {this.makeColumn(3, columnCount, cards)}
+          </div>
+        </div>
+      );
+    } else if (columnCount === 4) {
+      return (
+        <div className={rowClassName}>
+          <div className="column">
+            {this.makeColumn(1, columnCount, cards)}
+          </div>
+          <div className="column">
+            {this.makeColumn(2, columnCount, cards)}
+          </div>
+          <div className="column">
+            {this.makeColumn(3, columnCount, cards)}
+          </div>
+          <div className="column">
+            {this.makeColumn(4, columnCount, cards)}
+          </div>
+        </div>
       );
     }
   },
@@ -70,22 +151,33 @@ var Dashboard = React.createClass({
   makeContent: function () {
     var user = this.state.user;
 
-    // only render content if there is a session
+    // cutoffs are used to match semantic UI's container size
+    var LARGE_MONITOR = 1200;
+    var SMALL_MONITOR = 992;
+    var TABLET = 768;
+    var rowClassName;
+    var columnCount;
+
+    if (this.state.viewPortWidth > LARGE_MONITOR) {
+      rowClassName = 'four column row';
+      columnCount = 4;
+    } else if (this.state.viewPortWidth > SMALL_MONITOR) {
+      rowClassName = 'three column row';
+      columnCount = 3;
+    } else if (this.state.viewPortWidth > TABLET) {
+      rowClassName = 'two column row';
+      columnCount = 2;
+    } else {
+      rowClassName = 'one column row';
+      columnCount = 1;
+    }
+
     if (user) {
+      var cards = this.makeCards();
       return (
         <div className="ui container">
-          <div className="ui three column stackable grid">
-            <div className="column">
-              <MoodCard user={user} />
-              {this.makeDarkSkyCard()}
-            </div>
-            <div className="column">
-              {this.makeFitbitCard()}
-            </div>
-            <div className="column">
-              {this.makeRescueTimeCard()}
-              {this.makeConnectionCard()}
-            </div>
+          <div className="ui grid">
+            {this.makeColumns(columnCount, rowClassName, cards)}
           </div>
         </div>
       );
