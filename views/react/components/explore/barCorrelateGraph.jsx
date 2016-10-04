@@ -20,7 +20,8 @@ var BarCorrelateGraph = React.createClass({
     isLoading: React.PropTypes.bool.isRequired,
   },
 
-  clickBackIcon: function () {
+  clickBackIcon: function (e) {
+    e.preventDefault();
     FastFlux.cycle('GRAPH_DISPLAY_RECEIVED', 'timeSeries');
   },
 
