@@ -12,11 +12,18 @@ var FitbitCard = require('./fitbitCard');
 var Dashboard = React.createClass({
 
   getInitialState: function () {
+    var initialState = {
+      viewPortWidth: window.innerWidth,
+      viewPortHeight: window.innerHeight,
+    };
+
     if (SessionStore.isSignedIn()) {
-      return { user: SessionStore.currentUser() };
+      initialState.user = SessionStore.currentUser();
     } else {
-      return { user: null };
+      initialState.user = null;
     }
+
+    return initialState;
   },
 
   _onChange: function () {
@@ -27,64 +34,87 @@ var Dashboard = React.createClass({
     }
   },
 
+  handleResize: function () {
+    this.setState({ viewPortHeight: window.innerHeight, viewPortWidth: window.innerWidth });
+  },
+
   componentDidMount: function () {
     this.sessionToken = SessionStore.addListener(this._onChange);
+    window.addEventListener('resize', this.handleResize);
   },
 
   componentWillUnmount: function () {
     this.sessionToken.remove();
+    window.removeEventListener('resize', this.handleResize);
   },
 
-  makeDarkSkyCard: function () {
-    if (this.state.user.datastreams.darksky.isConnected) {
-      return (
-        <DarkSkyCard darksky={this.state.user.datastreams.darksky} />
+  makeCards: function () {
+    var cards = [];
+
+    // the order you put cards here is the same order they will be going left to right
+    cards.push(
+      <div className="column" key={'mood'}>
+        <MoodCard user={this.state.user} />
+      </div>
+    );
+
+    if (this.state.user.datastreams.fitbit.isConnected) {
+      cards.push(
+        <div className="column" key={'fitbit'}>
+          <FitbitCard fitbit={this.state.user.datastreams.fitbit} />
+        </div>
       );
     }
-  },
 
-  makeConnectionCard: function () {
-    var connectedStreams = SessionStore.getUserStreams();
-
-    return (
-      <ConnectionCard connectedStreams={connectedStreams} />
-    );
-  },
-
-  makeRescueTimeCard: function () {
     if (this.state.user.datastreams.rescuetime.isConnected) {
       return (
-        <RescueTimeCard rescuetime={this.state.user.datastreams.rescuetime} />
+        <div className="column" key={'rescuetime'}>
+          <RescueTimeCard rescuetime={this.state.user.datastreams.rescuetime} />
+        </div>
       );
     }
-  },
 
-  makeFitbitCard: function () {
-    if (this.state.user.datastreams.fitbit.isConnected) {
+    if (this.state.user.datastreams.darksky.isConnected) {
       return (
-        <FitbitCard fitbit={this.state.user.datastreams.fitbit} />
+        <div className="column" key={'darksky'}>
+          <DarkSkyCard darksky={this.state.user.datastreams.darksky} />
+        </div>
       );
     }
+
+    cards.push(
+      <div className="column" key={'connect'}>
+        <ConnectionCard connectedStreams={SessionStore.getUserStreams()} />
+      </div>
+    );
+
+    return cards;
   },
 
   makeContent: function () {
     var user = this.state.user;
 
-    // only render content if there is a session
+    // cutoffs are used to match semantic UI's container size
+    var LARGE_MONITOR = 1200;
+    var SMALL_MONITOR = 992;
+    var TABLET = 768;
+
+    if (this.state.viewPortWidth > LARGE_MONITOR) {
+      rowClassName = 'four column row';
+    } else if (this.state.viewPortWidth > SMALL_MONITOR) {
+      rowClassName = 'three column row';
+    } else if (this.state.viewPortWidth > TABLET) {
+      rowClassName = 'two column row';
+    } else {
+      rowClassName = 'one column row';
+    }
+
     if (user) {
       return (
         <div className="ui container">
-          <div className="ui three column stackable grid">
-            <div className="column">
-              <MoodCard user={user} />
-              {this.makeDarkSkyCard()}
-            </div>
-            <div className="column">
-              {this.makeFitbitCard()}
-            </div>
-            <div className="column">
-              {this.makeRescueTimeCard()}
-              {this.makeConnectionCard()}
+          <div className="ui grid">
+            <div className={rowClassName}>
+              {this.makeCards()}
             </div>
           </div>
         </div>

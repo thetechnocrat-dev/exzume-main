@@ -11,9 +11,14 @@ var AppPanel = React.createClass({
   },
 
   getInitialState: function () {
-    return {
-      apps: AppStore.getApps(),
+    var initialState = {
+      viewPortWidth: window.innerWidth,
+      viewPortHeight: window.innerHeight,
     };
+
+    initialState.apps = AppStore.getApps();
+
+    return initialState;
   },
 
   _onChange: function () {
@@ -22,7 +27,12 @@ var AppPanel = React.createClass({
     });
   },
 
+  handleResize: function () {
+    this.setState({ viewPortHeight: window.innerHeight, viewPortWidth: window.innerWidth });
+  },
+
   componentDidMount: function () {
+    window.addEventListener('resize', this.handleResize);
     this.appToken = AppStore.addListener(this._onChange);
     FastFlux.webCycle('get', '/apps', {
       shouldStoreReceive: true,
@@ -31,6 +41,7 @@ var AppPanel = React.createClass({
   },
 
   componentWillUnmount: function () {
+    window.removeEventListener('resize', this.handleResize);
     this.appToken.remove();
   },
 
@@ -51,7 +62,7 @@ var AppPanel = React.createClass({
     var _this = this;
     return this.state.apps.map(function (app, idx) {
       return (
-        <div className='sixteen wide mobile eight wide tablet four wide computer column' key={idx}>
+        <div className="column" key={idx}>
           <AppItem
             app={app}
             isConnected={userConnectedApps.includes(app.name.toLowerCase())}
@@ -62,9 +73,28 @@ var AppPanel = React.createClass({
   },
 
   render: function () {
+    // cutoffs are used to match semantic UI's container size
+    var LARGE_MONITOR = 1200;
+    var SMALL_MONITOR = 992;
+    var TABLET = 530; // semantic defines as 768
+
+    if (this.state.viewPortWidth > LARGE_MONITOR) {
+      rowClassName = 'four column row';
+    } else if (this.state.viewPortWidth > SMALL_MONITOR) {
+      rowClassName = 'three column row';
+    } else if (this.state.viewPortWidth > TABLET) {
+      rowClassName = 'two column row';
+    } else {
+      rowClassName = 'one column row';
+    }
+
     return (
-      <div className="ui grid container">
-        {this.makeAppItems()}
+      <div className="ui container">
+        <div className="ui grid">
+          <div className={rowClassName}>
+            {this.makeAppItems()}
+          </div>
+        </div>
       </div>
     );
   },
@@ -72,3 +102,4 @@ var AppPanel = React.createClass({
 });
 
 module.exports = AppPanel;
+
