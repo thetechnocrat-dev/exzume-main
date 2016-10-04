@@ -70,17 +70,30 @@ ExploreStore.setFilter = function (filter) {
   _filters[_currentGraphDisplay][filter.key] = filter.value;
 };
 
-// Time Series Display Specific
-var featureToTimeSeries = function (feature) {
+// Time Series Display Specific -- adjusts based on user timezone if necessary
+var featureToTimeSeries = function (feature, timezoneOffset) {
   var timeSeries = {};
+
   timeSeries.name = feature.name;
   timeSeries.data = [];
-  for (var i = 0; i < feature.data.length; i++) {
-    var dataPoint = {
-      x: new Date(feature.data[i].dateTime).getTime(),
-      y: feature.data[i].value,
-    };
-    timeSeries.data.push(dataPoint);
+
+  if (timeSeries.name == 'Mood Rating') {
+    console.log('made it');
+    for (var i = 0; i < feature.data.length; i++) {
+      var dataPoint = {
+        x: new Date(feature.data[i].dateTime.valueOf()).getTime(),
+        y: feature.data[i].value,
+      };
+      timeSeries.data.push(dataPoint);
+    }
+  } else {
+    for (var i = 0; i < feature.data.length; i++) {
+      var dataPoint = {
+        x: new Date(feature.data[i].dateTime).getTime(),
+        y: feature.data[i].value,
+      };
+      timeSeries.data.push(dataPoint);
+    }
   }
 
   return timeSeries;
@@ -97,8 +110,8 @@ var withinBounds =  function (date, dateBound) {
   }
 };
 
-ExploreStore.addMoodNoteSeriesData = function (feature) {
-  _moodNoteSeriesData.push(featureToTimeSeries(feature));
+ExploreStore.addMoodNoteSeriesData = function (feature, timezoneOffset) {
+  _moodNoteSeriesData.push(featureToTimeSeries(feature, timezoneOffset));
   console.log(_moodNoteSeriesData);
 },
 
@@ -160,8 +173,8 @@ ExploreStore.getTimeSeriesData = function () {
   return filteredTimeSeries;
 };
 
-ExploreStore.addTimeSeriesData = function (feature) {
-  _timeSeriesData.push(featureToTimeSeries(feature));
+ExploreStore.addTimeSeriesData = function (feature, timezoneOffset) {
+  _timeSeriesData.push(featureToTimeSeries(feature, timezoneOffset));
 };
 
 ExploreStore.removeTimeSeriesData = function (feature) {
@@ -232,12 +245,12 @@ ExploreStore.__onDispatch = function (payload) {
       break;
     case 'FEATURE_RECEIVED':
       this.reset();
-      this.setFeature(payload.data);
-      this.addTimeSeriesData(payload.data);
+      this.setFeature(payload.data.feature);
+      this.addTimeSeriesData(payload.data.feature, payload.data.timezoneOffset);
       this.__emitChange();
       break;
     case 'TIME_SERIES_RECEIVED':
-      this.addTimeSeriesData(payload.data);
+      this.addTimeSeriesData(payload.data, payload.data.timezoneOffset);
       this.__emitChange();
       break;
     case 'TIME_SERIES_REMOVED':
@@ -245,7 +258,7 @@ ExploreStore.__onDispatch = function (payload) {
       this.__emitChange();
       break;
     case 'MOOD_FEATURE_RECEIVED':
-      this.addMoodNoteSeriesData(payload.data);
+      this.addMoodNoteSeriesData(payload.data.moodNoteFeature, payload.data.timezoneOffset);
       this.__emitChange();
       break;
     case 'MOOD_FEATURE_REMOVED':

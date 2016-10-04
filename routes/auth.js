@@ -222,7 +222,7 @@ module.exports = function (router, passport) {
 
     // create latest mood rating/note with dateTime
     var newMood = [parseInt(req.body.moodRating), req.body.moodNote];
-    var newDateTime = parseInt(req.body.dateTime); //  + user.timezoneOffset
+    var newDateTime = req.body.dateTime; // push dates as readable moments with timezone offset
 
     // create two features in features array of mood datastream
     if (moodStream.features.length == 0) {
@@ -233,8 +233,8 @@ module.exports = function (router, passport) {
     // edit overlapping data from same day or else push new data
     moodStream.features.map(function (feature, i) {
       if (feature.data.length > 0 &&
-          moment(moment(feature.data[feature.data.length - 1].dateTime).format('YYYY-MM-DD'))
-          .isSame(moment(newDateTime).format('YYYY-MM-DD'))) {
+          moment(feature.data[feature.data.length - 1].dateTime.valueOf())
+          .isSame(moment(newDateTime.valueOf()), 'day')) {
         feature.data.pop();
         feature.data.push({ dateTime: newDateTime,
                             value: newMood[i], });

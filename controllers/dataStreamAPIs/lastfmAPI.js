@@ -55,17 +55,17 @@ var lastfmAPI = {
 
       // case 1: use lastSongTime from DB
       if (user.datastreams.lastfm.lastSongTime) {
+        // unix timestamp of the last dateTime in seconds
         lastSongTime = user.datastreams.lastfm.lastSongTime;
 
-        // unix timestamp of the last dateTime in seconds
-        timeLastDay = Math.floor(lastSongTime / daySeconds) * daySeconds;
-        // timeLastDay = Math.floor(new Date(user.datastreams.lastfm.features[0].data[existingDataLength - 1].dateTime).getTime() / 1000);
+        // find beginning of day (locally) for that last song, start putting in buckets from there
+        timeLastDay = Math.floor((lastSongTime + user.timezoneOffset / 1000) / daySeconds) * daySeconds;
       // case 2: track from beginning of 1200 recent tracks
       } else {
-        lastSongTime = parseInt(newData[newData.length - 1].date.uts) + user.timezoneOffset / 1000;
+        lastSongTime = parseInt(newData[newData.length - 1].date.uts);
         console.log('start here: ' + lastSongTime);
 
-        timeLastDay = Math.floor(lastSongTime / daySeconds) * daySeconds;
+        timeLastDay = Math.floor((lastSongTime + user.timezoneOffset / 1000) / daySeconds) * daySeconds;
         console.log('start here: ' + moment(timeLastDay * 1000).format('YYYY-MM-DD'));
       }
 
@@ -75,7 +75,7 @@ var lastfmAPI = {
       for (var i = newData.length - 1; i >= 0; i--) {
         // do not include now playing track
         if (newData[i].date != null) {
-          var timeThisTrack = parseInt(newData[i].date.uts) + user.timezoneOffset / 1000;
+          var timeThisTrack = parseInt(newData[i].date.uts);
           console.log(timeThisTrack);
 
           if (timeThisTrack > timeLastDay && timeThisTrack > lastSongTime) {
@@ -88,7 +88,7 @@ var lastfmAPI = {
               processedData.push(currentDay);
 
               // set new timeLastDay to beginning of next day
-              timeLastDay = Math.floor(timeLastDay / daySeconds) * daySeconds + daySeconds;
+              timeLastDay += daySeconds;
               currentDay = newDayData(moment(timeLastDay * 1000).format('YYYY-MM-DD'), 1);
             }
           }

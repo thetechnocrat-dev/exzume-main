@@ -1,11 +1,16 @@
 var React = require('react');
 var FastFlux = require('../../util/fast-flux-react/fastFlux');
+var SessionStore = require('../../stores/sessionStore');
 
 var moodNoteFeature;
 
 var DropdownItem = React.createClass({
   propTypes: {
     dataStream: React.PropTypes.object.isRequired,
+  },
+
+  getInitialState: function () {
+    return { timezoneOffset: SessionStore.getTimezoneOffset() };
   },
 
   makeFeatureItems: function () {
@@ -31,12 +36,21 @@ var DropdownItem = React.createClass({
 
   clickFeatureItem: function (feature) {
     if (feature.name == 'Mood Rating') {
-      FastFlux.cycle('FEATURE_RECEIVED', feature);
+      FastFlux.cycle('FEATURE_RECEIVED', {
+        feature: feature,
+        timezoneOffset: SessionStore.getTimezoneOffset(),
+      });
       console.log('sending mood note...');
       console.log(moodNoteFeature);
-      FastFlux.cycle('MOOD_FEATURE_RECEIVED', moodNoteFeature);
+      FastFlux.cycle('MOOD_FEATURE_RECEIVED', {
+        moodNoteFeature: moodNoteFeature,
+        timezoneOffset: SessionStore.getTimezoneOffset(),
+      });
     } else {
-      FastFlux.cycle('FEATURE_RECEIVED', feature);
+      FastFlux.cycle('FEATURE_RECEIVED', {
+        feature: feature,
+        timezoneOffset: SessionStore.getTimezoneOffset(),
+      });
     }
   },
 
