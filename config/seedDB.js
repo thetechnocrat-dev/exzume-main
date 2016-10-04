@@ -1,6 +1,5 @@
 var User = require('../models/user');
 var findObjectInArray = require('../util/enumerable').findObjectInArray;
-var moment = require('moment');
 var App = require('../models/app');
 var async = require('async');
 

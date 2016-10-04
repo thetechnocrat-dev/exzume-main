@@ -2,6 +2,7 @@ var React = require('react');
 var SessionStore = require('../../stores/sessionStore');
 var FastFlux = require('../../util/fast-flux-react/fastFlux');
 var ExploreStore = require('../../stores/exploreStore');
+var moment = require('moment');
 
 // Components
 var TimeSeriesGraph = require('./timeSeriesGraph');
