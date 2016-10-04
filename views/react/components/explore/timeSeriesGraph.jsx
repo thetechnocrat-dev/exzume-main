@@ -42,7 +42,7 @@ const CustomTooltip = React.createClass({
       return (
         <div className="custom-tooltip">
           <p className="date">
-            {payload[0].name + ':' + moment(payload[0].value).format('MM-DD-YY')}
+            {payload[0].name + ':' + moment(payload[0].value).utc().format('MM-DD-YY')}
           </p>
           <p className="value">{payload[1].name + ':' + payload[1].value}</p>
           {this.getNotes(payload[0].value)}

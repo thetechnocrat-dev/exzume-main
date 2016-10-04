@@ -65,7 +65,7 @@ var lastfmAPI = {
         lastSongTime = parseInt(newData[newData.length - 1].date.uts);
         console.log('start here: ' + lastSongTime);
 
-        timeLastDay = Math.floor((lastSongTime + user.timezoneOffset / 1000) / daySeconds) * daySeconds;
+        timeLastDay = Math.floor(lastSongTime / daySeconds) * daySeconds + user.timezoneOffset / 1000;
         console.log('start here: ' + moment(timeLastDay * 1000).format('YYYY-MM-DD'));
       }
 
@@ -78,8 +78,8 @@ var lastfmAPI = {
           var timeThisTrack = parseInt(newData[i].date.uts);
           console.log(timeThisTrack);
 
-          if (timeThisTrack > timeLastDay && timeThisTrack > lastSongTime) {
-            if (timeThisTrack <= timeLastDay + daySeconds) {
+          if (timeThisTrack > lastSongTime) {
+            if (moment(timeThisTrack * 1000).isSame(moment(timeLastDay * 1000), 'day')) {
               currentDay.value++;
               console.log(currentDay.value);
             } else {
@@ -93,7 +93,25 @@ var lastfmAPI = {
             }
           }
         }
+
+        //   if (i = 0) {
+        //     lastSongTime = newData[0].date.uts;
+        //   }
+        // } else {
+        //   lastSongTime = newData[1].date.uts;
+        // }
       }
+
+      // if (!user.datastreams.lastfm.lastSongTime ||
+      //     user.datastreams.lastfm.lastSongTime < lastSongTime) {
+      //   user.datastreams.lastfm.lastSongTime = lastSongTime;
+      //   user.save(function (err) {
+      //     if (err) {
+      //       console.log('error in saving user: ' + err);
+      //       throw err;
+      //     }
+      //   });
+      // }
 
       console.log(currentDay.dateTime);
       console.log(currentDay.value);
