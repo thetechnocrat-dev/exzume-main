@@ -60,22 +60,22 @@ var lastfmAPI = {
         // unix timestamp of the last dateTime in seconds
         timeLastDay = Math.floor(lastSongTime / daySeconds) * daySeconds;
         // timeLastDay = Math.floor(new Date(user.datastreams.lastfm.features[0].data[existingDataLength - 1].dateTime).getTime() / 1000);
-      // case 2: track from beginning of 200 recent tracks
+      // case 2: track from beginning of 1200 recent tracks
       } else {
-        lastSongTime = newData[newData.length - 1].date.uts;
+        lastSongTime = parseInt(newData[newData.length - 1].date.uts) + user.timezoneOffset / 1000;
         console.log('start here: ' + lastSongTime);
 
         timeLastDay = Math.floor(lastSongTime / daySeconds) * daySeconds;
-        console.log('start here: ' + moment(timeLastDay * 1000).utc().format('YYYY-MM-DD'));
+        console.log('start here: ' + moment(timeLastDay * 1000).format('YYYY-MM-DD'));
       }
 
-      var currentDay = newDayData(moment(timeLastDay * 1000).utc().format('YYYY-MM-DD'), 0);
+      var currentDay = newDayData(moment(timeLastDay * 1000).format('YYYY-MM-DD'), 0);
 
       // store tracks played by day as counts in newData object
       for (var i = newData.length - 1; i >= 0; i--) {
         // do not include now playing track
         if (newData[i].date != null) {
-          var timeThisTrack = newData[i].date.uts;
+          var timeThisTrack = parseInt(newData[i].date.uts) + user.timezoneOffset / 1000;
           console.log(timeThisTrack);
 
           if (timeThisTrack > timeLastDay && timeThisTrack > lastSongTime) {
@@ -89,7 +89,7 @@ var lastfmAPI = {
 
               // set new timeLastDay to beginning of next day
               timeLastDay = Math.floor(timeLastDay / daySeconds) * daySeconds + daySeconds;
-              currentDay = newDayData(moment(timeLastDay * 1000).utc().format('YYYY-MM-DD'), 1);
+              currentDay = newDayData(moment(timeLastDay * 1000).format('YYYY-MM-DD'), 1);
             }
           }
         }
@@ -101,7 +101,7 @@ var lastfmAPI = {
       return processedData;
     };
 
-    var resources = [3, 2, 1];
+    var resources = [6, 5, 4, 3, 2, 1];
     var series = resources.map(function (resource) {
       return (
         function (nextSync) {

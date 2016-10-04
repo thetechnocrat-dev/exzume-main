@@ -66,8 +66,8 @@ var MoodCard = React.createClass({
         }
       }
 
-      if (moment(parseInt(lastUpdatedTime)).utc().format('YYYY-MM-DD')
-          != moment(Date.now()).utc().format('YYYY-MM-DD')) {
+      if (moment(lastUpdatedTime).format('YYYY-MM-DD')
+          != moment(Date.now()).format('YYYY-MM-DD')) {
         lastUpdatedTime = null;
         lastRating = null;
         lastNote = null;
@@ -246,7 +246,7 @@ var MoodCard = React.createClass({
     if (this.state.lastUpdatedTime) {
       return (
         <div className="meta" style={timeStyle}>
-          last updated: {moment(parseInt(this.state.lastUpdatedTime)).utc().fromNow()}
+          last updated: {moment(parseInt(this.state.lastUpdatedTime)).fromNow()}
         </div>
       );
     }

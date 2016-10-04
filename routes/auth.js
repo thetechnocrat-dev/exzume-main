@@ -222,7 +222,7 @@ module.exports = function (router, passport) {
 
     // create latest mood rating/note with dateTime
     var newMood = [parseInt(req.body.moodRating), req.body.moodNote];
-    var newDateTime = parseInt(req.body.dateTime) + user.timezoneOffset;
+    var newDateTime = parseInt(req.body.dateTime); //  + user.timezoneOffset
 
     // create two features in features array of mood datastream
     if (moodStream.features.length == 0) {
