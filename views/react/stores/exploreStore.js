@@ -71,7 +71,7 @@ ExploreStore.setFilter = function (filter) {
 };
 
 // Time Series Display Specific -- adjusts based on user timezone if necessary
-var featureToTimeSeries = function (feature, timezoneOffset) {
+var featureToTimeSeries = function (feature) {
   var timeSeries = {};
 
   timeSeries.name = feature.name;
@@ -110,8 +110,8 @@ var withinBounds =  function (date, dateBound) {
   }
 };
 
-ExploreStore.addMoodNoteSeriesData = function (feature, timezoneOffset) {
-  _moodNoteSeriesData.push(featureToTimeSeries(feature, timezoneOffset));
+ExploreStore.addMoodNoteSeriesData = function (feature) {
+  _moodNoteSeriesData.push(featureToTimeSeries(feature));
   console.log(_moodNoteSeriesData);
 },
 
@@ -173,8 +173,8 @@ ExploreStore.getTimeSeriesData = function () {
   return filteredTimeSeries;
 };
 
-ExploreStore.addTimeSeriesData = function (feature, timezoneOffset) {
-  _timeSeriesData.push(featureToTimeSeries(feature, timezoneOffset));
+ExploreStore.addTimeSeriesData = function (feature) {
+  _timeSeriesData.push(featureToTimeSeries(feature));
 };
 
 ExploreStore.removeTimeSeriesData = function (feature) {
@@ -245,12 +245,12 @@ ExploreStore.__onDispatch = function (payload) {
       break;
     case 'FEATURE_RECEIVED':
       this.reset();
-      this.setFeature(payload.data.feature);
-      this.addTimeSeriesData(payload.data.feature, payload.data.timezoneOffset);
+      this.setFeature(payload.data);
+      this.addTimeSeriesData(payload.data);
       this.__emitChange();
       break;
     case 'TIME_SERIES_RECEIVED':
-      this.addTimeSeriesData(payload.data, payload.data.timezoneOffset);
+      this.addTimeSeriesData(payload.data);
       this.__emitChange();
       break;
     case 'TIME_SERIES_REMOVED':
@@ -258,7 +258,7 @@ ExploreStore.__onDispatch = function (payload) {
       this.__emitChange();
       break;
     case 'MOOD_FEATURE_RECEIVED':
-      this.addMoodNoteSeriesData(payload.data.moodNoteFeature, payload.data.timezoneOffset);
+      this.addMoodNoteSeriesData(payload.data);
       this.__emitChange();
       break;
     case 'MOOD_FEATURE_REMOVED':

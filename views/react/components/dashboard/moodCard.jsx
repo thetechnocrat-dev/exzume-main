@@ -67,7 +67,7 @@ var MoodCard = React.createClass({
         }
       }
 
-      if (moment(lastUpdatedTime.valueOf()).isSame(moment().valueOf(), 'day')) {
+      if (!moment(lastUpdatedTime.valueOf()).isSame(moment().valueOf(), 'day')) {
         lastUpdatedTime = null;
         lastRating = null;
         lastNote = null;
