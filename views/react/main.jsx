@@ -4,6 +4,7 @@ var ReactDOM = require('react-dom');
 var Router = require('react-router').Router;
 var Route = require('react-router').Route;
 var IndexRoute = require('react-router').IndexRoute;
+var hashHistory = require('react-router').hashHistory;
 
 // Components
 var App = require('./components/app');
@@ -18,7 +19,6 @@ var Auth = require('./components/auth');
 var Dashboard = require('./components/dashboard/dashboard');
 var Explore = require('./components/explore/explore');
 var Connect = require('./components/connect/connect');
-var Play = require('./components/play');
 
 var routes = (
   <Route component={App} path='/'>
@@ -31,9 +31,7 @@ var routes = (
     <Route component={ResetPassword} path='reset-password/:username/:token' />
     <Route component={Auth} path='dashboard'>
       <IndexRoute component={Dashboard} />
-      <Route component={Explore} path='exploreOld' />
       <Route component={Connect} path='connect' />
-      <Route component={Play} path='play' />
       <Route component={Explore} path='explore' />
     </Route>
   </Route>
@@ -41,5 +39,5 @@ var routes = (
 
 document.addEventListener('DOMContentLoaded', function () {
   ReactDOM.render(
-    <Router>{routes}</Router>, root);
+    <Router history={hashHistory}>{routes}</Router>, root);
 });

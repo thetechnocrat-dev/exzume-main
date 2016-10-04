@@ -1,17 +1,36 @@
 var React = require('react');
 var Recharts = require('recharts');
 var Style = require('../../util/style');
-const { PieChart, Pie, Sector, Cell } = Recharts;
+var PieChart = Recharts.PieChart;
+var Pie = Recharts.Pie;
+var Sector = Recharts.Sector;
+var Cell = Recharts.Cell;
+var PieChart = Recharts.PieChart;
+var Pie = Recharts.Pie;
+var Sector = Recharts.Sector;
+var Cell = Recharts.Cell;
+
+// const { PieChart, Pie, Sector, Cell } = Recharts;
 const COLORS = [Style.green, Style.gray, Style.red];
 
 // accepts data as prop in the following format:
 // const data = [{ name: 'Group A', value: 400 }, { name: 'Group B', value: 300 },
 //               { name: 'Group C', value: 300 }, { name: 'Group D', value: 200 },];
 
-const renderActiveShape = (props) => {
+const renderActiveShape = function (props) {
   const RADIAN = Math.PI / 180;
-  const { cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle,
-          fill, payload, percent, value, } = props;
+  var cx = props.cx;
+  var cy = props.cy;
+  var midAngle = props.midAngle;
+  var innerRadius = props.innerRadius;
+  var outerRadius = props.outerRadius;
+  var startAngle = props.startAngle;
+  var endAngle = props.endAngle;
+  var fill = props.fill;
+  var payload = props.payload;
+  var percent = props.percent;
+  var value = props.value;
+
   const sin = Math.sin(-RADIAN * midAngle);
   const cos = Math.cos(-RADIAN * midAngle);
   const sx = cx + (outerRadius + 10) * cos;
@@ -32,7 +51,7 @@ const renderActiveShape = (props) => {
         textAnchor="middle"
         fill={'black'}
       >
-        {`${(percent * 100).toFixed(1)}%` + ' (' + `${value} hours` + ')'}
+        {(percent * 100).toFixed(1) + '%  (' + value + ' hours' + ')'}
       </text>
       <Sector
         cx={cx}
@@ -89,9 +108,11 @@ var DoughnutViz = React.createClass({
           fill="#8884d8"
         >
           {
-            this.props.chartData.map((entry, index) =>
-              <Cell fill={COLORS[index % COLORS.length]}/>
-            )
+            this.props.chartData.map(function (entry, index) {
+              return (
+                <Cell fill={COLORS[index % COLORS.length]}/>
+              );
+            })
           }
        </Pie>
        </PieChart>
