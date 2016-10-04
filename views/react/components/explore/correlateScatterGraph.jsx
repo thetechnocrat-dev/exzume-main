@@ -78,8 +78,8 @@ var TimeSeriesCompareGraph = React.createClass({
     });
   },
 
-  clickBackIcon: function () {
-    console.log('clicked');
+  clickBackIcon: function (e) {
+    e.preventDefault();
     FastFlux.cycle('GRAPH_DISPLAY_RECEIVED', 'timeSeries');
   },
 
