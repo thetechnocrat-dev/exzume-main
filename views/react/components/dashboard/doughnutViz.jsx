@@ -1,14 +1,14 @@
 var React = require('react');
 var Recharts = require('recharts');
 var Style = require('../../util/style');
-var PieChart = require('recharts').PieChart;
-var Pie = require('recharts').Pie;
-var Sector = require('recharts').Sector;
-var Cell = require('recharts').Cell;
-var PieChart = require('recharts').PieChart;
-var Pie = require('recharts').Pie;
-var Sector = require('recharts').Sector;
-var Cell = require('recharts').Cell;
+var PieChart = Recharts.PieChart;
+var Pie = Recharts.Pie;
+var Sector = Recharts.Sector;
+var Cell = Recharts.Cell;
+var PieChart = Recharts.PieChart;
+var Pie = Recharts.Pie;
+var Sector = Recharts.Sector;
+var Cell = Recharts.Cell;
 
 // const { PieChart, Pie, Sector, Cell } = Recharts;
 const COLORS = [Style.green, Style.gray, Style.red];
@@ -22,7 +22,7 @@ const renderActiveShape = function (props) {
   var cx = props.cx;
   var cy = props.cy;
   var midAngle = props.midAngle;
-  var innerRadius = props.innderRadius;
+  var innerRadius = props.innerRadius;
   var outerRadius = props.outerRadius;
   var startAngle = props.startAngle;
   var endAngle = props.endAngle;
@@ -31,8 +31,6 @@ const renderActiveShape = function (props) {
   var percent = props.percent;
   var value = props.value;
 
-  // const { cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle,
-  //        fill, payload, percent, value, } = props;
   const sin = Math.sin(-RADIAN * midAngle);
   const cos = Math.cos(-RADIAN * midAngle);
   const sx = cx + (outerRadius + 10) * cos;
@@ -53,7 +51,7 @@ const renderActiveShape = function (props) {
         textAnchor="middle"
         fill={'black'}
       >
-        {(percent * 100).toFixed(1)} + '%  (' + {value} + ' hours' + ')'}
+        {(percent * 100).toFixed(1) + '%  (' + value + ' hours' + ')'}
       </text>
       <Sector
         cx={cx}
