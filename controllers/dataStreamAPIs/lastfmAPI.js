@@ -53,14 +53,14 @@ var lastfmAPI = {
       const daySeconds = 86400; // seconds in day
       var lastSongTime;// last song synced time in unix time
 
-      // case 1: use lastSongTime from DB
+      // case 1: use lastSongTime from DB (TODO)
       if (user.datastreams.lastfm.lastSongTime) {
         // unix timestamp of the last dateTime in seconds
         lastSongTime = user.datastreams.lastfm.lastSongTime;
 
         // find beginning of day (locally) for that last song, start putting in buckets from there
         timeLastDay = Math.floor((lastSongTime + user.timezoneOffset / 1000) / daySeconds) * daySeconds;
-      // case 2: track from beginning of 1200 recent tracks
+      // case 2: track from beginning of 600 recent tracks
       } else {
         lastSongTime = parseInt(newData[newData.length - 1].date.uts);
         console.log('start here: ' + lastSongTime);
@@ -119,7 +119,7 @@ var lastfmAPI = {
       return processedData;
     };
 
-    var resources = [6, 5, 4, 3, 2, 1];
+    var resources = [3, 2, 1];
     var series = resources.map(function (resource) {
       return (
         function (nextSync) {
