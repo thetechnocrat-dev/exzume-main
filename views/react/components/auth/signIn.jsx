@@ -88,6 +88,10 @@ var SignIn = React.createClass({
     this.history.push('/');
   },
 
+  clickBetaLink: function () {
+    this.history.push('/beta');
+  },
+
   clickForgotPassword: function () {
     this.history.push('/forgot');
   },
@@ -146,16 +150,23 @@ var SignIn = React.createClass({
           {this.makeErrors()}
 
           <div className="ui message">
-            New to us? Then request beta access on the &nbsp;
+            New to us? Then request &nbsp;
+            <a
+              style={linkStyle}
+              onClick={this.clickBetaLink}
+            >
+              Beta Access
+            </a>
+            &nbsp; or go to the &nbsp;
             <a
               style={linkStyle}
               onClick={this.clickHomeLink}
             >
               Home Page
-            </a>
+            </a> 
           </div>
-				</div>
-			</div>
+		</div>
+	  </div>
     );
   },
 

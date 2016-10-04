@@ -19,6 +19,7 @@ var Auth = require('./components/auth');
 var Dashboard = require('./components/dashboard/dashboard');
 var Explore = require('./components/explore/explore');
 var Connect = require('./components/connect/connect');
+var BetaSignUp = require('./components/betaSignUp/betaSignUp');
 
 var routes = (
   <Route component={App} path='/'>
@@ -27,6 +28,7 @@ var routes = (
     <Route component={SignIn} path='signin' />
     <Route component={SignUp} path='signup' />
     <Route component={Forgot} path='forgot' />
+    <Route component={BetaSignUp} path='beta' />
     <Route component={Confirm} path='confirm/:username/:token' />
     <Route component={ResetPassword} path='reset-password/:username/:token' />
     <Route component={Auth} path='dashboard'>

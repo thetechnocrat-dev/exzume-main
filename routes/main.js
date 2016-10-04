@@ -125,6 +125,20 @@ module.exports = function (router, passport) {
     });
   });
 
+  router.post('/beta', function (req, res) {
+    var content = (
+      'name: ' + req.body.name + ', ' + 'email: ' + req.body.email + ', ' + 'why: ' +
+      req.body.whyText
+    );
+
+    email.send(
+      'exzume.app@gmail.com',
+      'beta access request',
+      content
+    );
+    res.json({ message: 'Request beta email sent' });
+  });
+
   router.post('/reset-password', function (req, res) {
     console.log(req.body);
     User.findOne({ 'local.username': req.body.username }, function (err, user) {

@@ -71,10 +71,7 @@ var Splash = React.createClass({
   },
 
   clickBetaAccess: function () {
-    var bodyMessage = 'Thank you for your interest in exzume! We will notify you by replying to this email when beta access is available. If you have time we would love to hear why you are interested.';
-    var email = 'exzume.app@gmail.com';
-    var subject = 'exzume beta access';
-    document.location.href = 'mailto:' + email + '?subject=' + subject + '&body=' + bodyMessage;
+    this.history.push('/beta');
   },
 
   clickDashboard: function () {
