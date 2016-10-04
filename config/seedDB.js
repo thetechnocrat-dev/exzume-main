@@ -110,7 +110,6 @@ module.exports = function (done) {
       function (callback) {
         var newUser = new User();
         newUser.local.username = 'Watts42';
-        newUser.local.isAdmin = true;
         newUser.local.password = newUser.generateHash('password');
         newUser.local.email = 'exzume.app@gmail.com';
         newUser.local.passwordResetToken = '123';
@@ -126,9 +125,29 @@ module.exports = function (done) {
           }
         });
       },
+
+      function (callback) {
+        var newUser = new User();
+        newUser.local.username = 'Murakami42';
+        newUser.local.isAdmin = true;
+        newUser.local.password = newUser.generateHash('sXL5egXHHmTbgLjT');
+        newUser.local.email = 'josh.mcmenemy@gmail.com';
+        newUser.local.passwordResetToken = '121231198741911';
+
+        // PST is 7 hours behind UTC - Watts was obviously based in SF
+        newUser.timezoneOffset = -420 * 60000;
+
+        newUser.save(function (err) {
+          if (err) {
+            callback(err, 'user insert error');
+          } else {
+            callback(null, newUser);
+          }
+        });
+      },
     ],
     function (err, results) {
-      done(err, { Apps: results[2], Users: results[3] });
+      done(err, { Apps: results[2], User1: results[3], User2: results[4] });
     }
   );
 };
