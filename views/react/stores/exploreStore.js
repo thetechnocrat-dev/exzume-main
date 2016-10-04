@@ -70,17 +70,30 @@ ExploreStore.setFilter = function (filter) {
   _filters[_currentGraphDisplay][filter.key] = filter.value;
 };
 
-// Time Series Display Specific
+// Time Series Display Specific -- adjusts based on user timezone if necessary
 var featureToTimeSeries = function (feature) {
   var timeSeries = {};
+
   timeSeries.name = feature.name;
   timeSeries.data = [];
-  for (var i = 0; i < feature.data.length; i++) {
-    var dataPoint = {
-      x: new Date(feature.data[i].dateTime).getTime(),
-      y: feature.data[i].value,
-    };
-    timeSeries.data.push(dataPoint);
+
+  if (timeSeries.name == 'Mood Rating') {
+    console.log('made it');
+    for (var i = 0; i < feature.data.length; i++) {
+      var dataPoint = {
+        x: new Date(feature.data[i].dateTime.valueOf()).getTime(),
+        y: feature.data[i].value,
+      };
+      timeSeries.data.push(dataPoint);
+    }
+  } else {
+    for (var i = 0; i < feature.data.length; i++) {
+      var dataPoint = {
+        x: new Date(feature.data[i].dateTime).getTime(),
+        y: feature.data[i].value,
+      };
+      timeSeries.data.push(dataPoint);
+    }
   }
 
   return timeSeries;

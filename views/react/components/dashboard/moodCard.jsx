@@ -2,6 +2,7 @@ var React = require('react');
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var FastFlux = require('../../util/fast-flux-react/fastFlux');
 var moment = require('moment');
+var SessionStore = require('../../stores/sessionStore');
 
 var ratingButtons = [
   {
@@ -49,7 +50,7 @@ var MoodCard = React.createClass({
     var lastNote = '';
     var enlarge = null;
     var submitClicked = false;
-    var momentLastUpdatedTime = null;
+    var timezoneOffset = SessionStore.getTimezoneOffset();
 
     if (moodFeatures.length != 0) {
       var ratingData = moodFeatures[0].data;
@@ -66,8 +67,7 @@ var MoodCard = React.createClass({
         }
       }
 
-      if (moment(parseInt(lastUpdatedTime)).utc().format('YYYY-MM-DD')
-          != moment(Date.now()).utc().format('YYYY-MM-DD')) {
+      if (!moment(lastUpdatedTime.valueOf()).isSame(moment().valueOf(), 'day')) {
         lastUpdatedTime = null;
         lastRating = null;
         lastNote = null;
@@ -98,7 +98,8 @@ var MoodCard = React.createClass({
 
     if (this.state.rating || this.state.note != '') {
       var moodBody = {
-        dateTime: Date.now(),
+        // push dates as readable moments with timezone offset
+        dateTime: moment().format(),
         moodRating: this.state.rating,
         moodNote: this.state.note,
       };
@@ -246,7 +247,7 @@ var MoodCard = React.createClass({
     if (this.state.lastUpdatedTime) {
       return (
         <div className="meta" style={timeStyle}>
-          last updated: {moment(parseInt(this.state.lastUpdatedTime)).utc().fromNow()}
+          last updated: {moment(this.state.lastUpdatedTime.valueOf()).fromNow()}
         </div>
       );
     }
