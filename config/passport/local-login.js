@@ -1,5 +1,6 @@
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('../../models/user');
+var moment = require('moment');
 
 module.exports = function (passport) {
   passport.use('local-login', new LocalStrategy(
@@ -18,8 +19,8 @@ module.exports = function (passport) {
         }
 
         // always poll for user timezone
-        if (user.timezoneOffset != (new Date()).getTimezoneOffset() * 3600) {
-          user.timezoneOffset = (new Date()).getTimezoneOffset() * 3600;
+        if (user.timezoneOffset != moment().utcOffset() * 60000) {
+          user.timezoneOffset = moment().utcOffset() * 60000;
           user.save(function (err) {
             if (err) {
               console.log('error in saving user: ' + err);

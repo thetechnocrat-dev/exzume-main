@@ -114,7 +114,9 @@ module.exports = function (done) {
         newUser.local.password = newUser.generateHash('password');
         newUser.local.email = 'exzume.app@gmail.com';
         newUser.local.passwordResetToken = '123';
-        newUser.timezoneOffset = 420 * 3600;
+
+        // PST is 7 hours behind UTC - Watts was obviously based in SF
+        newUser.timezoneOffset = -420 * 60000;
 
         newUser.save(function (err) {
           if (err) {
