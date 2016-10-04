@@ -87,15 +87,10 @@ var Dashboard = React.createClass({
       columnNum = 0;
     }
 
-    console.log(columnNum);
-
     var cardsFilterd = cards.filter(function (card, i) {
-      console.log((i + 1) % columnCount === columnNum);
       return (i + 1) % columnCount === columnNum;
     });
 
-    console.log(cards);
-    console.log(cardsFilterd);
     return cardsFilterd;
   },
 
