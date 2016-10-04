@@ -3,6 +3,7 @@ var User = require('../../models/user');
 var crypto = require('crypto');
 var email = require('../../util/email');
 var validator = require('validator');
+var moment = require('moment');
 
 module.exports = function (passport) {
   passport.use('local-signup', new LocalStrategy({
@@ -33,7 +34,7 @@ module.exports = function (passport) {
           newUser.local.email = req.body.email;
           newUser.local.confirmEmail.token = crypto.randomBytes(64).toString('hex');
           newUser.local.passwordResetToken = crypto.randomBytes(64).toString('hex');
-          newUser.timezoneOffset = (new Date()).getTimezoneOffset() * 3600;
+          newUser.timezoneOffset = moment().utcOffset() * 60000;
 
           newUser.save(function (err) {
             if (err) {

@@ -5,7 +5,7 @@ var Style = require('../../util/style');
 var ConnectionItem = React.createClass({
   propTypes: {
     streamName: React.PropTypes.string.isRequired,
-    syncIcon: React.PropTypes.string.isRequired,
+    syncIcon: React.PropTypes.string,
   },
 
   getInitialState: function () {
