@@ -2,7 +2,14 @@ var React = require('react');
 var Recharts = require('recharts');
 var moment = require('moment');
 var FastFlux = require('../../util/fast-flux-react/fastFlux');
-const { BarChart, Bar, ReferenceLine, XAxis, YAxis, CartesianGrid, Tooltip, Legend } = Recharts;
+var BarChart = Recharts.BarChart;
+var Bar = Recharts.Bar;
+var ReferenceLine = Recharts.ReferenceLine;
+var XAxis = Recharts.XAxis;
+var YAxis = Recharts.YAxis;
+var CartesianGrid = Recharts.CartesianGrid;
+var Tooltip = Recharts.Tooltip;
+var Legend = Recharts.Legend;
 
 var BarCorrelateGraph = React.createClass({
   propTypes: {

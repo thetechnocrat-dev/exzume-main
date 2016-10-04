@@ -2,7 +2,14 @@ var React = require('react');
 var Recharts = require('recharts');
 var moment = require('moment');
 var FastFlux = require('../../util/fast-flux-react/fastFlux');
-const { ScatterChart, Scatter, XAxis, YAxis, ZAxis, CartesianGrid, Tooltip, Legend } = Recharts;
+var ScatterChart = Recharts.ScatterChart;
+var Scatter = Recharts.Scatter;
+var XAxis = Recharts.XAxis;
+var YAxis = Recharts.YAxis;
+var ZAxis = Recharts.ZAxis;
+var CartesianGrid = Recharts.CartesianGrid;
+var Tooltip = Recharts.Tooltip;
+var Legend = Recharts.Legend;
 
 const fillColors = [
                     '#023fa5', '#7d87b9', '#bec1d4', '#d6bcc0', '#bb7784', '#8e063b', '#4a6fe3',

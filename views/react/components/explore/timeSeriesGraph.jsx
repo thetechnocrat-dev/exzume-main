@@ -2,7 +2,14 @@ var React = require('react');
 var Recharts = require('recharts');
 var moment = require('moment');
 var Style = require('../../util/style');
-const { ScatterChart, Scatter, XAxis, YAxis, ZAxis, CartesianGrid, Tooltip, Legend } = Recharts;
+var ScatterChart = Recharts.ScatterChart;
+var Scatter = Recharts.Scatter;
+var XAxis = Recharts.XAxis;
+var YAxis = Recharts.YAxis;
+var ZAxis = Recharts.ZAxis;
+var CartesianGrid = Recharts.CartesianGrid;
+var Tooltip = Recharts.Tooltip;
+var Legend = Recharts.Legend;
 
 const fillColors = [
                     '#023fa5', '#7d87b9', '#bec1d4', '#d6bcc0', '#bb7784', '#8e063b', '#4a6fe3',
@@ -20,21 +27,24 @@ const CustomTooltip = React.createClass({
   getNotes: function (dateTime) {
     if (this.props.notes.length != 0 && this.props.notes[0].x == dateTime) {
       return (
-        <p className="note">{`note: ${this.props.notes[0].y}`}</p>
+        <p className="note">{'note:' +  this.props.notes[0].y}</p>
       );
     }
   },
 
   render: function () {
-    const { active } = this.props;
+    var active = this.props.active;
 
     if (active) {
-      const { payload, notes } = this.props;
+      var payload = this.props.payload;
+      var notes = this.props.notes;
 
       return (
         <div className="custom-tooltip">
-          <p className="date">{`${payload[0].name} : ${moment(payload[0].value).utc().format('MM-DD-YY')}`}</p>
-          <p className="value">{`${payload[1].name}: ${payload[1].value}`}</p>
+          <p className="date">
+            {payload[0].name + ':' + moment(payload[0].value).utc().format('MM-DD-YY')}
+          </p>
+          <p className="value">{payload[1].name + ':' + payload[1].value}</p>
           {this.getNotes(payload[0].value)}
         </div>
       );
@@ -127,3 +137,4 @@ var TimeSeriesCompareGraph = React.createClass({
 });
 
 module.exports = TimeSeriesCompareGraph;
+

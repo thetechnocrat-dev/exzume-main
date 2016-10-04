@@ -2,7 +2,9 @@ var React = require('react');
 var Style = require('../../util/style');
 var moment = require('moment');
 var Recharts = require('recharts');
-const { PieChart, Pie, Sector } = Recharts;
+var PieChart = require('recharts').PieChart;
+var Pie = require('recharts').Pie;
+var Sector = require('recharts').Sector;
 
 // Components
 var DoughnutViz = require('./doughnutViz');
