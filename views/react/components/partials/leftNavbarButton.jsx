@@ -6,7 +6,7 @@ var leftNavbarButton = React.createClass({
 
   propTypes: {
     label: React.PropTypes.string.isRequired,
-    navigation: React.PropTypes.string.isRequired
+    navigation: React.PropTypes.string.isRequired,
   },
 
   clickItem: function () {
