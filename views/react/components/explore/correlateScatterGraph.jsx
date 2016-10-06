@@ -30,7 +30,6 @@ var TimeSeriesCompareGraph = React.createClass({
   },
 
   corrSuccess: function (res) {
-    console.log(res);
     var rSquared = parseFloat(res[0]).toFixed(2);
     var confidence = parseFloat(100 - (res[1] * 100)).toFixed(2);
     this.setState({ rSquared: rSquared, confidence: confidence, isLoading: false });
@@ -92,7 +91,7 @@ var TimeSeriesCompareGraph = React.createClass({
       return (
         <div style={{ display: 'inline-block', marginLeft: '10px' }}>
           <div className="ui message" style={{ padding: '5px 10px 5px 10px' }}>
-            {'r2: ' + this.state.rSquared + ', confidence: ' + this.state.confidence + '%'}
+            {'correlation: ' + this.state.rSquared + ', confidence: ' + this.state.confidence + '%'}
           </div>
         </div>
       );
@@ -104,7 +103,7 @@ var TimeSeriesCompareGraph = React.createClass({
       <div style={{ textAlign: 'center' }}>
         <div
           className="ui medium header"
-          style={{ display: 'inline-block', margin: '0' }}
+          style={{ display: 'inline-block', margin: '0 auto' }}
         >
           {this.props.data[0].name}
         </div>

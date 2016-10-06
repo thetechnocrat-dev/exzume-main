@@ -31,11 +31,14 @@ var SelectFeatureDropdown = React.createClass({
   render: function () {
     return (
       <div
-        className="ui green floating dropdown right labeled icon button"
+        className="ui dropdown"
         id="selectFeatureDropdown"
+        style={{ float: 'left' }}
       >
         <input type="hidden" name="select a feature to explore" />
-        <div className="default text" style={{ color: 'white' }}>
+        <div className="default text"
+          style={{ color: 'black' }}
+        >
           {'Select a Feature to Explore'}
         </div>
         <i className="dropdown icon" />

@@ -84,7 +84,7 @@ var TimeSeriesCompareGraph = React.createClass({
     }
 
     if (this.props.data[0].name == 'nothing selected') {
-      var title = 'Select a Feature to Begin';
+      var title = '';
     } else {
       var title = this.props.data[0].name + ' Over Time';
     }

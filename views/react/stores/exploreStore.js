@@ -192,14 +192,14 @@ ExploreStore.featuresToScatter = function (mainFeature, otherFeature) {
   var scatterSeries = {};
   scatterSeries.name = mainFeature.name + ' vs ' + otherFeature.name;
   scatterSeries.data = [];
-  scatterSeries.xLabel = mainFeature.name;
-  scatterSeries.yLabel = otherFeature.name;
+  scatterSeries.xLabel = otherFeature.name;
+  scatterSeries.yLabel = mainFeature.name;
   for (var i = 0; i < mainFeature.data.length; i++) {
     for (var j = 0; j < otherFeature.data.length; j++) {
       if (mainFeature.data[i].dateTime == otherFeature.data[j].dateTime) {
         var dataPoint = {
-          x: mainFeature.data[i].value,
-          y: otherFeature.data[j].value,
+          x: otherFeature.data[j].value,
+          y: mainFeature.data[i].value,
         };
         scatterSeries.data.push(dataPoint);
         break;
@@ -284,3 +284,4 @@ ExploreStore.__onDispatch = function (payload) {
 };
 
 module.exports = ExploreStore;
+

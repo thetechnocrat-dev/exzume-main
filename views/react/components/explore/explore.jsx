@@ -133,7 +133,6 @@ var Explore = React.createClass({
     if (this.state.user) {
       return (
         <div>
-          <SelectFeatureDropdown dataStreams={this.getProcessedUserStreams()} />
           <ExploreMenu
             features={SessionStore.getUserFeatures()}
             currentFeatureName={this.state.currentFeature.name}
@@ -141,7 +140,11 @@ var Explore = React.createClass({
             isDisabled={!ExploreStore.isActive()}
             dataStreams={this.getProcessedUserStreams()}
           />
-          <div className="ui bottom attached segment" style={{ backgroundColor: 'white' }}>
+          <div
+            className="ui bottom attached segment"
+            style={{ backgroundColor: 'white' }}
+          >
+            <SelectFeatureDropdown dataStreams={this.getProcessedUserStreams()} />
             {this.makeExploreGraph()}
           </div>
         </div>

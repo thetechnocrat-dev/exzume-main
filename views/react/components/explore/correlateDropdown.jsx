@@ -181,11 +181,11 @@ var CorrelateDropdown = React.createClass({
         <i className="dropdown icon" />
         <div className="menu">
           <div className="item" onClick={this.clickCorrelateWithAll}>
-            Correlate With All
+            {'Correlate ' + this.props.currentFeatureName + ' With All'}
           </div>
           <div className="item">
             <i className="dropdown icon" />
-            Correlate With
+            {'Correlate ' + this.props.currentFeatureName + '  With'}
             <div className="menu">
               {this.makeCorrelateWithItems()}
             </div>
