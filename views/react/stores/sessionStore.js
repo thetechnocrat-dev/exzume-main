@@ -53,6 +53,37 @@ SessionStore.getUserStreams = function () {
   return userActiveStreams;
 },
 
+SessionStore.getFeatureWeekData = function (streamName, featureName) {
+  var dataStreams = _currentUser.datastreams;
+
+  var findAllFeatureData = function (streamName, featureName) {
+    for (dataStream in dataStreams) {
+      if (dataStreams[dataStream].name === streamName) {
+        for (var i = 0; i < dataStreams[dataStream].features.length; i++) {
+          if (dataStreams[dataStream].features[i].name === featureName) {
+            return dataStreams[dataStream].features[i].data;
+          }
+        }
+      }
+    }
+  };
+
+  var allFeatureData = findAllFeatureData(streamName, featureName);
+  var allFeatureDataLength = allFeatureData.length;
+  var featureWeekData = [];
+
+  for (var k = allFeatureDataLength - 1; k > 0; k--) {
+    featureWeekData.push(allFeatureData[k]);
+    if (featureWeekData.length == 7) {
+      break;
+    }
+  }
+
+  featureWeekData.reverse();
+  console.log(featureWeekData);
+  return featureWeekData;
+},
+
 SessionStore.getInsights = function (startIndex, size) {
   var insights = _currentUser.insights;
   if (startIndex >= insights.length) {
@@ -74,6 +105,11 @@ SessionStore.__onDispatch = function (payload) {
       this.resetSessionStore({});
       this.__emitChange();
       break;
+    // case 'FEATURE_WEEK_DATA_REQUESTED':
+    //   this.resetSessionStore
+    //   this.getFeatureWeekData(payload.data.streamName, payload.data.featureName);
+    //   this.__emitChange();
+    //   break;
   }
 };
 

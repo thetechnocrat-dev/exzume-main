@@ -12,6 +12,7 @@ var FitbitCard = React.createClass({
 
   render: function () {
     var fitbit = this.props.fitbit;
+    var streamName = this.props.fitbit.name;
     var lastSyncTime = moment(this.props.fitbit.lastSyncTime).fromNow();
     var calcAvg = function (featureDataArray) {
       var sum = 0;
@@ -100,6 +101,8 @@ var FitbitCard = React.createClass({
             current={currentMinutesAsleep}
             fillColor={Style.green}
             backgroundColor={Style.lightGreen}
+            featureName={'Minutes Asleep'}
+            streamName={streamName}
           />
           <HorzBarViz
             label={'awakenings'}
@@ -107,6 +110,8 @@ var FitbitCard = React.createClass({
             current={currentAwakenings}
             fillColor={Style.green}
             backgroundColor={Style.lightGreen}
+            featureName={'# of Awakenings'}
+            streamName={streamName}
           />
           <div className="ui divider" />
           <div className="header" style={headerStyle}>
@@ -118,6 +123,8 @@ var FitbitCard = React.createClass({
             current={currentSteps}
             fillColor={Style.green}
             backgroundColor={Style.lightGreen}
+            featureName={'Steps'}
+            streamName={streamName}
           />
           <HorzBarViz
             label={'very active minutes'}
@@ -125,6 +132,8 @@ var FitbitCard = React.createClass({
             current={currentVeryActiveMinutes}
             fillColor={Style.green}
             backgroundColor={Style.lightGreen}
+            featureName={'Very Active Minutes'}
+            streamName={streamName}
           />
           <HorzBarViz
             label={'floors'}
@@ -132,6 +141,8 @@ var FitbitCard = React.createClass({
             current={currentFloors}
             fillColor={Style.green}
             backgroundColor={Style.lightGreen}
+            featureName={'Floors'}
+            streamName={streamName}
           />
           <HorzBarViz
             label={'bpm'}
@@ -139,6 +150,8 @@ var FitbitCard = React.createClass({
             current={currentHeartRate}
             fillColor={Style.green}
             backgroundColor={Style.lightGreen}
+            featureName={'Heart Rate'}
+            streamName={streamName}
           />
         </div>
         <div className="extra content">
