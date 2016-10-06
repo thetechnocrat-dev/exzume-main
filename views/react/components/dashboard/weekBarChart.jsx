@@ -38,7 +38,10 @@ const SimpleBarChart = React.createClass({
     return (
       <BarChart width={450} height={300} data={this.formatData()}
         margin={{ top: 25, right: 35, bottom: 10 }}>
-       <XAxis dataKey="dateTime" padding={{ left: 10, right: 10 }} />
+       <XAxis
+         dataKey="dateTime"
+         padding={{ left: 10, right: 10 }}
+       />
        <YAxis/>
        <CartesianGrid strokeDasharray="3 3"/>
        <Tooltip/>

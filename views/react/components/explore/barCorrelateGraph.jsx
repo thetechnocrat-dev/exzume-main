@@ -9,7 +9,6 @@ var XAxis = Recharts.XAxis;
 var YAxis = Recharts.YAxis;
 var CartesianGrid = Recharts.CartesianGrid;
 var Tooltip = Recharts.Tooltip;
-var Legend = Recharts.Legend;
 
 var BarCorrelateGraph = React.createClass({
   propTypes: {
@@ -54,12 +53,11 @@ var BarCorrelateGraph = React.createClass({
         >
           <XAxis
             dataKey="name"
-            tickSize={14}
+            padding={{ bottom: 20 }}
           />
           <YAxis/>
           <CartesianGrid strokeDasharray="3 3" />
           <Tooltip />
-          <Legend />
           <ReferenceLine y={0} stroke='#000' />
           <Bar dataKey="correlation" fill="#8884d8" />
         </BarChart>
@@ -70,4 +68,3 @@ var BarCorrelateGraph = React.createClass({
 });
 
 module.exports = BarCorrelateGraph;
-

@@ -40,7 +40,7 @@
     "react-router": "^2.8.1",
     "react-scroll": "^1.0.21",
     "react-sticky": "^5.0.4",
-    "recharts": "^0.15.0",
+    "recharts": "0.14.2",
     "scroll-into-view": "^1.6.0",
     "semantic-ui": "^2.2",
     "sendgrid": "^4.0.1",
