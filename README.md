@@ -52,3 +52,6 @@ https:
   certificate in the future, simply run letsencrypt-auto again. To
   non-interactively renew *all* of your certificates, run
   "letsencrypt-auto renew"
+- Or: 
+	sudo heroku _certs:add /etc/letsencrypt/live/exzume.com/fullchain.pem /etc/letsencrypt/live/exzume.com/privkey.pem --app exzume
+	sudo certbot certonly --debug --force-renew -a manual -d www.exzume.com -d exzume.com
