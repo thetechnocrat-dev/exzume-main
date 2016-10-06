@@ -86,11 +86,13 @@ var FitbitCard = React.createClass({
       fitbit.features[floorsIdx].data[floorsLength - 1].value.toFixed(0)
     );
 
+    var headerStyle = { margin: '2% 0% 2% 0%' };
+
     return (
       <div className="ui fluid card">
         <div className="content">
-          <div className="header" style={{ marginBottom: '2%' }}>
-            Sleep 
+          <div className="header" style={headerStyle}>
+            Sleep
           </div>
           <HorzBarViz
             label={'minutes asleep'}
@@ -106,11 +108,10 @@ var FitbitCard = React.createClass({
             fillColor={Style.green}
             backgroundColor={Style.lightGreen}
           />
-        </div>
-        <div className="ui divider" />
-        <h3 className="ui header" style={{ margin: '0px 0px 10px 15px' }}>
-          Fitness  
-        </h3>
+          <div className="ui divider" />
+          <div className="header" style={headerStyle}>
+            Fitness
+          </div>
           <HorzBarViz
             label={'steps'}
             avg={avgSteps}
@@ -133,19 +134,20 @@ var FitbitCard = React.createClass({
             backgroundColor={Style.lightGreen}
           />
           <HorzBarViz
-            label={'heart rate'}
+            label={'bpm'}
             avg={avgHeartRate}
             current={currentHeartRate}
             fillColor={Style.green}
             backgroundColor={Style.lightGreen}
           />
+        </div>
         <div className="extra content">
           <div className="left floated time">
             last synced: {lastSyncTime}
           </div>
           <div className="right floated author">
             <i className="exchange icon"></i>
-            Fitbit 
+            Fitbit
           </div>
         </div>
       </div>
@@ -154,4 +156,3 @@ var FitbitCard = React.createClass({
 });
 
 module.exports = FitbitCard;
-
