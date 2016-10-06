@@ -105,11 +105,6 @@ SessionStore.__onDispatch = function (payload) {
       this.resetSessionStore({});
       this.__emitChange();
       break;
-    // case 'FEATURE_WEEK_DATA_REQUESTED':
-    //   this.resetSessionStore
-    //   this.getFeatureWeekData(payload.data.streamName, payload.data.featureName);
-    //   this.__emitChange();
-    //   break;
   }
 };
 

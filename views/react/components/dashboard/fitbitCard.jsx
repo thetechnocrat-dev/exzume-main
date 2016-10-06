@@ -12,7 +12,7 @@ var FitbitCard = React.createClass({
 
   render: function () {
     var fitbit = this.props.fitbit;
-    var streamName = this.props.fitbit.name;
+    var streamName = fitbit.name;
     var lastSyncTime = moment(this.props.fitbit.lastSyncTime).fromNow();
     var calcAvg = function (featureDataArray) {
       var sum = 0;

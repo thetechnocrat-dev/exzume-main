@@ -113,7 +113,10 @@ var HorzBarViz = React.createClass({
             >
               <i className="remove icon" />
             </div>
-          <WeekBarChart weekData={this.state.weekData}/>
+            <WeekBarChart
+              weekData={this.state.weekData}
+              featureName={this.props.featureName}
+            />
           </Modal>
         </div>
         <div style={labelStyle}>{this.props.current + ' ' + this.props.label}</div>
