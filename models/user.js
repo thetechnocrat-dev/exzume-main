@@ -43,8 +43,6 @@ var UserSchema = new Schema({
       isConnected: { type: Boolean, default: false },
       features: [{
           name: String,
-          prompt: String,
-          format: { type: String, enum: ['agreementScale'] },
           data: [],
         },
       ],

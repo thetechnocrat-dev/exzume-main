@@ -17,14 +17,12 @@ var SelectFeatureDropdown = React.createClass({
 
   makeDropdownItems: function () {
     return this.props.dataStreams.map(function (dataStream, idx) {
-      if (dataStream.name != 'Personal Survey') {
-        return (
-          <SelectFeatureDropdownItem
-            key={idx}
-            dataStream={dataStream}
-          />
-        );
-      }
+      return (
+        <SelectFeatureDropdownItem
+          key={idx}
+          dataStream={dataStream}
+        />
+      );
     });
   },
 

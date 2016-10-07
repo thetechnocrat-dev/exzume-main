@@ -2,6 +2,7 @@ var User = require('../models/user');
 var findObjectInArray = require('../util/enumerable').findObjectInArray;
 var App = require('../models/app');
 var async = require('async');
+var joshQS = require('./joshQS');
 
 var apps = [
   {
@@ -129,11 +130,30 @@ module.exports = function (done) {
         newUser.local.username = 'Murakami42';
         newUser.local.isAdmin = true;
         newUser.local.password = newUser.generateHash('sXL5egXHHmTbgLjT');
-        newUser.local.email = 'josh.mcmenemy@gmail.com';
+        newUser.local.email = 'mr_mcmenemy@yahoo.com';
         newUser.local.passwordResetToken = '121231198741911';
 
         // PST is 7 hours behind UTC - Watts was obviously based in SF
         newUser.timezoneOffset = -420 * 60000;
+
+        newUser.save(function (err) {
+          if (err) {
+            callback(err, 'user insert error');
+          } else {
+            callback(null, newUser);
+          }
+        });
+      },
+
+      function (callback) {
+        var newUser = new User();
+        newUser.local.username = 'McMenemy';
+        newUser.local.password = newUser.generateHash('carbon721');
+        newUser.local.email = 'josh.mcmenemy@gmail.com';
+        newUser.local.passwordResetToken = '121318741911';
+        newUser.timezoneOffset = -420 * 60000;
+        newUser.datastreams.survey.isConnected = true;
+        newUser.datastreams.survey.features = joshQS;
 
         newUser.save(function (err) {
           if (err) {

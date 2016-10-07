@@ -25,7 +25,7 @@ var PinZumeButton = React.createClass({
     var body = {
       data: JSON.stringify(ExploreStore.getCorrelateScatterData()),
       correlateInfo: JSON.stringify(ExploreStore.getCorrelateScatterInfo()),
-      message: 'Heart rate has a slight negative correlation with time asleep',
+      message: 'Computer Productivity has a slight but confident positive correlation with time asleep',
     };
 
     FastFlux.webCycle('post', '/auth/zumes/new', {
