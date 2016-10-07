@@ -41,18 +41,12 @@ var lastfmAPI = {
   },
 
   sync: function (user, endSync) {
-    var processTracksData = function (newData) {
-      // initialize newData array
-      var processedData = [];
 
+    var processTracksData = function (newData, idx) {
       // function to create new day data object
       var newDayData = function (date, val) {
         return { dateTime: date, value: val };
       };
-
-      const daySeconds = 86400; // seconds in day
-      var lastSongTime; // furthest back time in unix time from data OR based on lastSongSyncedTime in DB
-      var timeLastDay;
 
       // case 1: use lastSongTime/lastSongSynced from DB (TODO)
       // if (user.datastreams.lastfm.lastSongSyncedTime) {
@@ -63,14 +57,20 @@ var lastfmAPI = {
       //   timeLastDay = Math.floor(lastSongTime / daySeconds) * daySeconds + user.timezoneOffset / 1000;
       // // case 2: track from beginning of 600 recent tracks
       // } else {
-        lastSongTime = parseInt(newData[newData.length - 1].date.uts);
-        console.log('start here: ' + lastSongTime);
-
-        timeLastDay = Math.floor(lastSongTime / daySeconds) * daySeconds + user.timezoneOffset / 1000;
-        console.log('start here: ' + moment(timeLastDay * 1000).format('YYYY-MM-DD'));
       // }
 
-      var currentDay = newDayData(moment(timeLastDay * 1000).format('YYYY-MM-DD'), 0);
+      if (idx == 0) {
+        // track from beginning of that page
+        lastSongTime = parseInt(newData[newData.length - 1].date.uts);
+        console.log('start here: ' + lastSongTime);
+        timeLastDay = Math.floor(lastSongTime / daySeconds) * daySeconds + user.timezoneOffset / 1000;
+        console.log('start here: ' + moment(timeLastDay * 1000).format('YYYY-MM-DD'));
+        currentDay = newDayData(moment(timeLastDay * 1000).format('YYYY-MM-DD'), 0);
+      } else {
+        // make copy of last day object
+        currentDay = processedData[processedData.length - 1];
+        processedData.pop();
+      }
 
       // store tracks played by day as counts in newData object
       for (var i = newData.length - 1; i >= 0; i--) {
@@ -113,15 +113,19 @@ var lastfmAPI = {
       console.log(currentDay.dateTime);
       console.log(currentDay.value);
       processedData.push(currentDay);
-      return processedData;
     };
 
+    var processedData = []; // initialize array to hold all 600 tracks data
+    const daySeconds = 86400; // seconds in day
+    var lastSongTime; // furthest back time in unix time from data OR based on lastSongSyncedTime in DB
+    var timeLastDay;
+    var currentDay;
+
     var resources = [3, 2, 1];
-    var series = resources.map(function (resource) {
+    var series = resources.map(function (resource, idx) {
       return (
         function (nextSync) {
           preSync(user, 'Tracks Played', 'lastfm', function (err) {
-            // timeLast is not used right now
             if (err) {
               nextSync(err, null);
             } else {
@@ -136,11 +140,23 @@ var lastfmAPI = {
                   page: resource,
                 },
               }).then(function (streamRes) {
-                console.log('made it to response');
-                console.log(streamRes);
-                console.log(streamRes.data.recenttracks.track);
-                var processedData = processTracksData(streamRes.data.recenttracks.track);
-                util.addDataToUser(user, 'Tracks Played', 'lastfm', processedData, nextSync);
+                // console.log('made it to response');
+                // console.log(streamRes);
+                // console.log(streamRes.data.recenttracks.track);
+                processTracksData(streamRes.data.recenttracks.track, idx);
+
+                // only add data to user after the entire series
+                if (idx == resources.length - 1) {
+                  for (k in processedData) {
+                    console.log(processedData[k]);
+                  }
+
+                  // pop off first element of array to increase data accuracy
+                  processedData.shift();
+                  util.addDataToUser(user, 'Tracks Played', 'lastfm', processedData, nextSync);
+                } else {
+                  nextSync(null, user);
+                }
               }).catch(function (err) {
                 if (err.status == 401) {
                   console.log('access token expired, redirecting to OAuth...');
