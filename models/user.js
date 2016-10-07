@@ -72,7 +72,7 @@ var UserSchema = new Schema({
       lastSyncTime: { type: Date, default: Date.now },
       syncIcon: { type: String, default: 'images/lastfm-logo-round.png' },
       isConnected: { type: Boolean, default: false },
-      lastSongTime: Number,
+      lastSongSyncedTime: Number,
       features: [{
           name: String,
           data: [],

@@ -51,23 +51,24 @@ var lastfmAPI = {
       };
 
       const daySeconds = 86400; // seconds in day
-      var lastSongTime;// last song synced time in unix time
+      var lastSongTime; // furthest back time in unix time from data OR based on lastSongSyncedTime in DB
+      var timeLastDay;
 
-      // case 1: use lastSongTime from DB (TODO)
-      if (user.datastreams.lastfm.lastSongTime) {
-        // unix timestamp of the last dateTime in seconds
-        lastSongTime = user.datastreams.lastfm.lastSongTime;
-
-        // find beginning of day (locally) for that last song, start putting in buckets from there
-        timeLastDay = Math.floor((lastSongTime + user.timezoneOffset / 1000) / daySeconds) * daySeconds;
-      // case 2: track from beginning of 600 recent tracks
-      } else {
+      // case 1: use lastSongTime/lastSongSynced from DB (TODO)
+      // if (user.datastreams.lastfm.lastSongSyncedTime) {
+      //   // unix timestamp of the last dateTime in seconds
+      //   lastSongTime = user.datastreams.lastfm.lastSongSyncedTime;
+      //
+      //   // find beginning of day (locally) for that last song, start putting in buckets from there
+      //   timeLastDay = Math.floor(lastSongTime / daySeconds) * daySeconds + user.timezoneOffset / 1000;
+      // // case 2: track from beginning of 600 recent tracks
+      // } else {
         lastSongTime = parseInt(newData[newData.length - 1].date.uts);
         console.log('start here: ' + lastSongTime);
 
         timeLastDay = Math.floor(lastSongTime / daySeconds) * daySeconds + user.timezoneOffset / 1000;
         console.log('start here: ' + moment(timeLastDay * 1000).format('YYYY-MM-DD'));
-      }
+      // }
 
       var currentDay = newDayData(moment(timeLastDay * 1000).format('YYYY-MM-DD'), 0);
 
@@ -93,22 +94,18 @@ var lastfmAPI = {
             }
           }
         }
-
-        //   if (i = 0) {
-        //     lastSongTime = newData[0].date.uts;
-        //   }
-        // } else {
-        //   lastSongTime = newData[1].date.uts;
-        // }
       }
 
-      // if (!user.datastreams.lastfm.lastSongTime ||
-      //     user.datastreams.lastfm.lastSongTime < lastSongTime) {
-      //   user.datastreams.lastfm.lastSongTime = lastSongTime;
+      // set lastSongSyncedTime in DB
+      // if (!user.datastreams.lastfm.lastSongSyncedTime ||
+      //     user.datastreams.lastfm.lastSongSyncedTime < timeThisTrack) {
+      //   user.datastreams.lastfm.lastSongSyncedTime = timeThisTrack;
       //   user.save(function (err) {
       //     if (err) {
       //       console.log('error in saving user: ' + err);
       //       throw err;
+      //     } else {
+      //       console.log('user saved with new lastSongSyncedTime of ' + timeThisTrack);
       //     }
       //   });
       // }
