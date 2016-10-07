@@ -163,6 +163,7 @@ var fitbitAPI = {
                 headers: { Authorization: 'Bearer ' + user.datastreams.fitbit.accessToken },
               }).then(function (streamRes) {
                 var processedData = resource.processDataFunc(streamRes.data[resource.featureRef]);
+                console.log(processedData);
 
                 util.addDataToUser(
                   user, resource.featureName, 'fitbit', processedData, nextSync

@@ -69,15 +69,6 @@ var FitbitCard = React.createClass({
       fitbit.features[veryActiveMinutesIdx].data[veryActiveMinutesLength - 1].value.toFixed(0)
     );
 
-    var heartRateIdx = findFeatureIndex(fitbit.features, 'Heart Rate');
-    var heartRateLength = fitbit.features[heartRateIdx].data.length;
-    var avgHeartRate = parseFloat(
-      calcAvg(fitbit.features[heartRateIdx].data).toFixed(0)
-    );
-    var currentHeartRate = parseFloat(
-      fitbit.features[heartRateIdx].data[heartRateLength - 1].value.toFixed(0)
-    );
-
     var floorsIdx = findFeatureIndex(fitbit.features, 'Floors');
     var floorsLength = fitbit.features[floorsIdx].data.length;
     var avgFloors = parseFloat(
@@ -142,15 +133,6 @@ var FitbitCard = React.createClass({
             fillColor={Style.green}
             backgroundColor={Style.lightGreen}
             featureName={'Floors'}
-            streamName={streamName}
-          />
-          <HorzBarViz
-            label={'bpm'}
-            avg={avgHeartRate}
-            current={currentHeartRate}
-            fillColor={Style.green}
-            backgroundColor={Style.lightGreen}
-            featureName={'Heart Rate'}
             streamName={streamName}
           />
         </div>
