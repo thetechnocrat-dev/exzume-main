@@ -18,52 +18,13 @@ const fillColors = [
                     '#f3e1eb', '#f6c4e1', '#f79cd4',
                    ];
 
-var TimeSeriesCompareGraph = React.createClass({
+var ZumeCorrelation = React.createClass({
   propTypes: {
     data: React.PropTypes.array.isRequired,
     width: React.PropTypes.number.isRequired,
     height: React.PropTypes.number.isRequired,
-  },
-
-  getInitialState: function () {
-    return { correlation: null, confidence: null, isLoading: true, error: null };
-  },
-
-  corrSuccess: function (res) {
-    var correlation = parseFloat(res[0]).toFixed(2);
-    var confidence = parseFloat(100 - (res[1] * 100)).toFixed(2);
-    FastFlux.cycle(
-      'CORRELATE_SCATTER_INFO_RECEIVED', { correlation: correlation, confidence: confidence }
-    );
-    this.setState({ correlation: correlation, confidence: confidence, isLoading: false });
-  },
-
-  corrError: function (res) {
-    this.setState({ error: 'Sorry, something went wrong with our analytic server' });
-  },
-
-  getCorrelation: function (data) {
-    arr1 = [];
-    arr2 = [];
-    for (var i = 0; i < data.length; i++) {
-      arr1.push(data[i].x);
-      arr2.push(data[i].y);
-    }
-
-    FastFlux.webCycle('post', '/auth/correlateTwo', {
-      success: this.corrSuccess,
-      error: this.corrError,
-      shouldStoreReceive: false,
-      body: { data: JSON.stringify({ f1: arr1, f2: arr2 }) },
-    });
-  },
-
-  componentDidMount: function () {
-    this.getCorrelation(this.props.data[0].data);
-  },
-
-  componentWillReceiveProps: function (newProps) {
-    this.getCorrelation(newProps.data[0].data);
+    correlation: React.PropTypes.string.isRequired,
+    confidence: React.PropTypes.string.isRequired,
   },
 
   makeScatters: function () {
@@ -80,30 +41,16 @@ var TimeSeriesCompareGraph = React.createClass({
     });
   },
 
-  clickBackIcon: function (e) {
-    e.preventDefault();
-    FastFlux.cycle('GRAPH_DISPLAY_RECEIVED', 'timeSeries');
-  },
-
   makeCorrelationInfo: function () {
-    if (this.state.isLoading) {
-      return (
-        <div className="ui active text loader">Calculating Correlation</div>
-      );
-    } else if (this.state.correlation && this.state.confidence) {
-      return (
-        <div style={{ display: 'inline-block', marginLeft: '10px' }}>
-          <div className="ui message" style={{ padding: '5px 10px 5px 10px' }}>
-            {'correlation: ' + this.state.correlation + ', confidence: ' +
-              this.state.confidence + '%'}
-          </div>
-        </div>
-      );
-    }
+    return (
+      <div style={{ }}>
+          {'correlation: ' + this.props.correlation + ', confidence: ' +
+            this.props.confidence + '%'}
+      </div>
+    );
   },
 
   render: function () {
-    console.log(this.state);
     console.log(this.props);
     return (
       <div style={{ textAlign: 'center' }}>
@@ -114,12 +61,9 @@ var TimeSeriesCompareGraph = React.createClass({
           {this.props.data[0].name}
         </div>
         {this.makeCorrelationInfo()}
-        <div className="ui right floated icon button">
-          <i className="reply icon" onClick={this.clickBackIcon} />
-        </div>
         <ScatterChart
-          width={this.props.width}
-          height={this.props.height}
+          width={700}
+          height={500}
           margin={{ top: 20, right: 50, bottom: 20, left: -10 }}
         >
           <XAxis
@@ -138,14 +82,14 @@ var TimeSeriesCompareGraph = React.createClass({
           <CartesianGrid />
           <Tooltip
             cursor={{ strokeDasharray: '3 3' }}/>
-          <Legend/>
           {this.makeScatters()}
         </ScatterChart>
+        <div>{this.props.message}</div>
       </div>
     );
   },
 
 });
 
-module.exports = TimeSeriesCompareGraph;
+module.exports = ZumeCorrelation;
 

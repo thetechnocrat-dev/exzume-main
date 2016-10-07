@@ -10,7 +10,6 @@ module.exports = function (router, sg) {
 
   // only Admin user can access
   router.use(function (req, res, next) {
-    console.log('here');
     if (req.isAuthenticated() && req.user.local.isAdmin) {
       return next();
     } else {

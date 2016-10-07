@@ -53,6 +53,10 @@ var Dashboard = React.createClass({
 
     // the order you put cards here is the same order they will be going left to right
     cards.push(
+      <InsightCard zumes={this.state.user.zumes} />
+    );
+
+    cards.push(
       <MoodCard user={this.state.user} />
     );
 

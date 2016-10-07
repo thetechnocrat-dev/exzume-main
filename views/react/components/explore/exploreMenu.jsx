@@ -7,6 +7,7 @@ var TimeDropdown = require('./timeDropdown');
 var NormalizeButton = require('./normalizeButton');
 var CorrelateDropdown = require('./correlateDropdown');
 var ResetButton = require('./resetButton');
+var PinZumeButton = require('./pinZumeButton');
 
 var ExploreMenu = React.createClass({
   propTypes: {
@@ -32,18 +33,24 @@ var ExploreMenu = React.createClass({
           <TimeDropdown isDisabled={this.props.isDisabled} />
         </div>
         <div className="item">
-          <NormalizeButton
-            isDisabled={
-              this.props.isDisabled || this.props.currentGraphDisplay == 'correlateScatter'
-            }
-            />
-        </div>
-        <div className="item">
           <CorrelateDropdown
             dataStreams={this.props.dataStreams}
             isDisabled={this.props.isDisabled}
             currentFeatureName={this.props.currentFeatureName}
             features={this.props.features}
+          />
+        </div>
+        <div className="item">
+          <NormalizeButton
+            isDisabled={
+              this.props.isDisabled || this.props.currentGraphDisplay == 'correlateScatter'
+              }
+            />
+        </div>
+        <div className="item">
+          <PinZumeButton isDisabled={
+            this.props.isDisabled
+            }
           />
         </div>
       </div>

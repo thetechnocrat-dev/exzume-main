@@ -5,7 +5,7 @@ var InsightList = require('./insightList');
 
 var InsightCard = React.createClass({
   propTypes: {
-    insights: React.PropTypes.array.isRequired,
+    zumes: React.PropTypes.array.isRequired,
   },
 
   componentDidMount: function () {
@@ -17,9 +17,9 @@ var InsightCard = React.createClass({
       <div className="ui fluid card">
         <div className="content">
           <div className="header">
-            Insights
+            Your Zumes
           </div>
-          <InsightList insights={this.props.insights} />
+          <InsightList zumes={this.props.zumes} />
         </div>
       </div>
     );

@@ -1,27 +1,17 @@
 var React = require('react');
 
 // Components
+var ZumeItem = require('./zumeItem');
 
 var InsightList = React.createClass({
   propTypes: {
-    insights: React.PropTypes.array.isRequired,
-  },
-
-  componentDidMount: function () {
-    console.log('insight list');
+    zumes: React.PropTypes.array.isRequired,
   },
 
   makeInsightItems: function () {
-    return this.props.insights.map(function (insight, idx) {
-      return (
-        <div className="item" key={idx}>
-          <i className="large check circle middle aligned icon" />
-          <div className="content">
-            <div className="header">{insight.text}</div> 
-            <div className="description">{insight.info}</div>
-          </div>
-        </div>
-      );
+    var _this = this;
+    return this.props.zumes.map(function (zume, idx) {
+      return (<ZumeItem key={idx} zume={zume} />);
     });
   },
 

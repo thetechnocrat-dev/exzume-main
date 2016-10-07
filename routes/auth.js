@@ -26,7 +26,11 @@ module.exports = function (router, passport) {
 
   router.route('/zumes/:zumeId')
     .post(function (req, res) {
-      req.user.zumes.push(req.body);
+      var zume = {};
+      zume.data = JSON.parse(req.body.data);
+      zume.correlateInfo = JSON.parse(req.body.correlateInfo);
+      zume.message = req.body.message;
+      req.user.zumes.push(zume);
       req.user.save(function (err, user) {
         if (err) {
           res.send(err);
@@ -34,7 +38,8 @@ module.exports = function (router, passport) {
           res.json(user);
         }
       });
-    });
+    }
+  );
 
   // only used for survey dataStream
   router.route('/userfeatures/:datastream/:feature')
@@ -181,14 +186,11 @@ module.exports = function (router, passport) {
   );
 
   router.post('/correlateTwo', function (req, res) {
-    console.log('in correlate two');
-    console.log(req.body);
     axios({
       method: 'POST',
       url: config.microURL + 'correlateTwo',
       data: req.body,
     }).then(function (resp) {
-      console.log(resp);
       res.json(resp.data);
     }).catch(function (err) {
       res.send(err);
@@ -196,14 +198,11 @@ module.exports = function (router, passport) {
   });
 
   router.post('/correlateMany', function (req, res) {
-    console.log('in correlate many');
-    console.log(req.body);
     axios({
       method: 'POST',
       url: config.microURL + 'correlateMany',
       data: req.body,
     }).then(function (resp) {
-      console.log(resp);
       res.json(resp.data);
     }).catch(function (err) {
       res.send(err);

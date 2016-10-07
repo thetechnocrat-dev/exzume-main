@@ -18,9 +18,7 @@ var UserSchema = new Schema({
   // local time-zone offset in milliseconds from UTC
   timezoneOffset: { type: Number, default: 0 },
   formURL: { type: String, default: 'none' },
-  zumes: [
-    { featureNames: [] },
-  ],
+  zumes: [],
   insights: [
     {
       message: String,

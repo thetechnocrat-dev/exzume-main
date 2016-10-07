@@ -20,6 +20,7 @@ var _moodNoteSeriesData = [];
 
 // Initial State for ScatterCorrelate
 var _scatterCorrelateData = [];
+var _scatterCorrelateInfo = { correlation: '', confidence: '' };
 
 // Initial State for BarCorrelate
 var _barCorrelateData = [{ correlation: 0, name: 'still calculating' }];
@@ -38,6 +39,7 @@ ExploreStore.reset = function () {
   _timeSeriesData = [];
   _moodNoteSeriesData = [];
   _scatterCorrelateData = [];
+  _scatterCorrelateInfo = { correlation: '', confidence: '' };
   _barCorrelateData = [{ correlation: 0, name: 'still calculating' }];
   _barCorrelateIsLoading = true;
 };
@@ -78,7 +80,6 @@ var featureToTimeSeries = function (feature) {
   timeSeries.data = [];
 
   if (timeSeries.name == 'Mood Rating') {
-    console.log('made it');
     for (var i = 0; i < feature.data.length; i++) {
       var dataPoint = {
         x: new Date(feature.data[i].dateTime.valueOf()).getTime(),
@@ -112,7 +113,6 @@ var withinBounds =  function (date, dateBound) {
 
 ExploreStore.addMoodNoteSeriesData = function (feature) {
   _moodNoteSeriesData.push(featureToTimeSeries(feature));
-  console.log(_moodNoteSeriesData);
 },
 
 ExploreStore.removeMoodNoteSeriesData = function () {
@@ -220,6 +220,14 @@ ExploreStore.getCorrelateScatterData = function () {
   return _scatterCorrelateData;
 };
 
+ExploreStore.setCorrelateScatterInfo = function (correlateInfo) {
+  _scatterCorrelateInfo = correlateInfo;
+};
+
+ExploreStore.getCorrelateScatterInfo = function () {
+  return _scatterCorrelateInfo;
+};
+
 // Correlate Bar Specific
 ExploreStore.setBarCorrelateData = function (barCorrelateData) {
   _barCorrelateData = barCorrelateData;
@@ -273,6 +281,9 @@ ExploreStore.__onDispatch = function (payload) {
       this.setCurrentGraphDisplay('correlateScatter');
       this.setCorrelateScatterData(payload.data);
       this.__emitChange();
+      break;
+    case 'CORRELATE_SCATTER_INFO_RECEIVED':
+      this.setCorrelateScatterInfo(payload.data);
       break;
     case 'CORRELATE_BAR_RECEIVED':
       this.setCurrentGraphDisplay('correlateBar');
