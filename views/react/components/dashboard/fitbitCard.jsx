@@ -12,6 +12,7 @@ var FitbitCard = React.createClass({
 
   render: function () {
     var fitbit = this.props.fitbit;
+    var streamName = fitbit.name;
     var lastSyncTime = moment(this.props.fitbit.lastSyncTime).fromNow();
     var calcAvg = function (featureDataArray) {
       var sum = 0;
@@ -32,13 +33,13 @@ var FitbitCard = React.createClass({
       return null;
     };
 
-    var minutesAsleepIdx = findFeatureIndex(fitbit.features, 'Minutes Asleep');
-    var minutesAsleepLength = fitbit.features[minutesAsleepIdx].data.length;
-    var avgMinutesAsleep = parseFloat(
-      calcAvg(fitbit.features[minutesAsleepIdx].data).toFixed(0)
+    var hoursAsleepIdx = findFeatureIndex(fitbit.features, 'Hours Asleep');
+    var hoursAsleepLength = fitbit.features[hoursAsleepIdx].data.length;
+    var avgHoursAsleep = parseFloat(
+      calcAvg(fitbit.features[hoursAsleepIdx].data).toFixed(1)
     );
-    var currentMinutesAsleep = parseFloat(
-      fitbit.features[minutesAsleepIdx].data[minutesAsleepLength - 1].value.toFixed(0)
+    var currentHoursAsleep = parseFloat(
+      fitbit.features[hoursAsleepIdx].data[hoursAsleepLength - 1].value.toFixed(1)
     );
 
     var awakeningsIdx = findFeatureIndex(fitbit.features, '# of Awakenings');
@@ -68,15 +69,6 @@ var FitbitCard = React.createClass({
       fitbit.features[veryActiveMinutesIdx].data[veryActiveMinutesLength - 1].value.toFixed(0)
     );
 
-    var heartRateIdx = findFeatureIndex(fitbit.features, 'Heart Rate');
-    var heartRateLength = fitbit.features[heartRateIdx].data.length;
-    var avgHeartRate = parseFloat(
-      calcAvg(fitbit.features[heartRateIdx].data).toFixed(0)
-    );
-    var currentHeartRate = parseFloat(
-      fitbit.features[heartRateIdx].data[heartRateLength - 1].value.toFixed(0)
-    );
-
     var floorsIdx = findFeatureIndex(fitbit.features, 'Floors');
     var floorsLength = fitbit.features[floorsIdx].data.length;
     var avgFloors = parseFloat(
@@ -95,11 +87,13 @@ var FitbitCard = React.createClass({
             Sleep
           </div>
           <HorzBarViz
-            label={'minutes asleep'}
-            avg={avgMinutesAsleep}
-            current={currentMinutesAsleep}
+            label={'hours asleep'}
+            avg={avgHoursAsleep}
+            current={currentHoursAsleep}
             fillColor={Style.green}
             backgroundColor={Style.lightGreen}
+            featureName={'Hours Asleep'}
+            streamName={streamName}
           />
           <HorzBarViz
             label={'awakenings'}
@@ -107,6 +101,8 @@ var FitbitCard = React.createClass({
             current={currentAwakenings}
             fillColor={Style.green}
             backgroundColor={Style.lightGreen}
+            featureName={'# of Awakenings'}
+            streamName={streamName}
           />
           <div className="ui divider" />
           <div className="header" style={headerStyle}>
@@ -118,6 +114,8 @@ var FitbitCard = React.createClass({
             current={currentSteps}
             fillColor={Style.green}
             backgroundColor={Style.lightGreen}
+            featureName={'Steps'}
+            streamName={streamName}
           />
           <HorzBarViz
             label={'very active minutes'}
@@ -125,6 +123,8 @@ var FitbitCard = React.createClass({
             current={currentVeryActiveMinutes}
             fillColor={Style.green}
             backgroundColor={Style.lightGreen}
+            featureName={'Very Active Minutes'}
+            streamName={streamName}
           />
           <HorzBarViz
             label={'floors'}
@@ -132,13 +132,8 @@ var FitbitCard = React.createClass({
             current={currentFloors}
             fillColor={Style.green}
             backgroundColor={Style.lightGreen}
-          />
-          <HorzBarViz
-            label={'bpm'}
-            avg={avgHeartRate}
-            current={currentHeartRate}
-            fillColor={Style.green}
-            backgroundColor={Style.lightGreen}
+            featureName={'Floors'}
+            streamName={streamName}
           />
         </div>
         <div className="extra content">

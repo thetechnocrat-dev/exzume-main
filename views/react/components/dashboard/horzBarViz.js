@@ -1,6 +1,8 @@
 var React = require('react');
 var Modal = require('react-modal');
 var Style = require('../../util/style');
+var WeekBarChart = require('./weekBarChart');
+var SessionStore = require('../../stores/sessionStore');
 
 var HorzBarViz = React.createClass({
   propTypes: {
@@ -9,10 +11,12 @@ var HorzBarViz = React.createClass({
     current: React.PropTypes.number.isRequired,
     fillColor: React.PropTypes.string.isRequired,
     backgroundColor: React.PropTypes.string.isRequired,
+    featureName: React.PropTypes.string.isRequired,
+    streamName: React.PropTypes.string.isRequired,
   },
 
   getInitialState: function () {
-    return { modalIsOpen: false, hover: false, };
+    return { modalIsOpen: false, hover: false, weekData: [] };
   },
 
   toggleHover: function () {
@@ -24,7 +28,10 @@ var HorzBarViz = React.createClass({
   },
 
   openModal: function () {
-    this.setState({ modalIsOpen: true });
+    var weekData = SessionStore.getFeatureWeekData(
+      this.props.streamName, this.props.featureName
+    );
+    this.setState({ modalIsOpen: true, weekData: weekData });
   },
 
   calcPercent: function (avg, current) {
@@ -106,6 +113,10 @@ var HorzBarViz = React.createClass({
             >
               <i className="remove icon" />
             </div>
+            <WeekBarChart
+              weekData={this.state.weekData}
+              featureName={this.props.featureName}
+            />
           </Modal>
         </div>
         <div style={labelStyle}>{this.props.current + ' ' + this.props.label}</div>

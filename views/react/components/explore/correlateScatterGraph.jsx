@@ -9,7 +9,6 @@ var YAxis = Recharts.YAxis;
 var ZAxis = Recharts.ZAxis;
 var CartesianGrid = Recharts.CartesianGrid;
 var Tooltip = Recharts.Tooltip;
-var Legend = Recharts.Legend;
 
 const fillColors = [
                     '#023fa5', '#7d87b9', '#bec1d4', '#d6bcc0', '#bb7784', '#8e063b', '#4a6fe3',
@@ -126,8 +125,6 @@ var TimeSeriesCompareGraph = React.createClass({
             dataKey={'x'}
             name={this.props.data[0].xLabel}
             type='number'
-            tickSize={14}
-            tick={{ strokeWidth: 0 }}
             domain={['dataMin', 'dataMax']}
           />
           <YAxis
@@ -137,8 +134,8 @@ var TimeSeriesCompareGraph = React.createClass({
           />
           <CartesianGrid />
           <Tooltip
-            cursor={{ strokeDasharray: '3 3' }}/>
-          <Legend/>
+            cursor={{ strokeDasharray: '3 3' }}
+          />
           {this.makeScatters()}
         </ScatterChart>
       </div>
@@ -148,4 +145,3 @@ var TimeSeriesCompareGraph = React.createClass({
 });
 
 module.exports = TimeSeriesCompareGraph;
-

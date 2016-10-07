@@ -24,7 +24,6 @@ var ConnectionCard = React.createClass({
   },
 
   makeMetaText: function () {
-    // add check if mood is only connection?
     if (this.props.connectedStreams.length == 0) {
       return (
         <div className="meta" style={{ marginBottom: '3%' }}>

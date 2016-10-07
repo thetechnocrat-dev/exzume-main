@@ -68,6 +68,21 @@ var fitbitAPI = {
       return processedData;
     };
 
+    var processHoursSleepData = function (newData) {
+      var processedData = [];
+      for (var i = 0; i < newData.length; i++) {
+        if (newData[i].value != '0') {
+          processedData.push({
+            dateTime: newData[i].dateTime,
+            // TODO: make these values 1 d.p. -- toFixed() seems buggy
+            value: parseFloat((parseInt(newData[i].value) / 60).toFixed(2)),
+          });
+        }
+      }
+
+      return processedData;
+    };
+
     var processHeartRateData = function (heartRateArray) {
       var processedData = [];
       for (var i = 0; i < heartRateArray.length; i++) {
@@ -108,10 +123,10 @@ var fitbitAPI = {
         processDataFunc: processActSleepData,
       },
       {
-        featureName: 'Minutes Asleep',
+        featureName: 'Hours Asleep',
         baseUrl: 'https://api.fitbit.com/1/user/-/sleep/minutesAsleep/date/',
         featureRef: 'sleep-minutesAsleep',
-        processDataFunc: processActSleepData,
+        processDataFunc: processHoursSleepData,
       },
       {
         featureName: '# of Awakenings',
@@ -148,6 +163,7 @@ var fitbitAPI = {
                 headers: { Authorization: 'Bearer ' + user.datastreams.fitbit.accessToken },
               }).then(function (streamRes) {
                 var processedData = resource.processDataFunc(streamRes.data[resource.featureRef]);
+                console.log(processedData);
 
                 util.addDataToUser(
                   user, resource.featureName, 'fitbit', processedData, nextSync

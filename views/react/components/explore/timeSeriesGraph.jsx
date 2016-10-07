@@ -111,8 +111,6 @@ var TimeSeriesCompareGraph = React.createClass({
                 return moment(date).format('MM-DD-YY');
               }
             }
-            tickSize={14}
-            tick={{ strokeWidth: 0 }}
             domain={['dataMin', 'dataMax']}
           />
           <YAxis dataKey={'y'} name='value' />

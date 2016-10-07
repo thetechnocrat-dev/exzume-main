@@ -40,6 +40,7 @@ var RescueTimeCard = React.createClass({
 
   render: function () {
     var rescuetime = this.props.rescuetime;
+    var streamName = rescuetime.name;
     var lastSyncTime = moment(this.props.rescuetime.lastSyncTime).fromNow();
     var dataLength = rescuetime.features[0].data.length;
 
@@ -91,6 +92,8 @@ var RescueTimeCard = React.createClass({
             current={currentProductiveTime}
             fillColor={Style.green}
             backgroundColor={Style.lightGreen}
+            featureName={'Computer Productivity (Hours)'}
+            streamName={streamName}
           />
           <HorzBarViz
             label={'distracting hours'}
@@ -98,6 +101,8 @@ var RescueTimeCard = React.createClass({
             current={avgDistractingTime}
             fillColor={Style.green}
             backgroundColor={Style.lightGreen}
+            featureName={'Computer Distractivity (Hours)'}
+            streamName={streamName}
           />
           <HorzBarViz
             label={'neutral hours'}
@@ -105,6 +110,8 @@ var RescueTimeCard = React.createClass({
             current={currentNeutralTime}
             fillColor={Style.green}
             backgroundColor={Style.lightGreen}
+            featureName={'Computer Neutral (Hours)'}
+            streamName={streamName}
           />
         </div>
         <div className="extra content">
@@ -123,4 +130,3 @@ var RescueTimeCard = React.createClass({
 });
 
 module.exports = RescueTimeCard;
-
