@@ -5,9 +5,12 @@ util = {
   // function to add current data as object to user.datastreams.features array
   addDataToUser: function (user, featureName, streamName, newData, nextSync) {
     var currentStream = user.datastreams[streamName];
-    console.log(currentStream);
-    console.log(featureName);
-    console.log(newData.toString());
+
+    // console.log(currentStream);
+    // console.log(featureName);
+    // for (k in newData) {
+    //   console.log(newData[k]);
+    // }
 
     // find proper feature index within users datastream object
     var thisFeatureIndex;
@@ -96,4 +99,3 @@ util = {
 };
 
 module.exports = util;
-
