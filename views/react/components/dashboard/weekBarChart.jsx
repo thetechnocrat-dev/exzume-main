@@ -59,7 +59,7 @@ const SimpleBarChart = React.createClass({
         <br />
         {this.makeSubtitle()}
         <BarChart width={450} height={300} data={this.formatData()}
-          margin={{ top: 25, right: 35, bottom: 10 }}>
+          margin={{ top: 20, right: 35, bottom: 10 }}>
          <XAxis
            dataKey="dateTime"
            padding={{ left: 10, right: 10 }}

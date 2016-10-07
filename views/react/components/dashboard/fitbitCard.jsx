@@ -33,13 +33,13 @@ var FitbitCard = React.createClass({
       return null;
     };
 
-    var minutesAsleepIdx = findFeatureIndex(fitbit.features, 'Minutes Asleep');
-    var minutesAsleepLength = fitbit.features[minutesAsleepIdx].data.length;
-    var avgMinutesAsleep = parseFloat(
-      calcAvg(fitbit.features[minutesAsleepIdx].data).toFixed(0)
+    var hoursAsleepIdx = findFeatureIndex(fitbit.features, 'Hours Asleep');
+    var hoursAsleepLength = fitbit.features[hoursAsleepIdx].data.length;
+    var avgHoursAsleep = parseFloat(
+      calcAvg(fitbit.features[hoursAsleepIdx].data).toFixed(1)
     );
-    var currentMinutesAsleep = parseFloat(
-      fitbit.features[minutesAsleepIdx].data[minutesAsleepLength - 1].value.toFixed(0)
+    var currentHoursAsleep = parseFloat(
+      fitbit.features[hoursAsleepIdx].data[hoursAsleepLength - 1].value.toFixed(1)
     );
 
     var awakeningsIdx = findFeatureIndex(fitbit.features, '# of Awakenings');
@@ -96,12 +96,12 @@ var FitbitCard = React.createClass({
             Sleep
           </div>
           <HorzBarViz
-            label={'minutes asleep'}
-            avg={avgMinutesAsleep}
-            current={currentMinutesAsleep}
+            label={'hours asleep'}
+            avg={avgHoursAsleep}
+            current={currentHoursAsleep}
             fillColor={Style.green}
             backgroundColor={Style.lightGreen}
-            featureName={'Minutes Asleep'}
+            featureName={'Hours Asleep'}
             streamName={streamName}
           />
           <HorzBarViz
