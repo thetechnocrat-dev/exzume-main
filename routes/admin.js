@@ -9,13 +9,13 @@ var axios = require('axios');
 module.exports = function (router, sg) {
 
   // only Admin user can access
-  router.use(function (req, res, next) {
-    if (req.isAuthenticated() && req.user.local.isAdmin) {
-      return next();
-    } else {
-      res.status(403).json({ message: 'unauthorized' });
-    }
-  }),
+  // router.use(function (req, res, next) {
+  //   if (req.isAuthenticated() && req.user.local.isAdmin) {
+  //     return next();
+  //   } else {
+  //     res.status(403).json({ message: 'unauthorized' });
+  //   }
+  // }),
 
   router.route('/features/:featureId')
     .get(function (req, res) {
