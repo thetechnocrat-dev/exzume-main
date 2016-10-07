@@ -131,6 +131,7 @@ var TimeSeriesCompareGraph = React.createClass({
             dataKey={'y'}
             name={this.props.data[0].yLabel}
             domain={['dataMin', 'dataMax']}
+            allowDecimals={false}
           />
           <CartesianGrid />
           <Tooltip
