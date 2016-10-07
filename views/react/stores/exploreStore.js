@@ -198,8 +198,8 @@ ExploreStore.featuresToScatter = function (mainFeature, otherFeature) {
     for (var j = 0; j < otherFeature.data.length; j++) {
       if (mainFeature.data[i].dateTime == otherFeature.data[j].dateTime) {
         var dataPoint = {
-          x: otherFeature.data[j].value,
-          y: mainFeature.data[i].value,
+          x: parseFloat(otherFeature.data[j].value.toFixed(2)),
+          y: parseFloat(mainFeature.data[i].value.toFixed(2)),
         };
         scatterSeries.data.push(dataPoint);
         break;
