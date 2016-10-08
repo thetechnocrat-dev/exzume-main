@@ -9,15 +9,17 @@ var CorrelateWithItem = React.createClass({
   makeFeatureItems: function () {
     var _this = this;
     return this.props.dataStream.features.map(function (feature, idx) {
-      return (
-        <div
-          className="item"
-          key={idx}
-          onClick={_this.clickFeatureItem.bind(null, feature)}
-        >
-          {feature.name}
-        </div>
-      );
+      if (feature.name != 'Mood Note') {
+        return (
+          <div
+            className="item"
+            key={idx}
+            onClick={_this.clickFeatureItem.bind(null, feature)}
+          >
+            {feature.name}
+          </div>
+        );
+      }
     });
   },
 
@@ -40,4 +42,3 @@ var CorrelateWithItem = React.createClass({
 });
 
 module.exports = CorrelateWithItem;
-

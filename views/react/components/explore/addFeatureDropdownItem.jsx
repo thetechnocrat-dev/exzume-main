@@ -35,7 +35,7 @@ var AddFeatureDropdownItem = React.createClass({
   },
 
   makeMoodRatingFeatureItem: function () {
-    if (moodRatingFeature && moodNoteFeature) {
+    if (this.props.dataStream.name == 'Mood') {
       return (
         <AddFeatureDropdownFeatureItem
           feature={moodRatingFeature}
