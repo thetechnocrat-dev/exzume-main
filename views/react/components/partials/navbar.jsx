@@ -44,10 +44,6 @@ var navbar = React.createClass({
     this.setState({ viewPortWidth: window.innerWidth });
   },
 
-  clickProfile: function () {
-    this.history.push('/dashboard');
-  },
-
   clickSignout: function () {
     FastFlux.webCycle('get', '/auth/signout', {
       success: this.successCallback,
@@ -89,7 +85,6 @@ var navbar = React.createClass({
                 {this.state.username}
                 <i className="dropdown icon"></i>
                 <div className="menu">
-                  <div className="item" onClick={this.clickProfile}>Profile</div>
                   <div className="item" onClick={this.clickSignout}>Signout</div>
                 </div>
               </div>
