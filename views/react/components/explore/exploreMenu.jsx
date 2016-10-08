@@ -47,12 +47,12 @@ var ExploreMenu = React.createClass({
               }
             />
         </div>
-        <div className="item">
+        {/*<div className="item">
           <PinZumeButton isDisabled={
             this.props.isDisabled
             }
           />
-        </div>
+        </div>*/}
       </div>
     );
   },

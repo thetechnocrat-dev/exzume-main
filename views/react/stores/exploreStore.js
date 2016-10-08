@@ -187,7 +187,6 @@ ExploreStore.removeTimeSeriesData = function (feature) {
 };
 
 // Correlate Scatter Specific
-//
 
 ExploreStore.featuresToScatter = function (mainFeature, otherFeature) {
   var scatterSeries = {};
