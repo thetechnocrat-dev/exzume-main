@@ -8,6 +8,7 @@ var preSync = function (user, featureName, streamName, startSync) {
   // if userFeature array doesn't it exist it will init it and return 1m,
   // else it returns the date to sync from
   var prepUserFeatureArr = function (user, featureName, streamName, startSync) {
+    console.log('prepUserFeatureArr', featureName);
     var currentStream = user.datastreams[streamName];
 
     // check if user already has initialized userFeature
@@ -54,7 +55,7 @@ var fitbitAPI = {
 
   sync: function (user, endSync) {
     // startSync helper functions:
-    var processActSleepData = function (newData) {
+    var processActivitiesData = function (newData) {
       var processedData = [];
       for (var i = 0; i < newData.length; i++) {
         if (newData[i].value != '0') {
@@ -74,6 +75,7 @@ var fitbitAPI = {
         if (newData[i].value != '0') {
           processedData.push({
             dateTime: newData[i].dateTime,
+
             // TODO: make these values 1 d.p. -- toFixed() seems buggy
             value: parseFloat((parseInt(newData[i].value) / 60).toFixed(2)),
           });
@@ -102,7 +104,7 @@ var fitbitAPI = {
         featureName: 'Steps',
         baseUrl: 'https://api.fitbit.com/1/user/-/activities/steps/date/',
         featureRef: 'activities-steps',
-        processDataFunc: processActSleepData,
+        processDataFunc: processActivitiesData,
       },
       {
         featureName: 'Heart Rate',
@@ -114,13 +116,13 @@ var fitbitAPI = {
         featureName: 'Floors',
         baseUrl: 'https://api.fitbit.com/1/user/-/activities/floors/date/',
         featureRef: 'activities-floors',
-        processDataFunc: processActSleepData,
+        processDataFunc: processActivitiesData,
       },
       {
         featureName: 'Very Active Minutes',
         baseUrl: 'https://api.fitbit.com/1/user/-/activities/minutesVeryActive/date/',
         featureRef: 'activities-minutesVeryActive',
-        processDataFunc: processActSleepData,
+        processDataFunc: processActivitiesData,
       },
       {
         featureName: 'Hours Asleep',
@@ -132,13 +134,13 @@ var fitbitAPI = {
         featureName: '# of Awakenings',
         baseUrl: 'https://api.fitbit.com/1/user/-/sleep/awakeningsCount/date/',
         featureRef: 'sleep-awakeningsCount',
-        processDataFunc: processActSleepData,
+        processDataFunc: processActivitiesData,
       },
       {
         featureName: 'Sleep Efficiency',
         baseUrl: 'https://api.fitbit.com/1/user/-/sleep/efficiency/date/',
         featureRef: 'sleep-efficiency',
-        processDataFunc: processActSleepData,
+        processDataFunc: processActivitiesData,
       },
     ];
 
@@ -147,6 +149,7 @@ var fitbitAPI = {
         function (nextSync) {
           // preSync calls startSync as callback
           preSync(user, resource.featureName, 'fitbit', function (err, startDate) {
+            console.log('fitbit preSync', resource.featureName);
             if (err) {
               nextSync(err, null);
             } else if (startDate) {
@@ -163,6 +166,7 @@ var fitbitAPI = {
                 headers: { Authorization: 'Bearer ' + user.datastreams.fitbit.accessToken },
               }).then(function (streamRes) {
                 var processedData = resource.processDataFunc(streamRes.data[resource.featureRef]);
+                console.log('axios success', resource.featureName);
 
                 util.addDataToUser(
                   user, resource.featureName, 'fitbit', processedData, nextSync
@@ -182,6 +186,7 @@ var fitbitAPI = {
 
     async.series(series, function (err, results) {
       if (err === 'redirect') {
+        console.log('redirecting oAuth expired');
         endSync(null, null, true);
       } else if (err) {
         endSync(err, null, null);
@@ -195,3 +200,4 @@ var fitbitAPI = {
 };
 
 module.exports = fitbitAPI;
+

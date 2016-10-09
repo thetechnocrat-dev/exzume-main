@@ -18,7 +18,7 @@ var ConnectionItem = React.createClass({
   },
 
   errorCallback: function () {
-    console.log('damn, sync error.');
+    console.log('sync error.');
     this.setState({ loading: false });
   },
 
