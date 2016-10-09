@@ -54,7 +54,7 @@ const CustomTooltip = React.createClass({
   },
 });
 
-var TimeSeriesCompareGraph = React.createClass({
+var TimeSeriesGraph = React.createClass({
   propTypes: {
     data: React.PropTypes.array.isRequired,
     moodNoteData: React.PropTypes.object,
@@ -134,4 +134,4 @@ var TimeSeriesCompareGraph = React.createClass({
 
 });
 
-module.exports = TimeSeriesCompareGraph;
+module.exports = TimeSeriesGraph;

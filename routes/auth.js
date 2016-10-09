@@ -234,6 +234,8 @@ module.exports = function (router, passport) {
       if (feature.data.length > 0 &&
           feature.data[feature.data.length - 1].dateTime.valueOf().slice(0, 10) ==
           newDateTime.valueOf().slice(0, 10)) {
+        console.log(feature.data[feature.data.length - 1].dateTime.valueOf().slice(0, 10));
+        console.log(newDateTime.valueOf().slice(0, 10));
         console.log('popping...');
         feature.data.pop();
         feature.data.push({ dateTime: newDateTime,
