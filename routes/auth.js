@@ -6,6 +6,7 @@ var moment = require('moment');
 var async = require('async');
 var axios = require('axios');
 var config = require('../config/config');
+var querystring = require('querystring');
 
 module.exports = function (router, passport) {
   // makes sure a user is logged in
@@ -122,6 +123,46 @@ module.exports = function (router, passport) {
       dataStreamAPIs[req.params.datastream].connect(req, res, next);
     });
 
+  router.get('/datastreams/fitbit/refresh', function (req, res) {
+    console.log('refresh route');
+    console.log('refreshing' + req.params.datastrean);
+    var idSecret = config.fitbit.clientID + ':' + config.fitbit.clientSecret;
+    var encodedIdSecret = (new Buffer(idSecret)).toString('base64');
+
+    axios({
+      method: 'POST',
+      url: 'https://api.fitbit.com/oauth2/token',
+      headers: {
+        Authorization: 'Basic ' + encodedIdSecret,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      data: querystring.stringify({
+        grant_type: 'refresh_token',
+        refresh_token: req.user.datastreams.fitbit.refreshToken,
+      }),
+    }).then(function (fitbitRes) {
+      console.log('fitbit success');
+      console.log(fitbitRes);
+      req.user.datastreams.fitbit.accessToken = fitbitRes.data.access_token;
+      req.user.datastreams.fitbit.refreshToken = fitbitRes.data.refresh_token;
+      console.log(fitbitRes.data.access_token);
+      console.log(fitbitRes.data.refresh_token);
+      req.user.save(function (err, user) {
+        console.log(user);
+        if (err) {
+          res.status(500).json({ message: 'error saving the using' });
+        } else {
+          console.log('user saved');
+          res.json(user);
+        }
+      });
+    }).catch(function (err) {
+      console.log('fitbit error');
+      console.log(err);
+      console.log(err.response.data.errors);
+    });
+  });
+
   router.get('/datastreams/rescuetime/callback', function (req, res, next) {
     console.log(req.query);
     axios({
@@ -177,7 +218,8 @@ module.exports = function (router, passport) {
             res.json(updatedUser);
           }
         } else if (shouldRedirect) {
-          res.redirect('/auth/datastreams/' + req.params.datastream);
+          console.log('trying to redirect');
+          res.redirect('/auth/datastreams/' + req.params.datastream + '/refresh');
         }
       };
 
@@ -258,6 +300,7 @@ module.exports = function (router, passport) {
   });
 
   router.get('/*', function (req, res) {
+    console.log('catch all');
     res.redirect('/');
   });
 };

@@ -150,7 +150,11 @@ var fitbitAPI = {
           // preSync calls startSync as callback
           preSync(user, resource.featureName, 'fitbit', function (err, startDate) {
             console.log('fitbit preSync', resource.featureName);
+            console.log(err);
+            console.log(startDate);
             if (err) {
+              console.log('preSync error');
+              console.log(err);
               nextSync(err, null);
             } else if (startDate) {
               var baseUrl = resource.baseUrl;
@@ -172,7 +176,14 @@ var fitbitAPI = {
                   user, resource.featureName, 'fitbit', processedData, nextSync
                 );
               }).catch(function (err) {
-                if (err.status == 401) {
+                console.log('axios error');
+                console.log(err);
+                console.log('---------------------------------');
+                console.log(err.status);
+                console.log(err.response);
+                console.log(err.response.status);
+                if (err.response.status == 401) {
+                  console.log('redirect axios');
                   nextSync('redirect', null);
                 } else {
                   nextSync(err.data.errors, null);
@@ -185,13 +196,17 @@ var fitbitAPI = {
     });
 
     async.series(series, function (err, results) {
+      console.log('async completion callback');
       if (err === 'redirect') {
-        console.log('redirecting oAuth expired');
+        console.log('async error redirecting oAuth expired');
         endSync(null, null, true);
       } else if (err) {
+        console.log('async error');
+        console.log(err);
         endSync(err, null, null);
       } else {
         // second argument is last results.lastSeriesCallName is the user object
+        console.log('async success');
         endSync(null, results[results.length - 1], null);
       }
     });
