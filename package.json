@@ -33,6 +33,7 @@
     "passport-lastfm": "^1.0.1",
     "passport-local": "^1.0.0",
     "passport-strava": "^0.2.0",
+    "querystring": "^0.2.0",
     "react": "^15.3.2",
     "react-addons-linked-state-mixin": "^15.3.2",
     "react-dom": "^15.3.2",

@@ -1,6 +1,8 @@
 var util = require('./util');
 var axios = require('axios');
 var async = require('async');
+var config = require('../../config/config');
+var querystring = require('querystring');
 
 // checks to see if user needs added to feature and if user feature array is initialized
 // returns date that sync should start from or '1m' if first time syncing
@@ -50,6 +52,48 @@ var fitbitAPI = {
         'activity', 'heartrate', 'location', 'nutrition',
         'profile', 'settings', 'sleep', 'social', 'weight',
       ],
+    });
+  },
+
+  refresh: function (user, endRefresh) {
+    console.log('refresh fitbit function');
+    var idSecret = config.fitbit.clientID + ':' + config.fitbit.clientSecret;
+    console.log(idSecret);
+    var encodedIdSecret = (new Buffer(idSecret)).toString('base64');
+
+    axios({
+      method: 'POST',
+      url: 'https://api.fitbit.com/oauth2/token',
+      headers: {
+        Authorization: 'Basic ' + encodedIdSecret,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      data: querystring.stringify({
+        grant_type: 'refresh_token',
+        refresh_token: user.datastreams.fitbit.refreshToken,
+      }),
+    }).then(function (fitbitRes) {
+      console.log('fitbit success');
+      console.log(fitbitRes);
+      user.datastreams.fitbit.accessToken = fitbitRes.data.access_token;
+      user.datastreams.fitbit.refreshToken = fitbitRes.data.refresh_token;
+      console.log(fitbitRes.data.access_token);
+      console.log(fitbitRes.data.refresh_token);
+      user.save(function (err, user) {
+        console.log(user);
+        if (err) {
+          endRefresh(err);
+          res.status(500).json({ message: 'error saving the using' });
+        } else {
+          console.log('user saved');
+          endRefresh(null);
+        }
+      });
+    }).catch(function (err) {
+      console.log('fitbit error');
+      console.log(err);
+      console.log(err.response.data.errors);
+      endRefresh(err);
     });
   },
 
@@ -150,7 +194,11 @@ var fitbitAPI = {
           // preSync calls startSync as callback
           preSync(user, resource.featureName, 'fitbit', function (err, startDate) {
             console.log('fitbit preSync', resource.featureName);
+            console.log(err);
+            console.log(startDate);
             if (err) {
+              console.log('preSync error');
+              console.log(err);
               nextSync(err, null);
             } else if (startDate) {
               var baseUrl = resource.baseUrl;
@@ -172,7 +220,11 @@ var fitbitAPI = {
                   user, resource.featureName, 'fitbit', processedData, nextSync
                 );
               }).catch(function (err) {
-                if (err.status == 401) {
+                console.log('axios error');
+                console.log(err);
+                console.log(err.response.status);
+                if (err.response.status == 401) {
+                  console.log('redirect axios');
                   nextSync('redirect', null);
                 } else {
                   nextSync(err.data.errors, null);
@@ -185,13 +237,17 @@ var fitbitAPI = {
     });
 
     async.series(series, function (err, results) {
+      console.log('async completion callback');
       if (err === 'redirect') {
-        console.log('redirecting oAuth expired');
+        console.log('async error redirecting oAuth expired');
         endSync(null, null, true);
       } else if (err) {
+        console.log('async error');
+        console.log(err);
         endSync(err, null, null);
       } else {
         // second argument is last results.lastSeriesCallName is the user object
+        console.log('async success');
         endSync(null, results[results.length - 1], null);
       }
     });

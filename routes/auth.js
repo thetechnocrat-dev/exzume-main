@@ -122,6 +122,23 @@ module.exports = function (router, passport) {
       dataStreamAPIs[req.params.datastream].connect(req, res, next);
     });
 
+  router.get('/datastreams/:datastream/refresh', function (req, res) {
+    console.log('in refresh token route');
+    var user = req.user;
+    var endRefresh = function (error) {
+      console.log('refresh is done');
+      if (error) {
+        console.log('refresh error');
+        res.send(error);
+      } else {
+        console.log('redirecting back to grab');
+        res.redirect('/auth/datastreams/' + req.params.datastream + '/grab');
+      }
+    };
+
+    dataStreamAPIs[req.params.datastream].refresh(user, endRefresh);
+  });
+
   router.get('/datastreams/rescuetime/callback', function (req, res, next) {
     console.log(req.query);
     axios({
@@ -139,7 +156,7 @@ module.exports = function (router, passport) {
       console.log(authRes);
       console.log(authRes.data.accessToken);
       req.user.datastreams.rescuetime.isConnected = true;
-      req.user.datastreams.rescuetime.accessToken = authRes.data['access_token'];
+      req.user.datastreams.rescuetime.accessToken = authRes.data.access_token;
       req.user.save(function (err) {
         if (err) {
           res.send(err);
@@ -153,8 +170,6 @@ module.exports = function (router, passport) {
   });
 
   router.get('/datastreams/:datastream/callback', function (req, res, next) {
-      console.log(req.params);
-      console.log(next);
       console.log(req.params.datastream + ' callback route');
       passport.authenticate(req.params.datastream, {
         successRedirect: '/auth/datastreams/' + req.params.datastream + '/grab?isInitialSync=true',
@@ -177,7 +192,8 @@ module.exports = function (router, passport) {
             res.json(updatedUser);
           }
         } else if (shouldRedirect) {
-          res.redirect('/auth/datastreams/' + req.params.datastream);
+          console.log('trying to redirect');
+          res.redirect('/auth/datastreams/' + req.params.datastream + '/refresh');
         }
       };
 
@@ -261,6 +277,8 @@ module.exports = function (router, passport) {
   });
 
   router.get('/*', function (req, res) {
+    console.log('catch all');
     res.redirect('/');
   });
 };
+
