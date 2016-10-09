@@ -25,9 +25,16 @@ const CustomTooltip = React.createClass({
   },
 
   getNotes: function (dateTime) {
-    if (this.props.notes.length != 0 && this.props.notes[0].x == dateTime) {
+    var i;
+    for (i = 0; i < this.props.notes.length; i++) {
+      if (this.props.notes[i].x == dateTime) {
+        break;
+      }
+    }
+
+    if (this.props.notes.length > 0) {
       return (
-        <p className="note">{'note:' +  this.props.notes[0].y}</p>
+        <p className="note">{'note:' +  this.props.notes[i].y}</p>
       );
     }
   },

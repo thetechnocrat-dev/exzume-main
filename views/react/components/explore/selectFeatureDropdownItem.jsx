@@ -23,7 +23,6 @@ var DropdownItem = React.createClass({
         );
       } else {
         moodNoteFeature = feature;
-        console.log(moodNoteFeature);
         return;
       }
     });
@@ -32,8 +31,6 @@ var DropdownItem = React.createClass({
   clickFeatureItem: function (feature) {
     if (feature.name == 'Mood Rating') {
       FastFlux.cycle('FEATURE_RECEIVED', feature);
-      console.log('sending mood note...');
-      console.log(moodNoteFeature);
       FastFlux.cycle('MOOD_FEATURE_RECEIVED', moodNoteFeature);
     } else {
       FastFlux.cycle('FEATURE_RECEIVED', feature);
