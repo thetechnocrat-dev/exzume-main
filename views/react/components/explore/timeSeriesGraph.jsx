@@ -22,21 +22,22 @@ const CustomTooltip = React.createClass({
   propTypes: {
     payload: React.PropTypes.array,
     notes: React.PropTypes.array,
+    data: React.PropTypes.array,
   },
 
   getNotes: function (dateTime) {
-    var i;
-    for (i = 0; i < this.props.notes.length; i++) {
-      if (this.props.notes[i].x == dateTime) {
-        break;
+    if (this.props.notes.length != 0) {
+      var i;
+      for (i = 0; i < this.props.notes.length; i++) {
+        if (this.props.notes[i].x == dateTime) {
+          return (
+            <p className="note">{'note:' +  this.props.notes[i].y}</p>
+          );
+        }
       }
     }
 
-    if (this.props.notes.length > 0) {
-      return (
-        <p className="note">{'note:' +  this.props.notes[i].y}</p>
-      );
-    }
+    return null;
   },
 
   render: function () {
@@ -84,16 +85,26 @@ var TimeSeriesGraph = React.createClass({
     });
   },
 
-  render: function () {
+  makeTooltip: function () {
     var moodNoteSeriesData = [];
     if (this.props.moodNoteData) {
       moodNoteSeriesData = this.props.moodNoteData.data;
     }
 
+    return (
+      <CustomTooltip payload={this.props.data} notes={moodNoteSeriesData} />
+    );
+  },
+
+  render: function () {
     if (this.props.data[0].name == 'nothing selected') {
       var title = '';
     } else {
-      var title = this.props.data[0].name + ' Over Time';
+      if (this.props.data.length == 1) {
+        var title = this.props.data[0].name + ' Over Time';
+      } else {
+        var title = this.props.data.length + ' Features Over Time';
+      }
     }
 
     return (
@@ -123,11 +134,7 @@ var TimeSeriesGraph = React.createClass({
           <YAxis dataKey={'y'} name='value' />
           <CartesianGrid />
           <Tooltip
-            content={<CustomTooltip
-                        payload={this.props.data}
-                        notes={moodNoteSeriesData}
-                      />
-                    }
+            content={this.makeTooltip()}
             wrapperStyle={{ padding: '10px',
                             backgroundColor: Style.lightBackgroundHover,
                             borderRadius: '10px', }}
