@@ -274,8 +274,11 @@ module.exports = function (router, passport) {
     // edit overlapping data from same day or else push new data
     moodStream.features.map(function (feature, i) {
       if (feature.data.length > 0 &&
-          moment(feature.data[feature.data.length - 1].dateTime.valueOf())
-          .isSame(moment(newDateTime.valueOf()), 'day')) {
+          feature.data[feature.data.length - 1].dateTime.valueOf().slice(0, 10) ==
+          newDateTime.valueOf().slice(0, 10)) {
+        console.log(feature.data[feature.data.length - 1].dateTime.valueOf().slice(0, 10));
+        console.log(newDateTime.valueOf().slice(0, 10));
+        console.log('popping...');
         feature.data.pop();
         feature.data.push({ dateTime: newDateTime,
                             value: newMood[i], });

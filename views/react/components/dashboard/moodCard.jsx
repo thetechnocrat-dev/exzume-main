@@ -112,8 +112,7 @@ var MoodCard = React.createClass({
       FastFlux.webCycle('post', '/auth/mood', {
         body: moodBody,
         success: this.successCallback,
-
-        // error: this.errorCallback,
+        error: this.errorCallback,
         shouldStoreReceive: true,
         storeActionType: 'SESSION_RECEIVED',
       });
@@ -129,9 +128,11 @@ var MoodCard = React.createClass({
     this.setState({ loading: false });
   },
 
-  // errorCallback: function (error) {
+  errorCallback: function (error) {
+    console.log(error.responseText);
+
   //   this.setState({ loading: false, error: error.responseText });
-  // },
+  },
 
   onRatingChange: function (button) {
     this.setState({ rating: button.value, enlarge: button.color });

@@ -17,7 +17,7 @@ const fillColors = [
                     '#f3e1eb', '#f6c4e1', '#f79cd4',
                    ];
 
-var TimeSeriesCompareGraph = React.createClass({
+var CorrelateScatterGraph = React.createClass({
   propTypes: {
     data: React.PropTypes.array.isRequired,
     width: React.PropTypes.number.isRequired,
@@ -145,4 +145,4 @@ var TimeSeriesCompareGraph = React.createClass({
 
 });
 
-module.exports = TimeSeriesCompareGraph;
+module.exports = CorrelateScatterGraph;

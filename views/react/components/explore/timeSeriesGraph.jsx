@@ -25,9 +25,16 @@ const CustomTooltip = React.createClass({
   },
 
   getNotes: function (dateTime) {
-    if (this.props.notes.length != 0 && this.props.notes[0].x == dateTime) {
+    var i;
+    for (i = 0; i < this.props.notes.length; i++) {
+      if (this.props.notes[i].x == dateTime) {
+        break;
+      }
+    }
+
+    if (this.props.notes.length > 0) {
       return (
-        <p className="note">{'note:' +  this.props.notes[0].y}</p>
+        <p className="note">{'note:' +  this.props.notes[i].y}</p>
       );
     }
   },
@@ -42,7 +49,7 @@ const CustomTooltip = React.createClass({
       return (
         <div className="custom-tooltip">
           <p className="date">
-            {payload[0].name + ':' + moment(payload[0].value).utc().format('MM-DD-YY')}
+            {payload[0].name + ':' + moment(payload[0].value).format('MM-DD-YY')}
           </p>
           <p className="value">{payload[1].name + ':' + payload[1].value}</p>
           {this.getNotes(payload[0].value)}
@@ -54,7 +61,7 @@ const CustomTooltip = React.createClass({
   },
 });
 
-var TimeSeriesCompareGraph = React.createClass({
+var TimeSeriesGraph = React.createClass({
   propTypes: {
     data: React.PropTypes.array.isRequired,
     moodNoteData: React.PropTypes.object,
@@ -134,4 +141,4 @@ var TimeSeriesCompareGraph = React.createClass({
 
 });
 
-module.exports = TimeSeriesCompareGraph;
+module.exports = TimeSeriesGraph;
