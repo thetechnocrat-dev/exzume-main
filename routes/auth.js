@@ -6,7 +6,6 @@ var moment = require('moment');
 var async = require('async');
 var axios = require('axios');
 var config = require('../config/config');
-var querystring = require('querystring');
 
 module.exports = function (router, passport) {
   // makes sure a user is logged in
@@ -123,44 +122,21 @@ module.exports = function (router, passport) {
       dataStreamAPIs[req.params.datastream].connect(req, res, next);
     });
 
-  router.get('/datastreams/fitbit/refresh', function (req, res) {
-    console.log('refresh route');
-    console.log('refreshing' + req.params.datastrean);
-    var idSecret = config.fitbit.clientID + ':' + config.fitbit.clientSecret;
-    var encodedIdSecret = (new Buffer(idSecret)).toString('base64');
+  router.get('/datastreams/:datastream/refresh', function (req, res) {
+    console.log('in refresh token route');
+    var user = req.user;
+    var endRefresh = function (error) {
+      console.log('refresh is done');
+      if (error) {
+        console.log('refresh error');
+        res.send(error);
+      } else {
+        console.log('redirecting back to grab');
+        res.redirect('/auth/datastreams/' + req.params.datastream + '/grab');
+      }
+    };
 
-    axios({
-      method: 'POST',
-      url: 'https://api.fitbit.com/oauth2/token',
-      headers: {
-        Authorization: 'Basic ' + encodedIdSecret,
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      data: querystring.stringify({
-        grant_type: 'refresh_token',
-        refresh_token: req.user.datastreams.fitbit.refreshToken,
-      }),
-    }).then(function (fitbitRes) {
-      console.log('fitbit success');
-      console.log(fitbitRes);
-      req.user.datastreams.fitbit.accessToken = fitbitRes.data.access_token;
-      req.user.datastreams.fitbit.refreshToken = fitbitRes.data.refresh_token;
-      console.log(fitbitRes.data.access_token);
-      console.log(fitbitRes.data.refresh_token);
-      req.user.save(function (err, user) {
-        console.log(user);
-        if (err) {
-          res.status(500).json({ message: 'error saving the using' });
-        } else {
-          console.log('user saved');
-          res.json(user);
-        }
-      });
-    }).catch(function (err) {
-      console.log('fitbit error');
-      console.log(err);
-      console.log(err.response.data.errors);
-    });
+    dataStreamAPIs[req.params.datastream].refresh(user, endRefresh);
   });
 
   router.get('/datastreams/rescuetime/callback', function (req, res, next) {
@@ -180,7 +156,7 @@ module.exports = function (router, passport) {
       console.log(authRes);
       console.log(authRes.data.accessToken);
       req.user.datastreams.rescuetime.isConnected = true;
-      req.user.datastreams.rescuetime.accessToken = authRes.data['access_token'];
+      req.user.datastreams.rescuetime.accessToken = authRes.data.access_token;
       req.user.save(function (err) {
         if (err) {
           res.send(err);
@@ -194,8 +170,6 @@ module.exports = function (router, passport) {
   });
 
   router.get('/datastreams/:datastream/callback', function (req, res, next) {
-      console.log(req.params);
-      console.log(next);
       console.log(req.params.datastream + ' callback route');
       passport.authenticate(req.params.datastream, {
         successRedirect: '/auth/datastreams/' + req.params.datastream + '/grab?isInitialSync=true',
@@ -307,3 +281,4 @@ module.exports = function (router, passport) {
     res.redirect('/');
   });
 };
+
