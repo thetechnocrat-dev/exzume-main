@@ -78,11 +78,10 @@ var featureToTimeSeries = function (feature) {
 
   timeSeries.name = feature.name;
   timeSeries.data = [];
-
-  if (timeSeries.name == 'Mood Rating') {
+  if (timeSeries.name == 'Mood Rating' || timeSeries.name == 'Mood Note') {
     for (var i = 0; i < feature.data.length; i++) {
       var dataPoint = {
-        x: new Date(feature.data[i].dateTime.valueOf()).getTime(),
+        x: moment(feature.data[i].dateTime).valueOf(), // UTC representation (full UTC)
         y: feature.data[i].value,
       };
       timeSeries.data.push(dataPoint);
@@ -90,7 +89,7 @@ var featureToTimeSeries = function (feature) {
   } else {
     for (var i = 0; i < feature.data.length; i++) {
       var dataPoint = {
-        x: new Date(feature.data[i].dateTime).getTime(),
+        x: moment(feature.data[i].dateTime).valueOf(), // UTC representation (2016-10-10T07:00:00.000Z)
         y: feature.data[i].value,
       };
       timeSeries.data.push(dataPoint);
@@ -100,7 +99,7 @@ var featureToTimeSeries = function (feature) {
   return timeSeries;
 };
 
-var today = moment(new Date());
+var today = moment();
 var withinBounds =  function (date, dateBound) {
   if (dateBound === 'max') {
     return true;
@@ -295,4 +294,3 @@ ExploreStore.__onDispatch = function (payload) {
 };
 
 module.exports = ExploreStore;
-
