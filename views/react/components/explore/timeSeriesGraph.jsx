@@ -143,6 +143,7 @@ var TimeSeriesGraph = React.createClass({
           <Tooltip
             content={this.makeTooltip()}
             wrapperStyle={{ padding: '10px',
+                            maxWidth: '200px',
                             backgroundColor: Style.lightBackgroundHover,
                             borderRadius: '10px', }}
             cursor={{ strokeDasharray: '3 3' }} />
