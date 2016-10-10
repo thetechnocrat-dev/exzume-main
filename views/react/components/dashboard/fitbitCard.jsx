@@ -78,7 +78,7 @@ var FitbitCard = React.createClass({
       fitbit.features[floorsIdx].data[floorsLength - 1].value.toFixed(0)
     );
 
-    var lastData = fitbit.features[stepsIdx].data.dateTime;
+    var lastData = fitbit.features[stepsIdx].data[stepsLength - 1].dateTime;
     console.log('fitbit card --------------');
     console.log(lastData);
 
