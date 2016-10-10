@@ -89,6 +89,7 @@ var darkSkyAPI = {
           dateTime: dailyData[i].time,
           value: dailyData[i].precipProbability,
         });
+
         // if no precipType, use 'cloudy/sunny' icon?
         precipType.push({
           dateTime: dailyData[i].time,
