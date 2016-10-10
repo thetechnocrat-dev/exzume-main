@@ -78,6 +78,10 @@ var FitbitCard = React.createClass({
       fitbit.features[floorsIdx].data[floorsLength - 1].value.toFixed(0)
     );
 
+    var lastData = fitbit.features[stepsIdx].data.dateTime;
+    console.log('fitbit card --------------');
+    console.log(lastData);
+
     var headerStyle = { margin: '2% 0% 2% 0%' };
 
     return (
