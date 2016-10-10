@@ -26,8 +26,8 @@ var email = {
 
   welcomeMessage: function (username, token) {
     return (
-        'Thank you ' + username + ' for signing up for exzume! We hope this first' +
-        'step to cultivating your data yields many benefits. Click on the following link to' +
+        'Thank you ' + username + ' for signing up for exzume! We hope this tool will help you' +
+        ' discover beneficial insights from your data. Click on the following link to' +
         ' confirm your email: ' +
         config.baseURL + '/#/confirm/' + username + '/' + token
       );
