@@ -24,8 +24,17 @@ util = {
     var thisFeature = currentStream.features[thisFeatureIndex];
     var j = 0;
     for (var i = 0; i < thisFeature.data.length && j < newData.length; i++) {
+      console.log('oldDate');
+      console.log(thisFeature.data[i].dateTime);
+      console.log('newDate');
+      console.log(newData[j].dateTime);
       if (thisFeature.data[i].dateTime === newData[j].dateTime) {
-        thisFeature[i] = newData[j];
+        console.log('overwriting data');
+        console.log('old data');
+        console.log(thisFeature.data[i]);
+        console.log('new data');
+        console.log(newData[j]);
+        thisFeature.data[i] = newData[j];
         j++;
       }
     }
@@ -72,7 +81,7 @@ util = {
       var j = 0;
       for (var i = 0; i < thisFeature.data.length && j < newData.length; i++) {
         if (thisFeature.data[i].dateTime === newData[j].dateTime) {
-          thisFeature[i] = newData[j];
+          thisFeature.data[i] = newData[j];
           j++;
         }
       }
@@ -99,3 +108,4 @@ util = {
 };
 
 module.exports = util;
+

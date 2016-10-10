@@ -75,6 +75,7 @@ var fitbitAPI = {
     }).then(function (fitbitRes) {
       console.log('fitbit success');
       console.log(fitbitRes);
+      console.log(fitbitRes.data.refreshToken);
       user.datastreams.fitbit.accessToken = fitbitRes.data.access_token;
       user.datastreams.fitbit.refreshToken = fitbitRes.data.refresh_token;
       console.log(fitbitRes.data.access_token);
