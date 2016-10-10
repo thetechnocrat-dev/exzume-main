@@ -88,7 +88,11 @@ module.exports = function (router, sg) {
       }
     };
 
-    seedDB(done);
+    if (process.env.NODE_ENV === 'production') {
+      res.json('cannot seed DB on production');
+    } else {
+      seedDB(done);
+    }
   });
 
   router.get('/testemail', function (req, res) {

@@ -15,7 +15,7 @@ console.log('currently in ' + process.env.NODE_ENV + ' mode');
 
 if (process.env.NODE_ENV === 'development') {
   app.use(logger('dev'));
-} else if (process.NODE_ENV === 'production') {
+} else if (process.env.NODE_ENV === 'production') {
   app.use(compress());
 }
 
@@ -98,4 +98,3 @@ app.use(function (err, req, res, next) {
 });
 
 module.exports = app;
-
