@@ -70,14 +70,14 @@ var RescueTimeCard = React.createClass({
     var lastSyncedDate = rescuetime.features[0].data[dataLength - 2].dateTime;
     if (lastSyncedDate == today) {
       var currentChartData = [
-        { name: 'productive time', value: currentProductiveTime },
         { name: 'neutral time', value: currentNeutralTime },
+        { name: 'productive time', value: currentProductiveTime },
         { name: 'distracting time', value: currentDistractingTime },
       ];
       var shouldShowMessage = false;
     } else {
       var currentChartData = [
-        { name: 'no data for today', value: 0.001 },
+        { name: 'blank', value: 100 },
       ];
       currentProductiveTime = 0;
       currentNeutralTime = 0;
