@@ -59,7 +59,7 @@ const renderActiveShape = function (props) {
         textAnchor="middle"
         fill={'black'}
       >
-        {this.makeInsideLabel()}
+        {makeInsideLabel()}
       </text>
       <Sector
         cx={cx}
