@@ -1,10 +1,10 @@
 var React = require('react');
 var Style = require('../../util/style');
-var moment = require('moment');
 var Recharts = require('recharts');
 var PieChart = require('recharts').PieChart;
 var Pie = require('recharts').Pie;
 var Sector = require('recharts').Sector;
+var moment = require('moment');
 
 // Components
 var DoughnutViz = require('./doughnutViz');
@@ -66,7 +66,7 @@ var RescueTimeCard = React.createClass({
     );
 
     // make current time 0 and show message if not synced today
-    var today = moment.format('YYYY-MM-DD');
+    var today = moment().format('YYYY-MM-DD');
     var lastSyncedDate = rescuetime.features[0].data[dataLength - 2].dateTime;
     var shouldShowMessage = false;
     console.log(today);
