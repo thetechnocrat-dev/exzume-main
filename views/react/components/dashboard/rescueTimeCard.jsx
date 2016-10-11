@@ -65,24 +65,25 @@ var RescueTimeCard = React.createClass({
       rescuetime.features[2].data[dataLength - 1].value.toFixed(2)
     );
 
-    // make current time 0 and show message if not synced today
+    //  show message and change chart data if not synced today
     var today = moment().format('YYYY-MM-DD');
     var lastSyncedDate = rescuetime.features[0].data[dataLength - 2].dateTime;
-    var shouldShowMessage = false;
-    console.log(today);
-    console.log(lastSyncedDate);
-    if (lastSyncedDate != today) {
+    if (lastSyncedDate == today) {
+      var currentChartData = [
+        { name: 'productive time', value: currentProductiveTime },
+        { name: 'neutral time', value: currentNeutralTime },
+        { name: 'distracting time', value: currentDistractingTime },
+      ];
+      var shouldShowMessage = false;
+    } else {
+      var currentChartData = [
+        { name: 'no data for today', value: 0.001 },
+      ];
       currentProductiveTime = 0;
       currentNeutralTime = 0;
       currentDistractingTime = 0;
-      shouldShowMessage = true;
+      var shouldShowMessage = true;
     }
-
-    var currentChartData = [
-      { name: 'productive time', value: currentProductiveTime },
-      { name: 'neutral time', value: currentNeutralTime },
-      { name: 'distracting time', value: currentDistractingTime },
-    ];
 
     // get average times:
     var arr = [0, 0, 0];
@@ -106,7 +107,7 @@ var RescueTimeCard = React.createClass({
           <div className="header">
             Computer Productivity
           </div>
-          {this.makeInfoMessage()}
+          {this.makeInfoMessage(shouldShowMessage)}
           <DoughnutViz
             chartData={currentChartData}
             chartDiameter={this.state.diameter}
@@ -123,7 +124,7 @@ var RescueTimeCard = React.createClass({
           <HorzBarViz
             label={'distracting hours'}
             avg={avgDistractingTime}
-            current={avgDistractingTime}
+            current={currentDistractingTime}
             fillColor={Style.green}
             backgroundColor={Style.lightGreen}
             featureName={'Computer Distractivity (Hours)'}
