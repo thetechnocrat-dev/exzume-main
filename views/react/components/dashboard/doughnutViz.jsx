@@ -11,7 +11,7 @@ var Sector = Recharts.Sector;
 var Cell = Recharts.Cell;
 
 // const { PieChart, Pie, Sector, Cell } = Recharts;
-const COLORS = [Style.green, Style.gray, Style.red];
+const COLORS = [Style.gray, Style.green, Style.red];
 
 // accepts data as prop in the following format:
 // const data = [{ name: 'Group A', value: 400 }, { name: 'Group B', value: 300 },
@@ -41,6 +41,14 @@ const renderActiveShape = function (props) {
   const ey = my;
   const textAnchor = cos >= 0 ? 'start' : 'end';
 
+  var makeInsideLabel = function () {
+    if (payload.name === 'blank') {
+      return 'no data for today';
+    } else {
+      return (percent * 100).toFixed(1) + '%  (' + value + ' hours' + ')';
+    }
+  };
+
   return (
     <g>
       <text x={cx} y={cy * 0.9} dy={8} textAnchor="middle" fill={'black'}>{payload.name}</text>
@@ -51,7 +59,7 @@ const renderActiveShape = function (props) {
         textAnchor="middle"
         fill={'black'}
       >
-        {(percent * 100).toFixed(1) + '%  (' + value + ' hours' + ')'}
+        {this.makeInsideLabel()}
       </text>
       <Sector
         cx={cx}
