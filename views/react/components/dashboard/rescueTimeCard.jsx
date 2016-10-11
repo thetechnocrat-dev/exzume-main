@@ -17,8 +17,8 @@ var RescueTimeCard = React.createClass({
   },
 
   getInitialState: function () {
-    // cardDiameter will update once component mounts
-    return ({ cardDiameter: null });
+    // diameter will update once component mounts
+    return ({ diameter: 0 });
   },
 
   setDiameter: function () {
