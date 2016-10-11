@@ -41,8 +41,9 @@ const renderActiveShape = function (props) {
   const ey = my;
   const textAnchor = cos >= 0 ? 'start' : 'end';
 
-  var makeInsideLabel = function () {
-    if (payload.name === 'blank') {
+  var makeInsideLabel = function (label) {
+    console.log(label);
+    if (label === 'blank') {
       return 'no data for today';
     } else {
       return (percent * 100).toFixed(1) + '%  (' + value + ' hours' + ')';
@@ -59,7 +60,7 @@ const renderActiveShape = function (props) {
         textAnchor="middle"
         fill={'black'}
       >
-        {makeInsideLabel()}
+        {makeInsideLabel(payload.name)}
       </text>
       <Sector
         cx={cx}
