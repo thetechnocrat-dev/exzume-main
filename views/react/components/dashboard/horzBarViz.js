@@ -19,8 +19,12 @@ var HorzBarViz = React.createClass({
     return { modalIsOpen: false, hover: false, weekData: [] };
   },
 
-  toggleHover: function () {
-    this.setState({ hover: !this.state.hover });
+  hoverOn: function () {
+    this.setState({ hover: true });
+  },
+
+  hoverOff: function () {
+    this.setState({ hover: false });
   },
 
   closeModal: function () {
@@ -96,8 +100,8 @@ var HorzBarViz = React.createClass({
       <div
         style={outerStyle}
         onClick={this.openModal}
-        onMouseEnter={this.toggleHover}
-        onMouseLeave={this.toggleHover}
+        onMouseEnter={this.hoverOn}
+        onMouseLeave={this.hoverOff}
       >
         <div style={{ display: 'inline-block' }}>
           <Modal

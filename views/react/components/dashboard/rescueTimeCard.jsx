@@ -9,6 +9,7 @@ var Sector = require('recharts').Sector;
 // Components
 var DoughnutViz = require('./doughnutViz');
 var HorzBarViz = require('./horzBarViz');
+var ClosableMessage = require('./closableMessage.jsx');
 
 var RescueTimeCard = React.createClass({
   propTypes: {
@@ -23,6 +24,16 @@ var RescueTimeCard = React.createClass({
   setDiameter: function () {
     var diameter = document.getElementById('rescueTimeCard').offsetWidth;
     this.setState({ diameter: diameter });
+  },
+
+  makeInfoMessage: function (shouldShow) {
+    var message = 'No RescueTime data for today. Make sure your RescueTime app or extention is' +
+      ' running.';
+    if (shouldShow) {
+      return (
+        <ClosableMessage message={message} />
+      );
+    }
   },
 
   handleResize: function () {
@@ -54,6 +65,19 @@ var RescueTimeCard = React.createClass({
       rescuetime.features[2].data[dataLength - 1].value.toFixed(2)
     );
 
+    // make current time 0 and show message if not synced today
+    var today = moment.format('YYYY-MM-DD');
+    var lastSyncedDate = rescuetime.features[0].data[dataLength - 2].dateTime;
+    var shouldShowMessage = false;
+    console.log(today);
+    console.log(lastSyncedDate);
+    if (lastSyncedDate != today) {
+      currentProductiveTime = 0;
+      currentNeutralTime = 0;
+      currentDistractingTime = 0;
+      shouldShowMessage = true;
+    }
+
     var currentChartData = [
       { name: 'productive time', value: currentProductiveTime },
       { name: 'neutral time', value: currentNeutralTime },
@@ -82,6 +106,7 @@ var RescueTimeCard = React.createClass({
           <div className="header">
             Computer Productivity
           </div>
+          {this.makeInfoMessage()}
           <DoughnutViz
             chartData={currentChartData}
             chartDiameter={this.state.diameter}
@@ -130,3 +155,4 @@ var RescueTimeCard = React.createClass({
 });
 
 module.exports = RescueTimeCard;
+

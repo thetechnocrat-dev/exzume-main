@@ -4,10 +4,21 @@ var moment = require('moment');
 
 // Components
 var HorzBarViz = require('./horzBarViz.js');
+var ClosableMessage = require('./closableMessage');
 
 var FitbitCard = React.createClass({
   propTypes: {
     fitbit: React.PropTypes.object.isRequired,
+  },
+
+  makeInfoMessage: function (shouldShow) {
+    if (shouldShow) {
+      var message = 'No Fitbit data for today. Make sure you synced your device with the' +
+        ' Fitbit app.';
+      return (
+        <ClosableMessage message={message} />
+      );
+    }
   },
 
   render: function () {
@@ -78,9 +89,18 @@ var FitbitCard = React.createClass({
       fitbit.features[floorsIdx].data[floorsLength - 1].value.toFixed(0)
     );
 
-    var lastData = fitbit.features[stepsIdx].data[stepsLength - 1].dateTime;
-    console.log('fitbit card --------------');
-    console.log(lastData);
+    var shouldShowFitbitMessage = false;
+    var lastSyncedDate = fitbit.features[stepsIdx].data[stepsLength - 1].dateTime;
+    var today = moment().format('YYYY-MM-DD');
+    if (lastSyncedDate != today) {
+      // sets everything to zero since fitbit was not synced today
+      currentSteps = 0;
+      currentFloors = 0;
+      currentAwakenings = 0;
+      currentHoursAsleep = 0;
+      currentVeryActiveMinutes = 0;
+      shouldShowFitbitMessage = true;
+    }
 
     var headerStyle = { margin: '2% 0% 2% 0%' };
 
@@ -90,6 +110,7 @@ var FitbitCard = React.createClass({
           <div className="header" style={headerStyle}>
             Sleep
           </div>
+          {this.makeInfoMessage(shouldShowFitbitMessage)}
           <HorzBarViz
             label={'hours asleep'}
             avg={avgHoursAsleep}
@@ -155,3 +176,4 @@ var FitbitCard = React.createClass({
 });
 
 module.exports = FitbitCard;
+
