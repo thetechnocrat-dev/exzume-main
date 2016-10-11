@@ -26,7 +26,7 @@ const CustomTooltip = React.createClass({
   },
 
   getNotes: function (dateTime) {
-    if (this.props.notes.length != 0) {
+    if (this.props.notes) {
       var i;
       for (i = 0; i < this.props.notes.length; i++) {
         if (this.props.notes[i].x == dateTime) {
@@ -107,6 +107,13 @@ var TimeSeriesGraph = React.createClass({
       }
     }
 
+    // var tickCount = 0;
+    // for (var seriesKey in this.props.data) {
+    //   if (tickCount < this.props.data[seriesKey].data.length) {
+    //     tickCount = this.props.data[seriesKey].data.length;
+    //   }
+    // }
+
     return (
       <div style={{ textAlign: 'center' }}>
         <div
@@ -125,8 +132,8 @@ var TimeSeriesGraph = React.createClass({
             name='date'
             type='number'
             tickFormatter={
-              function (date) {
-                return moment(date).format('MM-DD-YY');
+              function (time) {
+                return moment(time).format('MM-DD, H') + 'h';
               }
             }
             domain={['dataMin', 'dataMax']}
@@ -136,6 +143,7 @@ var TimeSeriesGraph = React.createClass({
           <Tooltip
             content={this.makeTooltip()}
             wrapperStyle={{ padding: '10px',
+                            maxWidth: '200px',
                             backgroundColor: Style.lightBackgroundHover,
                             borderRadius: '10px', }}
             cursor={{ strokeDasharray: '3 3' }} />

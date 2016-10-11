@@ -1,4 +1,5 @@
 var React = require('react');
+var ExploreStore = require('../../stores/exploreStore');
 
 // Components
 var AddFeatureDropdownFeatureItem = require('./addFeatureDropdownFeatureItem');
@@ -12,8 +13,12 @@ var AddFeatureDropdownItem = React.createClass({
   },
 
   makeFeatureItems: function () {
+    // don't include currently selected feature and mood features
+    // var selectedFeatureDropdownItem = ExploreStore.getFeature();
     return this.props.dataStream.features.map(function (feature, idx) {
-      if (feature.name != 'Mood Rating' && feature.name != 'Mood Note') {
+      if (feature.name != 'Mood Rating'
+          && feature.name != 'Mood Note') {
+          // && feature.name != selectedFeatureDropdownItem.name) {
         return (
           <AddFeatureDropdownFeatureItem key={idx} feature={feature} />
         );
