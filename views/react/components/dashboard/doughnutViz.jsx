@@ -42,7 +42,6 @@ const renderActiveShape = function (props) {
   const textAnchor = cos >= 0 ? 'start' : 'end';
 
   var makeInsideText = function (label) {
-    console.log(label);
     if (label !== 'blank') {
       return (percent * 100).toFixed(1) + '%  (' + value + ' hours' + ')';
     }

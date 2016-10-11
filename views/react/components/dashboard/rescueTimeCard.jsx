@@ -27,7 +27,7 @@ var RescueTimeCard = React.createClass({
   },
 
   makeInfoMessage: function (shouldShow) {
-    var message = 'No RescueTime data for today. Make sure your RescueTime app or extention is' +
+    var message = 'No RescueTime data for today. Make sure your RescueTime app or extension is' +
       ' running.';
     if (shouldShow) {
       return (
@@ -67,7 +67,7 @@ var RescueTimeCard = React.createClass({
 
     //  show message and change chart data if not synced today
     var today = moment().format('YYYY-MM-DD');
-    var lastSyncedDate = rescuetime.features[0].data[dataLength - 2].dateTime;
+    var lastSyncedDate = rescuetime.features[0].data[dataLength - 1].dateTime;
     if (lastSyncedDate == today) {
       var currentChartData = [
         { name: 'neutral time', value: currentNeutralTime },
