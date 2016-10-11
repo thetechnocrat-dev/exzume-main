@@ -126,7 +126,7 @@ var DoughnutViz = React.createClass({
           {
             this.props.chartData.map(function (entry, index) {
               return (
-                <Cell fill={COLORS[index % COLORS.length]}/>
+                <Cell fill={COLORS[index % COLORS.length]} key={index} />
               );
             })
           }
