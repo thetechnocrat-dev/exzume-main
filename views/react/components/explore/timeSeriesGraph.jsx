@@ -70,6 +70,15 @@ var TimeSeriesGraph = React.createClass({
     height: React.PropTypes.number.isRequired,
   },
 
+  // makes selected feature larger
+  getScatterWidth: function (idx) {
+    if (idx == 0) {
+      return { strokeWidth: 1 };
+    } else {
+      return { strokeWidth: 1 };
+    }
+  },
+
   makeScatters: function () {
     var _this = this;
     return this.props.data.map(function (series, idx) {
@@ -78,7 +87,7 @@ var TimeSeriesGraph = React.createClass({
           key={idx}
           name={series.name}
           data={series.data}
-          line
+          line={_this.getScatterWidth(idx)}
           fill={fillColors[idx % fillColors.length]}
         />
       );
