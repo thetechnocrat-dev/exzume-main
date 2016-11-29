@@ -26,5 +26,8 @@ node_modules
 # Users Environment Variables
 .DS_Store
 
+# Private Information
+dev.js
+
 # Other ignored files...
 *.txt
